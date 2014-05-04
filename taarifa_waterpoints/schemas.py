@@ -52,3 +52,11 @@ waterpoint_schema = {
     'latitude': float_field,
     'longitude': float_field,
 }
+
+facility_schema = {'facility_code': "wp001",
+                   'facility_name': "Waterpoint",
+                   'fields': waterpoint_schema,
+                   'description': "A waterpoint in Tanzania",
+                   'keywords': ["location", "water", "infrastructure"],
+                   'group': "water",
+                   'endpoint': "waterpoints"}
