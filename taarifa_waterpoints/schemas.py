@@ -1,40 +1,20 @@
+date_field = {'type': 'datetime'}
+string_field = {'type': 'string'}
+float_field = {'type': 'float'}
+
 waterpoint_schema = {
-    'date_recorded': {
-        'type': 'datetime',
-    },
-    'company': {
-        'type': 'string',
-    },
-    'region': {
-        'type': 'string',
-    },
-    'district': {
-        'type': 'string',
-    },
-    'lga_name': {
-        'type': 'string',
-    },
-    'ward': {
-        'type': 'string',
-    },
-    'village': {
-        'type': 'string',
-    },
-    'village_po': {
-        'type': 'string',
-    },
-    'village_re': {
-        'type': 'string',
-    },
-    'village_ph': {
-        'type': 'string',
-    },
-    'subvillage': {
-        'type': 'string',
-    },
-    'wpt_name': {
-        'type': 'string',
-    },
+    'date_recorded': date_field,
+    'company': string_field,
+    'region': string_field,
+    'district': string_field,
+    'lga_name': string_field,
+    'ward': string_field,
+    'village': string_field,
+    'village_po': string_field,
+    'village_re': string_field,
+    'village_ph': string_field,
+    'subvillage': string_field,
+    'wpt_name': string_field,
     'wpt_code': {
         'type': 'string',
         # FIXME: waterpoint codes should be unique, but are not in the dataset
@@ -43,80 +23,32 @@ waterpoint_schema = {
     'population': {
         'type': 'integer',
     },
-    'scheme_name': {
-        'type': 'string',
-    },
-    'water_perm': {
-        'type': 'string',
-    },
-    'catchment': {
-        'type': 'string',
-    },
-    'funder': {
-        'type': 'string',
-    },
-    'installer': {
-        'type': 'string',
-    },
-    'construction_year': {
-        'type': 'datetime',
-    },
-    'source_type': {
-        'type': 'string',
-    },
-    'extraction': {
-        'type': 'string',
-    },
-    'waterpoint': {
-        'type': 'string',
-    },
-    'status_detail': {
-        'type': 'string',
-    },
+    'scheme_name': string_field,
+    'water_perm': string_field,
+    'catchment': string_field,
+    'funder': string_field,
+    'installer': string_field,
+    'construction_year': date_field,
+    'source_type': string_field,
+    'extraction': string_field,
+    'waterpoint': string_field,
+    'status_detail': string_field,
     'status': {
         'type': 'string',
         'allowed': ['Functional', 'Not functional'],
     },
-    'breakdown_year': {
-        'type': 'datetime',
-    },
-    'hardware_defect': {
-        'type': 'string',
-    },
-    'reason_wpt': {
-        'type': 'string',
-    },
-    'water_quantity': {
-        'type': 'string',
-    },
-    'water_quality': {
-        'type': 'string',
-    },
-    'scheme_management': {
-        'type': 'string',
-    },
-    'wp_management': {
-        'type': 'string',
-    },
-    'water_payment': {
-        'type': 'string',
-    },
-    'amount_tsh': {
-        'type': 'float',
-    },
-    'public_meeting': {
-        'type': 'string',
-    },
-    'comment': {
-        'type': 'string',
-    },
-    'gps_height': {
-        'type': 'float',
-    },
-    'latitude': {
-        'type': 'float',
-    },
-    'longitude': {
-        'type': 'float',
-    },
+    'breakdown_year': date_field,
+    'hardware_defect': string_field,
+    'reason_wpt': string_field,
+    'water_quantity': string_field,
+    'water_quality': string_field,
+    'scheme_management': string_field,
+    'wp_management': string_field,
+    'water_payment': string_field,
+    'amount_tsh': float_field,
+    'public_meeting': string_field,
+    'comment': string_field,
+    'gps_height': float_field,
+    'latitude': float_field,
+    'longitude': float_field,
 }
