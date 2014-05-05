@@ -29,5 +29,10 @@ def views(filename):
 def index():
     return send_from_directory(app.root_path + '/dist/', 'index.html')
 
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(app.root_path + '/dist/', 'favicon.ico')
+
 if __name__ == '__main__':
     main()
