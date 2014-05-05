@@ -79,24 +79,12 @@ module.exports = function (grunt) {
             '.tmp',
             '<%= yeoman.app %>'
           ],
-          middleware: function (connect, options) {
-            if (!Array.isArray(options.base)) {
-              options.base = [options.base];
-            }
-
-            // Setup the proxy
-            var middlewares = [require('grunt-connect-proxy/lib/utils').proxyRequest];
-
-            // Serve static files.
-            options.base.forEach(function(base) {
-              middlewares.push(connect.static(base));
-            });
-
-            // Make directory browse-able.
-            var directory = options.directory || options.base[options.base.length - 1];
-            middlewares.push(connect.directory(directory));
-
-            return middlewares;
+          middleware: function (connect) {
+            return [
+              require('grunt-connect-proxy/lib/utils').proxyRequest,
+              connect.static(require('path').resolve('.tmp')),
+              connect.static(require('path').resolve('app'))
+            ];
           }
         }
       },
