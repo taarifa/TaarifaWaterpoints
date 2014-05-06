@@ -3,7 +3,8 @@
 angular
   .module('taarifaWaterpointsApp', [
     'ngResource',
-    'ngRoute'
+    'ngRoute',
+    'leaflet-directive'
   ])
   .config ($routeProvider) ->
     $routeProvider
