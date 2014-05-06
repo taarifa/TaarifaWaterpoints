@@ -4,16 +4,22 @@ angular.module('taarifaWaterpointsApp')
   .controller 'MainCtrl', ($scope, Waterpoint) ->
     Waterpoint.query (waterpoints) ->
       $scope.waterpoints = waterpoints._items
-  .controller 'MapCtrl', ($scope, Waterpoint) ->
+  .controller 'MapCtrl', ($http, $scope, Waterpoint) ->
     $scope.dar =
       lat: -6.7701973
       lng: 39.2664484
       zoom: 6
     $scope.markers = {}
-    Waterpoint.query (waterpoints) ->
+    addMarkers = (waterpoints) ->
       for p in waterpoints._items
         $scope.markers[p._id] =
           group: p.district
           lat: p.latitude
           lng: p.longitude
-          message: "#{p.wpt_code}\nStatus: #{p.status}"
+          message: "#{p.wpt_code}<br />Status: #{p.status}"
+      # This would keep loading further waterpoints as long as there are any.
+      # Disabled for performance reasons
+      # if waterpoints._links.next
+      #   $http.get(waterpoints._links.next.href)
+      #     .success addMarkers
+    Waterpoint.query addMarkers
