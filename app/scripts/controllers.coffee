@@ -2,7 +2,8 @@
 
 angular.module('taarifaWaterpointsApp')
   .controller 'MainCtrl', ($scope, Waterpoint) ->
-    $scope.waterpoints = Waterpoint.query()
+    Waterpoint.query (waterpoints) ->
+      $scope.waterpoints = waterpoints._items
   .controller 'MapCtrl', ($scope, Waterpoint) ->
     $scope.dar =
       lat: -6.7701973
@@ -10,7 +11,7 @@ angular.module('taarifaWaterpointsApp')
       zoom: 6
     $scope.markers = {}
     Waterpoint.query (waterpoints) ->
-      for p in waterpoints
+      for p in waterpoints._items
         $scope.markers[p._id] =
           group: p.district
           lat: p.latitude

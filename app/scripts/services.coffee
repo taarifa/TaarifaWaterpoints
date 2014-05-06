@@ -5,9 +5,7 @@ apiResource = (resource, $resource) ->
   , {}
   , query:
       method: 'GET'
-      isArray: true
-      transformResponse: (data, headersGetter) ->
-        JSON.parse(data)._items
+      isArray: false
 
 angular.module('taarifaWaterpointsApp')
   .factory 'Waterpoint', ($resource) ->
