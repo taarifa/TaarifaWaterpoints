@@ -2,7 +2,7 @@
 
 apiResource = (resource, $resource) ->
   $resource "/api/#{resource}/:id"
-  ,
+  , # Default arguments
     projection:
       _id: 1
       district: 1
@@ -10,7 +10,8 @@ apiResource = (resource, $resource) ->
       longitude: 1
       wpt_code: 1
       status: 1
-  , query:
+  , # Override methods
+    query:
       method: 'GET'
       isArray: false
 
