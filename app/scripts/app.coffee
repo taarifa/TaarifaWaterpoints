@@ -4,7 +4,8 @@ angular
   .module('taarifaWaterpointsApp', [
     'ngResource',
     'ngRoute',
-    'leaflet-directive'
+    'leaflet-directive',
+    'dynform'
   ])
   .config ($routeProvider) ->
     $routeProvider
