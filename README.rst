@@ -32,6 +32,15 @@ Install the requirements
 
 We suggest you use virtualenv for managing your python environment.
 
+To use the web application switch to the angular branch
+
+``git checkout angular``
+
+Ensure you have node.js and npm installed. Then, from the TaarifaWaterpoints directory, install the dependencies:
+
+``npm install``
+
+
 Usage
 _____
 
@@ -52,6 +61,15 @@ To check things are working, open a browser and navigate to:
 ``http://localhost:5000/api/waterpoints``
 
 This should show a list of all the waterpoint resources currently in the database.
+
+To use the web application simply start the server using grunt:
+
+``grunt serve``
+
+Then navigate to:
+
+``http://localhost:9000/``
+
 
 Contribute
 __________
