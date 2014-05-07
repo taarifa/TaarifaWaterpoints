@@ -291,6 +291,11 @@ angular.module('dynform', [])
                   });
                 }
                 
+                // Arbitrary attributes
+                if (angular.isDefined(field.wrapper)) {
+                  newElement = newElement.wrap(field.wrapper).parent();
+                }
+                
                 // Add the element to the page
                 this.append(newElement);
                 newElement = null;
