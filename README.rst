@@ -4,71 +4,86 @@ Taarifa Waterpoints
 Background
 __________
 
-Taarifa_ is an open source platform for the crowd sourced reporting and triaging of infrastructure related issues. Think of it as a bug tracker for the real world which helps to engage citizens with their local government.
+Taarifa_ is an open source platform for the crowd sourced reporting and
+triaging of infrastructure related issues. Think of it as a bug tracker
+for the real world which helps to engage citizens with their local
+government.
 
-The Taarifa platform is built around the `Taarifa API`_, a RESTful service offering that clients can interact with to create and triage 'bugreports' relating to public infrastructure (e.g., the public toilet is broken).
+The Taarifa platform is built around the `Taarifa API`_, a RESTful
+service offering that clients can interact with to create and triage
+'bugreports' relating to public infrastructure (e.g., the public toilet
+is broken).
 
 
 Waterpoints
 ___________
 
-This repository contains an example application around Waterpoint Management built on top of the core API.
-It contains scripts to import Waterpoint data (resources) which then become available through the API to file requests against (e.g., waterpoint 2345 is broken and needs fixing).
+This repository contains an example application around Waterpoint
+Management built on top of the core API.  It contains scripts to import
+Waterpoint data (resources) which then become available through the API
+to file requests against (e.g., waterpoint 2345 is broken and needs
+fixing).
 
-There is also an angularjs_ web application that illustrates how a user can interact with the API and data through a browser.
+There is also an angularjs_ web application that illustrates how a user
+can interact with the API and data through a browser.
+
 
 Installation
 ____________
 
-Requires Python, pip & the `Taarifa API`_ to be installed and MongoDB to be running.
+Requires Python, pip & the `Taarifa API`_ to be installed and MongoDB to
+be running.
 
-Clone the repository
+Clone the repository ::
 
-``git clone https://github.com/taarifa/TaarifaWaterpoints``
+  git clone https://github.com/taarifa/TaarifaWaterpoints
 
-Install the requirements
+Install the requirements ::
 
-``pip install -r requirements.txt``
+  pip install -r requirements.txt
 
 We suggest you use virtualenv for managing your python environment.
 
-To use the web application switch to the angular branch
+To use the web application switch to the angular branch ::
 
-``git checkout angular``
+  git checkout angular
 
-Ensure you have node.js and npm installed. Then, from the TaarifaWaterpoints directory, install the dependencies:
+Ensure you have node.js and npm installed. Then, from the
+TaarifaWaterpoints directory, install the dependencies: ::
 
-``npm install``
+  npm install
 
 
 Usage
 _____
 
-From the TaarifaWaterpoints directory run the following command to create the waterpoint schemas:
+From the TaarifaWaterpoints directory run the following command to
+create the waterpoint schemas: ::
 
-``python manage.py create_waterpoints``
+  python manage.py create_waterpoints
 
-Then upload the waterpoint data:
+Then upload the waterpoint data: ::
 
-``python manage.py upload_waterpoints <path-to-waterpoints-csv.gz>``
+  python manage.py upload_waterpoints <path-to-waterpoints-csv.gz>
 
-Start application from the TaarifaWaterpoints directory by running:
+Start application from the TaarifaWaterpoints directory by running: ::
 
-``python manage.py runserver``
+  python manage.py runserver
 
-To check things are working, open a browser and navigate to:
+To check things are working, open a browser and navigate to: ::
 
-``http://localhost:5000/api/waterpoints``
+  http://localhost:5000/api/waterpoints
 
-This should show a list of all the waterpoint resources currently in the database.
+This should show a list of all the waterpoint resources currently in the
+database.
 
-To use the web application simply start the server using grunt:
+To use the web application simply start the server using grunt: ::
 
-``grunt serve``
+  grunt serve --watch
 
-Then navigate to:
+Then navigate to: ::
 
-``http://localhost:9000/``
+  http://localhost:9000
 
 
 Contribute
