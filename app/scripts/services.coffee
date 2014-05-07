@@ -21,3 +21,5 @@ angular.module('taarifaWaterpointsApp')
         longitude: 1
         wpt_code: 1
         status: 1
+  .factory 'Facility', ($resource) ->
+    apiResource $resource, 'facilities'
