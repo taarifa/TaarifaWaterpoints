@@ -74,9 +74,14 @@ Then navigate to:
 Contribute
 __________
 
-There is still much left do do and Taarifa is currently undergoing rapid development. To get started send a message to the taarifa-dev_ mailinglist and check out the github issues. We use the github pull request model for all contributions.
+There is still much left do do and Taarifa is currently undergoing rapid
+development. To get started send a message to the taarifa-dev_
+mailinglist and check out the github issues. We use the github pull
+request model for all contributions. Refer to the `contributing
+guidelines`_ for further details.
 
 .. _Taarifa: http://taarifa.org
 .. _taarifa-dev: https://groups.google.com/forum/#!forum/taarifa-dev
 .. _Taarifa API: http://github.com/taarifa/TaarifaAPI
 .. _angularjs: https://angularjs.org/
+.. _contributing guidelines: CONTRIBUTING.rst
