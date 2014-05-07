@@ -8,6 +8,8 @@ apiResource = ($resource, resource, args) ->
     query:
       method: 'GET'
       isArray: false
+    update:
+      method: 'PUT'
 
 angular.module('taarifaWaterpointsApp')
   .factory 'Waterpoint', ($resource) ->
