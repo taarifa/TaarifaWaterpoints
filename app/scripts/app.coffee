@@ -12,6 +12,9 @@ angular
       .when '/',
         templateUrl: 'views/main.html'
         controller: 'MapCtrl'
+      .when '/waterpoints/edit/:id',
+        templateUrl: 'views/edit.html'
+        controller: 'WaterpointEditCtrl'
       .otherwise
         redirectTo: '/'
 
