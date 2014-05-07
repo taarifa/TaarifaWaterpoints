@@ -140,7 +140,7 @@ angular.module('dynform', [])
                       newChild = angular.element('<input type="checkbox" />');
                       newChild.attr('name', field.model + '.' + childId);
                       newChild.attr('ng-model', attrs.ngModel + "['" + field.model + "']" + "['" + childId + "']");
-                      if (angular.isDefined(option['class'])) {newChild.attr('ng-class', option['class']);}
+                      if (angular.isDefined(option['class'])) {newChild.attr('class', option['class']);}
                       if (angular.isDefined(field.disabled)) {newChild.attr('ng-disabled', field.disabled);}
                       if (angular.isDefined(field.readonly)) {newChild.attr('ng-readonly', field.readonly);}
                       if (angular.isDefined(field.required)) {newChild.attr('ng-required', field.required);}
@@ -168,7 +168,7 @@ angular.module('dynform', [])
                       newChild = angular.element('<input type="radio" />');
                       newChild.attr('name', field.model);
                       newChild.attr('ng-model', attrs.ngModel + "['" + field.model + "']");
-                      if (angular.isDefined(field['class'])) {newChild.attr('ng-class', field['class']);}
+                      if (angular.isDefined(field['class'])) {newChild.attr('class', field['class']);}
                       if (angular.isDefined(field.disabled)) {newChild.attr('ng-disabled', field.disabled);}
                       if (angular.isDefined(field.callback)) {newChild.attr('ng-change', field.callback);}
                       if (angular.isDefined(field.readonly)) {newChild.attr('ng-readonly', field.readonly);}
@@ -245,7 +245,7 @@ angular.module('dynform', [])
                 
                 //  Common attributes; radio already applied these...
                 if (field.type !== "radio") {
-                  if (angular.isDefined(field['class'])) {newElement.attr('ng-class', field['class']);}
+                  if (angular.isDefined(field['class'])) {newElement.attr('class', field['class']);}
                   //  ...and checklist has already applied these.
                   if (field.type !== "checklist") {
                     if (angular.isDefined(field.disabled)) {newElement.attr('ng-disabled', field.disabled);}
