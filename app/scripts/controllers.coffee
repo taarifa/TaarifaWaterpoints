@@ -32,3 +32,18 @@ angular.module('taarifaWaterpointsApp')
         wpt_code: 1
         status: 1
     , addMarkers
+  .controller 'WaterpointEditCtrl', ($scope, $http, $routeParams, Waterpoint, Form) ->
+    Waterpoint.get id: $routeParams.id, (waterpoint) ->
+      $scope.waterpoint = waterpoint
+    $scope.formTemplate = Form
+    $scope.save = () ->
+      etag = $scope.waterpoint._etag
+      # We need to remove these special attributes since they are not defined
+      # in the schema and the data will not validate and the update be rejected
+      for attr in ['_created', '_etag', '_id', '_links', '_updated']
+        $scope.waterpoint[attr] = undefined
+      $http.put('/api/waterpoints/'+$routeParams.id,
+                $scope.waterpoint,
+                headers: {'If-Match': etag})
+        .success (data, status, headers, config) ->
+          console.log data, status, headers, config
