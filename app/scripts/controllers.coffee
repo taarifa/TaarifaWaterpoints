@@ -22,4 +22,13 @@ angular.module('taarifaWaterpointsApp')
       # if waterpoints._links.next
       #   $http.get(waterpoints._links.next.href)
       #     .success addMarkers
-    Waterpoint.query {max_results: 100}, addMarkers
+    Waterpoint.query
+      max_results: 100
+      projection:
+        _id: 1
+        district: 1
+        latitude: 1
+        longitude: 1
+        wpt_code: 1
+        status: 1
+    , addMarkers

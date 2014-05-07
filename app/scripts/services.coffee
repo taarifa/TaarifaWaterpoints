@@ -13,13 +13,6 @@ apiResource = ($resource, resource, args) ->
 
 angular.module('taarifaWaterpointsApp')
   .factory 'Waterpoint', ($resource) ->
-    apiResource $resource, 'waterpoints',
-      projection:
-        _id: 1
-        district: 1
-        latitude: 1
-        longitude: 1
-        wpt_code: 1
-        status: 1
+    apiResource $resource, 'waterpoints'
   .factory 'Facility', ($resource) ->
     apiResource $resource, 'facilities'
