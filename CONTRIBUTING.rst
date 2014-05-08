@@ -24,10 +24,14 @@ Making Changes
 - Make sure your commits adhere to the coding guidelines below.
 - Make sure your commit messages are in the proper
   `Git commit message format`_:
-  The first line of the message should have 50 characters or less,
-  separated by a blank line from the (optional) body. The body should
-  be wrapped at 70 characters and paragraphs separated by blank lines.
-  Bulleted lists are also fine.
+
+  * The first line of the message should be a 50 characters or less
+    summary of the change, start with a capital letter and not end with
+    a period. It is separated by a blank line from the (optional) body.
+  * The body should be wrapped at 70 characters and paragraphs separated
+    by blank lines. Bulleted lists are also fine.
+  * The commit message describes what the changeset introduces and is
+    written in *present tense* and using the passive form.
 - Make sure you have added the necessary tests for your changes.
 - Run *all* the tests to assure nothing else was accidentally broken.
 
