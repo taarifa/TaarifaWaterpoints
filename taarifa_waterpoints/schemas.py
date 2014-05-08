@@ -51,6 +51,9 @@ waterpoint_schema = {
     'gps_height': float_field,
     'latitude': float_field,
     'longitude': float_field,
+    'sensors': {
+        'type': 'list',
+    },
 }
 
 facility_schema = {'facility_code': "wp001",
