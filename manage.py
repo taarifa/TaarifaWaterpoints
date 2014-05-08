@@ -18,9 +18,15 @@ def check(response):
 
 
 @manager.command
-def create_waterpoints():
+def create_facility():
     """Create facility for waterpoints."""
     check(add_document('facilities', facility_schema))
+
+
+@manager.command
+def delete_facilities():
+    """Delete all facilities."""
+    check(delete_documents('facilities'))
 
 
 @manager.option("filename", help="gzipped CSV file to upload (required)")
