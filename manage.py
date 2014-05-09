@@ -7,7 +7,7 @@ from flask.ext.script import Manager
 
 from taarifa_api import add_document, delete_documents, get_schema
 from taarifa_waterpoints import app
-from taarifa_waterpoints.schemas import facility_schema
+from taarifa_waterpoints.schemas import facility_schema, service_schema
 
 manager = Manager(app)
 
@@ -28,6 +28,12 @@ def show_schema(resource):
 def create_facility():
     """Create facility for waterpoints."""
     check(add_document('facilities', facility_schema))
+
+
+@manager.command
+def create_service():
+    """Create service for waterpoints."""
+    check(add_document('services', service_schema))
 
 
 @manager.command
