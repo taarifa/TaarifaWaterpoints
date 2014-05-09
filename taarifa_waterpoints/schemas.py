@@ -63,3 +63,31 @@ facility_schema = {'facility_code': "wp001",
                    'keywords': ["location", "water", "infrastructure"],
                    'group': "water",
                    'endpoint': "waterpoints"}
+
+service_schema = {
+    "service_name": "Communal Water Point",
+    "attributes": [
+        {"variable": True,
+         "code": "waterpoint_id",
+         "datatype": "string",
+         "required": True,
+         "datatype_description": "Give a valid Waterpoint id",
+         "order": 1,
+         "description": "Unique id of this waterpoint"},
+        {"variable": True,
+         "code": "status",
+         "datatype": "singlevaluelist",
+         "required": True,
+         "datatype_description": "Select an option from the list",
+         "order": 2,
+         "description": "Status of this waterpoint (functional, broken)",
+         "values": [{"key": "functional",
+                     "name": "This waterpoint is functional"},
+                    {"key": "not functional",
+                     "name": "This waterpoint is broken"}]}
+    ],
+    "description": "Location and functionality of a waterpoint",
+    "keywords": ["location", "infrastructure", "water"],
+    "group": "water",
+    "service_code": "wp001"
+}
