@@ -42,6 +42,12 @@ def delete_facilities():
     check(delete_documents('facilities'))
 
 
+@manager.command
+def delete_services():
+    """Delete all services."""
+    check(delete_documents('services'))
+
+
 @manager.option("filename", help="gzipped CSV file to upload (required)")
 def upload_waterpoints(filename):
     """Upload waterpoints from a gzipped CSV file."""
