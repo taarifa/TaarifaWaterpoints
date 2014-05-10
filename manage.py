@@ -65,8 +65,25 @@ def upload_waterpoints(filename):
     with gzip.open(filename) as f:
         for d in DictReader(f):
             d = dict((k, convert.get(k, str)(v)) for k, v in d.items() if v)
-            d['facility_code'] = 'wp001'
+            d['facility_code'] = 'wpf001'
             check(add_document('waterpoints', d))
+
+
+@manager.option("wp", help="Waterpoint id")
+@manager.option("status", help="Status (functional or non functional)")
+def create_request(wp, status):
+    """Create an example request reporting a broken waterpoint"""
+    # foreign key constraint here actually seems to work
+    r = {"service_code": "wps001",
+         # FIXME: using waterpoint_id does not work, device_id does
+         # as its defined in the base schema
+         "device_id": wp,
+         # FIXME: this only works as its using the status field as defined
+         # in the base schema (indicating ticket openness). Can overloading
+         # field names be done or should  a different name be used (does not
+         # work)
+         "status": status}
+    check(add_document("requests", r))
 
 
 @manager.command

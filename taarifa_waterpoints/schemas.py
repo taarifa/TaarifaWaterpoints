@@ -56,18 +56,28 @@ waterpoint_schema = {
     },
 }
 
-facility_schema = {'facility_code': "wp001",
-                   'facility_name': "Waterpoint",
+# Facility and resources go hand in hand. Following Open311 the facility
+# schema uses its fields attribute to define the schema resources must
+# have that are part of the facility.
+facility_schema = {'facility_code': "wpf001",
+                   'facility_name': "Waterpoint Infrastructure",
+                   # this defines the schema of a resource within this facility
                    'fields': waterpoint_schema,
-                   'description': "A waterpoint in Tanzania",
+                   'description': "Waterpoint infrastructure in Tanzania",
                    'keywords': ["location", "water", "infrastructure"],
                    'group': "water",
                    'endpoint': "waterpoints"}
 
+# Services and requests go hand in hand too. Here its the attributes field of a
+# service that defines what the schema of a request (report) should look like.
 service_schema = {
-    "service_name": "Communal Water Point",
+    "service_name": "Communal Water Service",
     "attributes": [
+        # This defines the schema of a request for this service
+        # FIXME: how to refer to fields defined in the base schema in
+        # TaarfaAPI?
         {"variable": True,
+         # FIXME: we need to enforce a foreign key constraint here
          "code": "waterpoint_id",
          "datatype": "string",
          "required": True,
@@ -89,5 +99,5 @@ service_schema = {
     "description": "Location and functionality of a waterpoint",
     "keywords": ["location", "infrastructure", "water"],
     "group": "water",
-    "service_code": "wp001"
+    "service_code": "wps001"
 }
