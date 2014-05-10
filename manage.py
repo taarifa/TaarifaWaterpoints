@@ -12,10 +12,11 @@ from taarifa_waterpoints.schemas import facility_schema, service_schema
 manager = Manager(app)
 
 
-def check(response):
-    data, _, _, status_code = response
-    print "Succeeded" if status_code == 201 else "Failed", "with", status_code
-    print data
+def check(response, success=201):
+    data, _, _, status = response
+    print "Succeeded" if status == success else "Failed", "with", status
+    print "Response:"
+    pprint(data)
 
 
 @manager.option("resource", help="Resource to show the schema for")
@@ -39,13 +40,13 @@ def create_service():
 @manager.command
 def delete_facilities():
     """Delete all facilities."""
-    check(delete_documents('facilities'))
+    check(delete_documents('facilities'), 200)
 
 
 @manager.command
 def delete_services():
     """Delete all services."""
-    check(delete_documents('services'))
+    check(delete_documents('services'), 200)
 
 
 @manager.option("filename", help="gzipped CSV file to upload (required)")
