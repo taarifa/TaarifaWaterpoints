@@ -73,16 +73,9 @@ def upload_waterpoints(filename):
 @manager.option("status", help="Status (functional or non functional)")
 def create_request(wp, status):
     """Create an example request reporting a broken waterpoint"""
-    # foreign key constraint here actually seems to work
     r = {"service_code": "wps001",
-         # FIXME: using waterpoint_id does not work, device_id does
-         # as its defined in the base schema
-         "device_id": wp,
-         # FIXME: this only works as its using the status field as defined
-         # in the base schema (indicating ticket openness). Can overloading
-         # field names be done or should  a different name be used (does not
-         # work)
-         "status": status}
+         "attribute": {"waterpoint_id": wp,
+                       "status": status}}
     check(add_document("requests", r))
 
 
