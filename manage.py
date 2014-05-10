@@ -69,8 +69,8 @@ def upload_waterpoints(filename):
             check(add_document('waterpoints', d))
 
 
-@manager.option("wp", help="Waterpoint id")
 @manager.option("status", help="Status (functional or non functional)")
+@manager.option("wp", help="Waterpoint id")
 def create_request(wp, status):
     """Create an example request reporting a broken waterpoint"""
     r = {"service_code": "wps001",
