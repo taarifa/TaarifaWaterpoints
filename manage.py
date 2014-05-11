@@ -26,6 +26,16 @@ def show_schema(resource):
 
 
 @manager.command
+def list_routes():
+    """List all routes defined for the application."""
+    import urllib
+    for rule in sorted(app.url_map.iter_rules(), key=lambda r: r.endpoint):
+        methods = ','.join(rule.methods)
+        print urllib.unquote("{:40s} {:40s} {}".format(rule.endpoint, methods,
+                                                       rule))
+
+
+@manager.command
 def create_facility():
     """Create facility for waterpoints."""
     check(add_document('facilities', facility_schema))
