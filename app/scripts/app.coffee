@@ -15,6 +15,9 @@ angular
       .when '/waterpoints/edit/:id',
         templateUrl: 'views/edit.html'
         controller: 'WaterpointEditCtrl'
+      .when '/waterpoints/new',
+        templateUrl: 'views/edit.html'
+        controller: 'WaterpointCreateCtrl'
       .otherwise
         redirectTo: '/'
 
