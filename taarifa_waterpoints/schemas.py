@@ -1,58 +1,163 @@
-date_field = {'type': 'datetime'}
-string_field = {'type': 'string'}
-float_field = {'type': 'float'}
-
 waterpoint_schema = {
-    'date_recorded': date_field,
-    'company': string_field,
-    'region': string_field,
-    'district': string_field,
-    'lga_name': string_field,
-    'ward': string_field,
-    'village': string_field,
-    'village_po': string_field,
-    'village_re': string_field,
-    'village_ph': string_field,
-    'subvillage': string_field,
-    'wpt_name': string_field,
+    'date_recorded': {
+        'type': 'datetime',
+        'label': 'Date recorded',
+    },
+    'company': {
+        'type': 'string',
+        'label': 'Company',
+    },
+    'region': {
+        'type': 'string',
+        'label': 'Region',
+    },
+    'district': {
+        'type': 'string',
+        'label': 'District',
+    },
+    'lga_name': {
+        'type': 'string',
+        'label': 'LGA Name',
+    },
+    'ward': {
+        'type': 'string',
+        'label': 'Ward',
+    },
+    'village': {
+        'type': 'string',
+        'label': 'Village',
+    },
+    'village_po': {
+        'type': 'string',
+    },
+    'village_re': {
+        'type': 'string',
+    },
+    'village_ph': {
+        'type': 'string',
+    },
+    'subvillage': {
+        'type': 'string',
+        'label': 'Subvillage',
+    },
+    'wpt_name': {
+        'type': 'string',
+        'label': 'Waterpoint Name',
+    },
     'wpt_code': {
         'type': 'string',
+        'label': 'Waterpoint Code',
         # FIXME: waterpoint codes should be unique, but are not in the dataset
         # 'unique': True,
     },
     'population': {
         'type': 'integer',
+        'label': 'Population',
     },
-    'scheme_name': string_field,
-    'water_perm': string_field,
-    'catchment': string_field,
-    'funder': string_field,
-    'installer': string_field,
-    'construction_year': date_field,
-    'source_type': string_field,
-    'extraction': string_field,
-    'waterpoint': string_field,
-    'status_detail': string_field,
+    'scheme_name': {
+        'type': 'string',
+        'label': 'Scheme Name',
+    },
+    'water_perm': {
+        'type': 'string',
+        'label': 'Water Permission',
+    },
+    'catchment': {
+        'type': 'string',
+        'label': 'Catchment',
+    },
+    'funder': {
+        'type': 'string',
+        'label': 'Funder',
+    },
+    'installer': {
+        'type': 'string',
+        'label': 'Installer',
+    },
+    'construction_year': {
+        'type': 'datetime',
+        'label': 'Construction Year',
+    },
+    'source_type': {
+        'type': 'string',
+        'label': 'Source Type',
+    },
+    'extraction': {
+        'type': 'string',
+        'label': 'Extraction',
+    },
+    'waterpoint': {
+        'type': 'string',
+        'label': 'Waterpoint',
+    },
+    'status_detail': {
+        'type': 'string',
+        'label': 'Status Detail',
+    },
     'status': {
         'type': 'string',
+        'label': 'Status',
         'allowed': ['Functional', 'Not functional'],
     },
-    'breakdown_year': date_field,
-    'hardware_defect': string_field,
-    'reason_wpt': string_field,
-    'water_quantity': string_field,
-    'water_quality': string_field,
-    'scheme_management': string_field,
-    'wp_management': string_field,
-    'water_payment': string_field,
-    'amount_tsh': float_field,
-    'public_meeting': string_field,
-    'comment': string_field,
-    'gps_height': float_field,
-    'latitude': float_field,
-    'longitude': float_field,
-    'sensors': {
-        'type': 'list',
+    'breakdown_year': {
+        'type': 'datetime',
+        'label': 'Breakdown Year',
+    },
+    'hardware_defect': {
+        'type': 'string',
+        'label': 'Hardware Defect',
+    },
+    'reason_wpt': {
+        'type': 'string',
+        'label': 'Reason for Defect',
+    },
+    'water_quantity': {
+        'type': 'string',
+        'label': 'Water Quantity',
+    },
+    'water_quality': {
+        'type': 'string',
+        'label': 'Water Quality',
+    },
+    'scheme_management': {
+        'type': 'string',
+        'label': 'Waterpoint Management',
+    },
+    'wp_management': {
+        'type': 'string',
+        'label': 'Waterpoint Management',
+    },
+    'water_payment': {
+        'type': 'string',
+        'label': 'Water Payment',
+    },
+    'amount_tsh': {
+        'type': 'float',
+        'label': 'Amount (Tanzanian shilling)',
+    },
+    'public_meeting': {
+        'type': 'string',
+        'label': 'Public Meeting',
+    },
+    'comment': {
+        'type': 'string',
+        'label': 'Comment',
+    },
+    'gps_height': {
+        'type': 'float',
+        'label': 'GPS Height',
+    },
+    'latitude': {
+        'type': 'float',
+        'label': 'Latitude',
+        'min': -180,
+        'max': 180,
+    },
+    'longitude': {
+        'type': 'float',
+        'label': 'Longitude',
+        'min': -90,
+        'max': 90,
     },
 }
 
