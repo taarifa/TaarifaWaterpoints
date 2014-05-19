@@ -33,7 +33,7 @@ angular.module('taarifaWaterpointsApp')
         status: 1
     , addMarkers
   .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, Form) ->
-    $scope.formTemplate = Form
+    $scope.formTemplate = Form 'wpf001'
     # FIXME: Should not hardcode the facility code here
     $scope.waterpoint =
       facility_code: "wpf001"
@@ -43,7 +43,7 @@ angular.module('taarifaWaterpointsApp')
   .controller 'WaterpointEditCtrl', ($scope, $http, $routeParams, Waterpoint, Form) ->
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
       $scope.waterpoint = waterpoint
-    $scope.formTemplate = Form
+    $scope.formTemplate = Form 'wpf001'
     $scope.save = () ->
       etag = $scope.waterpoint._etag
       # We need to remove these special attributes since they are not defined
