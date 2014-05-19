@@ -32,7 +32,7 @@ angular.module('taarifaWaterpointsApp')
         wpt_code: 1
         status: 1
     , addMarkers
-  .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, Form) ->
+  .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, Form, flash) ->
     $scope.formTemplate = Form 'wpf001'
     # FIXME: Should not hardcode the facility code here
     $scope.waterpoint =
@@ -40,6 +40,8 @@ angular.module('taarifaWaterpointsApp')
     $scope.save = () ->
       Waterpoint.save $scope.waterpoint, (waterpoint) ->
         console.log "Successfully created waterpoint", waterpoint
+        if waterpoint._status == 'OK'
+          flash.success = 'Waterpoint successfully created!'
   .controller 'WaterpointEditCtrl', ($scope, $http, $routeParams, Waterpoint, Form) ->
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
       $scope.waterpoint = waterpoint
