@@ -5,9 +5,11 @@ angular
     'ngResource',
     'ngRoute',
     'leaflet-directive',
-    'dynform'
+    'dynform',
+    'angular-flash.service',
+    'angular-flash.flash-alert-directive'
   ])
-  .config ($routeProvider) ->
+  .config ($routeProvider, flashProvider) ->
     $routeProvider
       .when '/',
         templateUrl: 'views/main.html'
@@ -20,4 +22,4 @@ angular
         controller: 'WaterpointCreateCtrl'
       .otherwise
         redirectTo: '/'
-
+    flashProvider.errorClassnames.push 'alert-danger'
