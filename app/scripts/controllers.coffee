@@ -59,3 +59,6 @@ angular.module('taarifaWaterpointsApp')
           console.log data, status, headers, config
           if status == 200 and data._status == 'OK'
             flash.success = 'Waterpoint successfully saved!'
+          if status == 200 and data._status == 'ERR'
+            for field, message of data._issues
+              flash.error = "#{field}: #{message}"
