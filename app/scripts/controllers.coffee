@@ -42,7 +42,7 @@ angular.module('taarifaWaterpointsApp')
         console.log "Successfully created waterpoint", waterpoint
         if waterpoint._status == 'OK'
           flash.success = 'Waterpoint successfully created!'
-  .controller 'WaterpointEditCtrl', ($scope, $http, $routeParams, Waterpoint, Form) ->
+  .controller 'WaterpointEditCtrl', ($scope, $http, $routeParams, Waterpoint, Form, flash) ->
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
       $scope.waterpoint = waterpoint
     $scope.formTemplate = Form 'wpf001'
@@ -57,3 +57,5 @@ angular.module('taarifaWaterpointsApp')
                 headers: {'If-Match': etag})
         .success (data, status, headers, config) ->
           console.log data, status, headers, config
+          if status == 200 and data._status == 'OK'
+            flash.success = 'Waterpoint successfully saved!'
