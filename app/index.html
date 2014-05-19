@@ -29,7 +29,32 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="container" ng-view=""></div>
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li><a ng-href="#/waterpoints/new">
+            <span class="glyphicon glyphicon-plus"></span>
+            Create waterpoint
+          </a></li>
+          <li class="active"><a ng-href="#">Home</a></li>
+          <li><a ng-href="#">About</a></li>
+          <li><a ng-href="#">Contact</a></li>
+        </ul>
+        <h3 class="text-muted">TaarifaWaterpoints</h3>
+      </div>
+
+      <div flash-alert="success" active-class="in alert" class="fade">
+        <strong class="alert-heading">Success:</strong>
+        <span class="alert-message">{{flash.message}}</span>
+      </div>
+
+      <div flash-alert="error" active-class="in alert" class="fade">
+        <strong class="alert-heading">Error:</strong>
+        <span class="alert-message">{{flash.message}}</span>
+      </div>
+
+      <div ng-view></div>
+    </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
