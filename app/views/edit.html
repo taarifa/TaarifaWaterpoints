@@ -7,6 +7,16 @@
   <h3 class="text-muted">TaarifaWaterpoints</h3>
 </div>
 
+<div flash-alert="success" active-class="in alert" class="fade">
+  <strong class="alert-heading">Success:</strong>
+  <span class="alert-message">{{flash.message}}</span>
+</div>
+
+<div flash-alert="error" active-class="in alert" class="fade">
+  <strong class="alert-heading">Error:</strong>
+  <span class="alert-message">{{flash.message}}</span>
+</div>
+
 <dynamic-form class="form-horizontal" role="form" template="formTemplate"
 ng-model="waterpoint" ng-submit="save()">
 </dynamic-form>
