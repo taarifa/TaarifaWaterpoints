@@ -26,7 +26,9 @@ angular.module('taarifaWaterpointsApp')
     addMarkers = (waterpoints) =>
       for p in waterpoints._items
         @markers[p._id] =
-          group: p.district
+          # FIXME temporarily disable clustering since it is not properly
+          # reinitialized when the MapCtrl controller reloads
+          # group: p.district
           lat: p.latitude
           lng: p.longitude
           message: "#{p.wpt_code}<br />Status: #{p.status}<br /><a href=\"#/waterpoints/edit/#{p._id}\">edit</a>"
