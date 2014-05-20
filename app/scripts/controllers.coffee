@@ -5,11 +5,7 @@ angular.module('taarifaWaterpointsApp')
     Waterpoint.query (waterpoints) ->
       $scope.waterpoints = waterpoints._items
   .controller 'MapCtrl', ($scope, Map) ->
-    $scope.dar =
-      lat: -6.7701973
-      lng: 39.2664484
-      zoom: 6
-    $scope.markers = Map.markers
+    $scope.map = Map
   .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, Form, flash) ->
     $scope.formTemplate = Form 'wpf001'
     # FIXME: Should not hardcode the facility code here

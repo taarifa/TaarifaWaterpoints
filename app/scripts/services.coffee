@@ -17,6 +17,11 @@ angular.module('taarifaWaterpointsApp')
   .factory 'Facility', ($resource) ->
     apiResource $resource, 'facilities'
   .factory 'Map', (Waterpoint) ->
+    # Initially center on Dar es Salaam
+    @center =
+      lat: -6.7701973
+      lng: 39.2664484
+      zoom: 6
     @markers = {}
     addMarkers = (waterpoints) =>
       for p in waterpoints._items
