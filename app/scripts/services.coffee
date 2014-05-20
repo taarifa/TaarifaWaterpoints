@@ -16,6 +16,31 @@ angular.module('taarifaWaterpointsApp')
     apiResource $resource, 'waterpoints'
   .factory 'Facility', ($resource) ->
     apiResource $resource, 'facilities'
+  .factory 'Map', (Waterpoint) ->
+    @markers = {}
+    addMarkers = (waterpoints) =>
+      for p in waterpoints._items
+        @markers[p._id] =
+          group: p.district
+          lat: p.latitude
+          lng: p.longitude
+          message: "#{p.wpt_code}<br />Status: #{p.status}<br /><a href=\"#/waterpoints/edit/#{p._id}\">edit</a>"
+      # This would keep loading further waterpoints as long as there are any.
+      # Disabled for performance reasons
+      # if waterpoints._links.next
+      #   $http.get(waterpoints._links.next.href)
+      #     .success addMarkers
+    Waterpoint.query
+      max_results: 100
+      projection:
+        _id: 1
+        district: 1
+        latitude: 1
+        longitude: 1
+        wpt_code: 1
+        status: 1
+    , addMarkers
+    return this
   # Get an angular-dynamic-forms compatible form description from a Facility
   # given a facility code
   .factory 'Form', (Facility) ->
