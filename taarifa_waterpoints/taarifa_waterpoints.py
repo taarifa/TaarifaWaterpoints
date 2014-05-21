@@ -1,8 +1,18 @@
-from flask import send_from_directory
+from flask import make_response, send_from_directory
+import json
 
 from taarifa_api import api as app, main
 
 app.name = 'TaarifaWaterpoints'
+
+
+@app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/stats')
+def waterpoint_stats():
+    "Return number of waterpoints of a given status in a given district."
+    # FIXME: Direct call to the PyMongo driver, should be abstracted
+    return make_response(json.dumps(app.data.driver.db['resources'].group(
+        ['district', 'status'], {}, initial={'count': 0},
+        reduce="function(curr, result) {result.count++;}")))
 
 
 @app.route('/scripts/<path:filename>')
