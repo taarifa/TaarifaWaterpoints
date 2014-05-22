@@ -1,0 +1,62 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+    <!-- d3-tip -->
+    <link rel="stylesheet" href="//rawgithub.com/Caged/d3-tip/master/examples/example-styles.css">
+
+    <!-- parallel coordinates -->
+    <link rel="stylesheet" href="//syntagmatic.github.io/parallel-coordinates/d3.parcoords.css">
+
+    <link rel="stylesheet" href="styles/main.css">
+
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a ng-href="#">Home</a></li>
+        </ul>
+        <h3 class="text-muted"></h3>
+      </div>
+
+      <div id="doughnut" class="plot"></div>
+      <div id="statusPerDistrict" class="wideplot"></div>
+      <div id="spendVsStatus" class="wideplot"></div>
+      <div id="spendPerDistrict" class="wideplot"></div>
+      <div id="statusOverTime" class="wideplot"></div>
+      <div id="districtRanking" class=""></div>
+      <div id="parallelAxis" class="wideplot"></div>
+    </div>
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.3/d3-tip.min.js"></script>
+
+    <script src="//syntagmatic.github.io/parallel-coordinates/d3.parcoords.js"></script>
+
+    <script src="scripts/plots.js"></script>
+
+    <script>
+      $(function () {
+          init();
+      });
+    </script>
+
+
+</body>
+</html>
