@@ -15,6 +15,28 @@ def waterpoint_stats():
         reduce="function(curr, result) {result.count++;}")))
 
 
+@app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/stats_by_district')
+def waterpoint_stats_by_district():
+    "Return number of waterpoints of a given status for each district."
+    # FIXME: Direct call to the PyMongo driver, should be abstracted
+    return make_response(json.dumps(app.data.driver.db['resources'].aggregate([
+        {"$group": {"_id": {"district": "$district",
+                            "status": "$status"},
+                    "statusCount": {"$sum": 1}}},
+        {"$group": {"_id": "$_id.district",
+                    "waterpoints": {
+                        "$push": {
+                            "status": "$_id.status",
+                            "count": "$statusCount"
+                        },
+                    },
+                    "count": {"$sum": "$statusCount"}}},
+        {"$project": {"_id": 0,
+                      "district": "$_id",
+                      "waterpoints": 1,
+                      "count": 1}}])['result']))
+
+
 @app.route('/scripts/<path:filename>')
 def scripts(filename):
     return send_from_directory(app.root_path + '/dist/scripts/', filename)
