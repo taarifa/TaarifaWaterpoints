@@ -36,8 +36,8 @@ angular.module('taarifaWaterpointsApp')
           if status == 200 and data._status == 'ERR'
             for field, message of data._issues
               flash.error = "#{field}: #{message}"
-  .controller 'RequestCreateCtrl', ($scope, Request, RequestForm, flash) ->
-    $scope.formTemplate = RequestForm 'wps001'
+  .controller 'RequestCreateCtrl', ($scope, $location, Request, RequestForm, flash) ->
+    $scope.formTemplate = RequestForm 'wps001', $location.search()
     # FIXME: Should not hardcode the service code here
     $scope.form =
       service_code: "wps001"
