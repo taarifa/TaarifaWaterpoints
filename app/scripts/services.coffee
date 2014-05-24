@@ -81,3 +81,36 @@ angular.module('taarifaWaterpointsApp')
             label: "Save"
             class: "btn btn-primary"
           return fields
+  # Get an angular-dynamic-forms compatible form description from a Service
+  # given a service code
+  .factory 'RequestForm', (Service) ->
+    (service_code) ->
+      Service.get(service_code: service_code)
+        # Return a promise since dynamic-forms needs the form template in
+        # scope when the controller is invoked
+        .$promise.then (service) ->
+          dtype2type =
+            string: 'text'
+            text: 'textarea'
+            singlevaluelist: 'select'
+            multivaluelist: 'select'
+          fields = {}
+          for a in service._items[0].attributes when a.variable
+            fields[a.code] =
+              type: dtype2type[a.datatype] or a.datatype
+              required: a.required
+              label: a.description
+              class: "form-control"
+              wrapper: '<div class="form-group"></div>'
+            if a.datatype in ['singlevaluelist', 'multivaluelist']
+              fields[a.code].multiple = a.datatype == 'multivaluelist'
+              options = {}
+              for v in a.values
+                options[v.key] =
+                  label: v.name
+              fields[a.code].options = options
+          fields.submit =
+            type: "submit"
+            label: "Save"
+            class: "btn btn-primary"
+          return fields
