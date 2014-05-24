@@ -54,8 +54,9 @@ Clone the repository ::
 
   git clone https://github.com/taarifa/TaarifaWaterpoints
 
-Install the requirements ::
-
+Change into directory and install the requirements ::
+  
+  cd TaarifaWaterpoints
   pip install -r requirements.txt
 
 Ensure you have node.js and npm installed. Then, from the
