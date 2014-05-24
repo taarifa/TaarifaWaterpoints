@@ -37,6 +37,7 @@ ____________
 Requires Python, pip and the `Taarifa API`_ to be installed and MongoDB to
 be running.
 
+To ease development and debugging we suggest you use virtualenv_. 
 Install virtualenv_ and virtualenvwrapper (you might need `sudo` for this): ::
 
   pip install virtualenv virtualenvwrapper
@@ -56,8 +57,6 @@ Clone the repository ::
 Install the requirements ::
 
   pip install -r requirements.txt
-
-We suggest you use virtualenv_ for managing your python environment.
 
 Ensure you have node.js and npm installed. Then, from the
 `TaarifaWaterpoints` directory, install the dependencies: ::
