@@ -84,7 +84,7 @@ angular.module('taarifaWaterpointsApp')
   # Get an angular-dynamic-forms compatible form description from a Service
   # given a service code
   .factory 'RequestForm', (Service) ->
-    (service_code) ->
+    (service_code, params) ->
       Service.get(service_code: service_code)
         # Return a promise since dynamic-forms needs the form template in
         # scope when the controller is invoked
@@ -102,6 +102,7 @@ angular.module('taarifaWaterpointsApp')
               label: a.description
               class: "form-control"
               wrapper: '<div class="form-group"></div>'
+              val: params[a.code]
             if a.datatype in ['singlevaluelist', 'multivaluelist']
               fields[a.code].multiple = a.datatype == 'multivaluelist'
               options = {}
