@@ -74,6 +74,11 @@ def index():
     return send_from_directory(app.root_path + '/dist/', 'index.html')
 
 
+@app.route("/dashboard")
+def dashboard():
+    return send_from_directory(app.root_path + '/dash/', 'index.html')
+
+
 @app.route("/favicon.ico")
 def favicon():
     return send_from_directory(app.root_path + '/dist/', 'favicon.ico')
