@@ -103,11 +103,12 @@ Make sure the virtualenv is active: ::
 
   workon TaarifaAPI
 
-From the TaarifaWaterpoints directory run the following command to
+From the TaarifaWaterpoints directory run the following commands to
 create the waterpoint schemas: ::
 
-  python manage.py create_waterpoints
-
+  python manage.py create_facility
+  python manage.py create_service
+  
 Then upload the waterpoint data: ::
 
   python manage.py upload_waterpoints <path-to-waterpoints-csv.gz>
