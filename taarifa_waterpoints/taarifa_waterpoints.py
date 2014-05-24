@@ -25,14 +25,20 @@ def views(filename):
     return send_from_directory(app.root_path + '/dist/views/', filename)
 
 
-@app.route("/")
+@app.route('/')
 def index():
     return send_from_directory(app.root_path + '/dist/', 'index.html')
 
 
-@app.route("/favicon.ico")
+@app.route('/favicon.ico')
 def favicon():
     return send_from_directory(app.root_path + '/dist/', 'favicon.ico')
+
+
+@app.route('/email')
+def email():
+  pass
+
 
 if __name__ == '__main__':
     main()
