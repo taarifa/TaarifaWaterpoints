@@ -109,7 +109,15 @@ Then upload the waterpoint data: ::
 
 Start the application from the TaarifaWaterpoints directory by running: ::
 
-  python manage.py runserver
+  python manage.py runserver -r -d
+
+By default the API server is only accessible from the local machine. If access
+from the outside is required (e.g. when running from inside a VM), run: ::
+
+  python manage.py runserver -h 0.0.0.0 -r -d
+
+The flags ``-r`` and ``-d`` cause the server to run in debug mode and reload
+automatically when files are changed.
 
 To check things are working, open a browser and navigate to: ::
 
