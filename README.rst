@@ -31,8 +31,20 @@ can interact with the API and data through a browser.
 Installation
 ____________
 
-Requires Python, pip & the `Taarifa API`_ to be installed and MongoDB to
+Requires Python, pip and the `Taarifa API`_ to be installed and MongoDB to
 be running.
+
+Install virtualenv_ and virtualenvwrapper (you might need `sudo` for this): ::
+
+  pip install virtualenv virtualenvwrapper
+
+`Set up virtualenvwrapper`_ according to your shell and create a virtualenv: ::
+
+  mkvirtualenv TaarifaAPI
+
+If you already created the virtualenv for the `Taarifa API`_, activate it: ::
+
+  workon TaarifaAPI
 
 Clone the repository ::
 
@@ -96,4 +108,5 @@ guidelines`_ for further details.
 .. _Taarifa API: http://github.com/taarifa/TaarifaAPI
 .. _angularjs: https://angularjs.org/
 .. _virtualenv: http://virtualenv.org
+.. _Set up virtualenvwrapper: http://virtualenvwrapper.readthedocs.org/en/latest/install.html#shell-startup-file
 .. _contributing guidelines: CONTRIBUTING.rst
