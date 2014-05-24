@@ -95,8 +95,13 @@ your host browser. ::
 
   vagrant ssh
 
+
 Usage
 _____
+
+Make sure the virtualenv is active: ::
+
+  workon TaarifaAPI
 
 From the TaarifaWaterpoints directory run the following command to
 create the waterpoint schemas: ::
