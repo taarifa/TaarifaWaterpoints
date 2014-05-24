@@ -64,6 +64,10 @@ Ensure you have node.js and npm installed. Then, from the
 
   npm install
 
+Install the Grunt_ command line interface (may require `sudo`): ::
+
+  npm install -g grunt-cli
+
 
 Installation using a virtual machine
 ____________________________________
@@ -138,6 +142,7 @@ guidelines`_ for further details.
 .. _angularjs: https://angularjs.org/
 .. _virtualenv: http://virtualenv.org
 .. _Set up virtualenvwrapper: http://virtualenvwrapper.readthedocs.org/en/latest/install.html#shell-startup-file
+.. _Grunt: http://gruntjs.com
 .. _Vagrant: http://vagrantup.com
 .. _Vagrantfile: Vagrantfile
 .. _VirtualBox: https://www.virtualbox.org
