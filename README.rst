@@ -42,14 +42,10 @@ Install the requirements ::
 
   pip install -r requirements.txt
 
-We suggest you use virtualenv for managing your python environment.
-
-To use the web application switch to the angular branch ::
-
-  git checkout angular
+We suggest you use virtualenv_ for managing your python environment.
 
 Ensure you have node.js and npm installed. Then, from the
-TaarifaWaterpoints directory, install the dependencies: ::
+`TaarifaWaterpoints` directory, install the dependencies: ::
 
   npm install
 
@@ -66,7 +62,7 @@ Then upload the waterpoint data: ::
 
   python manage.py upload_waterpoints <path-to-waterpoints-csv.gz>
 
-Start application from the TaarifaWaterpoints directory by running: ::
+Start the application from the TaarifaWaterpoints directory by running: ::
 
   python manage.py runserver
 
@@ -99,4 +95,5 @@ guidelines`_ for further details.
 .. _taarifa-dev: https://groups.google.com/forum/#!forum/taarifa-dev
 .. _Taarifa API: http://github.com/taarifa/TaarifaAPI
 .. _angularjs: https://angularjs.org/
+.. _virtualenv: http://virtualenv.org
 .. _contributing guidelines: CONTRIBUTING.rst
