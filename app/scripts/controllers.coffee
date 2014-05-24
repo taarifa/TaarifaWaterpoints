@@ -6,8 +6,8 @@ angular.module('taarifaWaterpointsApp')
       $scope.waterpoints = waterpoints._items
   .controller 'MapCtrl', ($scope, Map) ->
     $scope.map = Map
-  .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, Form, flash) ->
-    $scope.formTemplate = Form 'wpf001'
+  .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, FacilityForm, flash) ->
+    $scope.formTemplate = FacilityForm 'wpf001'
     # FIXME: Should not hardcode the facility code here
     $scope.form =
       facility_code: "wpf001"
@@ -16,10 +16,10 @@ angular.module('taarifaWaterpointsApp')
         console.log "Successfully created waterpoint", waterpoint
         if waterpoint._status == 'OK'
           flash.success = 'Waterpoint successfully created!'
-  .controller 'WaterpointEditCtrl', ($scope, $http, $routeParams, Waterpoint, Form, flash) ->
+  .controller 'WaterpointEditCtrl', ($scope, $http, $routeParams, Waterpoint, FacilityForm, flash) ->
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
       $scope.form = waterpoint
-    $scope.formTemplate = Form 'wpf001'
+    $scope.formTemplate = FacilityForm 'wpf001'
     $scope.save = () ->
       etag = $scope.form._etag
       # We need to remove these special attributes since they are not defined

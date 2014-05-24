@@ -50,7 +50,7 @@ angular.module('taarifaWaterpointsApp')
     return this
   # Get an angular-dynamic-forms compatible form description from a Facility
   # given a facility code
-  .factory 'Form', (Facility) ->
+  .factory 'FacilityForm', (Facility) ->
     (facility_code) ->
       Facility.get(facility_code: facility_code)
         # Return a promise since dynamic-forms needs the form template in
