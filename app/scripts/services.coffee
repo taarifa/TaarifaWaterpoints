@@ -35,7 +35,10 @@ angular.module('taarifaWaterpointsApp')
           # group: p.district
           lat: p.latitude
           lng: p.longitude
-          message: "#{p.wpt_code}<br />Status: #{p.status}<br /><a href=\"#/waterpoints/edit/#{p._id}\">edit</a>"
+          message: "#{p.wpt_code}<br />" +
+            "Status: #{p.status}<br />" +
+            "<a href=\"#/waterpoints/edit/#{p._id}\">edit</a><br />" +
+            "<a href=\"#/requests/new?waterpoint_id=#{p.wpt_code}\">submit request</a>"
       # This would keep loading further waterpoints as long as there are any.
       # Disabled for performance reasons
       # if waterpoints._links.next
