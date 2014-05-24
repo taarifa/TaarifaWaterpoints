@@ -13,6 +13,12 @@ Vagrant.configure("2") do |config|
   # doesn't already exist on the user's system.
   # config.vm.box_url = "https://vagrantcloud.com/ubuntu/trusty64/version/1/provider/virtualbox.box"
 
+  # Sync the TaarifaAPI repository
+  config.vm.synced_folder "../TaarifaAPI", "/home/vagrant/TaarifaAPI"
+
+  # Sync the TaarifaWaterpoints repository
+  config.vm.synced_folder ".", "/home/vagrant/TaarifaWaterpoints"
+
   # Forward the default flask port
   config.vm.network "forwarded_port", guest: 5000, host: 5000
 
