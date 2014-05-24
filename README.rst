@@ -31,6 +31,9 @@ can interact with the API and data through a browser.
 Installation
 ____________
 
+.. note::
+  You may choose to install into a virtual machine as described further down.
+
 Requires Python, pip and the `Taarifa API`_ to be installed and MongoDB to
 be running.
 
@@ -61,6 +64,32 @@ Ensure you have node.js and npm installed. Then, from the
 
   npm install
 
+
+Installation using a virtual machine
+____________________________________
+
+Instead of following the installation instructions above you may choose to
+set up a virtual machine with all dependencies installed. This process is fully
+automated using Vagrant_ and the provided Vagrantfile_.
+
+Install VirtualBox_ and Vagrant_ for your platform.
+
+Clone the repository ::
+
+  git clone https://github.com/taarifa/TaarifaWaterpoints
+  cd TaarifaWaterpoints
+
+Start the VM. This may take quite a while the very first time as the VM image
+needs to be downloaded (~360MB) and the VM provisioned with all dependencies.
+On every subsequent use these steps are skipped. ::
+
+  vagrant up
+
+Connect to the virtual machine. You can then use it as described below. The
+ports are automatically forwarded so you can access the API and frontend from
+your host browser. ::
+
+  vagrant ssh
 
 Usage
 _____
@@ -109,4 +138,7 @@ guidelines`_ for further details.
 .. _angularjs: https://angularjs.org/
 .. _virtualenv: http://virtualenv.org
 .. _Set up virtualenvwrapper: http://virtualenvwrapper.readthedocs.org/en/latest/install.html#shell-startup-file
+.. _Vagrant: http://vagrantup.com
+.. _Vagrantfile: Vagrantfile
+.. _VirtualBox: https://www.virtualbox.org
 .. _contributing guidelines: CONTRIBUTING.rst
