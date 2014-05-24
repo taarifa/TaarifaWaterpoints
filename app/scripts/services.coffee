@@ -16,6 +16,8 @@ angular.module('taarifaWaterpointsApp')
     apiResource $resource, 'waterpoints'
   .factory 'Facility', ($resource) ->
     apiResource $resource, 'facilities'
+  .factory 'Service', ($resource) ->
+    apiResource $resource, 'services'
   .factory 'Map', (Waterpoint) ->
     # Initially center on Dar es Salaam
     @center =
