@@ -16,6 +16,8 @@ angular.module('taarifaWaterpointsApp')
     apiResource $resource, 'waterpoints'
   .factory 'Facility', ($resource) ->
     apiResource $resource, 'facilities'
+  .factory 'Request', ($resource) ->
+    apiResource $resource, 'requests'
   .factory 'Service', ($resource) ->
     apiResource $resource, 'services'
   .factory 'Map', (Waterpoint) ->
