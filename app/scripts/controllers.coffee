@@ -9,25 +9,25 @@ angular.module('taarifaWaterpointsApp')
   .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, Form, flash) ->
     $scope.formTemplate = Form 'wpf001'
     # FIXME: Should not hardcode the facility code here
-    $scope.waterpoint =
+    $scope.form =
       facility_code: "wpf001"
     $scope.save = () ->
-      Waterpoint.save $scope.waterpoint, (waterpoint) ->
+      Waterpoint.save $scope.form, (waterpoint) ->
         console.log "Successfully created waterpoint", waterpoint
         if waterpoint._status == 'OK'
           flash.success = 'Waterpoint successfully created!'
   .controller 'WaterpointEditCtrl', ($scope, $http, $routeParams, Waterpoint, Form, flash) ->
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
-      $scope.waterpoint = waterpoint
+      $scope.form = waterpoint
     $scope.formTemplate = Form 'wpf001'
     $scope.save = () ->
-      etag = $scope.waterpoint._etag
+      etag = $scope.form._etag
       # We need to remove these special attributes since they are not defined
       # in the schema and the data will not validate and the update be rejected
       for attr in ['_created', '_etag', '_id', '_links', '_updated']
-        $scope.waterpoint[attr] = undefined
+        $scope.form[attr] = undefined
       $http.put('/api/waterpoints/'+$routeParams.id,
-                $scope.waterpoint,
+                $scope.form,
                 headers: {'If-Match': etag})
         .success (data, status, headers, config) ->
           console.log data, status, headers, config
