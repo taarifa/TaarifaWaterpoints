@@ -23,6 +23,8 @@ angular
       .when '/requests/new',
         templateUrl: 'views/edit.html'
         controller: 'RequestCreateCtrl'
+      .when '/dashboard',
+        templateUrl: 'views/dashboard.html'
       .otherwise
         redirectTo: '/'
     flashProvider.errorClassnames.push 'alert-danger'
