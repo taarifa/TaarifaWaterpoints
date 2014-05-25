@@ -1,5 +1,5 @@
 from eve.render import send_response
-from flask import send_from_directory
+from flask import request, send_from_directory
 
 from taarifa_api import api as app, main
 
@@ -26,16 +26,18 @@ def waterpoint_status():
         reduce="function(curr, result) {result.count++;}"),))
 
 
-@app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/stats_by_district')
-def waterpoint_stats_by_district():
-    "Return number of waterpoints of a given status for each district."
+@app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/stats_by/<selector>')
+def waterpoint_stats_by(selector):
+    """Return number of waterpoints of a given status grouped by a certain
+    attribute."""
     # FIXME: Direct call to the PyMongo driver, should be abstracted
     resources = app.data.driver.db['resources']
     return send_response('resources', (resources.aggregate([
-        {"$group": {"_id": {"district": "$district",
+        {"$match": dict(request.args.items())},
+        {"$group": {"_id": {selector: "$" + selector,
                             "status": "$status"},
                     "statusCount": {"$sum": 1}}},
-        {"$group": {"_id": "$_id.district",
+        {"$group": {"_id": "$_id." + selector,
                     "waterpoints": {
                         "$push": {
                             "status": "$_id.status",
@@ -44,7 +46,7 @@ def waterpoint_stats_by_district():
                     },
                     "count": {"$sum": "$statusCount"}}},
         {"$project": {"_id": 0,
-                      "district": "$_id",
+                      selector: "$_id",
                       "waterpoints": 1,
                       "count": 1}}])['result'],))
 
