@@ -25,6 +25,7 @@ angular
         controller: 'RequestCreateCtrl'
       .when '/dashboard',
         templateUrl: 'views/dashboard.html'
+        controller: 'DashboardCtrl'
       .otherwise
         redirectTo: '/'
     flashProvider.errorClassnames.push 'alert-danger'

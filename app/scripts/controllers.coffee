@@ -56,3 +56,14 @@ angular.module('taarifaWaterpointsApp')
           console.log "Failed to create request", request
           for field, message of request._issues.attribute
             flash.error = "#{field}: #{message}"
+  .controller 'DashboardCtrl', ($scope, $http) ->
+    $http.get('/api/waterpoints/values/region').success (data, status, headers, config) ->
+      $scope.regions = data
+    $http.get('/api/waterpoints/values/district').success (data, status, headers, config) ->
+      $scope.districts = data
+    $http.get('/api/waterpoints/values/ward').success (data, status, headers, config) ->
+      $scope.wards = data
+    $scope.getStatus = () ->
+      $http.get('/api/waterpoints/status', params: $scope.params).success (data, status, headers, config) ->
+        $scope.status = data
+    $scope.getStatus()
