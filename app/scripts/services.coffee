@@ -16,6 +16,10 @@ angular.module('taarifaWaterpointsApp')
     apiResource $resource, 'waterpoints'
   .factory 'Facility', ($resource) ->
     apiResource $resource, 'facilities'
+  .factory 'Request', ($resource) ->
+    apiResource $resource, 'requests'
+  .factory 'Service', ($resource) ->
+    apiResource $resource, 'services'
   .factory 'Map', (Waterpoint) ->
     # Initially center on Dar es Salaam
     @center =
@@ -31,7 +35,10 @@ angular.module('taarifaWaterpointsApp')
           # group: p.district
           lat: p.latitude
           lng: p.longitude
-          message: "#{p.wpt_code}<br />Status: #{p.status}<br /><a href=\"#/waterpoints/edit/#{p._id}\">edit</a>"
+          message: "#{p.wpt_code}<br />" +
+            "Status: #{p.status}<br />" +
+            "<a href=\"#/waterpoints/edit/#{p._id}\">edit</a><br />" +
+            "<a href=\"#/requests/new?waterpoint_id=#{p.wpt_code}\">submit request</a>"
       # This would keep loading further waterpoints as long as there are any.
       # Disabled for performance reasons
       # if waterpoints._links.next
@@ -50,7 +57,7 @@ angular.module('taarifaWaterpointsApp')
     return this
   # Get an angular-dynamic-forms compatible form description from a Facility
   # given a facility code
-  .factory 'Form', (Facility) ->
+  .factory 'FacilityForm', (Facility) ->
     (facility_code) ->
       Facility.get(facility_code: facility_code)
         # Return a promise since dynamic-forms needs the form template in
@@ -72,6 +79,40 @@ angular.module('taarifaWaterpointsApp')
               fields[f].options = options
             fields[f].class = "form-control"
             fields[f].wrapper = '<div class="form-group"></div>'
+          fields.submit =
+            type: "submit"
+            label: "Save"
+            class: "btn btn-primary"
+          return fields
+  # Get an angular-dynamic-forms compatible form description from a Service
+  # given a service code
+  .factory 'RequestForm', (Service) ->
+    (service_code, params) ->
+      Service.get(service_code: service_code)
+        # Return a promise since dynamic-forms needs the form template in
+        # scope when the controller is invoked
+        .$promise.then (service) ->
+          dtype2type =
+            string: 'text'
+            text: 'textarea'
+            singlevaluelist: 'select'
+            multivaluelist: 'select'
+          fields = {}
+          for a in service._items[0].attributes when a.variable
+            fields[a.code] =
+              type: dtype2type[a.datatype] or a.datatype
+              required: a.required
+              label: a.description
+              class: "form-control"
+              wrapper: '<div class="form-group"></div>'
+              val: params[a.code]
+            if a.datatype in ['singlevaluelist', 'multivaluelist']
+              fields[a.code].multiple = a.datatype == 'multivaluelist'
+              options = {}
+              for v in a.values
+                options[v.key] =
+                  label: v.name
+              fields[a.code].options = options
           fields.submit =
             type: "submit"
             label: "Save"

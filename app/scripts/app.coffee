@@ -20,6 +20,9 @@ angular
       .when '/waterpoints/new',
         templateUrl: 'views/edit.html'
         controller: 'WaterpointCreateCtrl'
+      .when '/requests/new',
+        templateUrl: 'views/edit.html'
+        controller: 'RequestCreateCtrl'
       .otherwise
         redirectTo: '/'
     flashProvider.errorClassnames.push 'alert-danger'
