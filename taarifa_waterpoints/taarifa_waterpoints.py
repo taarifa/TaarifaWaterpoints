@@ -6,6 +6,16 @@ from taarifa_api import api as app, main
 app.name = 'TaarifaWaterpoints'
 
 
+@app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/values/<field>')
+def waterpoint_values(field):
+    "Return the unique values for a given field in the waterpoints collection."
+    # FIXME: Direct call to the PyMongo driver, should be abstracted
+    resources = app.data.driver.db['resources']
+    if request.args:
+        resources = resources.find(dict(request.args.items()))
+    return send_response('resources', (resources.distinct(field),))
+
+
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/stats')
 def waterpoint_stats():
     "Return number of waterpoints of a given status in a given district."
