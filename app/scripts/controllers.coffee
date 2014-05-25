@@ -50,4 +50,9 @@ angular.module('taarifaWaterpointsApp')
         attribute: $scope.form
       Request.save form, (request) ->
         if request._status == 'OK'
+          console.log "Successfully created request", request
           flash.success = 'Request successfully created!'
+        if request._status == 'ERR'
+          console.log "Failed to create request", request
+          for field, message of request._issues.attribute
+            flash.error = "#{field}: #{message}"
