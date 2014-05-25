@@ -1,6 +1,9 @@
-from flask import send_from_directory
+
+from flask import request, send_from_directory
+import json
 
 from taarifa_api import api as app, main
+import taarifa_email
 
 app.name = 'TaarifaWaterpoints'
 
@@ -25,14 +28,23 @@ def views(filename):
     return send_from_directory(app.root_path + '/dist/views/', filename)
 
 
-@app.route("/")
+@app.route('/')
 def index():
     return send_from_directory(app.root_path + '/dist/', 'index.html')
 
 
-@app.route("/favicon.ico")
+@app.route('/favicon.ico')
 def favicon():
     return send_from_directory(app.root_path + '/dist/', 'favicon.ico')
+
+
+@app.route('/email', methods=['POST'])
+def email():
+  response = taarifa_email.handle_email_webhook(request.data)
+  data, _, _, status = response
+  app.logger.info('response status: %s\nresponse data: %s' % (status, data))
+  return 'True'
+
 
 if __name__ == '__main__':
     main()
