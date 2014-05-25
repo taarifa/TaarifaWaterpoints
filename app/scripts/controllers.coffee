@@ -59,11 +59,29 @@ angular.module('taarifaWaterpointsApp')
   .controller 'DashboardCtrl', ($scope, $http) ->
     $http.get('/api/waterpoints/values/region').success (data, status, headers, config) ->
       $scope.regions = data
-    $http.get('/api/waterpoints/values/district').success (data, status, headers, config) ->
-      $scope.districts = data
-    $http.get('/api/waterpoints/values/ward').success (data, status, headers, config) ->
-      $scope.wards = data
-    $scope.getStatus = () ->
-      $http.get('/api/waterpoints/status', params: $scope.params).success (data, status, headers, config) ->
-        $scope.status = data
+    getDistrict = () ->
+      $http.get('/api/waterpoints/values/district',
+                params: {region: $scope.params?.region})
+        .success (data, status, headers, config) ->
+          $scope.districts = data
+    getWard = () ->
+      $http.get('/api/waterpoints/values/ward',
+                params:
+                  region: $scope.params?.region
+                  district: $scope.params?.district)
+        .success (data, status, headers, config) ->
+          $scope.wards = data
+    $scope.getStatus = (changed) ->
+      $http.get('/api/waterpoints/status', params: $scope.params)
+        .success (data, status, headers, config) ->
+          $scope.status = data
+      if changed == 'region'
+        console.log 'region has changed'
+        getDistrict()
+        getWard()
+      if changed == 'district'
+        console.log 'district has changed'
+        getWard()
     $scope.getStatus()
+    getDistrict()
+    getWard()
