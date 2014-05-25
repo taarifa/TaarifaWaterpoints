@@ -30,14 +30,14 @@
 
     <!-- Add your site or application content here -->
     <div class="container">
-      <div class="header">
+      <div class="header" ng-controller="NavCtrl">
         <ul class="nav nav-pills pull-right">
           <li><a ng-href="#/waterpoints/new">
             <span class="glyphicon glyphicon-plus"></span>
             Create waterpoint
           </a></li>
-          <li class="active"><a ng-href="#">Home</a></li>
-          <li><a ng-href="#/dashboard">Dashboard</a></li>
+          <li ng-class="{active: location.path() == '/'}"><a ng-href="#">Home</a></li>
+          <li ng-class="{active: location.path() == '/dashboard'}"><a ng-href="#/dashboard">Dashboard</a></li>
         </ul>
         <h3 class="text-muted">TaarifaWaterpoints</h3>
       </div>
