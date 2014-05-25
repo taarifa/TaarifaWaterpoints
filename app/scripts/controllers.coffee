@@ -43,10 +43,11 @@ angular.module('taarifaWaterpointsApp')
   .controller 'RequestCreateCtrl', ($scope, $location, Request, RequestForm, flash) ->
     $scope.formTemplate = RequestForm 'wps001', $location.search()
     # FIXME: Should not hardcode the service code here
-    $scope.form =
-      service_code: "wps001"
+    $scope.form = {}
     $scope.save = () ->
-      Request.save $scope.form, (request) ->
-        console.log "Successfully created request", request
+      form =
+        service_code: "wps001"
+        attribute: $scope.form
+      Request.save form, (request) ->
         if request._status == 'OK'
           flash.success = 'Request successfully created!'
