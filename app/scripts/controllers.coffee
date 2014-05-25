@@ -84,6 +84,7 @@ angular.module('taarifaWaterpointsApp')
       if changed == 'district'
         console.log 'district has changed'
         getWard()
+      updatePlots($scope.params?.region, $scope.params?.district)
     $scope.getStatus()
     getDistrict()
     getWard()
