@@ -13,9 +13,13 @@ angular.module('taarifaWaterpointsApp')
       facility_code: "wpf001"
     $scope.save = () ->
       Waterpoint.save $scope.form, (waterpoint) ->
-        console.log "Successfully created waterpoint", waterpoint
         if waterpoint._status == 'OK'
+          console.log "Successfully created waterpoint", waterpoint
           flash.success = 'Waterpoint successfully created!'
+        if waterpoint._status == 'ERR'
+          console.log "Failed to create waterpoint", waterpoint
+          for field, message of waterpoint._issues
+            flash.error = "#{field}: #{message}"
   .controller 'WaterpointEditCtrl', ($scope, $http, $routeParams, Waterpoint, FacilityForm, flash) ->
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
       $scope.form = waterpoint
