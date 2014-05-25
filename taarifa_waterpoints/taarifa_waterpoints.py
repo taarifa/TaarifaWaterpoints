@@ -18,21 +18,22 @@ def waterpoint_values(field):
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/stats')
 def waterpoint_stats():
-    "Return number of waterpoints of a given status in a given district."
+    "Return number of waterpoints grouped by district and status."
     # FIXME: Direct call to the PyMongo driver, should be abstracted
     resources = app.data.driver.db['resources']
     return send_response('resources', (resources.group(
-        ['district', 'status'], {}, initial={'count': 0},
+        ['district', 'status'], dict(request.args.items()),
+        initial={'count': 0},
         reduce="function(curr, result) {result.count++;}"),))
 
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/status')
 def waterpoint_status():
-    "Return number of waterpoints of a given status in a given district."
+    "Return number of waterpoints grouped by status."
     # FIXME: Direct call to the PyMongo driver, should be abstracted
     resources = app.data.driver.db['resources']
     return send_response('resources', (resources.group(
-        ['status'], {}, initial={'count': 0},
+        ['status'], dict(request.args.items()), initial={'count': 0},
         reduce="function(curr, result) {result.count++;}"),))
 
 
