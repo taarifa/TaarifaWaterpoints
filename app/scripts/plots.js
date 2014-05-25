@@ -1,5 +1,5 @@
 function updatePlots(region, district) {
-  var url = "http://localhost:5000/api/waterpoints/stats_by/";
+  var url = "/api/waterpoints/stats_by/";
   var groupfield;
 
   if (region && district) {
