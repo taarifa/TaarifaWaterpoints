@@ -1,6 +1,8 @@
 'use strict'
 
 angular.module('taarifaWaterpointsApp')
+  .controller 'NavCtrl', ($scope, $location) ->
+    $scope.location = $location
   .controller 'MainCtrl', ($scope, Waterpoint) ->
     Waterpoint.query (waterpoints) ->
       $scope.waterpoints = waterpoints._items
