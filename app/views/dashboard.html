@@ -1,16 +1,22 @@
 <div class="row">
   <div class="col-md-12 well">
-    <div style="float:left;"><h3>Region &gt; District &gt; Ward</h3></div>
-    <div class="" style="float:right;">
-      <input style="width:300px; font-size:13pt;" type="text" placeholder="Search By Region, District or Ward"/> <input type="submit" style="font-size:13pt;" value="Go!"/>
+    <div class="pull-right">
+      <select ng-model="params.region" ng-options="v for v in regions" ng-change="getStatus()">
+        <option value="">Region:</option>
+      </select> &gt;
+      <select ng-model="params.district" ng-options="v for v in districts" ng-change="getStatus()">
+        <option value="">District:</option>
+      </select> &gt;
+      <select ng-model="params.ward" ng-options="v for v in wards" ng-change="getStatus()">
+        <option value="">Ward:</option>
+      </select>
     </div>
   </div>
 </div>
 <div class="row">
   <div class="col-md-6">
     <div class="row">
-      <div class="col-sm-4 text-center well"><h1>917</h1><br/>Working Waterpoints</div>
-      <div class="col-sm-4 text-center well"><h1>276</h1><br/>Faulty<br/>Waterpoints</div>
+      <div class="col-sm-4 text-center well" ng-repeat="s in status"><h1>{{s.count}}</h1><br/>{{s.status || 'unknown'}}</div>
       <div class="col-sm-4 text-center well"><h1>82%</h1><br/>Population Covered</div>
     </div>
     <div class="row">
