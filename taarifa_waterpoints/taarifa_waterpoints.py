@@ -36,18 +36,21 @@ def waterpoint_stats_by(selector):
         {"$match": dict(request.args.items())},
         {"$group": {"_id": {selector: "$" + selector,
                             "status": "$status"},
-                    "statusCount": {"$sum": 1}}},
+                    "statusCount": {"$sum": 1},
+                    "populationCount": {"$sum": "$population"}}},
         {"$group": {"_id": "$_id." + selector,
                     "waterpoints": {
                         "$push": {
                             "status": "$_id.status",
-                            "count": "$statusCount"
+                            "count": "$statusCount",
+                            "population": "$populationCount",
                         },
                     },
                     "count": {"$sum": "$statusCount"}}},
         {"$project": {"_id": 0,
                       selector: "$_id",
                       "waterpoints": 1,
+                      "population": 1,
                       "count": 1}}])['result'],))
 
 
