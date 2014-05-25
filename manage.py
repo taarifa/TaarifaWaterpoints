@@ -1,6 +1,8 @@
 from csv import DictReader
 from datetime import datetime
 import gzip
+import logging
+from logging.handlers import RotatingFileHandler
 from pprint import pprint
 
 from flask.ext.script import Manager
@@ -9,6 +11,9 @@ from taarifa_api import add_document, delete_documents, get_schema
 from taarifa_waterpoints import app
 from taarifa_waterpoints.schemas import facility_schema, service_schema
 
+handler = RotatingFileHandler('taarifawaterpoints.log', maxBytes=10000, backupCount=1)
+handler.setLevel(logging.INFO)
+app.logger.addHandler(handler)
 manager = Manager(app)
 
 
