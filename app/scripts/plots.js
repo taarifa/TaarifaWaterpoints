@@ -69,8 +69,9 @@ function plotStatusSummary(selector, data, groupField) {
   });
   //data.sort(function(a, b) { return b.count - a.count; });
 
-  var h = d3.select(selector).style('height').replace('px', '');
-  var w = d3.select(selector).style('width').replace('px', '');
+  // Compensate for well margins (20px)
+  var h = d3.select(selector).style('height').replace('px', '') - 40;
+  var w = d3.select(selector).style('width').replace('px', '') - 40;
 
   var margin = {
       top: 20,
@@ -232,8 +233,9 @@ function plotSpendSummary(selector, data, groupField) {
 
   //data.sort(function(a, b) { return a.spend - b.spend; });
 
-  var h = d3.select(selector).style('height').replace('px', '');
-  var w = d3.select(selector).style('width').replace('px', '');
+  // Compensate for well margins (20px)
+  var h = d3.select(selector).style('height').replace('px', '') - 40;
+  var w = d3.select(selector).style('width').replace('px', '') - 40;
 
   var margin = {
       top: 20,
@@ -350,8 +352,9 @@ function plotSpendImpact(selector, wpdata, groupField) {
     data.push(d);
   });
 
-  var h = d3.select(selector).style('height').replace('px', '');
-  var w = d3.select(selector).style('width').replace('px', '');
+  // Compensate for well margins (20px)
+  var h = d3.select(selector).style('height').replace('px', '') - 40;
+  var w = d3.select(selector).style('width').replace('px', '') - 40;
 
   var margin = {
       top: 20,
