@@ -2,3 +2,4 @@
 --allow-unverified TaarifaAPI
 -e git+https://github.com/taarifa/TaarifaAPI#egg=TaarifaAPI-dev
 Flask-Script==2.0.3
+gunicorn==18.0
