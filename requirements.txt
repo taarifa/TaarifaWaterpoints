@@ -1,6 +1,6 @@
 --allow-external Eve
 --allow-unverified Eve
--e git+https://github.com/nicolaiarocci/eve#egg=Eve-0.4-dev
+-e git+https://github.com/nicolaiarocci/eve@develop#egg=Eve-0.4-dev
 --allow-external TaarifaAPI
 --allow-unverified TaarifaAPI
 -e git+https://github.com/taarifa/TaarifaAPI#egg=TaarifaAPI-dev
