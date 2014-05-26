@@ -69,8 +69,8 @@ function plotStatusSummary(selector, data, groupField) {
   });
   //data.sort(function(a, b) { return b.count - a.count; });
 
-  var h = $(selector).height();
-  var w = $(selector).width();
+  var h = d3.select(selector).style('height').replace('px', '');
+  var w = d3.select(selector).style('width').replace('px', '');
 
   var margin = {
       top: 20,
@@ -103,12 +103,13 @@ function plotStatusSummary(selector, data, groupField) {
   var color = d3.scale.category20();
 
   //create the svg if it does not already exist
-  if ($(selector + " svg").length < 1) {
+  svg = d3.select(selector + " svg g");
+  if (!svg[0][0]) {
     svg = d3.select(selector).append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
-    //transform within the margins
-    .append("g")
+      //transform within the margins
+      .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     svg.append("g")
@@ -124,8 +125,6 @@ function plotStatusSummary(selector, data, groupField) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Number of Waterpoints");
-  } else {
-    svg = d3.select(selector + " svg g");
   }
 
   var state = svg.selectAll(".group")
@@ -233,8 +232,8 @@ function plotSpendSummary(selector, data, groupField) {
 
   //data.sort(function(a, b) { return a.spend - b.spend; });
 
-  var h = $(selector).height();
-  var w = $(selector).width();
+  var h = d3.select(selector).style('height').replace('px', '');
+  var w = d3.select(selector).style('width').replace('px', '');
 
   var margin = {
       top: 20,
@@ -266,7 +265,8 @@ function plotSpendSummary(selector, data, groupField) {
 
   var color = d3.scale.category20();
 
-  if ($(selector + " svg").length < 1) {
+  svg = d3.select(selector + " svg g");
+  if (!svg[0][0]) {
     svg = d3.select(selector).append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
@@ -287,8 +287,6 @@ function plotSpendSummary(selector, data, groupField) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Spend per Waterpoint ($)");
-  } else {
-    svg = d3.select(selector + " svg g");
   }
 
   var rects = svg.selectAll("rect")
@@ -352,8 +350,8 @@ function plotSpendImpact(selector, wpdata, groupField) {
     data.push(d);
   });
 
-  var h = $(selector).height();
-  var w = $(selector).width();
+  var h = d3.select(selector).style('height').replace('px', '');
+  var w = d3.select(selector).style('width').replace('px', '');
 
   var margin = {
       top: 20,
@@ -386,7 +384,8 @@ function plotSpendImpact(selector, wpdata, groupField) {
 
   var color = d3.scale.category20();
 
-  if ($(selector + " svg").length < 1) {
+  svg = d3.select(selector + " svg g");
+  if (!svg[0][0]) {
     svg = d3.select(selector).append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
@@ -415,8 +414,6 @@ function plotSpendImpact(selector, wpdata, groupField) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("% Functional");
-  } else {
-    svg = d3.select(selector + " svg g");
   }
 
 
