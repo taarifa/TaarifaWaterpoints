@@ -1,19 +1,18 @@
-function updatePlots(region, district) {
+function updatePlots(region, district, groupfield) {
   var url = "/api/waterpoints/stats_by/";
-  var groupfield;
 
   if (region && district) {
-    groupfield = "ward";
+    groupfield = groupfield || "ward";
     url += groupfield + "?region=" + region + "&district=" + district;
   } else if (region) {
-    groupfield = "district";
+    groupfield = groupfield || "district";
     url += groupfield + "?region=" + region;
   } else if (district) {
     //note: technically not 100% correct as different districts in different regions may share the same name (?)
-    groupfield = "ward";
+    groupfield = groupfield || "ward";
     url += groupfield + "?district=" + district;
   } else {
-    groupfield = "region";
+    groupfield = groupfield || "region";
     url += groupfield;
   }
 
