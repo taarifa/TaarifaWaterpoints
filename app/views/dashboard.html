@@ -1,0 +1,59 @@
+<form class="form-inline" role="form">
+  <div class="form-group">
+    <select ng-model="params.region" ng-options="v for v in regions" ng-change="getStatus('region')" class="form-control">
+      <option value="">Region:</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <select ng-model="params.district" ng-options="v for v in districts" ng-change="getStatus('district')" class="form-control">
+      <option value="">District:</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <select ng-model="params.ward" ng-options="v for v in wards" ng-change="getStatus('ward')" class="form-control">
+      <option value="">Ward:</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <select ng-model="group" ng-options="v for v in groups" ng-change="groupBy()" class="form-control">
+      <option value="">Group by:</option>
+    </select>
+  </div>
+</form>
+<hr>
+<div class="row">
+  <div class="col-sm-4" ng-repeat="s in status">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{s.status || 'unknown'}}</h3>
+      </div>
+      <div class="panel-body">
+        {{s.count}}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" ng-repeat="(id, title) in plots">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{title}}</h3>
+    </div>
+    <div class="panel-body plot" id="{{id}}"></div>
+  </div>
+</div>
+<div class="row">
+  <iframe width="100%" height="500px" frameBorder="0"
+    src="//worldbank.cartodb.com/viz/9af2a2ec-e414-11e3-94c5-0edbca4b5057/embed_map?title=false&description=true&search=false&shareable=true&cartodb_logo=false&layer_selector=false&legends=true&scrollwheel=true&fullscreen=true&sublayer_options=1%7C1&sql=&sw_lat=-8.96579304346216&sw_lon=32.49275207519531&ne_lat=-6.535691684047911&ne_lon=37.74696350097656"></iframe>
+</div>
+<div class="row">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Top Reasons for Faulty Waterpoints</h3>
+    </div>
+    <ul class="list-group">
+      <li class="list-group-item">1: Tap is Broken</li>
+      <li class="list-group-item">2: Barrel is Broken</li>
+      <li class="list-group-item">3: Barrel is Lost</li>
+    </ul>
+  </div>
+</div>

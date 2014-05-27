@@ -1,6 +1,8 @@
 'use strict'
 
 angular.module('taarifaWaterpointsApp')
+  .controller 'NavCtrl', ($scope, $location) ->
+    $scope.location = $location
   .controller 'MainCtrl', ($scope, Waterpoint) ->
     Waterpoint.query (waterpoints) ->
       $scope.waterpoints = waterpoints._items
@@ -56,3 +58,39 @@ angular.module('taarifaWaterpointsApp')
           console.log "Failed to create request", request
           for field, message of request._issues.attribute
             flash.error = "#{field}: #{message}"
+  .controller 'DashboardCtrl', ($scope, $http) ->
+    # FIXME: Are these the right groupings? Shouldn't hard code those...
+    $scope.plots =
+      statusSummary: "Functioning Waterpoints"
+      spendImpact: "Spend vs Functionality"
+      spendSummary: "Spend per Waterpoint"
+    $scope.groups = ['region', 'district', 'ward', 'funder', 'company', 'source_type']
+    $http.get('/api/waterpoints/values/region').success (data, status, headers, config) ->
+      $scope.regions = data
+    getDistrict = () ->
+      $http.get('/api/waterpoints/values/district',
+                params: {region: $scope.params?.region})
+        .success (data, status, headers, config) ->
+          $scope.districts = data
+    getWard = () ->
+      $http.get('/api/waterpoints/values/ward',
+                params:
+                  region: $scope.params?.region
+                  district: $scope.params?.district)
+        .success (data, status, headers, config) ->
+          $scope.wards = data
+    $scope.getStatus = (changed) ->
+      $http.get('/api/waterpoints/status', params: $scope.params)
+        .success (data, status, headers, config) ->
+          $scope.status = data
+      if changed == 'region'
+        getDistrict()
+        getWard()
+      if changed == 'district'
+        getWard()
+      updatePlots($scope.params?.region, $scope.params?.district, $scope.group)
+    $scope.groupBy = () ->
+      updatePlots($scope.params?.region, $scope.params?.district, $scope.group)
+    $scope.getStatus()
+    getDistrict()
+    getWard()
