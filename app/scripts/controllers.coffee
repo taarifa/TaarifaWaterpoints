@@ -59,6 +59,8 @@ angular.module('taarifaWaterpointsApp')
           for field, message of request._issues.attribute
             flash.error = "#{field}: #{message}"
   .controller 'DashboardCtrl', ($scope, $http) ->
+    # FIXME: Are these the right groupings? Shouldn't hard code those...
+    $scope.groups = ['region', 'district', 'ward', 'funder', 'company', 'source_type']
     $http.get('/api/waterpoints/values/region').success (data, status, headers, config) ->
       $scope.regions = data
     getDistrict = () ->
@@ -78,13 +80,13 @@ angular.module('taarifaWaterpointsApp')
         .success (data, status, headers, config) ->
           $scope.status = data
       if changed == 'region'
-        console.log 'region has changed'
         getDistrict()
         getWard()
       if changed == 'district'
-        console.log 'district has changed'
         getWard()
-      updatePlots($scope.params?.region, $scope.params?.district)
+      updatePlots($scope.params?.region, $scope.params?.district, $scope.group)
+    $scope.groupBy = () ->
+      updatePlots($scope.params?.region, $scope.params?.district, $scope.group)
     $scope.getStatus()
     getDistrict()
     getWard()
