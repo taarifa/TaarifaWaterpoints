@@ -60,6 +60,10 @@ angular.module('taarifaWaterpointsApp')
             flash.error = "#{field}: #{message}"
   .controller 'DashboardCtrl', ($scope, $http) ->
     # FIXME: Are these the right groupings? Shouldn't hard code those...
+    $scope.plots =
+      statusSummary: "Functioning Waterpoints"
+      spendImpact: "Spend vs Functionality"
+      spendSummary: "Spend per Waterpoint"
     $scope.groups = ['region', 'district', 'ward', 'funder', 'company', 'source_type']
     $http.get('/api/waterpoints/values/region').success (data, status, headers, config) ->
       $scope.regions = data
