@@ -1,21 +1,26 @@
-<div class="row">
-  <div class="col-md-12 well">
-    <div class="pull-right">
-      <select ng-model="params.region" ng-options="v for v in regions" ng-change="getStatus('region')">
-        <option value="">Region:</option>
-      </select> &gt;
-      <select ng-model="params.district" ng-options="v for v in districts" ng-change="getStatus('district')">
-        <option value="">District:</option>
-      </select> &gt;
-      <select ng-model="params.ward" ng-options="v for v in wards" ng-change="getStatus('ward')">
-        <option value="">Ward:</option>
-      </select> &gt;
-      <select ng-model="group" ng-options="v for v in groups" ng-change="groupBy()">
-        <option value="">Group by:</option>
-      </select>
-    </div>
+<form class="form-inline" role="form">
+  <div class="form-group">
+    <select ng-model="params.region" ng-options="v for v in regions" ng-change="getStatus('region')" class="form-control">
+      <option value="">Region:</option>
+    </select>
   </div>
-</div>
+  <div class="form-group">
+    <select ng-model="params.district" ng-options="v for v in districts" ng-change="getStatus('district')" class="form-control">
+      <option value="">District:</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <select ng-model="params.ward" ng-options="v for v in wards" ng-change="getStatus('ward')" class="form-control">
+      <option value="">Ward:</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <select ng-model="group" ng-options="v for v in groups" ng-change="groupBy()" class="form-control">
+      <option value="">Group by:</option>
+    </select>
+  </div>
+</form>
+<hr>
 <div class="row">
   <div class="col-md-6">
     <div class="row">
