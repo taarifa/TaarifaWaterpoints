@@ -22,13 +22,15 @@
 </form>
 <hr>
 <div class="row">
-  <div class="col-sm-4" ng-repeat="s in status">
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        <h3 class="panel-title">{{s.status || 'unknown'}}</h3>
-      </div>
-      <div class="panel-body">
-        {{s.count}}
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Waterpoint Status</h3>
+    </div>
+    <div class="panel-body">
+      <div class="btn-group btn-group-justified">
+        <div class="btn-group" ng-repeat="s in status">
+          {{s.status || 'unknown'}} <span class="badge">{{s.count}}</span>
+        </div>
       </div>
     </div>
   </div>
