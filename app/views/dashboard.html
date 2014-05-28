@@ -1,4 +1,9 @@
 <form class="form-inline" role="form">
+  Group By: <div class="form-group">
+    <select ng-model="group" ng-options="v for v in groups" ng-change="groupBy()" class="form-control">
+    </select>
+  </div>
+  Filter:
   <div class="form-group">
     <select ng-model="params.region" ng-options="v for v in regions" ng-change="getStatus('region')" class="form-control">
       <option value="">Region:</option>
@@ -12,11 +17,6 @@
   <div class="form-group">
     <select ng-model="params.ward" ng-options="v for v in wards" ng-change="getStatus('ward')" class="form-control">
       <option value="">Ward:</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <select ng-model="group" ng-options="v for v in groups" ng-change="groupBy()" class="form-control">
-      <option value="">Group by:</option>
     </select>
   </div>
 </form>

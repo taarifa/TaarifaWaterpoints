@@ -1,20 +1,17 @@
-function updatePlots(region, district, groupfield) {
-  var url = "/api/waterpoints/stats_by/";
+function updatePlots(region, district, ward, groupfield) {
+  groupfield = groupfield || "region";
+  var url = "/api/waterpoints/stats_by/" + groupfield;
 
-  if (region && district) {
-    groupfield = groupfield || "ward";
-    url += groupfield + "?region=" + region + "&district=" + district;
-  } else if (region) {
-    groupfield = groupfield || "district";
-    url += groupfield + "?region=" + region;
-  } else if (district) {
-    //note: technically not 100% correct as different districts in different regions may share the same name (?)
-    groupfield = groupfield || "ward";
-    url += groupfield + "?district=" + district;
-  } else {
-    groupfield = groupfield || "region";
-    url += groupfield;
-  }
+  var filterFields = {"region":region, "district":district, "ward":ward};
+  var filters = [];
+
+  _.keys(filterFields).forEach(function(x){
+    if(filterFields[x]) filters.push(x + "=" + filterFields[x]);
+  });
+
+  var filter = filters.join("&");
+
+  if(filter) url += "?" + filter;
 
   var comparator = function(a, b) {
     var af = _.find(a.waterpoints, function(x) {
@@ -53,7 +50,7 @@ function updatePlots(region, district, groupfield) {
 
 /*
  * Stacked bar chart summarizing the status (functional/non functional)
- * of all the waterpoints in the given region/district (both may be empty)
+ * of all the waterpoints by the given group field
  */
 function plotStatusSummary(selector, data, groupField) {
 
@@ -127,18 +124,21 @@ function plotStatusSummary(selector, data, groupField) {
       .text("Number of Waterpoints");
   }
 
+  //bind the data to a group
   var state = svg.selectAll(".group")
     .data(data, function(d) {
-      return d[groupField];
+      return groupField + "_" + d[groupField] + "_" + d.count;
     });
 
+  //bind to each rect within the group
   var rects = state.selectAll("rect")
     .data(function(d) {
       return d.waterpoints;
     }, function(d) {
       return d.status + "_" + d.count;
-    })
+    });
 
+  //new groups
   var statesEnter = state.enter()
     .append("g")
     .attr("class", "group")
@@ -146,6 +146,7 @@ function plotStatusSummary(selector, data, groupField) {
       return "translate(" + x(d[groupField]) + ",0)";
     });
 
+  //new rects in new groups
   var rectsEnter = statesEnter.selectAll("rect")
     .data(function(d) {
       return d.waterpoints;
@@ -153,6 +154,7 @@ function plotStatusSummary(selector, data, groupField) {
       return d.status + "_" + d.count;
     })
 
+  //remove old rects
   rects.exit()
     .transition()
     .duration(1000)
@@ -160,12 +162,28 @@ function plotStatusSummary(selector, data, groupField) {
     .attr("height", 0)
     .remove();
 
+  //remove old groups
   state.exit()
     .transition()
     .duration(1000)
     .style("opacity", 0)
     .remove();
 
+  //update existing rects
+  rects.attr("width", x.rangeBand())
+    .style("fill", function(d) {
+      return color(d.status);
+    })
+    .transition()
+    .duration(1000)
+    .attr("y", function(d) {
+      return y(d.y1);
+    })
+    .attr("height", function(d) {
+      return y(d.y0) - y(d.y1);
+    });
+
+  //add new rects
   rectsEnter.enter().append("rect")
     .attr("width", x.rangeBand())
     .style("fill", function(d) {
@@ -227,7 +245,7 @@ function plotSpendSummary(selector, data, groupField) {
 
   //TODO: need real data
   data.forEach(function(x) {
-    x.spend = (Math.random() * 10000 / x.count);
+    x.spend = 10+(Math.random() * 10000 / x.count);
   });
 
   //data.sort(function(a, b) { return a.spend - b.spend; });
@@ -292,7 +310,24 @@ function plotSpendSummary(selector, data, groupField) {
 
   var rects = svg.selectAll("rect")
     .data(data, function(d) {
-      return d[groupField];
+      return [groupField,d[groupField],d.spend].join("_");
+    });
+
+  rects.append("rect")
+    .style("fill", function(d) {
+      return color(d[groupField]);
+    })
+    .attr("width", x.rangeBand())
+    .attr("x", function(d) {
+      return x(d[groupField]);
+    })
+    .transition()
+    .duration(1000)
+    .attr("y", function(d) {
+      return y(d.spend);
+    })
+    .attr("height", function(d) {
+      return height - y(d.spend);
     });
 
   rects.enter()
@@ -309,10 +344,10 @@ function plotSpendSummary(selector, data, groupField) {
     .transition()
     .duration(1000)
     .attr("y", function(d) {
-      return y(0) - y(d.spend);
+      return y(d.spend);
     })
     .attr("height", function(d) {
-      return y(d.spend);
+      return height - y(d.spend);
     });
 
   rects.exit()
@@ -345,7 +380,7 @@ function plotSpendImpact(selector, wpdata, groupField) {
     var d = {
       functional: functional.count / x.count * 100,
       population: d3.sum(_.pluck(x.waterpoints, "population")),
-      spend: Math.random() * 10000 / x.count
+      spend: 10 + (Math.random() * 10000 / x.count)
     };
     d[groupField] = x[groupField];
     data.push(d);

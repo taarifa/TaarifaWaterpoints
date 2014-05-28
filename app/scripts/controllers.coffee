@@ -65,20 +65,22 @@ angular.module('taarifaWaterpointsApp')
       spendImpact: "Spend vs Functionality"
       spendSummary: "Spend per Waterpoint"
     $scope.groups = ['region', 'district', 'ward', 'funder', 'company', 'source_type']
+    # default to region
+    $scope.group = $scope.groups[0];
     $http.get('/api/waterpoints/values/region').success (data, status, headers, config) ->
-      $scope.regions = data
+      $scope.regions = data.sort()
     getDistrict = () ->
       $http.get('/api/waterpoints/values/district',
                 params: {region: $scope.params?.region})
         .success (data, status, headers, config) ->
-          $scope.districts = data
+          $scope.districts = data.sort()
     getWard = () ->
       $http.get('/api/waterpoints/values/ward',
                 params:
                   region: $scope.params?.region
                   district: $scope.params?.district)
         .success (data, status, headers, config) ->
-          $scope.wards = data
+          $scope.wards = data.sort()
     $scope.getStatus = (changed) ->
       $http.get('/api/waterpoints/status', params: $scope.params)
         .success (data, status, headers, config) ->
@@ -88,9 +90,9 @@ angular.module('taarifaWaterpointsApp')
         getWard()
       if changed == 'district'
         getWard()
-      updatePlots($scope.params?.region, $scope.params?.district, $scope.group)
+      updatePlots($scope.params?.region, $scope.params?.district, $scope.params?.ward, $scope.group)
     $scope.groupBy = () ->
-      updatePlots($scope.params?.region, $scope.params?.district, $scope.group)
+      updatePlots($scope.params?.region, $scope.params?.district, $scope.params?.ward, $scope.group)
     $scope.getStatus()
     getDistrict()
     getWard()
