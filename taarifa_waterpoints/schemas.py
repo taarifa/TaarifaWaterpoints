@@ -198,10 +198,12 @@ service_schema = {
          "datatype_description": "Select an option from the list",
          "order": 2,
          "description": "Status of this waterpoint (functional, broken)",
-         "values": [{"key": "functional",
+         "values": [{"key": "Functional",
                      "name": "This waterpoint is functional"},
-                    {"key": "not functional",
-                     "name": "This waterpoint is broken"}]}
+                    {"key": "Not functional",
+                     "name": "This waterpoint is broken"},
+                    {"key": "Needs repair",
+                     "name": "This waterpoint needs repair"}]}
     ],
     "description": "Location and functionality of a waterpoint",
     "keywords": ["location", "infrastructure", "water"],
