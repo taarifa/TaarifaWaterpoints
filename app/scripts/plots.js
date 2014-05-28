@@ -1,3 +1,6 @@
+//to prevent creating overcrowded plots
+var minColWidth = 20;
+
 function updatePlots(region, district, ward, groupfield) {
   groupfield = groupfield || "region";
   var url = "/api/waterpoints/stats_by/" + groupfield;
@@ -35,7 +38,16 @@ function updatePlots(region, district, ward, groupfield) {
       };
       b.waterpoints.push(bf);
     }
-    return (bf.count / b.count) - (af.count / a.count);
+
+    var aperc = af.count / a.count;
+    var bperc = bf.count / b.count;
+
+    //if percentage is equal sort by count
+    if(Math.abs(aperc - bperc) < 0.001){
+        return bf.count - a.count;
+    }else{
+        return bperc - aperc;
+    }
   }
 
   d3.json(url, function(error, data) {
@@ -78,6 +90,9 @@ function plotStatusSummary(selector, data, groupField) {
     width = w - margin.left - margin.right,
     height = h - margin.top - margin.bottom;
 
+  //to prevent creating overcrowded plots
+  data = data.slice(0,Math.floor(width/minColWidth));
+
   var x = d3.scale.ordinal()
     .rangeRoundBands([0, width], .1);
 
@@ -91,7 +106,8 @@ function plotStatusSummary(selector, data, groupField) {
 
   var xAxis = d3.svg.axis()
     .scale(x)
-    .orient("bottom");
+    .orient("bottom")
+    .tickFormat(function(d){return shorten(d); });
 
   var yAxis = d3.svg.axis()
     .scale(y)
@@ -263,6 +279,9 @@ function plotSpendSummary(selector, data, groupField) {
     width = w - margin.left - margin.right,
     height = h - margin.top - margin.bottom;
 
+  //to prevent creating overcrowded plots
+  data = data.slice(0,Math.floor(width/minColWidth));
+
   var x = d3.scale.ordinal()
     .rangeRoundBands([0, width], .1);
 
@@ -276,7 +295,9 @@ function plotSpendSummary(selector, data, groupField) {
 
   var xAxis = d3.svg.axis()
     .scale(x)
-    .orient("bottom");
+    .orient("bottom")
+    .tickFormat(function(d){return shorten(d); });
+
 
   var yAxis = d3.svg.axis()
     .scale(y)
@@ -413,7 +434,8 @@ function plotSpendImpact(selector, wpdata, groupField) {
 
   var xAxis = d3.svg.axis()
     .scale(x)
-    .orient("bottom");
+    .orient("bottom")
+    .tickFormat(function(d){return shorten(d); });
 
   var yAxis = d3.svg.axis()
     .scale(y)
@@ -503,4 +525,9 @@ function plotSpendImpact(selector, wpdata, groupField) {
         .duration(500)
         .style("opacity", 0);
     });
+}
+
+function shorten(s, maxlen){
+    if(!maxlen) maxlen = 10;
+    return (s.length > maxlen) ? s.slice(0,maxlen-3) + "..." : s;
 }
