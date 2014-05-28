@@ -97,7 +97,7 @@ waterpoint_schema = {
     'status': {
         'type': 'string',
         'label': 'Status',
-        'allowed': ['Functional', 'Not functional'],
+        'allowed': ['Functional', 'Not functional', 'Needs repair'],
     },
     'breakdown_year': {
         'type': 'datetime',
