@@ -541,7 +541,8 @@ function plotSpendImpact(selector, wpdata, groupField) {
     });
 }
 
-function shorten(s, maxlen){
-    if(!maxlen) maxlen = 10;
-    return (s.length > maxlen) ? s.slice(0,maxlen-3) + "..." : s;
+function shorten(s, maxlen) {
+  if (!s) return s;
+  if (!maxlen) maxlen = 10;
+  return (s.length > maxlen) ? s.slice(0, maxlen - 3) + "..." : s;
 }
