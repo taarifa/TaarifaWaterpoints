@@ -140,6 +140,11 @@ function plotStatusSummary(selector, data, groupField) {
       .text("Number of Waterpoints");
   }
 
+  var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
+      return d[groupField];
+  });
+  svg.call(tip);
+
   //bind the data to a group
   var state = svg.selectAll(".group")
     .data(data, function(d) {
@@ -160,7 +165,9 @@ function plotStatusSummary(selector, data, groupField) {
     .attr("class", "group")
     .attr("transform", function(d) {
       return "translate(" + x(d[groupField]) + ",0)";
-    });
+    })
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide);
 
   //new rects in new groups
   var rectsEnter = statesEnter.selectAll("rect")
@@ -329,6 +336,11 @@ function plotSpendSummary(selector, data, groupField) {
       .text("Spend per Waterpoint ($)");
   }
 
+  var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
+      return d[groupField];
+  });
+  svg.call(tip);
+
   var rects = svg.selectAll("rect")
     .data(data, function(d) {
       return [groupField,d[groupField],d.spend].join("_");
@@ -362,6 +374,8 @@ function plotSpendSummary(selector, data, groupField) {
     })
     .attr("y", y(0))
     .attr("height", 0)
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide)
     .transition()
     .duration(1000)
     .attr("y", function(d) {
