@@ -60,7 +60,9 @@ def delete_services():
 
 
 @manager.option("filename", help="gzipped CSV file to upload (required)")
-def upload_waterpoints(filename):
+@manager.option("--skip", type=int, help="Skip a number of records")
+@manager.option("--limit", type=int, help="Only upload a number of records")
+def upload_waterpoints(filename, skip=0, limit=None):
     """Upload waterpoints from a gzipped CSV file."""
     convert = {
         'date_recorded': lambda s: datetime.strptime(s, '%m/%d/%Y'),
@@ -73,10 +75,15 @@ def upload_waterpoints(filename):
         'longitude': float,
     }
     with gzip.open(filename) as f:
-        for d in DictReader(f):
+        reader = DictReader(f)
+        for i in range(skip):
+            reader.next()
+        for i, d in enumerate(reader):
             d = dict((k, convert.get(k, str)(v)) for k, v in d.items() if v)
             d['facility_code'] = 'wpf001'
             check(add_document('waterpoints', d))
+            if limit and i >= limit:
+                break
 
 
 @manager.option("status", help="Status (functional or non functional)")
