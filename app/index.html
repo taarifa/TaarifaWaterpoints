@@ -37,10 +37,10 @@
 
       <div class="header" ng-controller="NavCtrl">
         <ul class="nav nav-pills pull-right">
-          <li><a ng-href="#/waterpoints/new">
+          <!--li><a ng-href="#/waterpoints/new">
             <span class="glyphicon glyphicon-plus"></span>
             Create waterpoint
-          </a></li>
+          </a></li-->
           <li ng-class="{active: location.path() == '/'}"><a ng-href="#">Home</a></li>
           <li ng-class="{active: location.path() == '/dashboard'}"><a ng-href="#/dashboard">Dashboard</a></li>
           <li><select class="form-control" ng-model="$root.fields.catalog.currentLanguage"
