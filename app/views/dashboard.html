@@ -1,22 +1,22 @@
 <form class="form-inline" role="form">
-  Group By: <div class="form-group">
+    {{"Group By"|translate}}: <div class="form-group">
     <select ng-model="group" ng-options="v for v in groups" ng-change="groupBy()" class="form-control">
     </select>
   </div>
   Filter:
   <div class="form-group">
     <select ng-model="params.region" ng-options="v for v in regions" ng-change="getStatus('region')" class="form-control">
-      <option value="">Region:</option>
+        <option value="">{{"Region"|translate}}:</option>
     </select>
   </div>
   <div class="form-group">
     <select ng-model="params.district" ng-options="v for v in districts" ng-change="getStatus('district')" class="form-control">
-      <option value="">District:</option>
+        <option value="">{{"District"|translate}}:</option>
     </select>
   </div>
   <div class="form-group">
     <select ng-model="params.ward" ng-options="v for v in wards" ng-change="getStatus('ward')" class="form-control">
-      <option value="">Ward:</option>
+        <option value="">{{"Ward"|translate}}:</option>
     </select>
   </div>
 </form>
@@ -24,7 +24,7 @@
 <div class="row">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h3 class="panel-title">Waterpoint Status</h3>
+      <h3 class="panel-title" translate>Waterpoint Status</h3>
     </div>
     <div class="panel-body">
       <div class="btn-group btn-group-justified">
@@ -50,12 +50,12 @@
 <div class="row">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h3 class="panel-title">Top Reasons for Faulty Waterpoints</h3>
+      <h3 class="panel-title" translate>Top Reasons for Faulty Waterpoints</h3>
     </div>
     <ul class="list-group">
-      <li class="list-group-item">1: Tap is Broken</li>
-      <li class="list-group-item">2: Barrel is Broken</li>
-      <li class="list-group-item">3: Barrel is Lost</li>
+      <li class="list-group-item" translate>1: Tap is Broken</li>
+      <li class="list-group-item" translate>2: Barrel is Broken</li>
+      <li class="list-group-item" translate>3: Barrel is Lost</li>
     </ul>
   </div>
 </div>

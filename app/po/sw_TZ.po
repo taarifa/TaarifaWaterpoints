@@ -1,17 +1,65 @@
 msgid ""
 msgstr ""
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: TaarifaWaterpoints\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: Taarifa <info@taarifa.org>\n"
+"Language: sw_TZ\n"
 "MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.6.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: sw_TZ\n"
+
+#: app/scripts/plots.js
+msgid "% Functional"
+msgstr "% Kazi"
+
+#: app/views/dashboard.html
+msgid "1: Tap is Broken"
+msgstr ""
+
+#: app/views/dashboard.html
+msgid "2: Barrel is Broken"
+msgstr ""
+
+#: app/views/dashboard.html
+msgid "3: Barrel is Lost"
+msgstr ""
+
+#: app/views/dashboard.html
+msgid "District"
+msgstr "Wilaya"
+
+#: app/views/dashboard.html
+msgid "Group By"
+msgstr ""
+
+#: app/scripts/plots.js
+msgid "Number of Waterpointies"
+msgstr ""
+
+#: app/views/dashboard.html
+msgid "Region"
+msgstr "Kanda"
+
+#: app/scripts/plots.js
+msgid "Spend per Waterpoint ($)"
+msgstr "Kutumia Kwa Kituo cha Maji ($)"
 
 #: app/index.html
 msgid "Taarifa Waterpoints"
 msgstr "Taarifa Kituo cha Maji Usimamizi"
+
+#: app/views/dashboard.html
+msgid "Top Reasons for Faulty Waterpoints"
+msgstr ""
+
+#: app/views/dashboard.html
+msgid "Ward"
+msgstr "Kata"
+
+#: app/views/dashboard.html
+msgid "Waterpoint Status"
+msgstr "Hali ya Kituo cha Maji"
