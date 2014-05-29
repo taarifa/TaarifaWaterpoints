@@ -1,13 +1,15 @@
 'use strict'
 
-angular
+app = angular
   .module('taarifaWaterpointsApp', [
     'ngResource',
     'ngRoute',
     'leaflet-directive',
     'dynform',
     'angular-flash.service',
-    'angular-flash.flash-alert-directive'
+    'angular-flash.flash-alert-directive',
+    'gettext',
+    'ui.bootstrap'
   ])
   .config ($routeProvider, flashProvider) ->
     $routeProvider
@@ -29,3 +31,16 @@ angular
       .otherwise
         redirectTo: '/'
     flashProvider.errorClassnames.push 'alert-danger'
+
+app.run (gettextCatalog,$rootScope) ->
+    gettextCatalog.currentLanguage = 'en'
+
+    # gettextCatalog.debug = true
+    $rootScope.fields = {
+        catalog: gettextCatalog,
+        languages: {
+            "en": "English",
+            "sw_TZ": "Swahili"
+        }
+    }
+

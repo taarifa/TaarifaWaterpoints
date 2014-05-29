@@ -34,6 +34,7 @@
 
     <!-- Add your site or application content here -->
     <div class="container">
+
       <div class="header" ng-controller="NavCtrl">
         <ul class="nav nav-pills pull-right">
           <li><a ng-href="#/waterpoints/new">
@@ -42,8 +43,10 @@
           </a></li>
           <li ng-class="{active: location.path() == '/'}"><a ng-href="#">Home</a></li>
           <li ng-class="{active: location.path() == '/dashboard'}"><a ng-href="#/dashboard">Dashboard</a></li>
+          <li><select class="form-control" ng-model="$root.fields.catalog.currentLanguage"
+              ng-options="key as value for (key, value) in $root.fields.languages"></select></li>
         </ul>
-        <h3 class="text-muted">TaarifaWaterpoints</h3>
+        <h3 class="text-muted" translate>Taarifa Waterpoints</h3>
       </div>
 
       <div flash-alert="success" active-class="in alert" class="fade">
@@ -87,14 +90,19 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.3/d3-tip.min.js"></script>
 
+    <!--script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap.min.js"></script>
+
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="vendor/dynamic-forms.js"></script>
     <script src="vendor/flash-service.js"></script>
     <script src="vendor/flash-alert-directive.js"></script>
+    <script src="vendor/angular-gettext.min.js"></script>
     <script src="scripts/plots.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/services.js"></script>
     <script src="scripts/controllers.js"></script>
+    <script src="scripts/translations.js"></script>
     <!-- endbuild -->
 </body>
 </html>

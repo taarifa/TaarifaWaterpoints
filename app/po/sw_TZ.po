@@ -1,0 +1,17 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: TaarifaWaterpoints\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: Taarifa <info@taarifa.org>\n"
+"MIME-Version: 1.0\n"
+"X-Generator: Poedit 1.6.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: sw_TZ\n"
+
+#: app/index.html
+msgid "Taarifa Waterpoints"
+msgstr "Taarifa Kituo cha Maji Usimamizi"

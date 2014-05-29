@@ -362,9 +362,31 @@ module.exports = function (grunt) {
         configFile: 'karma.conf.js',
         singleRun: true
       }
+    },
+
+    //Translation string extraction
+    nggettext_extract: {
+        pot: {
+            files: {
+                'app/po/template.pot': ['app/*.html','app/views/*.html']
+            }
+        },
+    },
+
+    //Compile translated po files into js
+    nggettext_compile: {
+        all: {
+            options: {
+                'module': "taarifaWaterpointsApp"
+            },
+            files: {
+                'app/scripts/translations.js': ['app/po/*.po']
+            }
+        },
     }
   });
 
+  grunt.loadNpmTasks('grunt-angular-gettext');
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
@@ -406,7 +428,9 @@ module.exports = function (grunt) {
     'uglify',
     'rev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'nggettext_extract',
+    'nggettext_compile'
   ]);
 
   grunt.registerTask('default', [
