@@ -418,6 +418,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'nggettext_extract',
+    'nggettext_compile',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
@@ -428,9 +430,7 @@ module.exports = function (grunt) {
     'uglify',
     'rev',
     'usemin',
-    'htmlmin',
-    'nggettext_extract',
-    'nggettext_compile'
+    'htmlmin'
   ]);
 
   grunt.registerTask('default', [
