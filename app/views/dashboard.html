@@ -29,7 +29,14 @@
     <div class="panel-body">
       <div class="btn-group btn-group-justified">
         <div class="btn-group" ng-repeat="s in status">
-            {{s.status || 'unknown'}} <span class="badge">{{ s.percent }} %</span> <span>({{s.count }})</span>
+            <span>{{s.status || 'unknown'}}</span>
+            <br />
+            <span class="badge">{{ s.percent | number:2 }} %</span> <span>({{ s.count }})</span>
+        </div>
+        <div class="btn-group">
+            Population covered
+            <br />
+            <span class="badge">{{ popCover.percent | number:2 }} %</span> <span>({{ popCover.count | number:0 }})</span>
         </div>
       </div>
     </div>

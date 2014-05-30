@@ -90,9 +90,19 @@ angular.module('taarifaWaterpointsApp')
     $scope.getStatus = (changed) ->
       $http.get('/api/waterpoints/status', params: $scope.params)
         .success (data, status, headers, config) ->
+          #FIXME: manually add it so it shows up
+          data.push(
+            status: "Needs Repair"
+            count: 0
+          )
           total = d3.sum(data, (x) -> x.count)
-          data.forEach( (x) -> x.percent = (x.count / total * 100).toPrecision(3))
+          data.forEach( (x) -> x.percent = x.count / total * 100)
+
           $scope.status = data
+
+          #FIXME: needs real data
+          $scope.popCover = {count: Math.random()*10000, percent: Math.random()*100}
+
       if changed == 'region'
         getDistrict()
         getWard()
