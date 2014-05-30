@@ -29,18 +29,18 @@
     <div class="panel-body">
       <div class="btn-group btn-group-justified">
         <div class="btn-group" ng-repeat="s in status">
-          {{s.status || 'unknown'}} <span class="badge">{{s.count}}</span>
+            {{s.status || 'unknown'}} <span class="badge">{{ s.percent }} %</span> <span>({{s.count }})</span>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div class="row" ng-repeat="(id, title) in plots">
+<div class="row" ng-repeat="plot in plots">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h3 class="panel-title">{{title}}</h3>
+      <h3 class="panel-title">{{plot.title}}</h3>
     </div>
-    <div class="panel-body plot" id="{{id}}"></div>
+    <div class="panel-body plot" id="{{plot.id}}"></div>
   </div>
 </div>
 <div class="row">

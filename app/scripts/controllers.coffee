@@ -58,22 +58,27 @@ angular.module('taarifaWaterpointsApp')
           console.log "Failed to create request", request
           for field, message of request._issues.attribute
             flash.error = "#{field}: #{message}"
+
   .controller 'DashboardCtrl', ($scope, $http) ->
+    $scope.plots = [
+      {id:"statusSummary", title: "Functioning Waterpoints"},
+      {id:"spendSummary", title: "Spend per Waterpoint"},
+      {id:"spendImpact", title: "Spend vs Functionality"}]
     # FIXME: Are these the right groupings? Shouldn't hard code those...
-    $scope.plots =
-      statusSummary: "Functioning Waterpoints"
-      spendImpact: "Spend vs Functionality"
-      spendSummary: "Spend per Waterpoint"
+
     $scope.groups = ['region', 'district', 'ward', 'funder', 'company', 'source_type']
     # default to region
     $scope.group = $scope.groups[0];
+
     $http.get('/api/waterpoints/values/region').success (data, status, headers, config) ->
       $scope.regions = data.sort()
+
     getDistrict = () ->
       $http.get('/api/waterpoints/values/district',
                 params: {region: $scope.params?.region})
         .success (data, status, headers, config) ->
           $scope.districts = data.sort()
+
     getWard = () ->
       $http.get('/api/waterpoints/values/ward',
                 params:
@@ -81,9 +86,12 @@ angular.module('taarifaWaterpointsApp')
                   district: $scope.params?.district)
         .success (data, status, headers, config) ->
           $scope.wards = data.sort()
+
     $scope.getStatus = (changed) ->
       $http.get('/api/waterpoints/status', params: $scope.params)
         .success (data, status, headers, config) ->
+          total = d3.sum(data, (x) -> x.count)
+          data.forEach( (x) -> x.percent = (x.count / total * 100).toPrecision(3))
           $scope.status = data
       if changed == 'region'
         getDistrict()
@@ -91,8 +99,10 @@ angular.module('taarifaWaterpointsApp')
       if changed == 'district'
         getWard()
       updatePlots($scope.params?.region, $scope.params?.district, $scope.params?.ward, $scope.group)
+
     $scope.groupBy = () ->
       updatePlots($scope.params?.region, $scope.params?.district, $scope.params?.ward, $scope.group)
+
     $scope.getStatus()
     getDistrict()
     getWard()
