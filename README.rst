@@ -28,11 +28,24 @@ There is also an angularjs_ web application that illustrates how a user
 can interact with the API and data through a browser.
 
 
-Installation
-____________
+Prerequisites
+_____________
 
 .. note::
   You may choose to install into a virtual machine as described further down.
+
+Taarifa requires Python_, pip_, nodejs_, npm_ and MongoDB_ to be available on
+the system.
+
+.. note::
+  pip_ >= 1.5 is required. if you have an older version you can upgrade (may
+  require ``sudo``) with ::
+
+    pip install -U pip
+
+
+Installation
+____________
 
 Requires Python, pip and the `Taarifa API`_ to be installed and MongoDB to
 be running.
@@ -171,6 +184,11 @@ guidelines`_ for further details.
 .. _taarifa-dev: https://groups.google.com/forum/#!forum/taarifa-dev
 .. _Taarifa API: http://github.com/taarifa/TaarifaAPI
 .. _angularjs: https://angularjs.org/
+.. _Python: http://python.org
+.. _pip: https://pip.pypa.io/en/latest/installing.html
+.. _nodejs: http://nodejs.org
+.. _npm: http://npmjs.org
+.. _MongoDB: http://mongodb.org
 .. _virtualenv: http://virtualenv.org
 .. _Set up virtualenvwrapper: http://virtualenvwrapper.readthedocs.org/en/latest/install.html#shell-startup-file
 .. _Grunt: http://gruntjs.com
