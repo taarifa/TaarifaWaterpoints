@@ -106,7 +106,11 @@ folder: ::
   cd TaarifaWaterpoints
 
 You can then continue with the usage section below. The ports are automatically
-forwarded so you can access the API and frontend from your host browser.
+forwarded so you can access the API and frontend from your host browser. Note
+that both the `TaarifaAPI` and the `TaarifaWaterpoints` folders in the VM are
+mounted from the host i.e. changes made on the host are immediately reflected in
+the VM and vice versa. This allows you to work on the code either on the host or
+in the VM according to your preference.
 
 
 Usage
