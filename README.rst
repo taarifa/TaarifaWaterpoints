@@ -43,6 +43,19 @@ the system.
 
     pip install -U pip
 
+Linux
+-----
+
+If you are running Ubuntu you can simply execute the `install.sh` script ::
+
+  ./install.sh
+
+Some of the commands are executed with sudo and require sudo permission for the
+currently logged in user.
+
+On other distributions, use the package manager to install the packages
+corresponding to those listed in `install.sh`.
+
 
 Installation
 ____________
