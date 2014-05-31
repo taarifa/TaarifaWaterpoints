@@ -60,7 +60,7 @@ def delete_services():
 
 
 @manager.option("filename", help="gzipped CSV file to upload (required)")
-@manager.option("--skip", type=int, help="Skip a number of records")
+@manager.option("--skip", type=int, default=0, help="Skip a number of records")
 @manager.option("--limit", type=int, help="Only upload a number of records")
 def upload_waterpoints(filename, skip=0, limit=None):
     """Upload waterpoints from a gzipped CSV file."""
