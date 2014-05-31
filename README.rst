@@ -60,6 +60,10 @@ corresponding to those listed in `install.sh`.
 Installation
 ____________
 
+.. note::
+  The following steps are part of the `bootstrap.sh` script, so you may choose
+  to execute that instead.
+
 Requires Python, pip and the `Taarifa API`_ to be installed and MongoDB to
 be running.
 
