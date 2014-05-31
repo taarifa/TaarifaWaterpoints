@@ -74,12 +74,16 @@ ____________________________________
 
 Instead of following the installation instructions above you may choose to
 set up a virtual machine with all dependencies installed. This process is fully
-automated using Vagrant_ and the provided Vagrantfile_.
+automated using Vagrant_ and the provided Vagrantfile_. Note that the
+Vagrantfile is included in the repository and needs not be downloaded.
 
 Install VirtualBox_ and Vagrant_ for your platform.
 
-Clone the repository ::
+Clone the repositories into the same root folder. This is required since these
+local folders are mounted in the VM such that you can edit files either on the
+host or in the VM. ::
 
+  git clone https://github.com/taarifa/TaarifaAPI
   git clone https://github.com/taarifa/TaarifaWaterpoints
   cd TaarifaWaterpoints
 
