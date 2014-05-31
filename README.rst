@@ -68,6 +68,7 @@ Install the Grunt_ command line interface (may require `sudo`): ::
 
   npm install -g grunt-cli
 
+Continue with the usage section.
 
 Installation using a virtual machine
 ____________________________________
@@ -93,11 +94,19 @@ On every subsequent use these steps are skipped. ::
 
   vagrant up
 
-Connect to the virtual machine. You can then use it as described below. The
-ports are automatically forwarded so you can access the API and frontend from
-your host browser. ::
+In case provisioning fails due to e.g. loss of network connection, run the
+provisioning scripts again until successful: ::
+
+  vagrant provision
+
+Connect to the virtual machine and change into the `TaarifaWaterpoints`
+folder: ::
 
   vagrant ssh
+  cd TaarifaWaterpoints
+
+You can then continue with the usage section below. The ports are automatically
+forwarded so you can access the API and frontend from your host browser.
 
 
 Usage
