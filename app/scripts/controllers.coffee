@@ -67,7 +67,7 @@ angular.module('taarifaWaterpointsApp')
   .controller 'RequestTriageCtrl', ($scope, $http, $routeParams, $filter, Request, Waterpoint, flash) ->
     Request.get id: $routeParams.id, (request) ->
       if request.expected_datetime
-        request.expected_datetime = new Date(request.expected_datetime)
+        $scope.expected_datetime = new Date(request.expected_datetime)
       $scope.request = request
       Waterpoint.get where: {wpt_code: request.attribute.waterpoint_id}, (waterpoint) ->
         $scope.waterpoint = waterpoint._items[0]
@@ -97,8 +97,8 @@ angular.module('taarifaWaterpointsApp')
       # in the schema and the data will not validate and the update be rejected
       for attr in ['_created', '_etag', '_id', '_links', '_updated']
         $scope.request[attr] = undefined
-      if $scope.request.expected_datetime
-        $scope.request.expected_datetime = $filter('date') $scope.request.expected_datetime, "EEE, dd MMM yyyy hh:mm:ss 'GMT'"
+      if $scope.expected_datetime
+        $scope.request.expected_datetime = $filter('date') $scope.expected_datetime, "EEE, dd MMM yyyy hh:mm:ss 'GMT'"
       $http.put('/api/requests/'+$routeParams.id,
                 $scope.request,
                 headers: {'If-Match': etag})
