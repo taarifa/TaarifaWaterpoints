@@ -1,0 +1,28 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title" translate>Waterpoint {{request.attribute.waterpoint_id}}
+      <span class="pull-right small">submitted on {{request._created}}</span></h3>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Requested value</th>
+        <th>Current value</th>
+        <th>Apply</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="(k, v) in request.attribute" ng-if="k!='waterpoint_id'">
+        <td>{{k}}</td>
+        <td>{{v}}</td>
+        <td>{{waterpoint[k]}}</td>
+        <td><input type="checkbox" ng-model="triage[k]"
+          ng-true-value="{{v}}" ng-false-value="{{waterpoint[k]}}"></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="panel-body">
+    <button class="btn btn-success pull-right" ng-click="doTriage()">Triage</button>
+  </div>
+</div>
