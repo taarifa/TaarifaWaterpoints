@@ -1,6 +1,7 @@
 'use strict'
 
 angular.module('taarifaWaterpointsApp')
+
   .factory 'ApiResource', ($resource) ->
     (resource, args) ->
       $resource "/api/#{resource}/:id"
@@ -12,14 +13,19 @@ angular.module('taarifaWaterpointsApp')
           isArray: false
         update:
           method: 'PUT'
+
   .factory 'Waterpoint', (ApiResource) ->
     ApiResource 'waterpoints'
+
   .factory 'Facility', (ApiResource) ->
     ApiResource 'facilities'
+
   .factory 'Request', (ApiResource) ->
     ApiResource 'requests'
+
   .factory 'Service', (ApiResource) ->
     ApiResource 'services'
+
   .factory 'Map', (Waterpoint) ->
     # Initially center on Dar es Salaam
     @center =
@@ -55,6 +61,7 @@ angular.module('taarifaWaterpointsApp')
         status: 1
     , addMarkers
     return this
+
   # Get an angular-dynamic-forms compatible form description from a Facility
   # given a facility code
   .factory 'FacilityForm', (Facility) ->
@@ -84,6 +91,7 @@ angular.module('taarifaWaterpointsApp')
             label: "Save"
             class: "btn btn-primary"
           return fields
+
   # Get an angular-dynamic-forms compatible form description from a Service
   # given a service code
   .factory 'RequestForm', (Service) ->
