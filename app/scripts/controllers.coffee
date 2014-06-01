@@ -71,20 +71,40 @@ angular.module('taarifaWaterpointsApp')
         $scope.waterpoint = waterpoint._items[0]
     $scope.triage = {}
     $scope.doTriage = () ->
-      $http
-        method: 'PATCH'
-        url: '/api/waterpoints/'+$scope.waterpoint._id
-        data: $scope.triage
-        headers: {'If-Match': $scope.waterpoint._etag}
-      .success (data, status, headers, config) ->
-        console.log data, status, headers, config
-        if status == 200 and data._status == 'OK'
-          flash.success = 'Waterpoint successfully updated!'
-          for k, v of $scope.triage
-            $scope.waterpoint[k] = v
-        if status == 200 and data._status == 'ERR'
-          for field, message of data._issues
-            flash.error = "#{field}: #{message}"
+      if Object.keys($scope.triage).length
+        $http
+          method: 'PATCH'
+          url: '/api/waterpoints/'+$scope.waterpoint._id
+          data: $scope.triage
+          headers: {'If-Match': $scope.waterpoint._etag}
+        .success (data, status, headers, config) ->
+          console.log data, status, headers, config
+          if status == 200 and data._status == 'OK'
+            flash.success = 'Waterpoint successfully updated!'
+            for k, v of $scope.triage
+              $scope.waterpoint[k] = v
+            saveRequest()
+          if status == 200 and data._status == 'ERR'
+            for field, message of data._issues
+              flash.error = "#{field}: #{message}"
+      else
+        saveRequest()
+    saveRequest = () ->
+      etag = $scope.request._etag
+      # We need to remove these special attributes since they are not defined
+      # in the schema and the data will not validate and the update be rejected
+      for attr in ['_created', '_etag', '_id', '_links', '_updated']
+        $scope.request[attr] = undefined
+      $http.put('/api/requests/'+$routeParams.id,
+                $scope.request,
+                headers: {'If-Match': etag})
+        .success (data, status, headers, config) ->
+          console.log data, status, headers, config
+          if status == 200 and data._status == 'OK'
+            flash.success = 'Request successfully updated!'
+          if status == 200 and data._status == 'ERR'
+            for field, message of data._issues
+              flash.error = "#{field}: #{message}"
 
   .controller 'DashboardCtrl', ($scope, $http) ->
     $scope.plots = [
