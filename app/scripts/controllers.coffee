@@ -27,20 +27,13 @@ angular.module('taarifaWaterpointsApp')
           for field, message of waterpoint._issues
             flash.error = "#{field}: #{message}"
 
-  .controller 'WaterpointEditCtrl', ($scope, $routeParams, Waterpoint, FacilityForm, flash) ->
+  .controller 'WaterpointEditCtrl', ($scope, $routeParams, Waterpoint, FacilityForm) ->
     $scope.wp = Waterpoint
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
       $scope.form = waterpoint
     $scope.formTemplate = FacilityForm 'wpf001'
     $scope.save = () ->
       Waterpoint.update($routeParams.id, $scope.form)
-        .success (data, status, headers, config) ->
-          console.log data, status, headers, config
-          if status == 200 and data._status == 'OK'
-            flash.success = 'Waterpoint successfully saved!'
-          if status == 200 and data._status == 'ERR'
-            for field, message of data._issues
-              flash.error = "#{field}: #{message}"
 
   .controller 'RequestCreateCtrl', ($scope, $location, Request, RequestForm, flash) ->
     $scope.formTemplate = RequestForm 'wps001', $location.search()
@@ -79,7 +72,6 @@ angular.module('taarifaWaterpointsApp')
       if Object.keys($scope.triage).length
         Waterpoint.patch($scope.waterpoint._id, $scope.triage, $scope.waterpoint._etag)
         .success (data, status, headers, config) ->
-          console.log data, status, headers, config
           if status == 200 and data._status == 'OK'
             flash.success = 'Waterpoint successfully updated!'
             for k, v of $scope.triage
@@ -94,13 +86,6 @@ angular.module('taarifaWaterpointsApp')
       if $scope.expected_datetime
         $scope.request.expected_datetime = $filter('date') $scope.expected_datetime, "EEE, dd MMM yyyy hh:mm:ss 'GMT'"
       Request.update($routeParams.id, $scope.request)
-      .success (data, status, headers, config) ->
-        console.log data, status, headers, config
-        if status == 200 and data._status == 'OK'
-          flash.success = 'Request successfully updated!'
-        if status == 200 and data._status == 'ERR'
-          for field, message of data._issues
-            flash.error = "#{field}: #{message}"
 
   .controller 'DashboardCtrl', ($scope, $http) ->
     $scope.plots = [

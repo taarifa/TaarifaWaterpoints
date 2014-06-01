@@ -2,7 +2,7 @@
 
 angular.module('taarifaWaterpointsApp')
 
-  .factory 'ApiResource', ($resource, $http) ->
+  .factory 'ApiResource', ($resource, $http, flash) ->
     (resource, args) ->
       Resource = $resource "/api/#{resource}/:id"
       , # Default arguments
@@ -20,6 +20,12 @@ angular.module('taarifaWaterpointsApp')
           putdata[k] = v
         $http.put("/api/#{resource}/"+id, putdata,
                   headers: {'If-Match': data._etag})
+        .success (data, status) ->
+          if status == 200 and data._status == 'OK'
+            flash.success = "#{resource} successfully updated!"
+          if status == 200 and data._status == 'ERR'
+            for field, message of data._issues
+              flash.error = "#{field}: #{message}"
       Resource.patch = (id, data, etag) ->
         $http
           method: 'PATCH'
