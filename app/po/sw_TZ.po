@@ -18,15 +18,15 @@ msgstr "% Kazi"
 
 #: app/views/dashboard.html
 msgid "1: Tap is Broken"
-msgstr ""
+msgstr "Bomba Liomepasuka"
 
 #: app/views/dashboard.html
 msgid "2: Barrel is Broken"
-msgstr ""
+msgstr "Tenki / Pipa Limepasuka"
 
 #: app/views/dashboard.html
 msgid "3: Barrel is Lost"
-msgstr ""
+msgstr "Tenki/Pipa Limepotea"
 
 #: app/views/dashboard.html
 msgid "District"
@@ -34,15 +34,15 @@ msgstr "Wilaya"
 
 #: app/views/dashboard.html
 msgid "Group By"
-msgstr ""
+msgstr "Kundi Kwa:-"
 
 #: app/scripts/plots.js
 msgid "Number of Waterpointies"
-msgstr ""
+msgstr "Idadi ya Vituo vya Maji"
 
 #: app/views/dashboard.html
 msgid "Region"
-msgstr "Kanda"
+msgstr "Mkoa"
 
 #: app/scripts/plots.js
 msgid "Spend per Waterpoint ($)"
@@ -54,7 +54,7 @@ msgstr "Taarifa Kituo cha Maji Usimamizi"
 
 #: app/views/dashboard.html
 msgid "Top Reasons for Faulty Waterpoints"
-msgstr ""
+msgstr "Sababu Kuu za Mpasuko wa Vituo vya Maji"
 
 #: app/views/dashboard.html
 msgid "Ward"
