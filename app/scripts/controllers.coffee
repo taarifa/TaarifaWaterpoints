@@ -59,12 +59,14 @@ angular.module('taarifaWaterpointsApp')
           for field, message of request._issues.attribute
             flash.error = "#{field}: #{message}"
   .controller 'RequestTriageCtrl', ($scope, $http, Request, Waterpoint, flash) ->
-    Request.query (requests) ->
-      $scope.requests = requests._items
-      for r in requests._items
-        Waterpoint.get where: {wpt_code: r.attribute.waterpoint_id}, (waterpoint) ->
-          r.waterpoint = waterpoint._items[0]
-        r.triage = {}
+    $scope.status = 'open'
+    $scope.filterStatus = () ->
+      Request.query where: {status: $scope.status}, (requests) ->
+        $scope.requests = requests._items
+        for r in requests._items
+          Waterpoint.get where: {wpt_code: r.attribute.waterpoint_id}, (waterpoint) ->
+            r.waterpoint = waterpoint._items[0]
+          r.triage = {}
     $scope.triage = (request) ->
       $http
         method: 'PATCH'
@@ -78,6 +80,7 @@ angular.module('taarifaWaterpointsApp')
         if status == 200 and data._status == 'ERR'
           for field, message of data._issues
             flash.error = "#{field}: #{message}"
+    $scope.filterStatus()
 
   .controller 'DashboardCtrl', ($scope, $http) ->
     $scope.plots = [
