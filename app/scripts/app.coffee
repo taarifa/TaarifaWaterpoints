@@ -10,6 +10,7 @@ app = angular
     'angular-flash.flash-alert-directive',
     'gettext'
   ])
+
   .config ($routeProvider, $httpProvider, flashProvider) ->
     $routeProvider
       .when '/',
@@ -39,15 +40,10 @@ app = angular
       'Content-Type': 'application/json;charset=utf-8'
     flashProvider.errorClassnames.push 'alert-danger'
 
-app.run (gettextCatalog,$rootScope) ->
+  .run (gettextCatalog,$rootScope) ->
     gettextCatalog.currentLanguage = 'en'
-
-    # gettextCatalog.debug = true
-    $rootScope.fields = {
-        catalog: gettextCatalog,
-        languages: {
-            "en": "English",
-            "sw_TZ": "Swahili"
-        }
-    }
-
+    $rootScope.fields =
+      catalog: gettextCatalog
+      languages:
+        en: "English"
+        sw_TZ: "Swahili"
