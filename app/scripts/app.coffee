@@ -24,12 +24,12 @@ app = angular
       .when '/requests',
         templateUrl: 'views/requests.html'
         controller: 'RequestListCtrl'
-      .when '/requests/:id',
-        templateUrl: 'views/triage.html'
-        controller: 'RequestTriageCtrl'
       .when '/requests/new',
         templateUrl: 'views/edit.html'
         controller: 'RequestCreateCtrl'
+      .when '/requests/:id',
+        templateUrl: 'views/triage.html'
+        controller: 'RequestTriageCtrl'
       .when '/dashboard',
         templateUrl: 'views/dashboard.html'
         controller: 'DashboardCtrl'
