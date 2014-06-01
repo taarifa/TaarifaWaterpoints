@@ -27,19 +27,13 @@ angular.module('taarifaWaterpointsApp')
           for field, message of waterpoint._issues
             flash.error = "#{field}: #{message}"
 
-  .controller 'WaterpointEditCtrl', ($scope, $http, $routeParams, Waterpoint, FacilityForm, flash) ->
+  .controller 'WaterpointEditCtrl', ($scope, $routeParams, Waterpoint, FacilityForm, flash) ->
+    $scope.wp = Waterpoint
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
       $scope.form = waterpoint
     $scope.formTemplate = FacilityForm 'wpf001'
     $scope.save = () ->
-      etag = $scope.form._etag
-      # We need to remove these special attributes since they are not defined
-      # in the schema and the data will not validate and the update be rejected
-      for attr in ['_created', '_etag', '_id', '_links', '_updated']
-        $scope.form[attr] = undefined
-      $http.put('/api/waterpoints/'+$routeParams.id,
-                $scope.form,
-                headers: {'If-Match': etag})
+      Waterpoint.update($routeParams.id, $scope.form)
         .success (data, status, headers, config) ->
           console.log data, status, headers, config
           if status == 200 and data._status == 'OK'
@@ -73,7 +67,7 @@ angular.module('taarifaWaterpointsApp')
         $scope.requests = requests._items
     $scope.filterStatus()
 
-  .controller 'RequestTriageCtrl', ($scope, $http, $routeParams, $filter, Request, Waterpoint, flash) ->
+  .controller 'RequestTriageCtrl', ($scope, $routeParams, $filter, Request, Waterpoint, flash) ->
     Request.get id: $routeParams.id, (request) ->
       if request.expected_datetime
         $scope.expected_datetime = new Date(request.expected_datetime)
@@ -83,11 +77,7 @@ angular.module('taarifaWaterpointsApp')
     $scope.triage = {}
     $scope.doTriage = () ->
       if Object.keys($scope.triage).length
-        $http
-          method: 'PATCH'
-          url: '/api/waterpoints/'+$scope.waterpoint._id
-          data: $scope.triage
-          headers: {'If-Match': $scope.waterpoint._etag}
+        Waterpoint.patch($scope.waterpoint._id, $scope.triage, $scope.waterpoint._etag)
         .success (data, status, headers, config) ->
           console.log data, status, headers, config
           if status == 200 and data._status == 'OK'
@@ -101,23 +91,16 @@ angular.module('taarifaWaterpointsApp')
       else
         saveRequest()
     saveRequest = () ->
-      etag = $scope.request._etag
-      # We need to remove these special attributes since they are not defined
-      # in the schema and the data will not validate and the update be rejected
-      for attr in ['_created', '_etag', '_id', '_links', '_updated']
-        $scope.request[attr] = undefined
       if $scope.expected_datetime
         $scope.request.expected_datetime = $filter('date') $scope.expected_datetime, "EEE, dd MMM yyyy hh:mm:ss 'GMT'"
-      $http.put('/api/requests/'+$routeParams.id,
-                $scope.request,
-                headers: {'If-Match': etag})
-        .success (data, status, headers, config) ->
-          console.log data, status, headers, config
-          if status == 200 and data._status == 'OK'
-            flash.success = 'Request successfully updated!'
-          if status == 200 and data._status == 'ERR'
-            for field, message of data._issues
-              flash.error = "#{field}: #{message}"
+      Request.update($routeParams.id, $scope.request)
+      .success (data, status, headers, config) ->
+        console.log data, status, headers, config
+        if status == 200 and data._status == 'OK'
+          flash.success = 'Request successfully updated!'
+        if status == 200 and data._status == 'ERR'
+          for field, message of data._issues
+            flash.error = "#{field}: #{message}"
 
   .controller 'DashboardCtrl', ($scope, $http) ->
     $scope.plots = [
