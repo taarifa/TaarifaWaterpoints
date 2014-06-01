@@ -15,7 +15,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="(k, v) in request.attribute">
+      <tr ng-repeat="(k, v) in request.attribute" ng-if="k!='waterpoint_id'">
         <td>{{k}}</td>
         <td>{{v}}</td>
         <td>{{request.waterpoint[k]}}</td>
