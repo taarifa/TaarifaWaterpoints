@@ -15,18 +15,22 @@
       <span class="pull-right small">submitted on {{request._created}}</span>
     </h3>
   </div>
-  <div class="panel-body">
-    <div class="list-group col-sm-6">
-      <a class="list-group-item active"><strong>User provided fields</strong></a>
-      <a class="list-group-item" ng-repeat="(k, v) in request.attribute" ng-if="k != 'waterpoint_id'">
-        <strong>{{k}}:</strong> {{v}}
-      </a>
+  <div class="panel-body panel-body-nopad">
+    <div class="col-sm-6">
+      <h4>User provided fields</h4>
+      <dl class="dl-horizontal">
+        <dt ng-repeat-start="(k, v) in request.attribute" ng-if="k !=
+        'waterpoint_id'">{{k}}</dt>
+        <dd ng-repeat-end ng-if="k != 'waterpoint_id'">{{v}}</dd>
+      </dl>
     </div>
-    <div class="list-group col-sm-6">
-      <a class="list-group-item active"><strong>Metadata</strong></a>
-      <a class="list-group-item" ng-repeat="(k, v) in request" ng-if="k[0] != '_' && k != 'attribute'">
-        <strong>{{k}}:</strong> {{v}}
-      </a>
+    <div class="col-sm-6">
+      <h4>Metadata</h4>
+      <dl class="dl-horizontal">
+        <dt ng-repeat-start="(k, v) in request" ng-if="k[0] != '_' && k !=
+        'attribute'">{{k}}</dt>
+        <dd ng-repeat-end ng-if="k[0] != '_' && k != 'attribute'">{{v}}</dd>
+      </dl>
     </div>
   </div>
 </div>
