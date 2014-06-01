@@ -58,21 +58,24 @@ angular.module('taarifaWaterpointsApp')
           console.log "Failed to create request", request
           for field, message of request._issues.attribute
             flash.error = "#{field}: #{message}"
-  .controller 'RequestTriageCtrl', ($scope, $http, Request, Waterpoint, flash) ->
+  .controller 'RequestListCtrl', ($scope, Request) ->
     $scope.status = 'open'
     $scope.filterStatus = () ->
       Request.query where: {status: $scope.status}, (requests) ->
         $scope.requests = requests._items
-        for r in requests._items
-          Waterpoint.get where: {wpt_code: r.attribute.waterpoint_id}, (waterpoint) ->
-            r.waterpoint = waterpoint._items[0]
-          r.triage = {}
-    $scope.triage = (request) ->
+    $scope.filterStatus()
+  .controller 'RequestTriageCtrl', ($scope, $http, $routeParams, Request, Waterpoint, flash) ->
+    Request.get id: $routeParams.id, (request) ->
+      $scope.request = request
+      Waterpoint.get where: {wpt_code: request.attribute.waterpoint_id}, (waterpoint) ->
+        $scope.waterpoint = waterpoint._items[0]
+    $scope.triage = {}
+    $scope.doTriage = () ->
       $http
         method: 'PATCH'
-        url: '/api/waterpoints/'+request.waterpoint._id
-        data: request.triage
-        headers: {'If-Match': request.waterpoint._etag}
+        url: '/api/waterpoints/'+$scope.waterpoint._id
+        data: $scope.triage
+        headers: {'If-Match': $scope.waterpoint._etag}
       .success (data, status, headers, config) ->
         console.log data, status, headers, config
         if status == 200 and data._status == 'OK'
@@ -80,7 +83,6 @@ angular.module('taarifaWaterpointsApp')
         if status == 200 and data._status == 'ERR'
           for field, message of data._issues
             flash.error = "#{field}: #{message}"
-    $scope.filterStatus()
 
   .controller 'DashboardCtrl', ($scope, $http) ->
     $scope.plots = [
