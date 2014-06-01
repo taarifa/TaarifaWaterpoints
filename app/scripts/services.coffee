@@ -1,25 +1,25 @@
 'use strict'
 
-apiResource = ($resource, resource, args) ->
-  $resource "/api/#{resource}/:id"
-  , # Default arguments
-    args
-  , # Override methods
-    query:
-      method: 'GET'
-      isArray: false
-    update:
-      method: 'PUT'
-
 angular.module('taarifaWaterpointsApp')
-  .factory 'Waterpoint', ($resource) ->
-    apiResource $resource, 'waterpoints'
-  .factory 'Facility', ($resource) ->
-    apiResource $resource, 'facilities'
-  .factory 'Request', ($resource) ->
-    apiResource $resource, 'requests'
-  .factory 'Service', ($resource) ->
-    apiResource $resource, 'services'
+  .factory 'ApiResource', ($resource) ->
+    (resource, args) ->
+      $resource "/api/#{resource}/:id"
+      , # Default arguments
+        args
+      , # Override methods
+        query:
+          method: 'GET'
+          isArray: false
+        update:
+          method: 'PUT'
+  .factory 'Waterpoint', (ApiResource) ->
+    ApiResource 'waterpoints'
+  .factory 'Facility', (ApiResource) ->
+    ApiResource 'facilities'
+  .factory 'Request', (ApiResource) ->
+    ApiResource 'requests'
+  .factory 'Service', (ApiResource) ->
+    ApiResource 'services'
   .factory 'Map', (Waterpoint) ->
     # Initially center on Dar es Salaam
     @center =
