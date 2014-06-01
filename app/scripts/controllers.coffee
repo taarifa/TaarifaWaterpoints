@@ -58,12 +58,26 @@ angular.module('taarifaWaterpointsApp')
           console.log "Failed to create request", request
           for field, message of request._issues.attribute
             flash.error = "#{field}: #{message}"
-  .controller 'RequestTriageCtrl', ($scope, Request, Waterpoint) ->
+  .controller 'RequestTriageCtrl', ($scope, $http, Request, Waterpoint, flash) ->
     Request.query (requests) ->
       $scope.requests = requests._items
       for r in requests._items
         Waterpoint.get where: {wpt_code: r.attribute.waterpoint_id}, (waterpoint) ->
           r.waterpoint = waterpoint._items[0]
+        r.triage = {}
+    $scope.triage = (request) ->
+      $http
+        method: 'PATCH'
+        url: '/api/waterpoints/'+request.waterpoint._id
+        data: request.triage
+        headers: {'If-Match': request.waterpoint._etag}
+      .success (data, status, headers, config) ->
+        console.log data, status, headers, config
+        if status == 200 and data._status == 'OK'
+          flash.success = 'Waterpoint successfully updated!'
+        if status == 200 and data._status == 'ERR'
+          for field, message of data._issues
+            flash.error = "#{field}: #{message}"
 
   .controller 'DashboardCtrl', ($scope, $http) ->
     $scope.plots = [
