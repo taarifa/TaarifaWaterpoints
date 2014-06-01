@@ -12,13 +12,14 @@ angular.module('taarifaWaterpointsApp')
           method: 'GET'
           isArray: false
       Resource.update = (id, data) ->
-        etag = data._etag
-        # We need to remove these special attributes since they are not defined
-        # in the schema and the data will not validate and the update be rejected
-        for attr in ['_created', '_etag', '_id', '_links', '_updated']
-          data[attr] = undefined if data[attr]
-        $http.put("/api/#{resource}/"+id, data,
-                  headers: {'If-Match': etag})
+        # We need to remove special attributes starting with _ since they are
+        # not defined in the schema and the data will not validate and the
+        # update be rejected
+        putdata = {}
+        for k, v of data when k[0] != '_'
+          putdata[k] = v
+        $http.put("/api/#{resource}/"+id, putdata,
+                  headers: {'If-Match': data._etag})
       Resource.patch = (id, data, etag) ->
         $http
           method: 'PATCH'
