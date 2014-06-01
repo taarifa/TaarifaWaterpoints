@@ -1,0 +1,27 @@
+<div class="panel panel-primary" ng-repeat="request in requests">
+  <div class="panel-heading">
+    <h3 class="panel-title" translate>Request for waterpoint
+      {{request.attribute.waterpoint_id}}
+      <span class="pull-right">submitted on {{request._created}}</span></h3>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Requested value</th>
+        <th>Current value</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="(k, v) in request.attribute">
+        <td>{{k}}</td>
+        <td>{{v}}</td>
+        <td>{{request.waterpoint[k]}}</td>
+        <td><button class="btn btn-success">Apply</button></td>
+        <td><button class="btn btn-danger">Discard</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
