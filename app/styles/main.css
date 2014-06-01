@@ -1,6 +1,14 @@
 /* http://angular-ui.github.io/bootstrap/#/getting_started */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
+.list-group {
+  margin-bottom: 0;
+}
+.panel-body-nopad {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 /* Customize container */
 @media (min-width: 768px) {
   .container {
