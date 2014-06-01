@@ -11,7 +11,7 @@ app = angular
     'gettext',
     'ui.bootstrap'
   ])
-  .config ($routeProvider, flashProvider) ->
+  .config ($routeProvider, $httpProvider, flashProvider) ->
     $routeProvider
       .when '/',
         templateUrl: 'views/main.html'
@@ -30,6 +30,8 @@ app = angular
         controller: 'DashboardCtrl'
       .otherwise
         redirectTo: '/'
+    $httpProvider.defaults.headers.patch =
+      'Content-Type': 'application/json;charset=utf-8'
     flashProvider.errorClassnames.push 'alert-danger'
 
 app.run (gettextCatalog,$rootScope) ->
