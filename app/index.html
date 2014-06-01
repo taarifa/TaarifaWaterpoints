@@ -42,6 +42,7 @@
             Create waterpoint
           </a></li-->
           <li ng-class="{active: location.path() == '/'}"><a ng-href="#">Home</a></li>
+          <li ng-class="{active: location.path() == '/requests'}"><a ng-href="#/requests">Triage</a></li>
           <li ng-class="{active: location.path() == '/dashboard'}"><a ng-href="#/dashboard">Dashboard</a></li>
           <li><select class="form-control" ng-model="$root.fields.catalog.currentLanguage"
               ng-options="key as value for (key, value) in $root.fields.languages"></select></li>
