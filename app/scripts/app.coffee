@@ -8,8 +8,7 @@ app = angular
     'dynform',
     'angular-flash.service',
     'angular-flash.flash-alert-directive',
-    'gettext',
-    'ui.bootstrap'
+    'gettext'
   ])
   .config ($routeProvider, $httpProvider, flashProvider) ->
     $routeProvider
