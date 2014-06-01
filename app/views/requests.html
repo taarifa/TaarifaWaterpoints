@@ -1,7 +1,6 @@
 <div class="panel panel-primary" ng-repeat="request in requests">
   <div class="panel-heading">
-    <h3 class="panel-title" translate>Request for waterpoint
-      {{request.attribute.waterpoint_id}}
+    <h3 class="panel-title" translate>Waterpoint {{request.attribute.waterpoint_id}}
       <span class="pull-right">submitted on {{request._created}}</span></h3>
   </div>
   <table class="table">
@@ -10,8 +9,7 @@
         <th>Attribute</th>
         <th>Requested value</th>
         <th>Current value</th>
-        <th></th>
-        <th></th>
+        <th>Apply</th>
       </tr>
     </thead>
     <tbody>
@@ -19,9 +17,12 @@
         <td>{{k}}</td>
         <td>{{v}}</td>
         <td>{{request.waterpoint[k]}}</td>
-        <td><button class="btn btn-success">Apply</button></td>
-        <td><button class="btn btn-danger">Discard</button></td>
+        <td><input type="checkbox" ng-model="request.triage[k]"
+          ng-true-value="{{v}}" ng-false-value="{{request.waterpoint[k]}}"></td>
       </tr>
     </tbody>
   </table>
+  <div class="panel-body">
+    <button class="btn btn-success pull-right" ng-click="triage(request)">Triage</button>
+  </div>
 </div>
