@@ -203,7 +203,14 @@ service_schema = {
                     {"key": "Not functional",
                      "name": "This waterpoint is broken"},
                     {"key": "Needs repair",
-                     "name": "This waterpoint needs repair"}]}
+                     "name": "This waterpoint needs repair"}]},
+        {"variable": True,
+         "code": "status_detail",
+         "datatype": "string",
+         "required": False,
+         "datatype_description": "Describe the status of the waterpoint",
+         "order": 3,
+         "description": "Detailed description of the waterpoint status"}
     ],
     "description": "Location and functionality of a waterpoint",
     "keywords": ["location", "infrastructure", "water"],
