@@ -66,6 +66,8 @@ angular.module('taarifaWaterpointsApp')
     $scope.filterStatus()
   .controller 'RequestTriageCtrl', ($scope, $http, $routeParams, $filter, Request, Waterpoint, flash) ->
     Request.get id: $routeParams.id, (request) ->
+      if request.expected_datetime
+        request.expected_datetime = new Date(request.expected_datetime)
       $scope.request = request
       Waterpoint.get where: {wpt_code: request.attribute.waterpoint_id}, (waterpoint) ->
         $scope.waterpoint = waterpoint._items[0]
