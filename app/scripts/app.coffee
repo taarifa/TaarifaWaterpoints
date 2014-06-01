@@ -22,6 +22,9 @@ app = angular
       .when '/waterpoints/new',
         templateUrl: 'views/edit.html'
         controller: 'WaterpointCreateCtrl'
+      .when '/requests',
+        templateUrl: 'views/requests.html'
+        controller: 'RequestTriageCtrl'
       .when '/requests/new',
         templateUrl: 'views/edit.html'
         controller: 'RequestCreateCtrl'
