@@ -57,6 +57,26 @@ On other distributions, use the package manager to install the packages
 corresponding to those listed in `install.sh`.
 
 
+Windows
+-------
+Windows can be used as the platform to run Taarifa - the main caveat here however is that as you install the dependencies, these are not added to the $PATH variable - this either needs to be added manually  
+
+TaarifaWaterpoints installation instructions on windows - details for these steps are the same as for MacOS/Linux (except for apt-get lines): 
+
+1) install python
+2) install pip
+3) install [nodejs]() and npm (these need to be added to the $PATH variable!)
+3) install and run mongodb (does not automagically come with a service, so it needs to be started manually: )
+
+  "c:\Program Files\MongoDB 2.6 Standard\bin\mongod.exe" --dbpath c:\temp\taarifa\
+
+4) create the needed services and facilities
+5) import the waterpoints in the same way as in the Mac OS/Linux instructions following:
+
+  <path_to_python>\python.exe <path_to_TaarifaWaterpoints_Directory>\manage.py upload_waterpoints <waterpoints_csv.gz_file>
+
+
+
 Installation
 ____________
 
