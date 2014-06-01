@@ -2,7 +2,9 @@
   <div class="pull-right">
     Request status filter:
     <select class="form-control" ng-model="status" ng-change="filterStatus()"
-      ng-options="k for k in ['open', 'closed']"></select>
+      ng-options="k for k in ['open', 'closed']">
+      <option value="">all</option>
+    </select>
   </div>
 </div>
 

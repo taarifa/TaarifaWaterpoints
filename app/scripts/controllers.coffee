@@ -61,7 +61,8 @@ angular.module('taarifaWaterpointsApp')
   .controller 'RequestListCtrl', ($scope, Request) ->
     $scope.status = 'open'
     $scope.filterStatus = () ->
-      Request.query where: {status: $scope.status}, (requests) ->
+      query = if $scope.status then where: {status: $scope.status} else {}
+      Request.query query, (requests) ->
         $scope.requests = requests._items
     $scope.filterStatus()
   .controller 'RequestTriageCtrl', ($scope, $http, $routeParams, $filter, Request, Waterpoint, flash) ->
