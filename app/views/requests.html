@@ -1,3 +1,11 @@
+<div class="row">
+  <div class="pull-right">
+    Request status filter:
+    <select class="form-control" ng-model="status" ng-change="filterStatus()"
+      ng-options="k for k in ['open', 'closed']"></select>
+  </div>
+</div>
+
 <div class="panel panel-primary" ng-repeat="request in requests">
   <div class="panel-heading">
     <h3 class="panel-title" translate>Waterpoint {{request.attribute.waterpoint_id}}
