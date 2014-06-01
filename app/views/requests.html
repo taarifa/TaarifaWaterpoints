@@ -6,31 +6,27 @@
   </div>
 </div>
 
-<div class="panel panel-primary" ng-repeat="request in requests">
+<div class="panel panel-default" ng-repeat="request in requests">
   <div class="panel-heading">
-    <h3 class="panel-title" translate>Waterpoint {{request.attribute.waterpoint_id}}
-      <span class="pull-right">submitted on {{request._created}}</span></h3>
+    <h3 class="panel-title" translate>
+      <a class="glyphicon glyphicon-cog" href="#/requests/{{request._id}}"
+        title="Triage"></a>
+      Waterpoint {{request.attribute.waterpoint_id}}
+      <span class="pull-right small">submitted on {{request._created}}</span>
+    </h3>
   </div>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Attribute</th>
-        <th>Requested value</th>
-        <th>Current value</th>
-        <th>Apply</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="(k, v) in request.attribute" ng-if="k!='waterpoint_id'">
-        <td>{{k}}</td>
-        <td>{{v}}</td>
-        <td>{{request.waterpoint[k]}}</td>
-        <td><input type="checkbox" ng-model="request.triage[k]"
-          ng-true-value="{{v}}" ng-false-value="{{request.waterpoint[k]}}"></td>
-      </tr>
-    </tbody>
-  </table>
   <div class="panel-body">
-    <button class="btn btn-success pull-right" ng-click="triage(request)">Triage</button>
+    <div class="list-group col-sm-6">
+      <a class="list-group-item active"><strong>User provided fields</strong></a>
+      <a class="list-group-item" ng-repeat="(k, v) in request.attribute" ng-if="k != 'waterpoint_id'">
+        <strong>{{k}}:</strong> {{v}}
+      </a>
+    </div>
+    <div class="list-group col-sm-6">
+      <a class="list-group-item active"><strong>Metadata</strong></a>
+      <a class="list-group-item" ng-repeat="(k, v) in request" ng-if="k[0] != '_' && k != 'attribute'">
+        <strong>{{k}}:</strong> {{v}}
+      </a>
+    </div>
   </div>
 </div>
