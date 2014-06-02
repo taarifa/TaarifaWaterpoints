@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="pull-right">
+    Request status filter:
+    <select class="form-control" ng-model="status" ng-change="filterStatus()"
+      ng-options="k for k in ['open', 'closed']">
+      <option value="">all</option>
+    </select>
+  </div>
+</div>
+
+<div class="panel panel-default" ng-repeat="request in requests">
+  <div class="panel-heading">
+    <h3 class="panel-title" translate>
+      <a class="glyphicon glyphicon-cog" href="#/requests/{{request._id}}"
+        title="Triage"></a>
+      Waterpoint {{request.attribute.waterpoint_id}}
+      <span class="pull-right small">submitted on {{request._created}}</span>
+    </h3>
+  </div>
+  <div class="panel-body panel-body-nopad">
+    <div class="col-sm-6">
+      <h4>User provided fields</h4>
+      <dl class="dl-horizontal">
+        <dt ng-repeat-start="(k, v) in request.attribute" ng-if="k !=
+        'waterpoint_id'">{{k}}</dt>
+        <dd ng-repeat-end ng-if="k != 'waterpoint_id'">{{v}}</dd>
+      </dl>
+    </div>
+    <div class="col-sm-6">
+      <h4>Metadata</h4>
+      <dl class="dl-horizontal">
+        <dt ng-repeat-start="(k, v) in request" ng-if="k[0] != '_' && k !=
+        'attribute'">{{k}}</dt>
+        <dd ng-repeat-end ng-if="k[0] != '_' && k != 'attribute'">{{v}}</dd>
+      </dl>
+    </div>
+  </div>
+</div>

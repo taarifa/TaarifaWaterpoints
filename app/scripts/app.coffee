@@ -8,10 +8,10 @@ app = angular
     'dynform',
     'angular-flash.service',
     'angular-flash.flash-alert-directive',
-    'gettext',
-    'ui.bootstrap'
+    'gettext'
   ])
-  .config ($routeProvider, flashProvider) ->
+
+  .config ($routeProvider, $httpProvider, flashProvider) ->
     $routeProvider
       .when '/',
         templateUrl: 'views/main.html'
@@ -22,25 +22,28 @@ app = angular
       .when '/waterpoints/new',
         templateUrl: 'views/edit.html'
         controller: 'WaterpointCreateCtrl'
+      .when '/requests',
+        templateUrl: 'views/requests.html'
+        controller: 'RequestListCtrl'
       .when '/requests/new',
         templateUrl: 'views/edit.html'
         controller: 'RequestCreateCtrl'
+      .when '/requests/:id',
+        templateUrl: 'views/triage.html'
+        controller: 'RequestTriageCtrl'
       .when '/dashboard',
         templateUrl: 'views/dashboard.html'
         controller: 'DashboardCtrl'
       .otherwise
         redirectTo: '/'
+    $httpProvider.defaults.headers.patch =
+      'Content-Type': 'application/json;charset=utf-8'
     flashProvider.errorClassnames.push 'alert-danger'
 
-app.run (gettextCatalog,$rootScope) ->
+  .run (gettextCatalog,$rootScope) ->
     gettextCatalog.currentLanguage = 'en'
-
-    # gettextCatalog.debug = true
-    $rootScope.fields = {
-        catalog: gettextCatalog,
-        languages: {
-            "en": "English",
-            "sw_TZ": "Swahili"
-        }
-    }
-
+    $rootScope.fields =
+      catalog: gettextCatalog
+      languages:
+        en: "English"
+        sw_TZ: "Swahili"

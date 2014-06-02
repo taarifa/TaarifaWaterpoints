@@ -1,13 +1,17 @@
 'use strict'
 
 angular.module('taarifaWaterpointsApp')
+
   .controller 'NavCtrl', ($scope, $location) ->
     $scope.location = $location
+
   .controller 'MainCtrl', ($scope, Waterpoint) ->
     Waterpoint.query (waterpoints) ->
       $scope.waterpoints = waterpoints._items
+
   .controller 'MapCtrl', ($scope, Map) ->
     $scope.map = Map
+
   .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, FacilityForm, flash) ->
     $scope.formTemplate = FacilityForm 'wpf001'
     # FIXME: Should not hardcode the facility code here
@@ -22,26 +26,15 @@ angular.module('taarifaWaterpointsApp')
           console.log "Failed to create waterpoint", waterpoint
           for field, message of waterpoint._issues
             flash.error = "#{field}: #{message}"
-  .controller 'WaterpointEditCtrl', ($scope, $http, $routeParams, Waterpoint, FacilityForm, flash) ->
+
+  .controller 'WaterpointEditCtrl', ($scope, $routeParams, Waterpoint, FacilityForm) ->
+    $scope.wp = Waterpoint
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
       $scope.form = waterpoint
     $scope.formTemplate = FacilityForm 'wpf001'
     $scope.save = () ->
-      etag = $scope.form._etag
-      # We need to remove these special attributes since they are not defined
-      # in the schema and the data will not validate and the update be rejected
-      for attr in ['_created', '_etag', '_id', '_links', '_updated']
-        $scope.form[attr] = undefined
-      $http.put('/api/waterpoints/'+$routeParams.id,
-                $scope.form,
-                headers: {'If-Match': etag})
-        .success (data, status, headers, config) ->
-          console.log data, status, headers, config
-          if status == 200 and data._status == 'OK'
-            flash.success = 'Waterpoint successfully saved!'
-          if status == 200 and data._status == 'ERR'
-            for field, message of data._issues
-              flash.error = "#{field}: #{message}"
+      Waterpoint.update($routeParams.id, $scope.form)
+
   .controller 'RequestCreateCtrl', ($scope, $location, Request, RequestForm, flash) ->
     $scope.formTemplate = RequestForm 'wps001', $location.search()
     # FIXME: Should not hardcode the service code here
@@ -58,6 +51,41 @@ angular.module('taarifaWaterpointsApp')
           console.log "Failed to create request", request
           for field, message of request._issues.attribute
             flash.error = "#{field}: #{message}"
+
+  .controller 'RequestListCtrl', ($scope, Request) ->
+    $scope.status = 'open'
+    $scope.filterStatus = () ->
+      query = if $scope.status then where: {status: $scope.status} else {}
+      Request.query query, (requests) ->
+        $scope.requests = requests._items
+    $scope.filterStatus()
+
+  .controller 'RequestTriageCtrl', ($scope, $routeParams, $filter, Request, Waterpoint, flash) ->
+    Request.get id: $routeParams.id, (request) ->
+      if request.expected_datetime
+        $scope.expected_datetime = new Date(request.expected_datetime)
+      $scope.request = request
+      Waterpoint.get where: {wpt_code: request.attribute.waterpoint_id}, (waterpoint) ->
+        $scope.waterpoint = waterpoint._items[0]
+    $scope.triage = {}
+    $scope.doTriage = () ->
+      if Object.keys($scope.triage).length
+        Waterpoint.patch($scope.waterpoint._id, $scope.triage, $scope.waterpoint._etag)
+        .success (data, status, headers, config) ->
+          if status == 200 and data._status == 'OK'
+            flash.success = 'Waterpoint successfully updated!'
+            for k, v of $scope.triage
+              $scope.waterpoint[k] = v
+            saveRequest()
+          if status == 200 and data._status == 'ERR'
+            for field, message of data._issues
+              flash.error = "#{field}: #{message}"
+      else
+        saveRequest()
+    saveRequest = () ->
+      if $scope.expected_datetime
+        $scope.request.expected_datetime = $filter('date') $scope.expected_datetime, "EEE, dd MMM yyyy hh:mm:ss 'GMT'"
+      Request.update($routeParams.id, $scope.request)
 
   .controller 'DashboardCtrl', ($scope, $http) ->
     $scope.plots = [
