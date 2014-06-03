@@ -50,12 +50,14 @@
         <h3 class="text-muted" translate>Taarifa Waterpoints</h3>
       </div>
 
-      <div flash-alert="success" active-class="in alert" class="fade">
+      <div flash-alert="success" active-class="in alert" class="fade" duration="0">
+        <button type="button" class="close" ng-click="hide()">&times;</button>
         <strong class="alert-heading">Success:</strong>
         <span class="alert-message">{{flash.message}}</span>
       </div>
 
-      <div flash-alert="error" active-class="in alert" class="fade">
+      <div flash-alert="error" active-class="in alert" class="fade" duration="0">
+        <button type="button" class="close" ng-click="hide()">&times;</button>
         <strong class="alert-heading">Error:</strong>
         <span class="alert-message">{{flash.message}}</span>
       </div>
