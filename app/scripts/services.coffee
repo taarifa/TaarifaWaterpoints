@@ -20,11 +20,12 @@ angular.module('taarifaWaterpointsApp')
           putdata[k] = v
         $http.put("/api/#{resource}/"+id, putdata,
                   headers: {'If-Match': data._etag})
-        .success (data, status) ->
-          if status == 200 and data._status == 'OK'
+        .success (res, status) ->
+          if status == 200 and res._status == 'OK'
             flash.success = "#{resource} successfully updated!"
-          if status == 200 and data._status == 'ERR'
-            for field, message of data._issues
+            data._etag = res._etag
+          if status == 200 and res._status == 'ERR'
+            for field, message of res._issues
               flash.error = "#{field}: #{message}"
       Resource.patch = (id, data, etag) ->
         $http
