@@ -69,22 +69,19 @@ angular.module('taarifaWaterpointsApp')
         $scope.waterpoint = waterpoint._items[0]
         if not request.agency_responsible
           request.agency_responsible = $scope.waterpoint.wp_management
-    $scope.triage = {}
-    $scope.doTriage = () ->
-      if Object.keys($scope.triage).length
-        Waterpoint.patch($scope.waterpoint._id, $scope.triage, $scope.waterpoint._etag)
-        .success (data, status, headers, config) ->
-          if status == 200 and data._status == 'OK'
-            flash.success = 'Waterpoint successfully updated!'
-            for k, v of $scope.triage
-              $scope.waterpoint[k] = v
-            saveRequest()
-          if status == 200 and data._status == 'ERR'
-            for field, message of data._issues
-              flash.error = "#{field}: #{message}"
-      else
-        saveRequest()
-    saveRequest = () ->
+    $scope.apply = (key) ->
+      d = {}
+      d[key] = $scope.request.attribute[key]
+      Waterpoint.patch($scope.waterpoint._id, d, $scope.waterpoint._etag)
+      .success (data, status) ->
+        if status == 200 and data._status == 'OK'
+          flash.success = 'Waterpoint successfully updated!'
+          $scope.waterpoint._etag = data._etag
+          $scope.waterpoint[key] = $scope.request.attribute[key]
+        if status == 200 and data._status == 'ERR'
+          for field, message of data._issues
+            flash.error = "#{field}: #{message}"
+    $scope.saveRequest = () ->
       if $scope.expected_datetime
         $scope.request.expected_datetime = $filter('date') $scope.expected_datetime, "EEE, dd MMM yyyy hh:mm:ss 'GMT'"
       Request.update($routeParams.id, $scope.request)
