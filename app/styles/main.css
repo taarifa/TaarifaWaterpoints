@@ -1,6 +1,14 @@
 /* http://angular-ui.github.io/bootstrap/#/getting_started */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
+.fade {
+  display: none;
+}
+
+.fade.in {
+  display: block;
+}
+
 .list-group {
   margin-bottom: 0;
 }
