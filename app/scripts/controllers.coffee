@@ -67,6 +67,8 @@ angular.module('taarifaWaterpointsApp')
       $scope.request = request
       Waterpoint.get where: {wpt_code: request.attribute.waterpoint_id}, (waterpoint) ->
         $scope.waterpoint = waterpoint._items[0]
+        if not request.agency_responsible
+          request.agency_responsible = $scope.waterpoint.wp_management
     $scope.triage = {}
     $scope.doTriage = () ->
       if Object.keys($scope.triage).length
