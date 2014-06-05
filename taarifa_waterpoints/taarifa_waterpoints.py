@@ -48,21 +48,48 @@ def waterpoint_stats_by(selector):
         {"$group": {"_id": {selector: "$" + selector,
                             "status": "$status"},
                     "statusCount": {"$sum": 1},
-                    "populationCount": {"$sum": "$population"}}},
+                    "avgBucketCost": {"$avg": "$amount_tsh"},
+                    "populationCount": {"$sum": "$population"},
+                    "cyears": {"$addToSet": "$construction_year"}}},
         {"$group": {"_id": "$_id." + selector,
                     "waterpoints": {
                         "$push": {
                             "status": "$_id.status",
                             "count": "$statusCount",
                             "population": "$populationCount",
+                            "cyears": "$cyears"
                         },
                     },
-                    "count": {"$sum": "$statusCount"}}},
+                    "count": {"$sum": "$statusCount"},
+                    "population": {"$sum": "$populationCount"},
+                    "avgBucketCost": {"$avg":"$avgBucketCost"}  }},
         {"$project": {"_id": 0,
                       selector: "$_id",
-                      "waterpoints": 1,
                       "population": 1,
+                      "avgBucketCost": 1,
+                      "waterpoints": 1,
                       "count": 1}}])['result'],))
+
+
+
+@app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/cstats_by/<selector>')
+def waterpoint_cstats_by(selector):
+    # FIXME: Direct call to the PyMongo driver, should be abstracted
+    resources = app.data.driver.db['resources']
+    return send_response('resources', (resources.aggregate([
+        {"$match": dict(request.args.items())},
+        {"$group": {
+            "_id": {
+                "cyear": "$construction_year"
+            }
+          }},
+            {"$group": {
+                "_id": "$_id.cyear",
+                "count": { "$sum": 1 }
+            }},
+            {"$project": {"_id": 0,
+                          "cyear": "$_id",
+                          "count": 1}}])['result'],))
 
 
 @app.route('/scripts/<path:filename>')

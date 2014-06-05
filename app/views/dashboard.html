@@ -3,45 +3,99 @@
     <select ng-model="group" ng-options="v for v in groups" ng-change="groupBy()" class="form-control">
     </select>
   </div>
-  Filter:
+  &nbsp;Filter:
   <div class="form-group">
-    <select ng-model="params.region" ng-options="v for v in regions" ng-change="getStatus('region')" class="form-control">
+    <select ng-model="params.region" ng-options="v for v in regions" ng-change="getStatus('region')"  data-live-search="true" class="form-control filter-dropdown">
         <option value="">{{"Region"|translate}}:</option>
     </select>
   </div>
   <div class="form-group">
-    <select ng-model="params.district" ng-options="v for v in districts" ng-change="getStatus('district')" class="form-control">
+    <select ng-model="params.district" ng-options="v for v in districts" ng-change="getStatus('district')" data-live-search="true" class="form-control filter-dropdown">
         <option value="">{{"District"|translate}}:</option>
     </select>
   </div>
+  <!--div class="form-group">
+    <select ng-model="params.lga" ng-options="v for v in lgas" ng-change="getStatus('lga')" data-live-search="true" class="form-control" filter-dropdown">
+        <option value="">{{"LGA"|translate}}:</option>
+    </select>
+  </div-->
   <div class="form-group">
-    <select ng-model="params.ward" ng-options="v for v in wards" ng-change="getStatus('ward')" class="form-control">
+    <select ng-model="params.ward" ng-options="v for v in wards" ng-change="getStatus('ward')" data-live-search="true" class="form-control filter-dropdown">
         <option value="">{{"Ward"|translate}}:</option>
     </select>
   </div>
 </form>
 <hr>
 <div class="row">
+      <div class="col-md-6">
+
   <div class="panel panel-primary">
     <div class="panel-heading">
       <h3 class="panel-title" translate>Waterpoint Status</h3>
     </div>
     <div class="panel-body">
-      <div class="btn-group btn-group-justified">
-        <div class="btn-group" ng-repeat="s in status">
-            <span>{{s.status || 'unknown'}}</span>
-            <br />
-            <span class="badge">{{ s.percent | number:2 }} %</span> <span>({{ s.count }})</span>
-        </div>
-        <div class="btn-group">
-            Population covered
-            <br />
-            <span class="badge">{{ popCover.percent | number:2 }} %</span> <span>({{ popCover.count | number:0 }})</span>
-        </div>
+
+        <table class="tileTable table">
+            <tbody>
+                <tr>
+                    <td ng-model="status" repeat="s in status" class="tile" width="50%">
+                        <span class="tile-header">{{status[0].status || 'unknown'}}</span>
+                        <br />
+                        <span class="tile-number">{{ status[0].percent | number:2 }} %</span>
+                        <br />
+                        <span class="tile-info">({{ status[0].count }})</span>
+                    </td>
+                    <td style="background-color:white;"></td>
+                    <td ng-model="status" class="tile" width="50%">
+                        <span class="tile-header">{{status[1].status || 'unknown'}}</span>
+                        <br />
+                        <span class="tile-number">{{ status[1].percent | number:2 }} %</span>
+                        <br />
+                        <span class="tile-info">({{ status[0].count }})</span>
+                    </td>
+                </tr>
+                <tr style="background-color:white;">
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="tile">
+                        <span class="tile-header">Population covered</span>
+                        <br />
+                        <span class="tile-number">{{ popCover.percent | number:2 }} %</span>
+                        <br />
+                        <span class="tile-info">({{ popCover.count | number:0 }})</span>
+                    </td>
+                    <td style="background-color:white;"></td>
+                    <td class="tile">
+                        <span class="tile-header">Top Problems</span>
+                        <span style="list-style:none;font-size:18px;font-weight:bold;">
+                            <br />Tap broken
+                            <br />Salty water
+                            <br />Barrel leaks
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
       </div>
     </div>
-  </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel-heading">
+            <h3 class="panel-title" translate>Waterpoint Map</h3>
+        </div>
+        <div class="panel-body">
+            <!--div id="cartodbMap"></div-->
+            <iframe width="100%" height="340px" frameBorder="0"
+                src="//worldbank.cartodb.com/viz/9af2a2ec-e414-11e3-94c5-0edbca4b5057/embed_map?title=false&description=true&search=false&shareable=true&cartodb_logo=false&layer_selector=false&legends=true&scrollwheel=true&fullscreen=true&sublayer_options=1%7C1&sql=&sw_lat=-8.96579304346216&sw_lon=32.49275207519531&ne_lat=-6.535691684047911&ne_lon=37.74696350097656"></iframe>
+        </div>
+    </div> <!-- close col -->
 </div>
+
 <div class="row" ng-repeat="plot in plots">
   <div class="panel panel-primary">
     <div class="panel-heading">
@@ -50,11 +104,23 @@
     <div class="panel-body plot" id="{{plot.id}}"></div>
   </div>
 </div>
+
 <div class="row">
-  <iframe width="100%" height="500px" frameBorder="0"
-    src="//worldbank.cartodb.com/viz/9af2a2ec-e414-11e3-94c5-0edbca4b5057/embed_map?title=false&description=true&search=false&shareable=true&cartodb_logo=false&layer_selector=false&legends=true&scrollwheel=true&fullscreen=true&sublayer_options=1%7C1&sql=&sw_lat=-8.96579304346216&sw_lon=32.49275207519531&ne_lat=-6.535691684047911&ne_lon=37.74696350097656"></iframe>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Key Performance Indicators</h3>
+            </div>
+            <div class="panel-body">
+                <div class="plot" id="kpiCoverage"></div>
+            </div>
+        </div>
+    </div>
+
+<div class="row">
 </div>
 <div class="row">
+</div>
+<!--div class="row">
   <div class="panel panel-primary">
     <div class="panel-heading">
       <h3 class="panel-title" translate>Top Reasons for Faulty Waterpoints</h3>
@@ -65,4 +131,4 @@
       <li class="list-group-item" translate>3: Barrel is Lost</li>
     </ul>
   </div>
-</div>
+</div-->

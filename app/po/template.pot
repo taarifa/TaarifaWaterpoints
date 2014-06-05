@@ -3,20 +3,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: app/scripts/plots.js
-msgid "% Functional"
+#: app/views/requests.html
+msgid ""
+"<a class=\"glyphicon glyphicon-cog\" href=\"#/requests/{{request._id}}\" title=\"Triage\"></a>"
+"      Waterpoint {{request.attribute.waterpoint_id}}"
+"      <span class=\"pull-right small\">submitted on {{request._created}}</span>"
 msgstr ""
 
 #: app/views/dashboard.html
-msgid "1: Tap is Broken"
-msgstr ""
-
-#: app/views/dashboard.html
-msgid "2: Barrel is Broken"
-msgstr ""
-
-#: app/views/dashboard.html
-msgid "3: Barrel is Lost"
+msgid "Barrel leaks"
 msgstr ""
 
 #: app/views/dashboard.html
@@ -27,24 +22,20 @@ msgstr ""
 msgid "Group By"
 msgstr ""
 
-#: app/scripts/plots.js
-msgid "Number of Waterpointies"
+#: app/views/dashboard.html
+msgid "LGA"
 msgstr ""
 
 #: app/views/dashboard.html
 msgid "Region"
 msgstr ""
 
-#: app/scripts/plots.js
-msgid "Spend per Waterpoint ($)"
-msgstr ""
-
-#: app/index.html
-msgid "Taarifa Waterpoints"
+#: app/views/dashboard.html
+msgid "Salty water"
 msgstr ""
 
 #: app/views/dashboard.html
-msgid "Top Reasons for Faulty Waterpoints"
+msgid "Tap broken"
 msgstr ""
 
 #: app/views/dashboard.html
@@ -52,5 +43,20 @@ msgid "Ward"
 msgstr ""
 
 #: app/views/dashboard.html
+msgid "Waterpoint Map"
+msgstr ""
+
+#: app/views/dashboard.html
+#: app/views/dashboard3.html
 msgid "Waterpoint Status"
+msgstr ""
+
+#: app/views/triage.html
+msgid ""
+"Waterpoint {{request.attribute.waterpoint_id}}"
+"      <small class=\"pull-right\">submitted on {{request._created}}</small>"
+msgstr ""
+
+#: app/index.html
+msgid "Waterpoints Dashboard"
 msgstr ""

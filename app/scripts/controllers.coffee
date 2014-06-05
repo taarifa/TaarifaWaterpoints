@@ -88,8 +88,9 @@ angular.module('taarifaWaterpointsApp')
 
   .controller 'DashboardCtrl', ($scope, $http) ->
     $scope.plots = [
-      {id:"statusSummary", title: "Functioning Waterpoints"},
-      {id:"spendSummary", title: "Spend per Waterpoint"},
+      {id:"statusSummary", title: "Waterpoint Status (by % Functional)"},
+      {id:"cyearSummary", title: "Waterpoints per Construction Year"},
+      {id:"spendSummary", title: "Average Price per Bucket (TSH)"},
       {id:"spendImpact", title: "Spend vs Functionality"}]
     # FIXME: Are these the right groupings? Shouldn't hard code those...
 
@@ -99,7 +100,7 @@ angular.module('taarifaWaterpointsApp')
 
     $http.get('/api/waterpoints/values/region').success (data, status, headers, config) ->
       $scope.regions = data.sort()
-
+      #initMap()
     getDistrict = () ->
       $http.get('/api/waterpoints/values/district',
                 params: {region: $scope.params?.region})
@@ -110,18 +111,31 @@ angular.module('taarifaWaterpointsApp')
       $http.get('/api/waterpoints/values/ward',
                 params:
                   region: $scope.params?.region
+                  lga_name: $scope.params?.lga
                   district: $scope.params?.district)
         .success (data, status, headers, config) ->
           $scope.wards = data.sort()
+
+    getLGA = () ->
+      $http.get('/api/waterpoints/values/lga_name',
+                params:
+                  region: $scope.params?.region
+                  district: $scope.params?.district)
+        .success (data, status, headers, config) ->
+          $scope.lgas = data.sort()
+
+    $scope.resetFilter = () ->
+      $scope.params = null
+      $scope.getStatus('region')
 
     $scope.getStatus = (changed) ->
       $http.get('/api/waterpoints/status', params: $scope.params)
         .success (data, status, headers, config) ->
           #FIXME: manually add it so it shows up
-          data.push(
-            status: "Needs Repair"
-            count: 0
-          )
+          #data.push(
+          #  status: "Needs Repair"
+          #  count: 0
+          #)
           total = d3.sum(data, (x) -> x.count)
           data.forEach( (x) -> x.percent = x.count / total * 100)
 
@@ -132,14 +146,17 @@ angular.module('taarifaWaterpointsApp')
 
       if changed == 'region'
         getDistrict()
+        getLGA()
         getWard()
       if changed == 'district'
+        getLGA()
         getWard()
-      updatePlots($scope.params?.region, $scope.params?.district, $scope.params?.ward, $scope.group)
+      updatePlots($scope,$scope.params?.region, $scope.params?.district, $scope.params?.ward, $scope.group)
 
     $scope.groupBy = () ->
-      updatePlots($scope.params?.region, $scope.params?.district, $scope.params?.ward, $scope.group)
+      updatePlots($scope,$scope.params?.region, $scope.params?.district, $scope.params?.ward, $scope.group)
 
     $scope.getStatus()
     getDistrict()
+    getLGA()
     getWard()

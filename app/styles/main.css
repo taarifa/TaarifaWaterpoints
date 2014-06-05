@@ -20,7 +20,7 @@
 /* Customize container */
 @media (min-width: 768px) {
   .container {
-    max-width: 730px;
+    max-width: 900px;
   }
 }
 .container-narrow > hr {
@@ -30,7 +30,13 @@
 /* Plots */
 .plot {
     height: 350px;
+    width: 880px;
 }
+.plot-half {
+    height: 350px;
+    width: 440px;
+}
+
 
 /* Stacked bar chart */
 
@@ -62,9 +68,100 @@
   stroke: #000;
 }
 
+
+/* line chart */
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+/**********/
+
 .tooltip {
   position: absolute;
   width: 200px;
   height: 28px;
   pointer-events: none;
+}
+
+#cartodbMap {
+    width: 100%;
+    height: 550px;
+}
+
+#tileTable .table th, .table td { 
+     border-top: none !important; 
+}
+
+#tileTable {
+    border-width:10px;
+    border-color:white;
+}
+
+#tileTable tr {
+    padding: 10px;
+}
+
+#tileTable td {
+    border-width:10px;
+    border-color:white;
+}
+
+.tile{
+    background-color: #f4f4f4;
+    --webkit-box-shadow: 0px 0px 2px 2px #d0d0d0;
+    font-size: 30px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tile-header {
+    font-size: 18px;
+    font-color: white;
+    line-height: 15px;
+}
+
+.tile-number{
+    font-weight: bold;
+    font-size: 35px;
+}
+
+.tile-info {
+    font-size: 20px;
+}
+
+.panel-heading {
+    background-color: white !important;
+    border-color: white !important;
+}
+
+.panel-title {
+    color: #363636;
+}
+
+.panel, .panel-default {
+    border-color: white !important;
+}
+
+.btn {
+    width: 170px !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+    background-color: pink;
 }

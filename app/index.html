@@ -14,15 +14,17 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
     <!-- Leaflet -->
-    <link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+    <link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.7.2/leaflet.css">
+    <!--link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" /-->
 
     <!-- Clustering -->
-    <link rel="stylesheet" href="//leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="//leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <!--link rel="stylesheet" href="//leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="//leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" /-->
 
-    <!-- d3 tip -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.3.5/bootstrap-select.min.css" /-->
+
+    <!-- dashboard -->
     <link rel="stylesheet" href="//rawgithub.com/Caged/d3-tip/master/examples/example-styles.css">
-
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
@@ -41,16 +43,16 @@
             <span class="glyphicon glyphicon-plus"></span>
             Create waterpoint
           </a></li-->
-          <li ng-class="{active: location.path() == '/'}"><a ng-href="#">Home</a></li>
-          <li ng-class="{active: location.path() == '/requests'}"><a ng-href="#/requests">Triage</a></li>
+          <!--li ng-class="{active: location.path() == '/'}"><a ng-href="#">Home</a></li-->
+          <!--li ng-class="{active: location.path() == '/requests'}"><a ng-href="#/requests">Triage</a></li-->
           <li ng-class="{active: location.path() == '/dashboard'}"><a ng-href="#/dashboard">Dashboard</a></li>
-          <li><select class="form-control" ng-model="$root.fields.catalog.currentLanguage"
-              ng-options="key as value for (key, value) in $root.fields.languages"></select></li>
+          <!--li><select class="form-control" ng-model="$root.fields.catalog.currentLanguage"
+              ng-options="key as value for (key, value) in $root.fields.languages"></select></li-->
         </ul>
-        <h3 class="text-muted" translate>Taarifa Waterpoints</h3>
+        <h3 class="text-muted" translate>Waterpoints Dashboard</h3>
       </div>
       <hr>
-
+      <div id="testmap"></div>
       <div flash-alert="success" active-class="in alert" class="fade" duration="0">
         <button type="button" class="close" ng-click="hide()">&times;</button>
         <strong class="alert-heading">Success:</strong>
@@ -87,12 +89,17 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.10/angular-route.min.js"></script>
 
     <script src="//cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js"></script>
-    <script src="//tombatossals.github.io/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+    <!--script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js"></script>
+    <script src="//tombatossals.github.io/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script-->
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.3/d3-tip.min.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+ <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.3.5/bootstrap-select.min.js"></script>
+    <script src="//libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="vendor/dynamic-forms.js"></script>
@@ -100,6 +107,7 @@
     <script src="vendor/flash-alert-directive.js"></script>
     <script src="vendor/angular-gettext.min.js"></script>
     <script src="scripts/plots.js"></script>
+    <script src="scripts/map.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/services.js"></script>
     <script src="scripts/controllers.js"></script>

@@ -4,7 +4,7 @@ app = angular
   .module('taarifaWaterpointsApp', [
     'ngResource',
     'ngRoute',
-    'leaflet-directive',
+     #'leaflet-directive',
     'dynform',
     'angular-flash.service',
     'angular-flash.flash-alert-directive',
@@ -35,7 +35,7 @@ app = angular
         templateUrl: 'views/dashboard.html'
         controller: 'DashboardCtrl'
       .otherwise
-        redirectTo: '/'
+        redirectTo: '/dashboard'
     $httpProvider.defaults.headers.patch =
       'Content-Type': 'application/json;charset=utf-8'
     flashProvider.errorClassnames.push 'alert-danger'
