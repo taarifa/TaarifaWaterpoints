@@ -76,7 +76,8 @@ def waterpoint_stats_by(field):
                       field: project.get(field, "$_id"),
                       "waterpoints": 1,
                       "population": 1,
-                      "count": 1}}])['result'],))
+                      "count": 1}},
+        {"$sort": {field: 1}}])['result'],))
 
 
 @app.route('/scripts/<path:filename>')
