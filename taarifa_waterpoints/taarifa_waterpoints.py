@@ -47,19 +47,23 @@ def waterpoint_count_by(field):
         reduce="function(curr, result) {result.count++;}"),))
 
 
-@app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/stats_by/<selector>')
-def waterpoint_stats_by(selector):
+@app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/stats_by/<field>')
+def waterpoint_stats_by(field):
     """Return number of waterpoints of a given status grouped by a certain
     attribute."""
+    # Some fields require an addtional projection
+    project = {'construction_year': {"$cond": ["$_id",
+                                               {"$year": "$_id"},
+                                               "unknown"]}}
     # FIXME: Direct call to the PyMongo driver, should be abstracted
     resources = app.data.driver.db['resources']
     return send_response('resources', (resources.aggregate([
         {"$match": dict(request.args.items())},
-        {"$group": {"_id": {selector: "$" + selector,
+        {"$group": {"_id": {field: "$" + field,
                             "status": "$status"},
                     "statusCount": {"$sum": 1},
                     "populationCount": {"$sum": "$population"}}},
-        {"$group": {"_id": "$_id." + selector,
+        {"$group": {"_id": "$_id." + field,
                     "waterpoints": {
                         "$push": {
                             "status": "$_id.status",
@@ -69,7 +73,7 @@ def waterpoint_stats_by(selector):
                     },
                     "count": {"$sum": "$statusCount"}}},
         {"$project": {"_id": 0,
-                      selector: "$_id",
+                      field: project.get(field, "$_id"),
                       "waterpoints": 1,
                       "population": 1,
                       "count": 1}}])['result'],))
