@@ -37,6 +37,16 @@ def waterpoint_status():
         reduce="function(curr, result) {result.count++;}"),))
 
 
+@app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/count_by/<field>')
+def waterpoint_count_by(field):
+    "Return number of waterpoints grouped a given field."
+    # FIXME: Direct call to the PyMongo driver, should be abstracted
+    resources = app.data.driver.db['resources']
+    return send_response('resources', (resources.group(
+        field.split(','), dict(request.args.items()), initial={'count': 0},
+        reduce="function(curr, result) {result.count++;}"),))
+
+
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/stats_by/<selector>')
 def waterpoint_stats_by(selector):
     """Return number of waterpoints of a given status grouped by a certain
