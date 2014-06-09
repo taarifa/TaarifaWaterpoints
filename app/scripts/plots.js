@@ -1,9 +1,9 @@
 //to prevent creating overcrowded plots
-var minColWidth = 18;
+var minColWidth = 25;
 var $scope;
 var statusColor = d3.scale.ordinal()
     .domain(["Functional","Not functional"])
-    .range(["#a8d05e","#e57f7f"]);
+    .range(["#0a871f","#d50000"]);
 
 
 function updatePlots(angularScope, region, district, ward, groupfield) {
@@ -21,11 +21,14 @@ function updatePlots(angularScope, region, district, ward, groupfield) {
   });
 
   var filter = filters.join("&");
-  
+  var url3 = url; 
   var url2 = "/api/waterpoints/stats_by/construction_year";
   if(filter) {
       url += "?" + filter;
       url2 += "?" + filter;
+      url3 += "?water_payment=Pay per bucket&" + filter;
+  }else{
+   url3 += "?water_payment=Pay per bucket";
   }
   var comparator = function(a, b) {
     var af = _.find(a.waterpoints, function(x) {
@@ -85,13 +88,14 @@ function updatePlots(angularScope, region, district, ward, groupfield) {
     data.sort(comparator);
 
     plotStatusSummary("#statusSummary", data, groupfield);
+  });
+
+  d3.json(url3, function(error, data) {
+    //sort by % functional waterpoints
+    data.sort(comparator);
+
     plotSpendSummary("#spendSummary", data, groupfield);
     plotSpendImpact("#spendImpact", data, groupfield);
-    var once= executeOnce(function(){
-          //TODO  hack!
-          //jQuery('select').selectpicker();
-    },1500);
-    //once();
   });
 }
 
@@ -395,9 +399,9 @@ function plotSpendSummary(selector, data, groupField) {
     .orient("left");
 
   var color = d3.scale.ordinal()
-    .domain(["#31c5f4"]);
+    .domain(["#284fc7"]);
 
-  var colval ="#31c5f4";
+  var colval ="#284fc7";
 
   svg = d3.select(selector + " svg g");
   if (!svg[0][0]) {
@@ -552,8 +556,8 @@ function plotSpendImpact(selector, wpdata, groupField) {
     .orient("left");
 
   var color = d3.scale.ordinal()
-    .domain(["#31c5f4"]);
-    var colval="#31c5f4";
+    .domain(["#284fc7"]);
+    var colval="#284fc7";
     
 
   svg = d3.select(selector + " svg g");
@@ -754,8 +758,8 @@ d3.csv("kpis.csv", function(error, data) {
       return "rotate(-65)"
     });
 
-    var blue="#31c5f4";
-    var red="#e8db50";
+    var blue="#284fc7";
+    var red="#0a871f";
   svg.append("g")
       .attr("class", "y axis")
       .style("fill", blue) 
@@ -838,8 +842,8 @@ function plotCyearSummary(selector, data, groupField) {
     .orient("left");
 
   var color = d3.scale.ordinal()
-    .domain(["#31c5f4"]);
-    var colval="#31c5f4";
+    .domain(["#284fc7"]);
+    var colval="#284fc7";
 
   svg = d3.select(selector + " svg g");
   if (!svg[0][0]) {

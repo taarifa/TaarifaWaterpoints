@@ -5,7 +5,6 @@ from taarifa_api import api as app, main
 
 app.name = 'TaarifaWaterpoints'
 
-
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/values/<field>')
 def waterpoint_values(field):
     "Return the unique values for a given field in the waterpoints collection."
