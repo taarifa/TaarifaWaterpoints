@@ -1,15 +1,95 @@
 waterpoint_schema = {
+    'gid': {
+        'type': 'integer',
+        'label': 'GID',
+        # FIXME: not really unique...
+        # 'unique': True
+    },
+    'object_id': {
+        'type': 'integer',
+        'label': 'Object ID',
+        # FIXME: not really unique...
+        # 'unique': True
+    },
+    'valid_from': {
+        'type': 'datetime',
+        'label': 'Valid From',
+    },
+    'valid_to': {
+        'type': 'datetime',
+        'label': 'Valid To',
+    },
+    'amount_tsh': {
+        'type': 'float',
+        'label': 'Amount paid (TSH)',
+    },
+    'breakdown_year': {
+        'type': 'integer',
+        'label': 'Breakdown Year',
+    },
     'date_recorded': {
         'type': 'datetime',
         'label': 'Date recorded',
     },
-    'company': {
+    'funder': {
         'type': 'string',
-        'label': 'Company',
+        'label': 'Funder',
+    },
+    'gps_height': {
+        'type': 'float',
+        'label': 'GPS Height',
+    },
+    'installer': {
+        'type': 'string',
+        'label': 'Installer',
+    },
+    'longitude': {
+        'type': 'float',
+        'label': 'Longitude',
+        'min': -90,
+        'max': 90,
+    },
+    'latitude': {
+        'type': 'float',
+        'label': 'Latitude',
+        'min': -180,
+        'max': 180,
+    },
+    'wpt_name': {
+        'type': 'string',
+        'label': 'Waterpoint Name',
+    },
+    'num_private': {
+        'type': 'integer',
+        'label': 'Number of private Connections',
+    },
+    'basin': {
+        'type': 'string',
+        'label': 'Basin',
+    },
+    'subvillage': {
+        'type': 'string',
+        'label': 'Subvillage',
     },
     'region': {
         'type': 'string',
         'label': 'Region',
+    },
+    'region_code': {
+        'type': 'integer',
+        'label': 'Region Code',
+    },
+    'district_code': {
+        'type': 'integer',
+        'label': 'District Code',
+    },
+    'lga_name': {
+        'type': 'string',
+        'label': 'LGA Name',
+    },
+    'ward': {
+        'type': 'string',
+        'label': 'Ward',
     },
     'district': {
         'type': 'string',
@@ -23,26 +103,33 @@ waterpoint_schema = {
         'type': 'string',
         'label': 'Ward',
     },
-    'village': {
-        'type': 'string',
-        'label': 'Village',
+    'population': {
+        'type': 'integer',
+        'label': 'Population',
     },
-    'village_po': {
-        'type': 'string',
+    'public_meeting': {
+        'type': 'boolean',
+        'label': 'Public meetings held',
     },
-    'village_re': {
+    'reason_wpt': {
         'type': 'string',
+        'label': 'Reason not functional',
     },
-    'village_ph': {
+    'recorded_by': {
         'type': 'string',
+        'label': 'Recorded by',
     },
-    'subvillage': {
+    'scheme_management': {
         'type': 'string',
-        'label': 'Subvillage',
+        'label': 'Scheme Management',
     },
-    'wpt_name': {
+    'scheme_name': {
         'type': 'string',
-        'label': 'Waterpoint Name',
+        'label': 'Scheme Name',
+    },
+    'permit': {
+        'type': 'string',
+        'label': 'Permit',
     },
     'wpt_code': {
         'type': 'string',
@@ -50,120 +137,102 @@ waterpoint_schema = {
         # FIXME: waterpoint codes should be unique, but are not in the dataset
         # 'unique': True,
     },
-    'population': {
-        'type': 'integer',
-        'label': 'Population',
-    },
-    'scheme_name': {
+    'wpt_photoid': {
         'type': 'string',
-        'label': 'Scheme Name',
-    },
-    'water_perm': {
-        'type': 'string',
-        'label': 'Water Permission',
-    },
-    'catchment': {
-        'type': 'string',
-        'label': 'Catchment',
-    },
-    'funder': {
-        'type': 'string',
-        'label': 'Funder',
-    },
-    'installer': {
-        'type': 'string',
-        'label': 'Installer',
+        'label': 'Photo ID',
     },
     'construction_year': {
-        'type': 'datetime',
+        'type': 'integer',
         'label': 'Construction Year',
+    },
+    'extraction_type': {
+        'type': 'string',
+        'label': 'Extraction type',
+    },
+    'extraction_type_group': {
+        'type': 'string',
+        'label': 'Extraction type group',
+    },
+    'extraction_type_class': {
+        'type': 'string',
+        'label': 'Extraction type class',
+    },
+    'hardware_problem': {
+        'type': 'string',
+        'label': 'Hardware problem',
+    },
+    'hardware_problem_group': {
+        'type': 'string',
+        'label': 'Hardware problem group',
+    },
+    'management': {
+        'type': 'string',
+        'label': 'Management Authority (COWSO)',
+    },
+    'management_group': {
+        'type': 'string',
+        'label': 'Management Group',
+    },
+    'payment': {
+        'type': 'string',
+        'label': 'Form of Payment',
+    },
+    'payment_type': {
+        'type': 'string',
+        'label': 'Type of Payment',
+    },
+    'water_quality': {
+        'type': 'string',
+        'label': 'Water quality',
+    },
+    'quality_group': {
+        'type': 'string',
+        'label': 'Water quality group',
+    },
+    'quantity': {
+        'type': 'string',
+        'label': 'Quantity',
+    },
+    'quantity_group': {
+        'type': 'string',
+        'label': 'Quantity group',
+    },
+    'source': {
+        'type': 'string',
+        'label': 'Source',
     },
     'source_type': {
         'type': 'string',
         'label': 'Source Type',
     },
-    'extraction': {
+    'source_class': {
         'type': 'string',
-        'label': 'Extraction',
-    },
-    'waterpoint': {
-        'type': 'string',
-        'label': 'Waterpoint',
+        'label': 'Source Class',
     },
     'status_detail': {
         'type': 'string',
-        'label': 'Status Detail',
+        'label': 'Status detail',
     },
-    'status': {
+    'status_group': {
         'type': 'string',
-        'label': 'Status',
-        'allowed': ['Functional', 'Not functional', 'Needs repair'],
+        'label': 'Status group',
+        'allowed': ['functional', 'not functional', 'needs repair'],
     },
-    'breakdown_year': {
-        'type': 'datetime',
-        'label': 'Breakdown Year',
-    },
-    'hardware_defect': {
+    'waterpoint_type': {
         'type': 'string',
-        'label': 'Hardware Defect',
+        'label': 'Waterpoint type',
     },
-    'reason_wpt': {
+    'waterpoint_type_group': {
         'type': 'string',
-        'label': 'Reason for Defect',
-    },
-    'water_quantity': {
-        'type': 'string',
-        'label': 'Water Quantity',
-    },
-    'water_quality': {
-        'type': 'string',
-        'label': 'Water Quality',
-    },
-    'scheme_management': {
-        'type': 'string',
-        'label': 'Waterpoint Management',
-    },
-    'wp_management': {
-        'type': 'string',
-        'label': 'Waterpoint Management',
-    },
-    'water_payment': {
-        'type': 'string',
-        'label': 'Water Payment',
-    },
-    'amount_tsh': {
-        'type': 'float',
-        'label': 'Amount (Tanzanian shilling)',
-    },
-    'public_meeting': {
-        'type': 'string',
-        'label': 'Public Meeting',
-    },
-    'comment': {
-        'type': 'string',
-        'label': 'Comment',
-    },
-    'gps_height': {
-        'type': 'float',
-        'label': 'GPS Height',
-    },
-    'latitude': {
-        'type': 'float',
-        'label': 'Latitude',
-        'min': -180,
-        'max': 180,
-    },
-    'longitude': {
-        'type': 'float',
-        'label': 'Longitude',
-        'min': -90,
-        'max': 90,
+        'label': 'Waterpoint type group',
     },
 }
 
 # Facility and resources go hand in hand. Following Open311 the facility
 # schema uses its fields attribute to define the schema resources must
 # have that are part of the facility.
+# FIXME: facility/service code duplicated here and in manage.py, should be in
+# settings.py
 facility_schema = {'facility_code': "wpf001",
                    'facility_name': "Waterpoint Infrastructure",
                    # this defines the schema of a resource within this facility
