@@ -125,5 +125,11 @@ def dashboard():
 def favicon():
     return send_from_directory(app.root_path + '/dist/', 'favicon.ico')
 
+
+# FIXME: this is a temporary hack, needs to be removed
+@app.route("/kpis.csv")
+def kpis():
+    return send_from_directory(app.root_path + '/dist/', 'kpis.csv')
+
 if __name__ == '__main__':
     main()
