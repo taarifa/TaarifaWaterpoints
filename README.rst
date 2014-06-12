@@ -199,13 +199,25 @@ To check things are working, open a browser and navigate to: ::
 This should show a list of all the waterpoint resources currently in the
 database.
 
-To use the web application simply start the server using grunt: ::
+To work on the frontend web application simply start the server using grunt: ::
 
   grunt serve --watch
 
 Then navigate to: ::
 
   http://localhost:9000
+
+Grunt watches the `app` folder for changes and automatically reloads the
+frontend in your browser as soon as you make changes.
+
+If you intend to use the frontend as-is you can also build it using ::
+
+  grunt build
+
+This creates a distribution in the `dist` folder, which is served via the Flask
+development server running on port 5000. The build step only only needs to be
+run whenever the frontend in the `app` folder changes. Running `grunt serve` is
+not required in this case.
 
 
 Contribute
