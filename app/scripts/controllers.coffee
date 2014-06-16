@@ -68,7 +68,7 @@ angular.module('taarifaWaterpointsApp')
       Waterpoint.get where: {wpt_code: request.attribute.waterpoint_id}, (waterpoint) ->
         $scope.waterpoint = waterpoint._items[0]
         if not request.agency_responsible
-          request.agency_responsible = $scope.waterpoint.wp_management
+          request.agency_responsible = $scope.waterpoint.management
     $scope.apply = (key) ->
       d = {}
       d[key] = $scope.request.attribute[key]
@@ -93,7 +93,7 @@ angular.module('taarifaWaterpointsApp')
       {id:"spendImpact", title: "Spend vs Functionality"}]
     # FIXME: Are these the right groupings? Shouldn't hard code those...
 
-    $scope.groups = ['region', 'district', 'ward', 'funder', 'company', 'source_type']
+    $scope.groups = ['region', 'district', 'ward', 'funder', 'source_type']
     # default to region
     $scope.group = $scope.groups[0];
 
@@ -115,20 +115,18 @@ angular.module('taarifaWaterpointsApp')
           $scope.wards = data.sort()
 
     $scope.getStatus = (changed) ->
-      $http.get('/api/waterpoints/status', params: $scope.params)
+      $http.get('/api/waterpoints/stats_by/status_group', params: $scope.params)
         .success (data, status, headers, config) ->
-          #FIXME: manually add it so it shows up
-          data.push(
-            status: "Needs Repair"
-            count: 0
-          )
           total = d3.sum(data, (x) -> x.count)
           data.forEach( (x) -> x.percent = x.count / total * 100)
 
-          $scope.status = data
+          # index by status_group for convenience
+          statusMap = _.object(_.pluck(data,"status_group"), data)
 
-          #FIXME: needs real data
-          $scope.popCover = {count: Math.random()*10000, percent: Math.random()*100}
+          $scope.status = statusMap
+
+          #FIXME: join with population data
+          $scope.popCover = {count: statusMap["functional"].waterpoints.population, percent: 0}
 
       if changed == 'region'
         getDistrict()

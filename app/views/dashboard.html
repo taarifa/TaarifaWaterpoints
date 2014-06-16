@@ -28,10 +28,10 @@
     </div>
     <div class="panel-body">
       <div class="btn-group btn-group-justified">
-        <div class="btn-group" ng-repeat="s in status">
-            <span>{{s.status || 'unknown'}}</span>
+        <div class="btn-group" ng-repeat="(key, value) in status">
+            <span>{{key || 'unknown' | titlecase}}</span>
             <br />
-            <span class="badge">{{ s.percent | number:2 }} %</span> <span>({{ s.count }})</span>
+            <span class="badge">{{ value.percent | number:2 }} %</span> <span>({{ value.count }})</span>
         </div>
         <div class="btn-group">
             Population covered

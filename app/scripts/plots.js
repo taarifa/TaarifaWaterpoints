@@ -1,6 +1,10 @@
 //to prevent creating overcrowded plots
 var minColWidth = 20;
 
+function isFunctional(s) {
+    return s.status == "functional";
+}
+
 function updatePlots(region, district, ward, groupfield) {
   groupfield = groupfield || "region";
   var url = "/api/waterpoints/stats_by/" + groupfield;
@@ -17,23 +21,20 @@ function updatePlots(region, district, ward, groupfield) {
   if(filter) url += "?" + filter;
 
   var comparator = function(a, b) {
-    var af = _.find(a.waterpoints, function(x) {
-      return x.status == "Functional";
-    });
-    var bf = _.find(b.waterpoints, function(x) {
-      return x.status == "Functional";
-    });
+    var af = _.find(a.waterpoints, isFunctional);
+    var bf = _.find(b.waterpoints, isFunctional);
 
+    //ensure there is always a functional entry
     if (!af) {
       af = {
-        status: "Functional",
+        status: "functional",
         count: 0
       };
       a.waterpoints.push(af);
     }
     if (!bf) {
       bf = {
-        status: "Functional",
+        status: "functional",
         count: 0
       };
       b.waterpoints.push(bf);
@@ -409,9 +410,7 @@ function plotSpendImpact(selector, wpdata, groupField) {
   //TODO: more made up data
   data = [];
   wpdata.forEach(function(x) {
-    var functional = _.find(x.waterpoints, function(x) {
-      return x.status == "Functional";
-    });
+    var functional = _.find(x.waterpoints, isFunctional);
     var d = {
       functional: functional.count / x.count * 100,
       population: d3.sum(_.pluck(x.waterpoints, "population")),
