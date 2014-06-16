@@ -8,11 +8,11 @@ function isFunctional(s) {
     return s.status == "functional";
 }
 
-function updatePlots(region, district, ward, groupfield) {
+function updatePlots(region, lga, ward, groupfield) {
   groupfield = groupfield || "region";
   var url = "/api/waterpoints/stats_by/" + groupfield;
 
-  var filterFields = {"region":region, "district":district, "ward":ward};
+  var filterFields = {"region":region, "lga":lga, "ward":ward};
   var filters = [];
 
   _.keys(filterFields).forEach(function(x){

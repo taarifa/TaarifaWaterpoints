@@ -83,9 +83,9 @@ waterpoint_schema = {
         'type': 'integer',
         'label': 'District Code',
     },
-    'lga_name': {
+    'lga': {
         'type': 'string',
-        'label': 'LGA Name',
+        'label': 'LGA',
     },
     'ward': {
         'type': 'string',

@@ -93,24 +93,24 @@ angular.module('taarifaWaterpointsApp')
       {id:"spendImpact", title: "Spend vs Functionality"}]
     # FIXME: Are these the right groupings? Shouldn't hard code those...
 
-    $scope.groups = ['region', 'district', 'ward', 'funder', 'source_type']
+    $scope.groups = ['region', 'lga', 'ward', 'funder', 'source_type']
     # default to region
     $scope.group = $scope.groups[0];
 
     $http.get('/api/waterpoints/values/region').success (data, status, headers, config) ->
       $scope.regions = data.sort()
 
-    getDistrict = () ->
-      $http.get('/api/waterpoints/values/district',
+    getLGA = () ->
+      $http.get('/api/waterpoints/values/lga',
                 params: {region: $scope.params?.region})
         .success (data, status, headers, config) ->
-          $scope.districts = data.sort()
+          $scope.lgas = data.sort()
 
     getWard = () ->
       $http.get('/api/waterpoints/values/ward',
                 params:
                   region: $scope.params?.region
-                  district: $scope.params?.district)
+                  lga: $scope.params?.lga)
         .success (data, status, headers, config) ->
           $scope.wards = data.sort()
 
@@ -129,15 +129,15 @@ angular.module('taarifaWaterpointsApp')
           $scope.popCover = {count: statusMap["functional"].waterpoints.population, percent: 0}
 
       if changed == 'region'
-        getDistrict()
+        getLGA()
         getWard()
-      if changed == 'district'
+      if changed == 'lga'
         getWard()
-      updatePlots($scope.params?.region, $scope.params?.district, $scope.params?.ward, $scope.group)
+      updatePlots($scope.params?.region, $scope.params?.lga, $scope.params?.ward, $scope.group)
 
     $scope.groupBy = () ->
-      updatePlots($scope.params?.region, $scope.params?.district, $scope.params?.ward, $scope.group)
+      updatePlots($scope.params?.region, $scope.params?.lga, $scope.params?.ward, $scope.group)
 
     $scope.getStatus()
-    getDistrict()
+    getLGA()
     getWard()
