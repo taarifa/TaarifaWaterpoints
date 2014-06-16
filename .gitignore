@@ -1,8 +1,8 @@
-*~
 *.py[cod]
 
 # C extensions
 *.so
+*.out
 
 # Packages
 *.egg
@@ -46,3 +46,9 @@ app/bower_components
 
 # Vagrant
 .vagrant
+
+# Temporary, backup & MacOS dir
+*~
+*.lock
+*.DS_Store
+*.swp
