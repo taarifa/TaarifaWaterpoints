@@ -1,5 +1,8 @@
 //to prevent creating overcrowded plots
-var minColWidth = 20;
+var minColWidth = 25;
+var statusColor = d3.scale.ordinal()
+    .domain(["functional","needs repair", "not functional"])
+    .range(["#0a871f","orange","#d50000"]);
 
 function isFunctional(s) {
     return s.status == "functional";
@@ -85,8 +88,8 @@ function plotStatusSummary(selector, data, groupField) {
   var margin = {
       top: 20,
       right: 20,
-      bottom: 80,
-      left: 60
+      bottom: 90,
+      left: 70
     },
     width = w - margin.left - margin.right,
     height = h - margin.top - margin.bottom;
@@ -114,8 +117,6 @@ function plotStatusSummary(selector, data, groupField) {
     .scale(y)
     .orient("left");
 
-  var color = d3.scale.category20();
-
   //create the svg if it does not already exist
   svg = d3.select(selector + " svg g");
   if (!svg[0][0]) {
@@ -135,7 +136,7 @@ function plotStatusSummary(selector, data, groupField) {
       .call(yAxis)
       .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", -60)
+      .attr("y", -70)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Number of Waterpoints");
@@ -149,7 +150,8 @@ function plotStatusSummary(selector, data, groupField) {
   //bind the data to a group
   var state = svg.selectAll(".group")
     .data(data, function(d) {
-      return groupField + "_" + d[groupField] + "_" + d.count;
+        return d[groupField];
+        //return groupField + "_" + d[groupField] + "_" + d.count;
     });
 
   //bind to each rect within the group
@@ -157,7 +159,8 @@ function plotStatusSummary(selector, data, groupField) {
     .data(function(d) {
       return d.waterpoints;
     }, function(d) {
-      return d.status + "_" + d.count;
+        return d.status;
+        //return d.status + "_" + d.count;
     });
 
   //new groups
@@ -175,7 +178,8 @@ function plotStatusSummary(selector, data, groupField) {
     .data(function(d) {
       return d.waterpoints;
     }, function(d) {
-      return d.status + "_" + d.count;
+        return d.status;
+        //return d.status + "_" + d.count;
     })
 
   //remove old rects
@@ -184,6 +188,7 @@ function plotStatusSummary(selector, data, groupField) {
     .duration(1000)
     .attr("y", y(0))
     .attr("height", 0)
+    .call(tip.hide)
     .remove();
 
   //remove old groups
@@ -193,13 +198,19 @@ function plotStatusSummary(selector, data, groupField) {
     .style("opacity", 0)
     .remove();
 
+  //update existing groups
+  state.attr("transform", function(d) {
+      return "translate(" + x(d[groupField]) + ",0)";
+    });
+
   //update existing rects
-  rects.attr("width", x.rangeBand())
+  rects
     .style("fill", function(d) {
-      return color(d.status);
+      return statusColor(d.status);
     })
     .transition()
     .duration(1000)
+    .attr("width", x.rangeBand())
     .attr("y", function(d) {
       return y(d.y1);
     })
@@ -211,7 +222,7 @@ function plotStatusSummary(selector, data, groupField) {
   rectsEnter.enter().append("rect")
     .attr("width", x.rangeBand())
     .style("fill", function(d) {
-      return color(d.status);
+      return statusColor(d.status);
     })
     .attr("y", y(0))
     .attr("height", 0)
@@ -240,7 +251,7 @@ function plotStatusSummary(selector, data, groupField) {
   svg.selectAll(".legend").remove();
 
   var legend = svg.selectAll(".legend")
-    .data(color.domain().slice().reverse());
+    .data(statusColor.domain());
 
   legend.enter().append("g")
     .attr("class", "legend")
@@ -252,7 +263,7 @@ function plotStatusSummary(selector, data, groupField) {
     .attr("x", width - 18)
     .attr("width", 18)
     .attr("height", 18)
-    .style("fill", color);
+    .style("fill", function(d){return statusColor(d);});
 
   legend.append("text")
     .attr("x", width - 24)
@@ -281,8 +292,8 @@ function plotSpendSummary(selector, data, groupField) {
   var margin = {
       top: 20,
       right: 20,
-      bottom: 80,
-      left: 60
+      bottom: 90,
+      left: 70
     },
     width = w - margin.left - margin.right,
     height = h - margin.top - margin.bottom;
@@ -305,7 +316,6 @@ function plotSpendSummary(selector, data, groupField) {
     .scale(x)
     .orient("bottom")
     .tickFormat(function(d){return shorten(d); });
-
 
   var yAxis = d3.svg.axis()
     .scale(y)
@@ -331,7 +341,7 @@ function plotSpendSummary(selector, data, groupField) {
       .call(yAxis)
       .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", -60)
+      .attr("y", -70)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Spend per Waterpoint ($)");
@@ -340,23 +350,24 @@ function plotSpendSummary(selector, data, groupField) {
   var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
       return d[groupField];
   });
+
   svg.call(tip);
 
   var rects = svg.selectAll("rect")
     .data(data, function(d) {
-      return [groupField,d[groupField],d.spend].join("_");
+      return d[groupField];
     });
 
-  rects.append("rect")
+  rects
     .style("fill", function(d) {
       return color(d[groupField]);
     })
+    .transition()
+    .duration(1000)
     .attr("width", x.rangeBand())
     .attr("x", function(d) {
       return x(d[groupField]);
     })
-    .transition()
-    .duration(1000)
     .attr("y", function(d) {
       return y(d.spend);
     })
@@ -389,6 +400,8 @@ function plotSpendSummary(selector, data, groupField) {
   rects.exit()
     .transition()
     .duration(1000)
+    .attr("y",y(0))
+    .attr("height",0)
     .style("opacity", 0)
     .remove();
 
@@ -500,9 +513,25 @@ function plotSpendImpact(selector, wpdata, groupField) {
       return d[groupField]
     });
 
+
+  dots
+    .transition()
+    .duration(1000)
+    .attr("cx", function(d) {
+      return x(d.spend);
+    })
+    .attr("cy", function(d) {
+      return y(d.functional);
+    })
+    .attr("r", function(d) {
+      return popScale(d.population);
+    });
+
+
   dots.enter()
     .append("circle")
     .attr("class", "dot")
+    .style("stroke-width","0")
     .attr("cx", function(d) {
       return x(d.spend);
     })
@@ -513,6 +542,7 @@ function plotSpendImpact(selector, wpdata, groupField) {
       return color(d[groupField]);
     })
     .attr("r", 0)
+    .style("opacity",0.6)
     .transition()
     .duration(1000)
     .attr("r", function(d) {
@@ -525,6 +555,9 @@ function plotSpendImpact(selector, wpdata, groupField) {
     .attr("r", 0)
     .remove();
 
+  svg.select("g.x.axis").transition().duration(1000).call(xAxis);
+  svg.select("g.y.axis").transition().duration(1000).call(yAxis);
+
   dots.on("mouseover", function(d) {
     tooltip.transition()
       .duration(100)
@@ -534,6 +567,7 @@ function plotSpendImpact(selector, wpdata, groupField) {
       .style("top", (d3.event.pageY - 28) + "px");
   })
     .on("mouseout", function(d) {
+
       tooltip.transition()
         .duration(500)
         .style("opacity", 0);
