@@ -2,6 +2,7 @@
 
 # C extensions
 *.so
+*.out
 
 # Packages
 *.egg
@@ -40,3 +41,9 @@ dist
 .tmp
 .sass-cache
 app/bower_components
+
+# Temporary, backup & MacOS dir
+*~
+*.lock
+*.DS_Store
+*.swp
