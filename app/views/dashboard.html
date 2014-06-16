@@ -59,10 +59,8 @@
     <div class="panel-heading">
       <h3 class="panel-title" translate>Top Reasons for Faulty Waterpoints</h3>
     </div>
-    <ul class="list-group">
-      <li class="list-group-item" translate>1: Tap is Broken</li>
-      <li class="list-group-item" translate>2: Barrel is Broken</li>
-      <li class="list-group-item" translate>3: Barrel is Lost</li>
+    <ul ng-repeat="p in problems" class="list-group">
+        <li class="list-group-item" translate>{{p.hardware_problem}} ({{p.count}})</li>
     </ul>
   </div>
 </div>

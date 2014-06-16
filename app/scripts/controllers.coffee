@@ -114,6 +114,20 @@ angular.module('taarifaWaterpointsApp')
         .success (data, status, headers, config) ->
           $scope.wards = data.sort()
 
+    # get the top 5 hardware problems
+    getProblems = () ->
+      $http.get('/api/waterpoints/stats_by/hardware_problem',
+                params:
+                  region: $scope.params?.region
+                  lga: $scope.params?.lga
+                  ward: $scope.params?.ward)
+        .success (data, status, headers, config) ->
+          $scope.problems = data.sort((a,b) ->
+            return b.count - a.count
+          )
+          $scope.problems = $scope.problems.filter((x) ->
+            x.hardware_problem != 'none').slice(0,5)
+
     $scope.getStatus = (changed) ->
       $http.get('/api/waterpoints/stats_by/status_group', params: $scope.params)
         .success (data, status, headers, config) ->
@@ -133,6 +147,8 @@ angular.module('taarifaWaterpointsApp')
         getWard()
       if changed == 'lga'
         getWard()
+
+      getProblems()
       updatePlots($scope.params?.region, $scope.params?.lga, $scope.params?.ward, $scope.group)
 
     $scope.groupBy = () ->
@@ -141,3 +157,4 @@ angular.module('taarifaWaterpointsApp')
     $scope.getStatus()
     getLGA()
     getWard()
+    getProblems()
