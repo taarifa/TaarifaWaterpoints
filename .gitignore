@@ -41,3 +41,6 @@ dist
 .tmp
 .sass-cache
 app/bower_components
+
+# Vagrant
+.vagrant
