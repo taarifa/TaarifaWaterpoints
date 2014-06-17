@@ -20,7 +20,7 @@
 /* Customize container */
 @media (min-width: 768px) {
   .container {
-    max-width: 730px;
+    max-width: 1000px;
   }
 }
 .container-narrow > hr {
@@ -29,7 +29,7 @@
 
 /* Plots */
 .plot {
-    height: 350px;
+    height: 100%;
 }
 
 /* Stacked bar chart */
@@ -68,3 +68,40 @@
   height: 28px;
   pointer-events: none;
 }
+
+/* Gridster */
+
+.gridster .gridster-item {
+    /* -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); */
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    color: #004756;
+    background: #ffffff;
+    padding: 10px;
+}
+
+/* Tiles */
+
+.tile{
+    background-color: #f4f4f4;
+    --webkit-box-shadow: 0px 0px 2px 2px #d0d0d0;
+    font-size: 30px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tile-header {
+    font-size: 18px;
+    font-color: white;
+    line-height: 15px;
+}
+
+.tile-number{
+    font-weight: bold;
+    font-size: 32px;
+}
+
+.tile-info {
+    font-size: 20px;
+}
+
