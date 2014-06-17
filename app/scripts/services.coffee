@@ -60,10 +60,10 @@ angular.module('taarifaWaterpointsApp')
           # FIXME temporarily disable clustering since it is not properly
           # reinitialized when the MapCtrl controller reloads
           # group: p.district
-          lat: p.latitude
-          lng: p.longitude
+          lat: p.location.coordinates[1]
+          lng: p.location.coordinates[0]
           message: "#{p.wpt_code}<br />" +
-            "Status: #{p.status}<br />" +
+            "Status: #{p.status_group}<br />" +
             "<a href=\"#/waterpoints/edit/#{p._id}\">edit</a><br />" +
             "<a href=\"#/requests/new?waterpoint_id=#{p.wpt_code}\">submit request</a>"
       # This would keep loading further waterpoints as long as there are any.
@@ -76,10 +76,9 @@ angular.module('taarifaWaterpointsApp')
       projection:
         _id: 1
         district: 1
-        latitude: 1
-        longitude: 1
+        location: 1
         wpt_code: 1
-        status: 1
+        status_group: 1
     , addMarkers
     return this
 
