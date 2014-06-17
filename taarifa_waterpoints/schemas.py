@@ -43,17 +43,8 @@ waterpoint_schema = {
         'type': 'string',
         'label': 'Installer',
     },
-    'longitude': {
-        'type': 'float',
-        'label': 'Longitude',
-        'min': -90,
-        'max': 90,
-    },
-    'latitude': {
-        'type': 'float',
-        'label': 'Latitude',
-        'min': -180,
-        'max': 180,
+    'location': {
+        'type': 'point',
     },
     'wpt_name': {
         'type': 'string',

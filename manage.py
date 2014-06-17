@@ -108,6 +108,8 @@ def upload_waterpoints(filename, skip=0, limit=None):
 
             try:
                 d = dict((k, convert.get(k, str)(v)) for k, v in d.items() if v)
+                coords = [d.pop('longitude'), d.pop('latitude')]
+                d['location'] = {'type': 'Point', 'coordinates': coords}
                 d['facility_code'] = facility_code
                 if not check(add_document('waterpoints', d)):
                     raise Exception()
