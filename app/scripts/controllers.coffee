@@ -68,7 +68,7 @@ angular.module('taarifaWaterpointsApp')
       Waterpoint.get where: {wpt_code: request.attribute.waterpoint_id}, (waterpoint) ->
         $scope.waterpoint = waterpoint._items[0]
         if not request.agency_responsible
-          request.agency_responsible = $scope.waterpoint.wp_management
+          request.agency_responsible = $scope.waterpoint.management
     $scope.apply = (key) ->
       d = {}
       d[key] = $scope.request.attribute[key]
@@ -93,53 +93,68 @@ angular.module('taarifaWaterpointsApp')
       {id:"spendImpact", title: "Spend vs Functionality"}]
     # FIXME: Are these the right groupings? Shouldn't hard code those...
 
-    $scope.groups = ['region', 'district', 'ward', 'funder', 'company', 'source_type']
+    $scope.groups = ['region', 'lga', 'ward', 'funder', 'source_type']
     # default to region
     $scope.group = $scope.groups[0];
 
     $http.get('/api/waterpoints/values/region').success (data, status, headers, config) ->
       $scope.regions = data.sort()
 
-    getDistrict = () ->
-      $http.get('/api/waterpoints/values/district',
+    getLGA = () ->
+      $http.get('/api/waterpoints/values/lga',
                 params: {region: $scope.params?.region})
         .success (data, status, headers, config) ->
-          $scope.districts = data.sort()
+          $scope.lgas = data.sort()
 
     getWard = () ->
       $http.get('/api/waterpoints/values/ward',
                 params:
                   region: $scope.params?.region
-                  district: $scope.params?.district)
+                  lga: $scope.params?.lga)
         .success (data, status, headers, config) ->
           $scope.wards = data.sort()
 
-    $scope.getStatus = (changed) ->
-      $http.get('/api/waterpoints/status', params: $scope.params)
+    # get the top 5 hardware problems
+    getProblems = () ->
+      $http.get('/api/waterpoints/stats_by/hardware_problem',
+                params:
+                  region: $scope.params?.region
+                  lga: $scope.params?.lga
+                  ward: $scope.params?.ward)
         .success (data, status, headers, config) ->
-          #FIXME: manually add it so it shows up
-          data.push(
-            status: "Needs Repair"
-            count: 0
+          $scope.problems = data.sort((a,b) ->
+            return b.count - a.count
           )
+          $scope.problems = $scope.problems.filter((x) ->
+            x.hardware_problem != 'none').slice(0,5)
+
+    $scope.getStatus = (changed) ->
+      $http.get('/api/waterpoints/stats_by/status_group', params: $scope.params)
+        .success (data, status, headers, config) ->
           total = d3.sum(data, (x) -> x.count)
           data.forEach( (x) -> x.percent = x.count / total * 100)
 
-          $scope.status = data
+          # index by status_group for convenience
+          statusMap = _.object(_.pluck(data,"status_group"), data)
 
-          #FIXME: needs real data
-          $scope.popCover = {count: Math.random()*10000, percent: Math.random()*100}
+          $scope.status = statusMap
+
+          #FIXME: join with population data
+          $scope.popCover = {count: statusMap["functional"].waterpoints.population, percent: 0}
 
       if changed == 'region'
-        getDistrict()
+        getLGA()
         getWard()
-      if changed == 'district'
+      if changed == 'lga'
         getWard()
-      updatePlots($scope.params?.region, $scope.params?.district, $scope.params?.ward, $scope.group)
+
+      getProblems()
+      updatePlots($scope.params?.region, $scope.params?.lga, $scope.params?.ward, $scope.group)
 
     $scope.groupBy = () ->
-      updatePlots($scope.params?.region, $scope.params?.district, $scope.params?.ward, $scope.group)
+      updatePlots($scope.params?.region, $scope.params?.lga, $scope.params?.ward, $scope.group)
 
     $scope.getStatus()
-    getDistrict()
+    getLGA()
     getWard()
+    getProblems()

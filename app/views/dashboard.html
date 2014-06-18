@@ -10,8 +10,8 @@
     </select>
   </div>
   <div class="form-group">
-    <select ng-model="params.district" ng-options="v for v in districts" ng-change="getStatus('district')" class="form-control">
-        <option value="">{{"District"|translate}}:</option>
+    <select ng-model="params.lga" ng-options="v for v in lgas" ng-change="getStatus('lga')" class="form-control">
+        <option value="">{{"LGA"|translate}}:</option>
     </select>
   </div>
   <div class="form-group">
@@ -28,10 +28,10 @@
     </div>
     <div class="panel-body">
       <div class="btn-group btn-group-justified">
-        <div class="btn-group" ng-repeat="s in status">
-            <span>{{s.status || 'unknown'}}</span>
+        <div class="btn-group" ng-repeat="(key, value) in status">
+            <span>{{key || 'unknown' | titlecase}}</span>
             <br />
-            <span class="badge">{{ s.percent | number:2 }} %</span> <span>({{ s.count }})</span>
+            <span class="badge">{{ value.percent | number:2 }} %</span> <span>({{ value.count }})</span>
         </div>
         <div class="btn-group">
             Population covered
@@ -59,10 +59,8 @@
     <div class="panel-heading">
       <h3 class="panel-title" translate>Top Reasons for Faulty Waterpoints</h3>
     </div>
-    <ul class="list-group">
-      <li class="list-group-item" translate>1: Tap is Broken</li>
-      <li class="list-group-item" translate>2: Barrel is Broken</li>
-      <li class="list-group-item" translate>3: Barrel is Lost</li>
+    <ul ng-repeat="p in problems" class="list-group">
+        <li class="list-group-item" translate>{{p.hardware_problem}} ({{p.count}})</li>
     </ul>
   </div>
 </div>

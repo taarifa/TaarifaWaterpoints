@@ -40,6 +40,10 @@ app = angular
       'Content-Type': 'application/json;charset=utf-8'
     flashProvider.errorClassnames.push 'alert-danger'
 
+  .filter('titlecase', () -> 
+    return (s) -> 
+      return s.toString().toLowerCase().replace( /\b([a-z])/g, (ch) -> return ch.toUpperCase()))
+
   .run (gettextCatalog,$rootScope) ->
     gettextCatalog.currentLanguage = 'en'
     $rootScope.fields =

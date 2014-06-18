@@ -60,10 +60,10 @@ angular.module('taarifaWaterpointsApp')
           # FIXME temporarily disable clustering since it is not properly
           # reinitialized when the MapCtrl controller reloads
           # group: p.district
-          lat: p.latitude
-          lng: p.longitude
+          lat: p.location.coordinates[1]
+          lng: p.location.coordinates[0]
           message: "#{p.wpt_code}<br />" +
-            "Status: #{p.status}<br />" +
+            "Status: #{p.status_group}<br />" +
             "<a href=\"#/waterpoints/edit/#{p._id}\">edit</a><br />" +
             "<a href=\"#/requests/new?waterpoint_id=#{p.wpt_code}\">submit request</a>"
       # This would keep loading further waterpoints as long as there are any.
@@ -76,10 +76,9 @@ angular.module('taarifaWaterpointsApp')
       projection:
         _id: 1
         district: 1
-        latitude: 1
-        longitude: 1
+        location: 1
         wpt_code: 1
-        status: 1
+        status_group: 1
     , addMarkers
     return this
 
@@ -91,22 +90,35 @@ angular.module('taarifaWaterpointsApp')
         # Return a promise since dynamic-forms needs the form template in
         # scope when the controller is invoked
         .$promise.then (facility) ->
-          fields = facility._items[0].fields
-          for f of fields
-            # Use the field name as label if no label was specified
-            if not fields[f].label?
-              fields[f].label = f
-            fields[f].type = 'text' if fields[f].type == 'string'
+          typemap =
+            string: 'text'
+            integer: 'number'
             # FIXME a number field assumes integers, therefore use text
-            fields[f].type = 'text' if fields[f].type == 'float'
-            fields[f].type = 'number' if fields[f].type == 'integer'
-            if fields[f].allowed?
-              fields[f].type = 'select'
-              options = {}
-              options[label] = label: label for label in fields[f].allowed
-              fields[f].options = options
-            fields[f].class = "form-control"
-            fields[f].wrapper = '<div class="form-group"></div>'
+            float: 'number'
+            boolean: 'checkbox'
+          mkfield = (type, label, step) ->
+            type: type
+            label: label
+            step: step
+            class: "form-control"
+            wrapper: '<div class="form-group"></div>'
+          fields = {}
+          for f, v of facility._items[0].fields
+            if v.type == 'point'
+              fields.longitude = mkfield 'number', 'longitude', 'any'
+              fields.latitude = mkfield 'number', 'latitude', 'any'
+              fields.longitude.model = 'location.coordinates[0]'
+              fields.latitude.model = 'location.coordinates[1]'
+            else
+              # Use the field name as label if no label was specified
+              fields[f] = mkfield typemap[v.type] || v.type, v.label || f
+              if v.type in ['float', 'number']
+                fields[f].step = 'any'
+              if v.allowed?
+                fields[f].type = 'select'
+                options = {}
+                options[label] = label: label for label in v.allowed
+                fields[f].options = options
           fields.submit =
             type: "submit"
             label: "Save"

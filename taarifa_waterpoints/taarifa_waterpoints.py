@@ -22,7 +22,7 @@ def waterpoint_stats():
     # FIXME: Direct call to the PyMongo driver, should be abstracted
     resources = app.data.driver.db['resources']
     return send_response('resources', (resources.group(
-        ['district', 'status'], dict(request.args.items()),
+        ['district', 'status_group'], dict(request.args.items()),
         initial={'count': 0},
         reduce="function(curr, result) {result.count++;}"),))
 
@@ -33,7 +33,7 @@ def waterpoint_status():
     # FIXME: Direct call to the PyMongo driver, should be abstracted
     resources = app.data.driver.db['resources']
     return send_response('resources', (resources.group(
-        ['status'], dict(request.args.items()), initial={'count': 0},
+        ['status_group'], dict(request.args.items()), initial={'count': 0},
         reduce="function(curr, result) {result.count++;}"),))
 
 
@@ -60,7 +60,7 @@ def waterpoint_stats_by(field):
     return send_response('resources', (resources.aggregate([
         {"$match": dict(request.args.items())},
         {"$group": {"_id": {field: "$" + field,
-                            "status": "$status"},
+                            "status": "$status_group"},
                     "statusCount": {"$sum": 1},
                     "populationCount": {"$sum": "$population"}}},
         {"$group": {"_id": "$_id." + field,

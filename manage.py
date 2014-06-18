@@ -1,6 +1,5 @@
 from csv import DictReader
 from datetime import datetime
-import gzip
 from pprint import pprint
 
 from flask.ext.script import Manager
@@ -14,9 +13,13 @@ manager = Manager(app)
 
 def check(response, success=201):
     data, _, _, status = response
-    print "Succeeded" if status == success else "Failed", "with", status
-    print "Response:"
-    pprint(data)
+    if status == success:
+        print " Succeeeded"
+        return True
+    else:
+        print "Failed with status", status
+        pprint(data)
+        return False
 
 
 @manager.option("resource", help="Resource to show the schema for")
@@ -59,29 +62,63 @@ def delete_services():
     check(delete_documents('services'), 200)
 
 
-@manager.option("filename", help="gzipped CSV file to upload (required)")
+@manager.option("filename", help="CSV file to upload (required)")
 @manager.option("--skip", type=int, default=0, help="Skip a number of records")
 @manager.option("--limit", type=int, help="Only upload a number of records")
 def upload_waterpoints(filename, skip=0, limit=None):
-    """Upload waterpoints from a gzipped CSV file."""
+    """Upload waterpoints from a CSV file."""
+    date_converter = lambda s: datetime.strptime(s, '%Y-%m-%d')
+    bool_converter = lambda s: s == "true"
+
+    status_map = {
+        "non functional": "not functional",
+        "functional needs repair": "needs repair"
+    }
+
+    status_converter = lambda s: status_map.get(s.lower(), s.lower())
+
     convert = {
-        'date_recorded': lambda s: datetime.strptime(s, '%m/%d/%Y'),
-        'population': int,
-        'construction_year': lambda s: datetime.strptime(s, '%Y'),
-        'breakdown_year': lambda s: datetime.strptime(s, '%Y'),
+        'gid': int,
+        'object_id': int,
+        'valid_from': date_converter,
+        'valid_to': date_converter,
         'amount_tsh': float,
+        'breakdown_year': int,
+        'date_recorded': date_converter,
         'gps_height': float,
         'latitude': float,
         'longitude': float,
+        'num_private': int,
+        'region_code': int,
+        'district_code': int,
+        'population': int,
+        'public_meeting': bool_converter,
+        'construction_year': int,
+        'status_group': status_converter
     }
-    with gzip.open(filename) as f:
+
+    facility_code = "wpf001"
+
+    with open(filename) as f:
         reader = DictReader(f)
         for i in range(skip):
             reader.next()
         for i, d in enumerate(reader):
-            d = dict((k, convert.get(k, str)(v)) for k, v in d.items() if v)
-            d['facility_code'] = 'wpf001'
-            check(add_document('waterpoints', d))
+            print "Adding line", i + skip + 2
+
+            try:
+                d = dict((k, convert.get(k, str)(v)) for k, v in d.items() if v)
+                coords = [d.pop('longitude'), d.pop('latitude')]
+                d['location'] = {'type': 'Point', 'coordinates': coords}
+                d['facility_code'] = facility_code
+                if not check(add_document('waterpoints', d)):
+                    raise Exception()
+
+            except Exception as e:
+                print "Error adding waterpoint", e
+                pprint(d)
+                exit()
+
             if limit and i >= limit:
                 break
 
