@@ -20,7 +20,7 @@ waterpoint_schema = {
         'label': 'Valid To',
     },
     'amount_tsh': {
-        'type': 'float',
+        'type': 'number',
         'label': 'Amount paid (TSH)',
     },
     'breakdown_year': {
@@ -36,7 +36,7 @@ waterpoint_schema = {
         'label': 'Funder',
     },
     'gps_height': {
-        'type': 'float',
+        'type': 'number',
         'label': 'GPS Height',
     },
     'installer': {
