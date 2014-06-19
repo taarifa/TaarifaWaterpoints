@@ -3,6 +3,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: app/scripts/plots.js
+msgid "% Functional"
+msgstr ""
+
 #: app/views/requests.html
 msgid ""
 "<a class=\"glyphicon glyphicon-cog\" href=\"#/requests/{{request._id}}\" title=\"Triage\"></a>"
@@ -10,8 +14,24 @@ msgid ""
 "      <span class=\"pull-right small\">submitted on {{request._created}}</span>"
 msgstr ""
 
+#: app/scripts/plots.js
+msgid "Average Price Per Bucket (TSH)"
+msgstr ""
+
+#: app/scripts/plots.js
+msgid "Avg Bucket Price"
+msgstr ""
+
 #: app/views/dashboard.html
 msgid "Barrel leaks"
+msgstr ""
+
+#: app/scripts/plots.js
+msgid "Coverage %"
+msgstr ""
+
+#: app/index.html
+msgid "Dashboard"
 msgstr ""
 
 #: app/views/dashboard.html
@@ -19,11 +39,39 @@ msgid "District"
 msgstr ""
 
 #: app/views/dashboard.html
+msgid "Filter"
+msgstr ""
+
+#: app/scripts/plots.js
+msgid "Functional"
+msgstr ""
+
+#: app/views/dashboard.html
 msgid "Group By"
 msgstr ""
 
 #: app/views/dashboard.html
+msgid "Key Performance Indicators"
+msgstr ""
+
+#: app/views/dashboard.html
 msgid "LGA"
+msgstr ""
+
+#: app/scripts/plots.js
+msgid "New Infrastructure Projects"
+msgstr ""
+
+#: app/scripts/plots.js
+msgid "Not functional"
+msgstr ""
+
+#: app/views/dashboard.html
+msgid "Population covered"
+msgstr ""
+
+#: app/scripts/plots.js
+msgid "Population served"
 msgstr ""
 
 #: app/views/dashboard.html
@@ -47,7 +95,6 @@ msgid "Waterpoint Map"
 msgstr ""
 
 #: app/views/dashboard.html
-#: app/views/dashboard3.html
 msgid "Waterpoint Status"
 msgstr ""
 

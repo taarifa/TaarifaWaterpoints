@@ -41,7 +41,7 @@ app = angular
     flashProvider.errorClassnames.push 'alert-danger'
 
   .run (gettextCatalog,$rootScope) ->
-    gettextCatalog.currentLanguage = 'en'
+    gettextCatalog.currentLanguage = 'sw_TZ'
     $rootScope.fields =
       catalog: gettextCatalog
       languages:

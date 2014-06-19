@@ -3,7 +3,7 @@
     <select ng-model="group" ng-options="v for v in groups" ng-change="groupBy()" class="form-control">
     </select>
   </div>
-  &nbsp;Filter:
+  &nbsp;{{"Filter" | translate}}:
   <div class="form-group">
     <select ng-model="params.region" ng-options="v for v in regions" ng-change="getStatus('region')"  data-live-search="true" class="form-control filter-dropdown">
         <option value="">{{"Region"|translate}}:</option>
@@ -60,7 +60,7 @@
                 </tr>
                 <tr>
                     <td class="tile">
-                        <span class="tile-header">Population covered</span>
+                        <span class="tile-header" translate>Population covered</span>
                         <br />
                         <span class="tile-number">{{ popCover.percent | number:2 }} %</span>
                         <br />
@@ -70,9 +70,9 @@
                     <td class="tile">
                         <span class="tile-header">Top Problems</span>
                         <span style="list-style:none;font-size:18px;font-weight:bold;">
-                            <br />Tap broken
-                            <br />Salty water
-                            <br />Barrel leaks
+                            <br />{{"Tap broken"|translate}}
+                            <br />{{"Salty water"|translate}}
+                            <br />{{"Barrel leaks"|translate}}
                         </span>
                     </td>
                 </tr>
@@ -99,7 +99,7 @@
 <div class="row" ng-repeat="plot in plots">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h3 class="panel-title">{{plot.title}}</h3>
+      <h3 class="panel-title">{{plot.title | translate}}</h3>
     </div>
     <div class="panel-body plot" id="{{plot.id}}"></div>
   </div>
@@ -108,7 +108,7 @@
 <div class="row">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Key Performance Indicators</h3>
+                <h3 class="panel-title" translate>Key Performance Indicators</h3>
             </div>
             <div class="panel-body">
                 <div class="plot" id="kpiCoverage"></div>

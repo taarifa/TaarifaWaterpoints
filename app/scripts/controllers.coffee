@@ -86,12 +86,15 @@ angular.module('taarifaWaterpointsApp')
         $scope.request.expected_datetime = $filter('date') $scope.expected_datetime, "EEE, dd MMM yyyy hh:mm:ss 'GMT'"
       Request.update($routeParams.id, $scope.request)
 
-  .controller 'DashboardCtrl', ($scope, $http) ->
+  .controller 'DashboardCtrl', ($scope, $http, gettext, gettextCatalog) ->
+
+    $scope.translate = (s) -> gettextCatalog.getString(s)
+
     $scope.plots = [
-      {id:"statusSummary", title: "Waterpoint Status (by % Functional)"},
-      {id:"cyearSummary", title: "Waterpoints per Construction Year"},
-      {id:"spendSummary", title: "Average Price per Bucket (TSH)"},
-      {id:"spendImpact", title: "Spend vs Functionality"}]
+      {id:"statusSummary", title: gettext("Waterpoint Status (by % Functional)")},
+      {id:"cyearSummary", title: gettext("Waterpoints per Construction Year")},
+      {id:"spendSummary", title: gettext("Average Price per Bucket (TSH)")},
+      {id:"spendImpact", title: gettext("Spend vs Functionality")}]
     # FIXME: Are these the right groupings? Shouldn't hard code those...
 
     $scope.groups = ['region', 'district', 'ward', 'funder', 'company', 'source_type']

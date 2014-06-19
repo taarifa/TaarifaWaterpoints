@@ -1,14 +1,25 @@
 //to prevent creating overcrowded plots
 var minColWidth = 25;
+
+//all this code should die slowly and painfully
 var $scope;
 var statusColor = d3.scale.ordinal()
     .domain(["Functional","Not functional"])
     .range(["#0a871f","#d50000"]);
 
+var swstatus;
+
+var gettext = null;
+
 
 function updatePlots(angularScope, region, district, ward, groupfield) {
   $scope = angularScope;
+  gettext = $scope.translate;
 
+  swstatus = {
+    "Functional": gettext("Functional"),
+    "Not functional": gettext("Not functional")
+  };
 
   groupfield = groupfield || "region";
   var url = "/api/waterpoints/stats_by/" + groupfield;
@@ -352,7 +363,7 @@ function plotStatusSummary(selector, data, groupField) {
     .attr("dy", ".35em")
     .style("text-anchor", "end")
     .text(function(d) {
-      return d;
+      return swstatus[d];
     });
 }
 
@@ -578,7 +589,7 @@ function plotSpendImpact(selector, wpdata, groupField) {
       .attr("x", width)
       .attr("y", -6)
       .style("text-anchor", "end")
-      .text("Average Price Per Bucket (TSH)");
+      .text(gettext("Average Price Per Bucket (TSH)"));
 
     svg.append("g")
       .attr("class", "y axis")
@@ -589,7 +600,7 @@ function plotSpendImpact(selector, wpdata, groupField) {
       .attr("y", -40)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("% Functional");
+      .text(gettext("% Functional"));
   }
 
 
@@ -661,7 +672,8 @@ circle.transition().duration(500)
     tooltip.transition()
       .duration(100)
       .style("opacity", .9);
-    tooltip.html("<b>" + d[groupField] + "</b>" + "<br/><em>Avg Bucket Price:</em> " + d.spend.toPrecision(3) + " TSH<br/><em>Functional:</em> " + d.functional.toPrecision(3) + " %" + "<br/><em>Population served:</em> " + d.population)
+    tooltip.html("<b>" + d[groupField] + "</b>" + "<br/><em>" + gettext("Avg Bucket Price") + ":</em> " + d.spend.toPrecision(3) + " TSH<br/><em>" + gettext("Functional")+ ":</em> " + d.functional.toPrecision(3) + " %" + "<br/><em>" 
+                 + gettext("Population served") + ":</em> " + d.population)
       .style("left", (d3.event.pageX + 15) + "px")
       .style("top", (d3.event.pageY - 28) + "px");
   })
@@ -769,7 +781,7 @@ d3.csv("kpis.csv", function(error, data) {
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Coverage %");
+      .text(gettext("Coverage %"));
 
   svg.append("g")
       .attr("class", "y axis")
@@ -782,7 +794,7 @@ d3.csv("kpis.csv", function(error, data) {
       .attr("y", -16)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("New Infrastructure Projects");
+      .text(gettext("New Infrastructure Projects"));
 
   svg.append("path")
       .datum(data)
