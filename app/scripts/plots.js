@@ -64,6 +64,18 @@ function updatePlots(region, lga, ward, groupfield) {
   });
 }
 
+function getDimensions(selector){
+  // Compensate for well margins (20px)
+  var pn = d3.select(selector).node().parentNode;
+
+  //var h = d3.select(selector).style('height').replace('px', '') - 40;
+  //var w = d3.select(selector).style('width').replace('px', '') - 40;
+  var h = d3.select(pn).style('height').replace('px', '') - 60;
+  var w = d3.select(pn).style('width').replace('px', '') - 40;
+
+  return {h: h, w: w};
+}
+
 /*
  * Stacked bar chart summarizing the status (functional/non functional)
  * of all the waterpoints by the given group field
@@ -81,9 +93,8 @@ function plotStatusSummary(selector, data, groupField) {
   });
   //data.sort(function(a, b) { return b.count - a.count; });
 
-  // Compensate for well margins (20px)
-  var h = d3.select(selector).style('height').replace('px', '') - 40;
-  var w = d3.select(selector).style('width').replace('px', '') - 40;
+  var dims = getDimensions(selector);
+  var h = dims.h, w = dims.w;
 
   var margin = {
       top: 20,
@@ -285,9 +296,8 @@ function plotSpendSummary(selector, data, groupField) {
 
   //data.sort(function(a, b) { return a.spend - b.spend; });
 
-  // Compensate for well margins (20px)
-  var h = d3.select(selector).style('height').replace('px', '') - 40;
-  var w = d3.select(selector).style('width').replace('px', '') - 40;
+  var dims = getDimensions(selector);
+  var h = dims.h, w = dims.w;
 
   var margin = {
       top: 20,
@@ -433,9 +443,8 @@ function plotSpendImpact(selector, wpdata, groupField) {
     data.push(d);
   });
 
-  // Compensate for well margins (20px)
-  var h = d3.select(selector).style('height').replace('px', '') - 40;
-  var w = d3.select(selector).style('width').replace('px', '') - 40;
+  var dims = getDimensions(selector);
+  var h = dims.h, w = dims.w;
 
   var margin = {
       top: 20,

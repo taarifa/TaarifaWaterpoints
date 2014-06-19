@@ -87,13 +87,49 @@ angular.module('taarifaWaterpointsApp')
       Request.update($routeParams.id, $scope.request)
 
   .controller 'DashboardCtrl', ($scope, $http) ->
+
+    $scope.gridsterOpts = {
+        margins: [10, 10],
+        columns: 12,
+        draggable: {
+            enabled: true
+        },
+        resizable: {
+            enabled: true,
+            stop: (event, uiWidget, $el) ->
+                isplot = jQuery($el.children()[0]).hasClass("plot")
+                if isplot then drawPlots()
+        }
+    };
+
+    $scope.gridLayout = {
+      tiles: [
+          { sizeX: 2, sizeY: 2, row: 0, col: 0 },
+          { sizeX: 2, sizeY: 2, row: 0, col: 2 },
+          { sizeX: 2, sizeY: 2, row: 0, col: 4 },
+      ],
+      problems:
+        { sizeX: 6, sizeY: 4, row: 2, col: 0 }
+      map:
+        { sizeX: 6, sizeY: 6, row: 0, col: 6 }
+      filter:
+        { sizeX: 12, sizeY: 1, row: 6, col: 0 }
+      plots: [
+        { sizeX: 12, sizeY: 5, row: 7, col: 0 },
+        { sizeX: 12, sizeY: 5, row: 12, col: 0 }
+        { sizeX: 12, sizeY: 5, row: 18, col: 0 }
+      ]
+    };
+
+
     $scope.plots = [
       {id:"statusSummary", title: "Functioning Waterpoints"},
       {id:"spendSummary", title: "Spend per Waterpoint"},
       {id:"spendImpact", title: "Spend vs Functionality"}]
-    # FIXME: Are these the right groupings? Shouldn't hard code those...
 
+    # FIXME: Are these the right groupings? Shouldn't hard code those...
     $scope.groups = ['region', 'lga', 'ward', 'funder', 'source_type']
+
     # default to region
     $scope.group = $scope.groups[0];
 
@@ -140,8 +176,8 @@ angular.module('taarifaWaterpointsApp')
           $scope.status = statusMap
 
           #FIXME: join with population data
-          $scope.popCover = {count: statusMap["functional"].waterpoints.population, percent: 0}
-
+          $scope.tiles = _.pairs(_.pick(statusMap,'functional','needs repair'))
+          $scope.tiles.push(['population cover', {count: statusMap["functional"].waterpoints.population, percent: 0}])
       if changed == 'region'
         getLGA()
         getWard()
@@ -149,9 +185,12 @@ angular.module('taarifaWaterpointsApp')
         getWard()
 
       getProblems()
-      updatePlots($scope.params?.region, $scope.params?.lga, $scope.params?.ward, $scope.group)
+      drawPlots()
 
     $scope.groupBy = () ->
+      drawPlots()
+
+    drawPlots = () ->
       updatePlots($scope.params?.region, $scope.params?.lga, $scope.params?.ward, $scope.group)
 
     $scope.getStatus()
