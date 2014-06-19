@@ -1,6 +1,6 @@
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'MapCtrl', ($scope, $http) ->
+  .controller 'DashMapCtrl', ($scope, $http) ->
     cartoUrl = 'http://worldbank.cartodb.com/api/v2/viz/9af2a2ec-e414-11e3-94c5-0edbca4b5057/viz.json'
     map = null
 
