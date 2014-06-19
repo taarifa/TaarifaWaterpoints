@@ -62,6 +62,12 @@ def delete_services():
     check(delete_documents('services'), 200)
 
 
+@manager.command
+def delete_requests():
+    """Delete all requests."""
+    check(delete_documents('requests'), 200)
+
+
 @manager.option("filename", help="CSV file to upload (required)")
 @manager.option("--skip", type=int, default=0, help="Skip a number of records")
 @manager.option("--limit", type=int, help="Only upload a number of records")
