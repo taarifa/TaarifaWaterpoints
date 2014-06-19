@@ -303,13 +303,15 @@ angular.module('dynform', [])
             angular.forEach(template, buildFields, element);
             
             //  Determine what tag name to use (ng-form if nested; form if outermost)
+            /*  This loop fails if jQuery is loaded before AngularJS
+             *  Disable it since we're not currently using nested forms
             while (!angular.equals(iterElem.parent(), $document) && !angular.equals(iterElem.parent(), angular.element())) {
               if (['form','ngForm','dynamicForm'].indexOf(attrs.$normalize(angular.lowercase(iterElem.parent()[0].nodeName))) > -1) {
                 foundOne = true;
                 break;
               }
               iterElem = iterElem.parent();
-            }
+            } */
             if (foundOne) {
               newElement = angular.element($document[0].createElement('ng-form'));
             }
