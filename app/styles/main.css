@@ -32,6 +32,10 @@
     height: 100%;
 }
 
+#map_canvas {
+    height: 100%;
+}
+
 /* Stacked bar chart */
 
 .axis path,
