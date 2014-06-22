@@ -129,13 +129,14 @@ function plotStatusSummary(selector, data, groupField) {
     .orient("left");
 
   //create the svg if it does not already exist
-  svg = d3.select(selector + " svg g");
+  var svg = d3.select(selector + " svg");
+
   if (!svg[0][0]) {
     svg = d3.select(selector).append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
-      //transform within the margins
-      .append("g")
+    //transform within the margins
+    .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     svg.append("g")
@@ -151,6 +152,11 @@ function plotStatusSummary(selector, data, groupField) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Number of Waterpoints");
+  } else {
+    //Note width/height may have changed
+    svg.attr("width", width + margin.left + margin.right)
+       .attr("height", height + margin.top + margin.bottom);
+    svg = svg.select('g');
   }
 
   var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
@@ -248,6 +254,7 @@ function plotStatusSummary(selector, data, groupField) {
 
   //Update the axes
   svg.select("g.x.axis").transition().duration(1000).call(xAxis)
+    .attr("transform", "translate(0," + height + ")")
     .selectAll("text")
     .style("text-anchor", "end")
     .attr("dx", "-.8em")
@@ -333,7 +340,7 @@ function plotSpendSummary(selector, data, groupField) {
 
   var color = d3.scale.category20();
 
-  svg = d3.select(selector + " svg g");
+  svg = d3.select(selector + " svg");
   if (!svg[0][0]) {
     svg = d3.select(selector).append("svg")
       .attr("width", width + margin.left + margin.right)
@@ -355,6 +362,11 @@ function plotSpendSummary(selector, data, groupField) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Spend per Waterpoint ($)");
+  } else {
+    //Note width/height may have changed
+    svg.attr("width", width + margin.left + margin.right)
+       .attr("height", height + margin.top + margin.bottom);
+    svg = svg.select('g');
   }
 
   var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
@@ -417,6 +429,7 @@ function plotSpendSummary(selector, data, groupField) {
 
   //Update the axes
   svg.select("g.x.axis").transition().duration(1000).call(xAxis)
+    .attr("transform", "translate(0," + height + ")")
     .selectAll("text")
     .style("text-anchor", "end")
     .attr("dx", "-.8em")
@@ -478,7 +491,7 @@ function plotSpendImpact(selector, wpdata, groupField) {
 
   var color = d3.scale.category20();
 
-  svg = d3.select(selector + " svg g");
+  svg = d3.select(selector + " svg");
   if (!svg[0][0]) {
     svg = d3.select(selector).append("svg")
       .attr("width", width + margin.left + margin.right)
@@ -508,6 +521,11 @@ function plotSpendImpact(selector, wpdata, groupField) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("% Functional");
+  } else {
+    //Note width/height may have changed
+    svg.attr("width", width + margin.left + margin.right)
+       .attr("height", height + margin.top + margin.bottom);
+    svg = svg.select('g');
   }
 
 
@@ -564,7 +582,11 @@ function plotSpendImpact(selector, wpdata, groupField) {
     .attr("r", 0)
     .remove();
 
-  svg.select("g.x.axis").transition().duration(1000).call(xAxis);
+  svg.select("g.x.axis").transition().duration(1000).call(xAxis)
+      .attr("transform", "translate(0," + height + ")")
+     .select('.label')
+      .attr("x", width);
+
   svg.select("g.y.axis").transition().duration(1000).call(yAxis);
 
   dots.on("mouseover", function(d) {
