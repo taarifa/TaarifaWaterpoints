@@ -32,6 +32,10 @@
     height: 100%;
 }
 
+#map_canvas {
+    height: 100%;
+}
+
 /* Stacked bar chart */
 
 .axis path,
@@ -40,7 +44,7 @@
   stroke: #000;
   shape-rendering: crispEdges;
 }
-
+/*
 .bar {
   fill: steelblue;
 }
@@ -48,6 +52,7 @@
 .x.axis path {
   display: none;
 }
+*/
 
 /* scatterplot */
 
@@ -72,12 +77,17 @@
 /* Gridster */
 
 .gridster .gridster-item {
-    /* -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); */
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     color: #004756;
     background: #ffffff;
     padding: 10px;
+}
+
+/* FIXME: This should not be needed, work around gridster bug (?) */
+li.gridster-item {
+    position: absolute;
 }
 
 /* Tiles */
