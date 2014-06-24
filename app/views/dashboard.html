@@ -1,63 +1,80 @@
-<div class="row">
-    <div gridster="gridsterOpts">
-        <ul>
-            <li gridster-item="item" ng-repeat="item in gridLayout.tiles">
-                <span class="tile-header">{{$parent.tiles[$index][0] || 'unknown' | titlecase}}</span>
-                <br />
-                <span class="tile-number">{{ $parent.tiles[$index][1].percent | number:2 }} %</span>
-                <br />
-                <span class="tile-info">({{$parent.tiles[$index][1].count }})</span>
-            </li>
-            <li gridster-item="gridLayout.problems">
-                <span class="tile-header" translate>Top Problems</span>
-                <br />
-                <ul ng-repeat="p in $parent.problems" class="">
-                    <li><span class="tile-number">({{$index+1}}) - {{p.hardware_problem}}</span>
-                    <span class="tile-info">({{p.count}})</span></li>
-                 </ul>
-            </li>
-            <li gridster-item row="gridLayout.map.row" col="gridLayout.map.col" size-x="gridLayout.map.sizeX"
-            size-y="gridLayout.map.sizeY">
-                <div id="map_canvas" ng-controller="DashMapCtrl"></div>
-            </li>
-            <li gridster-item row="gridLayout.filter.row" col="gridLayout.filter.col"
-            size-x="gridLayout.filter.sizeX" size-y="gridLayout.filter.sizeY">
-                <form class="form-inline" role="form">
-                    {{"Group By"|translate}}: <div class="form-group">
-                        <select ng-model="$parent.group" ng-options="v for v in groups"
-                            ng-change="groupBy()" class="form-control">
-                        </select>
-                    </div>
-                    Filter:
-                    <div class="form-group">
-                        <select ng-model="$parent.params.region" ng-options="v for v in regions"
-                            ng-change="getStatus('region')" class="form-control">
-                            <option value="">{{"Region"|translate}}:</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select ng-model="$parent.params.lga" ng-options="v for v in lgas"
-                            ng-change="getStatus('lga')" class="form-control">
-                            <option value="">{{"LGA"|translate}}:</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select ng-model="$parent.params.ward" ng-options="v for v in wards"
-                            ng-change="getStatus('ward')" class="form-control">
-                            <option value="">{{"Ward"|translate}}:</option>
-                        </select>
-                    </div>
-                </form>
-            </li>
-            <li gridster-item="item" ng-repeat="item in gridLayout.plots">
-                <div class="panel panel-primary plot">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{$parent.plots[$index].title}}</h3>
-                    </div>
-                    <div class="panel-body" id="{{$parent.plots[$index].id}}"></div>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div>
+<tabset>
 
+<tab heading="National">
+  <div class="row">
+    <div gridster="gridsterOpts">
+      <ul>
+        <li gridster-item="item" ng-repeat="item in gridLayout.tiles">
+        <span class="tile-header">{{$parent.tiles[$index][0] || 'unknown' | titlecase}}</span>
+        <br />
+        <span class="tile-number">{{ $parent.tiles[$index][1].percent | number:2 }} %</span>
+        <br />
+        <span class="tile-info">({{$parent.tiles[$index][1].count }})</span>
+        </li>
+        <li gridster-item="gridLayout.problems">
+        <span class="tile-header" translate>Top Problems</span>
+        <br />
+        <ul ng-repeat="p in $parent.problems" class="">
+          <li><span class="tile-number">({{$index+1}}) - {{p.hardware_problem}}</span>
+          <span class="tile-info">({{p.count}})</span></li>
+        </ul>
+        </li>
+        <li gridster-item row="gridLayout.map.row" col="gridLayout.map.col" size-x="gridLayout.map.sizeX"
+        size-y="gridLayout.map.sizeY">
+        <div id="map_canvas" ng-controller="DashMapCtrl"></div>
+        </li>
+        <li gridster-item row="gridLayout.filter.row" col="gridLayout.filter.col"
+        size-x="gridLayout.filter.sizeX" size-y="gridLayout.filter.sizeY">
+        <form class="form-inline" role="form">
+          {{"Group By"|translate}}: <div class="form-group">
+            <select ng-model="$parent.group" ng-options="v for v in groups"
+              ng-change="groupBy()" class="form-control">
+            </select>
+          </div>
+          Filter:
+          <div class="form-group">
+            <select ng-model="$parent.params.region" ng-options="v for v in regions"
+              ng-change="getStatus('region')" class="form-control">
+              <option value="">{{"Region"|translate}}:</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select ng-model="$parent.params.lga" ng-options="v for v in lgas"
+              ng-change="getStatus('lga')" class="form-control">
+              <option value="">{{"LGA"|translate}}:</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select ng-model="$parent.params.ward" ng-options="v for v in wards"
+              ng-change="getStatus('ward')" class="form-control">
+              <option value="">{{"Ward"|translate}}:</option>
+            </select>
+          </div>
+        </form>
+        </li>
+        <li gridster-item="item" ng-repeat="item in gridLayout.plots">
+        <div class="panel panel-primary plot">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{$parent.plots[$index].title}}</h3>
+          </div>
+          <div class="panel-body" id="{{$parent.plots[$index].id}}"></div>
+        </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</tab>
+
+<tab heading="Regional">
+  <div class="row" ng-controller="DCPlotsCtrl">
+    <div gridster="gridsterOpts">
+      <ul>
+        <li gridster-item="item" ng-repeat="(key,item) in gridLayout">
+        <div id="{{key}}"></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</tab>
+
+</tabset>

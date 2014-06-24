@@ -91,6 +91,8 @@ angular.module('taarifaWaterpointsApp')
     $scope.gridsterOpts = {
         margins: [10, 10],
         columns: 12,
+        floating: true,
+        pushing: true,
         draggable: {
             enabled: true
         },
