@@ -172,12 +172,21 @@ angular.module('taarifaWaterpointsApp')
 
           # index by status_group for convenience
           statusMap = _.object(_.pluck(data,"status_group"), data)
-
           $scope.status = statusMap
 
-          #FIXME: join with population data
+          # ensure all three statusses are always represented
+          empty = {count: 0, percent: 0}
+          statusses = ["functional", "not functional", "needs repair"]
+          statusses.forEach((x) -> statusMap[x] = statusMap[x] || empty)
+
+          # the population covered
+          # FIXME: needs pop data for percentage 
+          funPop = statusMap.functional.waterpoints[0].population
+          popCover = {count: funPop, percent: 0}
+
           $scope.tiles = _.pairs(_.pick(statusMap,'functional','needs repair'))
-          $scope.tiles.push(['population cover', {count: statusMap["functional"].waterpoints.population, percent: 0}])
+          $scope.tiles.push(['population cover', popCover])
+
       if changed == 'region'
         getLGA()
         getWard()
