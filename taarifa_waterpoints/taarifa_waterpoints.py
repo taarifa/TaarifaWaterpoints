@@ -5,6 +5,12 @@ from taarifa_api import api as app, main
 
 app.name = 'TaarifaWaterpoints'
 
+# Override the maximum number of results on a single page
+# This is needed by the dashboard
+# FIXME: this should eventually be replaced by an incremental load
+# which is better for responsiveness
+app.config['PAGINATION_LIMIT'] = 10000
+
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/values/<field>')
 def waterpoint_values(field):
