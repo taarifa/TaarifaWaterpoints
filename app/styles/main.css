@@ -44,7 +44,7 @@
   stroke: #000;
   shape-rendering: crispEdges;
 }
-
+/*
 .bar {
   fill: steelblue;
 }
@@ -52,6 +52,7 @@
 .x.axis path {
   display: none;
 }
+*/
 
 /* scatterplot */
 
@@ -82,6 +83,11 @@
     color: #004756;
     background: #ffffff;
     padding: 10px;
+}
+
+/* FIXME: This should not be needed, work around gridster bug (?) */
+li.gridster-item {
+    position: absolute;
 }
 
 /* Tiles */
