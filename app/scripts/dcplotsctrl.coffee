@@ -8,7 +8,8 @@ angular.module('taarifaWaterpointsApp')
         floating: true,
         pushing: true,
         draggable: {
-            enabled: false
+            enabled: true,
+            handle: '.draghandle'
         },
         resizable: {
             enabled: false
@@ -44,26 +45,108 @@ angular.module('taarifaWaterpointsApp')
         costImpactBubble: { sizeX: 12, sizeY: 5, row: 22, col: 0 }
     }
 
+    dimensions = []
+    xfilter = null
 
-    filter = {region: "Tanga"}
-    project = ["status_group", "region", "lga", "ward",
-               "source_type", "amount_tsh", "population"
-               "construction_year", "quantity_group", 
-               "quality_group", "extraction_type_group",
-               "breakdown_year", "payment_type", "funder",
-               "installer", "management"]
+    initView = () ->
+        # get all regions
+        $http.get('/api/waterpoints/values/region').success (data, status, headers, config) ->
+            $scope.regions = data.sort()
+            $scope.region = $scope.regions[3]
+            setupCharts($scope.region)
 
-    ones = Array.apply(null, new Array(project.length)).map(Number.prototype.valueOf,1);
-    projection = _.object(project, ones)
+    initView()
 
-    #FIXME: eventually load page by page to improve responsiveness
-    url = "/api/waterpoints?where=" + JSON.stringify(filter) +
-            "&projection=" + JSON.stringify(projection) + 
-            "&max_results=10000"
+    getData = (region, callback) ->
+        filter = {region: region}
 
-    initPlots = () ->
+        project = ["status_group", "region", "lga", "ward",
+                    "source_type", "amount_tsh", "population"
+                    "construction_year", "quantity_group", 
+                    "quality_group", "extraction_type_group",
+                    "breakdown_year", "payment_type", "funder",
+                    "installer", "management"]
 
-        d3.json(url, (data) ->
+        ones = Array.apply(null, new Array(project.length)).map(Number.prototype.valueOf,1);
+        projection = _.object(project, ones)
+
+        #FIXME: eventually load page by page to improve responsiveness
+        url = "/api/waterpoints?where=" + JSON.stringify(filter) +
+                "&projection=" + JSON.stringify(projection) + 
+                "&max_results=10000"
+
+        d3.json(url, (data) -> 
+            data._items.forEach((d) ->
+                d.breakdown_year = new Date(d.breakdown_year || 1900,0,1)
+                d.construction_year = new Date(d.construction_year || 1900,0,1))
+
+            callback(data._items))
+
+
+    createDim = (f) ->
+        dim = xfilter.dimension(f)
+        dimensions.push(dim)
+        dim
+
+    # FIXME: see next comment
+    $scope.updateCharts = () ->
+
+        # get all charts
+        charts = dc.chartRegistry.list()
+
+        # clear the filters on all charts
+        dc.filterAll()
+
+        # clear the filters on all dimensions
+        dimensions.forEach((d) -> d.filter(null))
+
+        # no more filters, remove all the data
+        xfilter.remove()
+
+        # destroy the filters
+        dimensions.forEach((d) -> d.dispose())
+        dimensions = []
+
+        charts.forEach((c) ->
+            c.expireCache()
+        )
+
+        dc.deregisterAllCharts()
+
+        # simply recreate all charts
+        setupCharts($scope.region)
+
+
+    # FIXME: this should be the correct way of replacing
+    # data. However, data in the groups/dims is properly
+    # updated but dc.js is not updating the chart properly
+    # to reflect the backed data.
+    $scope.updateCharts2 = () ->
+
+        # clear the filters on all charts
+        dc.filterAll()
+
+        # clear the filters on all dimensions
+        #dimensions.forEach((d) -> d.filter(null))
+
+        # no more filters, remove all the data
+        xfilter.remove()
+
+        # get and set the new data
+        getData($scope.region, (data) ->
+            xfilter.add(data)
+
+            charts = dc.chartRegistry.list()
+            charts.forEach((c) ->
+                c.expireCache()
+            )
+
+            dc.renderAll())
+
+
+    setupCharts = (region) ->
+
+        getData(region, (data) ->
             statusPerLgaChart = dc.barChart("#statusPerLga")
             statusPerWardChart = dc.barChart("#statusPerWard")
             statusPerSourceTypeChart = dc.barChart("#statusPerSourceType")
@@ -82,71 +165,66 @@ angular.module('taarifaWaterpointsApp')
             #statusPerFunder = dc.barChart("#statusPerFunder")
             statusPerManagement = dc.barChart("#statusPerManagement")
             costImpactBubbleChart = dc.bubbleChart("#costImpactBubble")
-            regionsChart = dc.geoChoroplethChart("#regionsMap")
-
-            data = data._items
-            data.forEach((d) ->
-                d.breakdown_year = new Date(d.breakdown_year || 1900,0,1)
-                d.construction_year = new Date(d.construction_year || 1900,0,1))
+            #regionsChart = dc.geoChoroplethChart("#regionsMap")
 
             # create Crossfilter Dimensions and Groups
-            wps = crossfilter(data)
-            all = wps.groupAll()
+            xfilter = crossfilter(data)
+            all = xfilter.groupAll()
 
-            regions = wps.dimension((d) -> d.region)
-            regionsCostStatusGroup = reduceCostStatus(regions.group())
+            #regions = createDim((d) -> d.region)
+            #regionsCostStatusGroup = reduceCostStatus(regions.group())
 
-            lgas = wps.dimension((d) -> d.lga)
+            lgas = createDim((d) -> d.lga)
             statusPerLga = reduceStatus(lgas.group())
 
-            wards = wps.dimension((d) -> d.ward)
+            wards = createDim((d) -> d.ward)
             statusPerWard = reduceStatus(wards.group())
 
-            sourceTypes = wps.dimension((d) -> d.source_type)
+            sourceTypes = createDim((d) -> d.source_type)
             statusPerSourceType = reduceStatus(sourceTypes.group())
 
-            constrYears = wps.dimension((d) -> d.construction_year)
+            constrYears = createDim((d) -> d.construction_year)
             constrYearsGroup = reduceStatus(constrYears.group())
 
-            breakYears = wps.dimension((d) -> d.breakdown_year)
+            breakYears = createDim((d) -> d.breakdown_year)
             breakYearsGroup = reduceStatus(breakYears.group())
 
-            quantities = wps.dimension((d) -> d.quantity_group)
+            quantities = createDim((d) -> d.quantity_group)
             quantityStatusGroup = reduceStatus(quantities.group())
 
-            installers = wps.dimension((d) -> d.installer)
+            installers = createDim((d) -> d.installer)
             installersGroup = installers.group()
             installersStatusGroup = reduceStatus(installers.group())
 
-            funders = wps.dimension((d) -> d.funder)
+            funders = createDim((d) -> d.funder)
             fundersGroup = funders.group()
             fundersStatusGroup = reduceStatus(funders.group())
 
-            qualities = wps.dimension((d) -> d.quality_group)
+            qualities = createDim((d) -> d.quality_group)
             qualitiesStatusGroup = reduceStatus(qualities.group())
 
-            extractionTypes = wps.dimension((d) -> d.extraction_type_group)
+            extractionTypes = createDim((d) -> d.extraction_type_group)
             extractionStatusGroup = reduceStatus(extractionTypes.group())
 
-            statuses = wps.dimension((d) -> d.status_group)
+            statuses = createDim((d) -> d.status_group)
             statusGroup = statuses.group()
 
-            managements = wps.dimension((d) -> d.management)
+            managements = createDim((d) -> d.management)
             managementsGroup = managements.group()
             managementsStatusGroup = reduceStatus(managements.group())
 
-            statuses = wps.dimension((d) -> d.status_group)
+            statuses = createDim((d) -> d.status_group)
             statusGroup = statuses.group()
 
-            paymentTypes = wps.dimension((d) -> d.payment_type)
+            paymentTypes = createDim((d) -> d.payment_type)
             paymentGroup = paymentTypes.group()
 
-            amounts = wps.dimension((d) -> d.amount_tsh)
+            amounts = createDim((d) -> d.amount_tsh)
             costStatusGroup = reduceCostStatus(wards.group())
 
             w = 480
             h = 280
-            statusBarChart(statusPerLgaChart,w,h,lgas,statusPerLga)
+            statusBarChart(statusPerLgaChart,w,h,lgas,statusPerLga,15)
             statusBarChart(statusPerSourceTypeChart,w,h,sourceTypes,statusPerSourceType)
             statusBarChart(statusPerExtraction,w,h,extractionTypes,extractionStatusGroup)
             #statusBarChart(statusPerInstaller,w,h,installers,installersStatusGroup)
@@ -184,17 +262,19 @@ angular.module('taarifaWaterpointsApp')
             pieChart(funderChart,w,h,funders,fundersGroup,all)
             pieChart(managementChart,w,h,managements,managementsGroup,all)
 
-            d3.json("/data/tz_regions.geojson", (regionsJson) ->
-                w = 500
-                h = 500
-                regionsChoropleth(regionsChart,w,h,regions,regionsCostStatusGroup,regionsJson)
-                dc.renderAll()
-            )
+            #d3.json("/data/tz_regions.geojson", (regionsJson) ->
+            #    w = 500
+            #    h = 500
+            #    regionsChoropleth(regionsChart,w,h,regions,regionsCostStatusGroup,regionsJson)
+            #    dc.renderAll()
+            #)
+
+            dc.renderAll()
 
         )
 
 
-        regionsChoropleth = (chart,w,h,dim,group,json) ->
+    regionsChoropleth = (chart,w,h,dim,group,json) ->
             chart\
                 .width(w)
                 .height(h)
@@ -205,7 +285,7 @@ angular.module('taarifaWaterpointsApp')
                     (d) -> d.properties.REGNAME)
                 .title((d) -> d.key + ": " + d.value.percFun + " % functional")
 
-        bubbleChart = (chart,w,h,dim,group,colorAcc,
+    bubbleChart = (chart,w,h,dim,group,colorAcc,
                         keyAcc,valueAcc,radiusAcc,xlabel,ylabel) ->
             chart\
                 .width(w)
@@ -243,13 +323,13 @@ angular.module('taarifaWaterpointsApp')
                 #})
 
 
-        removeEmptyGroups = (group) ->
+    removeEmptyGroups = (group) ->
             group2 = {
                 all: () ->
                     group.all().filter((d) -> d.value.count > 0)
             }
 
-        statusBarChart = (chart, w, h, dim, group, gap) ->
+    statusBarChart = (chart, w, h, dim, group, gap) ->
             chart\
                     .width(w)
                     .height(h)
@@ -278,7 +358,10 @@ angular.module('taarifaWaterpointsApp')
                     .legend(dc.legend().x(w-100).y(10))
                     .on("filtered", (chart, filter) ->
                         console.log(chart))
+                    .on("preRender", (chart) ->
+                        chart.rescale())
                     .on("preRedraw", (chart) ->
+                        chart.rescale()
                         #group = chart.group()
                         #group2 = {
                         #    all: () ->
@@ -287,7 +370,7 @@ angular.module('taarifaWaterpointsApp')
                         #chart.group(group2)
                     )
 
-        pieChart = (chart, w, h, dim, group,all) ->
+    pieChart = (chart, w, h, dim, group,all) ->
             #tot = d3.sum(group.all(),(d) -> d.value)
 
             chart\
@@ -306,7 +389,7 @@ angular.module('taarifaWaterpointsApp')
                 .title((d) ->
                     d.key + " (" + Math.floor(d.value / all.value() * 100) + "%)")
 
-        yearChart = (chart, w, h, dim, group, xlabel) ->
+    yearChart = (chart, w, h, dim, group, xlabel) ->
             chart\
                 .width(w)
                 .height(h)
@@ -324,7 +407,7 @@ angular.module('taarifaWaterpointsApp')
                 .xUnits(d3.time.years)
                 .xAxisLabel(xlabel)
 
-        reduceStatus = (group) ->
+    reduceStatus = (group) ->
             res = group.reduce(\
                 ((p, v) ->
                     ++p.count
@@ -339,7 +422,7 @@ angular.module('taarifaWaterpointsApp')
 
             res
 
-        reduceCostStatus = (group) ->
+    reduceCostStatus = (group) ->
             res = group.reduce(\
                 ((p, v) ->
                     ++p.count
@@ -361,7 +444,7 @@ angular.module('taarifaWaterpointsApp')
                     {count: 0, total: 0, pop: 0, percFun: 0, numFun: 0}))
             res
 
-        reduceAvg = (group, fieldAcc) ->
+    reduceAvg = (group, fieldAcc) ->
             res = group.reduce(\
                 ((p, v) ->
                     ++p.count
@@ -380,5 +463,4 @@ angular.module('taarifaWaterpointsApp')
                     }))
             res
 
-    initPlots()
 
