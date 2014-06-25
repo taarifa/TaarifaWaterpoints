@@ -51,10 +51,6 @@ def waterpoint_count_by(field):
 def waterpoint_stats_by(field):
     """Return number of waterpoints of a given status grouped by a certain
     attribute."""
-    # Some fields require an addtional projection
-    project = {'construction_year': {"$cond": ["$_id",
-                                               {"$year": "$_id"},
-                                               "unknown"]}}
     # FIXME: Direct call to the PyMongo driver, should be abstracted
     resources = app.data.driver.db['resources']
     return send_response('resources', (resources.aggregate([
@@ -73,7 +69,7 @@ def waterpoint_stats_by(field):
                     },
                     "count": {"$sum": "$statusCount"}}},
         {"$project": {"_id": 0,
-                      field: project.get(field, "$_id"),
+                      field: "$_id",
                       "waterpoints": 1,
                       "population": 1,
                       "count": 1}},
