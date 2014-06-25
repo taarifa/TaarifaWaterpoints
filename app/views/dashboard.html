@@ -65,8 +65,19 @@
   </div>
 </tab>
 
-<tab heading="Regional">
-  <div class="row" ng-controller="DCPlotsCtrl">
+<tab heading="Regional" ng-controller="DCPlotsCtrl">
+  <div class="row">
+    <form class="form-inline" role="form" style="padding: 10px">
+      {{"Region"|translate}}:
+      <div class="form-group">
+        <select ng-model="region" ng-options="v for v in regions"
+          ng-change="updateCharts()" class="form-control">
+        </select>
+      </div>
+    </form>
+  </div>
+
+  <div class="row">
     <div gridster="gridsterOpts">
       <ul>
         <li gridster-item="item" ng-repeat="(key,item) in gridLayout">
