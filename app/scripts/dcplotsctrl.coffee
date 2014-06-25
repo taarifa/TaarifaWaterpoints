@@ -56,6 +56,7 @@ angular.module('taarifaWaterpointsApp')
     ones = Array.apply(null, new Array(project.length)).map(Number.prototype.valueOf,1);
     projection = _.object(project, ones)
 
+    #FIXME: eventually load page by page to improve responsiveness
     url = "/api/waterpoints?where=" + JSON.stringify(filter) +
             "&projection=" + JSON.stringify(projection) + 
             "&max_results=10000"

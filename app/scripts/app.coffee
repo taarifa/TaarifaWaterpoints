@@ -2,6 +2,7 @@
 
 app = angular
   .module('taarifaWaterpointsApp', [
+    'ui.bootstrap'
     'gridster',
     'ngResource',
     'ngRoute',
