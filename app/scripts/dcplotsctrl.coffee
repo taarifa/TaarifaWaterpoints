@@ -39,7 +39,7 @@ angular.module('taarifaWaterpointsApp')
         #statusPerInstaller: { sizeX: 6, sizeY: 4, row: 18, col: 0 },
         #statusPerFunder: { sizeX: 6, sizeY: 4, row: 18, col: 6 },
 
-        statusPerInstaller: { sizeX: 6, sizeY: 4, row: 18, col: 0 },
+        topProblems: { sizeX: 6, sizeY: 4, row: 18, col: 0 },
         statusPerManagement: { sizeX: 6, sizeY: 4, row: 18, col: 6 },
 
         costImpactBubble: { sizeX: 12, sizeY: 5, row: 22, col: 0 }
@@ -48,24 +48,40 @@ angular.module('taarifaWaterpointsApp')
     dimensions = []
     xfilter = null
 
-    initView = () ->
+    # Called when the tab is activated for the first time
+    # Has to be done on tab activation for else the charts can not pickup
+    # the correct dimensions from their containing elements.
+    $scope.initView = () ->
+        # only do once
+        if dc.chartRegistry.list().length then return
+
         # get all regions
         $http.get('/api/waterpoints/values/region').success (data, status, headers, config) ->
             $scope.regions = data.sort()
             $scope.region = $scope.regions[3]
+
+            # FIXME:
+            # unfortunately, for some reason, not all dc charts manage to pickup the
+            # correct dimensions on their own. Manually set a resize renderlet to run once
+            # all the charts have rendered.
+            dc.renderlet(()-> 
+                resizeCharts()
+                # only keep the renderlet once
+                dc.renderlet(null))
+
             setupCharts($scope.region)
 
-    initView()
+    #$scope.initView()
 
     getData = (region, callback) ->
         filter = {region: region}
 
-        project = ["status_group", "region", "lga", "ward",
+        project = ["status_group", "lga", "ward",
                     "source_type", "amount_tsh", "population"
                     "construction_year", "quantity_group", 
                     "quality_group", "extraction_type_group",
                     "breakdown_year", "payment_type", "funder",
-                    "installer", "management"]
+                    "installer", "management", "hardware_problem"]
 
         ones = Array.apply(null, new Array(project.length)).map(Number.prototype.valueOf,1);
         projection = _.object(project, ones)
@@ -89,7 +105,7 @@ angular.module('taarifaWaterpointsApp')
         dim
 
     # FIXME: see next comment
-    $scope.updateCharts = () ->
+    $scope.rerenderCharts = () ->
 
         # get all charts
         charts = dc.chartRegistry.list()
@@ -113,6 +129,12 @@ angular.module('taarifaWaterpointsApp')
 
         dc.deregisterAllCharts()
 
+        # FIXME: see above comment
+        dc.renderlet(()-> 
+            resizeCharts()
+            # only keep the renderlet once
+            dc.renderlet(null))
+
         # simply recreate all charts
         setupCharts($scope.region)
 
@@ -121,7 +143,7 @@ angular.module('taarifaWaterpointsApp')
     # data. However, data in the groups/dims is properly
     # updated but dc.js is not updating the chart properly
     # to reflect the backed data.
-    $scope.updateCharts2 = () ->
+    $scope.rerenderCharts2 = () ->
 
         # clear the filters on all charts
         dc.filterAll()
@@ -144,6 +166,18 @@ angular.module('taarifaWaterpointsApp')
             dc.renderAll())
 
 
+    # redraw the charts taking the new dimensions from the
+    # containing element
+    resizeCharts = () ->
+        charts = dc.chartRegistry.list()
+        charts.forEach((c) ->
+            a = c.anchor()
+            d = getDimensions(a,10,35)
+            c.width(d.w)
+            c.height(d.h)
+            if c.radius then c.radius((d.w / 2) - 15)
+            c.render())
+
     setupCharts = (region) ->
 
         getData(region, (data) ->
@@ -165,6 +199,7 @@ angular.module('taarifaWaterpointsApp')
             #statusPerFunder = dc.barChart("#statusPerFunder")
             statusPerManagement = dc.barChart("#statusPerManagement")
             costImpactBubbleChart = dc.bubbleChart("#costImpactBubble")
+            problemsChart = dc.rowChart("#topProblems")
             #regionsChart = dc.geoChoroplethChart("#regionsMap")
 
             # create Crossfilter Dimensions and Groups
@@ -219,25 +254,24 @@ angular.module('taarifaWaterpointsApp')
             paymentTypes = createDim((d) -> d.payment_type)
             paymentGroup = paymentTypes.group()
 
+            problems = createDim((d) -> d.hardware_problem).filter((d) -> d != "none")
+            problemsGroup = problems.group()
+
             amounts = createDim((d) -> d.amount_tsh)
             costStatusGroup = reduceCostStatus(wards.group())
 
-            w = 480
-            h = 280
-            statusBarChart(statusPerLgaChart,w,h,lgas,statusPerLga,15)
-            statusBarChart(statusPerSourceTypeChart,w,h,sourceTypes,statusPerSourceType)
-            statusBarChart(statusPerExtraction,w,h,extractionTypes,extractionStatusGroup)
-            #statusBarChart(statusPerInstaller,w,h,installers,installersStatusGroup)
-            #statusBarChart(statusPerFunder,w,h,funders,fundersStatusGroup)
-            statusBarChart(statusPerManagement,w,h,managements,managementsStatusGroup)
+            statusBarChart(statusPerLgaChart,lgas,statusPerLga,15)
+            statusBarChart(statusPerSourceTypeChart,sourceTypes,statusPerSourceType)
+            statusBarChart(statusPerExtraction,extractionTypes,extractionStatusGroup)
+            #statusBarChart(statusPerInstaller,installers,installersStatusGroup)
+            #statusBarChart(statusPerFunder,funders,fundersStatusGroup)
+            statusBarChart(statusPerManagement,managements,managementsStatusGroup)
+            statusBarChart(statusPerWardChart,wards,statusPerWard,1)
 
-            w = 960
-            h = 280
-            statusBarChart(statusPerWardChart,w,h,wards,statusPerWard,1)
+            rowChart(problemsChart,problems,problemsGroup)
 
-            w = 960
-            h = 380
-            bubbleChart(costImpactBubbleChart,w,h,wards,
+
+            bubbleChart(costImpactBubbleChart,wards,
                         costStatusGroup,
                         (d)->d.key,             # color
                         (d)->d.value.percFun,   # key (x)
@@ -246,38 +280,37 @@ angular.module('taarifaWaterpointsApp')
                         "% Functional",         # x label
                         "Average Payment")      # y label
 
-            w = 480
-            h = 180
-            yearChart(constrYearChart,w,h,constrYears,constrYearsGroup,"Construction Year")
-            yearChart(breakYearChart,w,h,breakYears,breakYearsGroup,"Breakdown Year")
+            yearChart(constrYearChart,constrYears,constrYearsGroup)
+            yearChart(breakYearChart,breakYears,breakYearsGroup)
 
-            w = 200
-            h = 200
-            pieChart(quantityChart,w,h,quantities,quantities.group(),all)
-            pieChart(qualityChart,w,h,qualities,qualities.group(),all)
-            pieChart(extractionChart,w,h,extractionTypes,extractionTypes.group(),all)
-            pieChart(statusChart,w,h,statuses,statusGroup,all)
-            pieChart(paymentChart,w,h,paymentTypes,paymentGroup,all)
-            pieChart(installerChart,w,h,installers,installersGroup,all)
-            pieChart(funderChart,w,h,funders,fundersGroup,all)
-            pieChart(managementChart,w,h,managements,managementsGroup,all)
+            pieChart(quantityChart,quantities,quantities.group(),all)
+            pieChart(qualityChart,qualities,qualities.group(),all)
+            pieChart(extractionChart,extractionTypes,extractionTypes.group(),all)
+            pieChart(statusChart,statuses,statusGroup,all)
+            pieChart(paymentChart,paymentTypes,paymentGroup,all)
+            pieChart(installerChart,installers,installersGroup,all)
+            pieChart(funderChart,funders,fundersGroup,all)
+            pieChart(managementChart,managements,managementsGroup,all)
 
             #d3.json("/data/tz_regions.geojson", (regionsJson) ->
             #    w = 500
             #    h = 500
-            #    regionsChoropleth(regionsChart,w,h,regions,regionsCostStatusGroup,regionsJson)
+            #    regionsChoropleth(regionsChart,regions,regionsCostStatusGroup,regionsJson)
             #    dc.renderAll()
             #)
 
-            dc.renderAll()
+            dc.dataCount(".dc-data-count")
+                .dimension(xfilter)
+                .group(all)
 
+            dc.renderAll()
         )
 
 
-    regionsChoropleth = (chart,w,h,dim,group,json) ->
+    regionsChoropleth = (chart,dim,group,json) ->
             chart\
-                .width(w)
-                .height(h)
+                .width(null)
+                .height(null)
                 .dimension(dim)
                 .group(group)
                 .colorDomain([0,100])
@@ -285,13 +318,27 @@ angular.module('taarifaWaterpointsApp')
                     (d) -> d.properties.REGNAME)
                 .title((d) -> d.key + ": " + d.value.percFun + " % functional")
 
-    bubbleChart = (chart,w,h,dim,group,colorAcc,
+    rowChart = (chart,dim,group) ->
+        chart\
+            .width(null)
+            .height(null)
+            .margins({top: 20, left: 10, right: 10, bottom: 20})
+            .group(group)
+            .ordering((x) -> -x.value)
+            .dimension(dim)
+            .cap(10)
+            .label((d) -> d.key)
+            .title((d) -> d.key)
+            .elasticX(true)
+            .xAxis().ticks(4);
+
+    bubbleChart = (chart,dim,group,colorAcc,
                         keyAcc,valueAcc,radiusAcc,xlabel,ylabel) ->
             chart\
-                .width(w)
-                .height(h)
+                .width(null)
+                .height(null)
                 .transitionDuration(1500) 
-                .margins({top: 10, right: 50, bottom: 30, left: 40})
+                .margins({top: 10, right: 20, bottom: 30, left: 40})
                 .dimension(dim)
                 .group(group)
                 #.r(d3.scale.sqrt().domain([1,50]))
@@ -329,15 +376,15 @@ angular.module('taarifaWaterpointsApp')
                     group.all().filter((d) -> d.value.count > 0)
             }
 
-    statusBarChart = (chart, w, h, dim, group, gap) ->
+    statusBarChart = (chart, dim, group, gap) ->
             chart\
-                    .width(w)
-                    .height(h)
-                    .margins({top: 20, left: 40, right: 10, bottom: 60})
+                    .width(null)
+                    .height(null)
+                    .margins({top: 20, left: 40, right: 10, bottom: 45})
                     .group(group,"Functional")
                     .dimension(dim)
                     .ordering((d) ->
-                        d.value.functional / d.value.count)
+                        -d.value.functional / d.value.count)
                     .valueAccessor((p) -> p.value.functional)
                     .stack(group, "Needs Repair", (d) -> d.value["needs repair"])
                     .stack(group, "Not Functional", (d) -> d.value["not functional"])
@@ -355,9 +402,7 @@ angular.module('taarifaWaterpointsApp')
                         d.key +
                          "\nFunctional: " + d.value.functional +
                          "\nNot functional: " + d.value["needs repair"])
-                    .legend(dc.legend().x(w-100).y(10))
-                    .on("filtered", (chart, filter) ->
-                        console.log(chart))
+                    .legend(dc.legend().horizontal(true).itemWidth(85).x(50).y(0))
                     .on("preRender", (chart) ->
                         chart.rescale())
                     .on("preRedraw", (chart) ->
@@ -370,13 +415,13 @@ angular.module('taarifaWaterpointsApp')
                         #chart.group(group2)
                     )
 
-    pieChart = (chart, w, h, dim, group,all) ->
+    pieChart = (chart, dim, group,all) ->
             #tot = d3.sum(group.all(),(d) -> d.value)
 
             chart\
-                .width(w)
-                .height(h)
-                .radius(80)
+                .width(null)
+                .height(null)
+                #.radius(70)
                 .innerRadius(30)
                 .dimension(dim)
                 .group(group)
@@ -389,11 +434,11 @@ angular.module('taarifaWaterpointsApp')
                 .title((d) ->
                     d.key + " (" + Math.floor(d.value / all.value() * 100) + "%)")
 
-    yearChart = (chart, w, h, dim, group, xlabel) ->
+    yearChart = (chart, dim, group) ->
             chart\
-                .width(w)
-                .height(h)
-                .margins({top: 20, left: 40, right: 10, bottom: 60})
+                .width(null)
+                .height(null)
+                .margins({top: 10, left: 40, right: 15, bottom: 15})
                 .group(group)
                 .dimension(dim)
                 .ordering((d) -> d.key)
@@ -405,7 +450,7 @@ angular.module('taarifaWaterpointsApp')
                 .gap(1)
                 .x(d3.time.scale().domain([new Date(1900, 0, 1), new Date(2014, 12, 31)]))
                 .xUnits(d3.time.years)
-                .xAxisLabel(xlabel)
+                #.xAxisLabel(xlabel)
 
     reduceStatus = (group) ->
             res = group.reduce(\

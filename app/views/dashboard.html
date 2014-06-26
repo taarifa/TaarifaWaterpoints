@@ -1,12 +1,12 @@
 <tabset>
     <tab heading="National">
-        <div class="row">
+        <div class="row" ng-controller="DashMapCtrl">
             <div gridster="gridsterOpts">
                 <ul>
                     <li gridster-item="item" ng-repeat="item in gridLayout.tiles">
                     <span class="tile-header">{{$parent.tiles[$index][0] || 'unknown' | titlecase}}</span>
                     <br />
-                    <span class="tile-number">{{ $parent.tiles[$index][1].percent | number:2 }} %</span>
+                    <span class="tile-number">{{$parent.tiles[$index][1].percent | number:2 }} %</span>
                     <br />
                     <span class="tile-info">({{$parent.tiles[$index][1].count }})</span>
                     </li>
@@ -24,27 +24,27 @@
                     </li>
                     <li gridster-item row="gridLayout.filter.row" col="gridLayout.filter.col"
                     size-x="gridLayout.filter.sizeX" size-y="gridLayout.filter.sizeY">
-                    <form class="form-inline" role="form">
+                    <form class="form-inline" role="form" ng-controller="DashboardCtrl">
                         {{"Group By"|translate}}: <div class="form-group">
-                            <select ng-model="$parent.group" ng-options="v for v in groups"
+                            <select ng-model="group" ng-options="v for v in groups"
                                 ng-change="groupBy()" class="form-control">
                             </select>
                         </div>
                         Filter:
                         <div class="form-group">
-                            <select ng-model="$parent.params.region" ng-options="v for v in regions"
+                            <select ng-model="params.region" ng-options="v for v in regions"
                                 ng-change="getStatus('region')" class="form-control">
                                 <option value="">{{"Region"|translate}}:</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <select ng-model="$parent.params.lga" ng-options="v for v in lgas"
+                            <select ng-model="params.lga" ng-options="v for v in lgas"
                                 ng-change="getStatus('lga')" class="form-control">
                                 <option value="">{{"LGA"|translate}}:</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <select ng-model="$parent.params.ward" ng-options="v for v in wards"
+                            <select ng-model="params.ward" ng-options="v for v in wards"
                                 ng-change="getStatus('ward')" class="form-control">
                                 <option value="">{{"Ward"|translate}}:</option>
                             </select>
@@ -54,9 +54,9 @@
                     <li gridster-item="item" ng-repeat="item in gridLayout.plots">
                     <div class="panel panel-primary plot">
                         <div class="panel-heading">
-                            <h3 class="panel-title">{{$parent.plots[$index].title}}</h3>
+                            <h3 class="panel-title">{{plots[$index].title}}</h3>
                         </div>
-                        <div class="panel-body" id="{{$parent.plots[$index].id}}"></div>
+                        <div class="panel-body" id="{{plots[$index].id}}"></div>
                     </div>
                     </li>
                 </ul>
@@ -64,20 +64,25 @@
         </div>
     </tab>
 
-    <tab heading="Regional" ng-controller="DCPlotsCtrl">
+    <tab heading="Regional" select="initView()" ng-controller="DCPlotsCtrl">
         <div class="row">
             <form class="form-inline" role="form" style="padding: 10px">
-                {{"Region"|translate}}:
                 <div class="form-group">
-                    <select ng-model="region" ng-options="v for v in regions"
-                        ng-change="updateCharts()" class="form-control">
+                    <label for="regionSelect" translate>Region</label>:
+                    <select id="regionSelect" ng-model="region" ng-options="v for v in regions"
+                        ng-change="rerenderCharts()" class="form-control">
                     </select>
+                    <p class="help-block">
+                        <div class="dc-data-count">
+                            Selected <span class="filter-count"></span> out of <span class="total-count"></span> waterpoints | <a href="javascript:dc.filterAll(); dc.renderAll();">Reset all filters</a> 
+                        </div>
+                    </p>
                 </div>
             </form>
         </div>
 
         <div class="row">
-            <div gridster="gridsterOpts">
+            <div id="dcgridster" gridster="gridsterOpts">
                 <ul>
                     <li gridster-item="item" ng-repeat="(key,item) in gridLayout">
                         <!--span class="draghandle">...</span-->
