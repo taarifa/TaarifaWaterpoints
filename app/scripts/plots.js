@@ -64,14 +64,14 @@ function updatePlots(region, lga, ward, groupfield) {
   });
 }
 
-function getDimensions(selector){
+function getDimensions(selector, wMargin, hMargin){
   // Compensate for well margins (20px)
   var pn = d3.select(selector).node().parentNode;
 
   //var h = d3.select(selector).style('height').replace('px', '') - 40;
   //var w = d3.select(selector).style('width').replace('px', '') - 40;
-  var h = d3.select(pn).style('height').replace('px', '') - 60;
-  var w = d3.select(pn).style('width').replace('px', '') - 40;
+  var h = d3.select(pn).style('height').replace('px', '') - (hMargin || 60);
+  var w = d3.select(pn).style('width').replace('px', '') - (wMargin || 40);
 
   return {h: h, w: w};
 }
