@@ -123,3 +123,13 @@ li.gridster-item {
     fill: black
 }
 
+.dc-data-count .filter-count {
+    color: #3182bd;
+    font-weight: bold;
+}
+
+.dc-data-count .total-count {
+    color: #3182bd;
+    font-weight: bold;
+}
+
