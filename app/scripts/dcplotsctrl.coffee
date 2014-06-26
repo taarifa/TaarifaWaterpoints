@@ -14,6 +14,7 @@ angular.module('taarifaWaterpointsApp')
 
     $scope.gridLayout =
       statusPerLga: { sizeX: 6, sizeY: 4, row: 0, col: 0 }
+      topProblems: { sizeX: 6, sizeY: 4, row: 18, col: 0 }
       constrYear: { sizeX: 6, sizeY: 2, row: 0, col: 6 }
       breakYear: { sizeX: 6, sizeY: 2, row: 2, col: 6 }
 
@@ -29,11 +30,8 @@ angular.module('taarifaWaterpointsApp')
       funderPie: { sizeX: 3, sizeY: 3, row: 11, col: 6 }
       installerPie: { sizeX: 3, sizeY: 3, row: 11, col: 9 }
 
-      statusPerSourceType: { sizeX: 6, sizeY: 4, row: 14, col: 0 }
-      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 14, col: 6 }
-
-      topProblems: { sizeX: 6, sizeY: 4, row: 18, col: 0 }
       statusPerManagement: { sizeX: 6, sizeY: 4, row: 18, col: 6 }
+      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 14, col: 6 }
 
       costImpactBubble: { sizeX: 12, sizeY: 5, row: 22, col: 0 }
 
@@ -65,6 +63,9 @@ angular.module('taarifaWaterpointsApp')
 
           setupCharts $scope.region
 
+    # what value to use for year 0
+    YEAR_ZERO=1900
+
     getData = (region, callback) ->
       filter =  region: region
 
@@ -87,8 +88,8 @@ angular.module('taarifaWaterpointsApp')
 
       d3.json url, (data) ->
         data._items.forEach (d) ->
-          d.breakdown_year = new Date(d.breakdown_year || 1900, 0, 1)
-          d.construction_year = new Date(d.construction_year || 1900, 0, 1)
+          d.breakdown_year = new Date(d.breakdown_year || YEAR_ZERO, 0, 1)
+          d.construction_year = new Date(d.construction_year || YEAR_ZERO, 0, 1)
 
         callback data._items
 
@@ -165,7 +166,6 @@ angular.module('taarifaWaterpointsApp')
       getData region, (data) ->
         statusPerLgaChart = dc.barChart("#statusPerLga")
         statusPerWardChart = dc.barChart("#statusPerWard")
-        statusPerSourceTypeChart = dc.barChart("#statusPerSourceType")
         constrYearChart = dc.barChart("#constrYear")
         breakYearChart = dc.barChart("#breakYear")
         quantityChart = dc.pieChart("#quantityPie")
@@ -190,9 +190,6 @@ angular.module('taarifaWaterpointsApp')
 
         wards = createDim (d) -> d.ward
         statusPerWard = reduceStatus wards.group()
-
-        sourceTypes = createDim (d) -> d.source_type
-        statusPerSourceType = reduceStatus sourceTypes.group()
 
         constrYears = createDim (d) -> d.construction_year
         constrYearsGroup = reduceStatus constrYears.group()
@@ -237,7 +234,6 @@ angular.module('taarifaWaterpointsApp')
         costStatusGroup = reduceCostStatus wards.group()
 
         statusBarChart statusPerLgaChart, lgas, statusPerLga, 15
-        statusBarChart statusPerSourceTypeChart, sourceTypes, statusPerSourceType
         statusBarChart statusPerExtraction, extractionTypes, extractionStatusGroup
         statusBarChart statusPerManagement, managements, managementsStatusGroup
         statusBarChart statusPerWardChart, wards, statusPerWard, 1
@@ -385,7 +381,7 @@ angular.module('taarifaWaterpointsApp')
           .elasticY(true)
           .elasticX(true)
           .gap(1)
-          .x(d3.time.scale().domain([new Date(1900, 0, 1), new Date(2014, 12, 31)]))
+          .x(d3.time.scale().domain([new Date(YEAR_ZERO, 0, 1), new Date(2014, 12, 31)]))
           .xUnits(d3.time.years)
           .yAxis().ticks(4)
 
