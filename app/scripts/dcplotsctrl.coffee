@@ -330,6 +330,11 @@ angular.module('taarifaWaterpointsApp')
           .yAxisLabel(ylabel)
           .renderLabel(true)
           .label((p) -> p.key)
+          .title((d) ->
+            d.key +
+             "\nAverage payment: " + valueAcc(d).toPrecision(4) +
+             "\n% Functional: " + keyAcc(d).toPrecision(4) +
+             "\nPopulation served: " + radiusAcc(d))
           .renderTitle(true)
 
       removeEmptyGroups = (group) ->
@@ -441,7 +446,7 @@ angular.module('taarifaWaterpointsApp')
             p.percFun = (p.count) ? p.numFun / p.count * 100 : 0
             p),
           (() ->
-            count: 0, total: 0, pop: 0, percFun: 0, numFun: 0))
+            count: 0, total: 0, pop: 0, percFun: 0, numFun: 0, avgCost: 0))
         res
 
       reduceAvg = (group, fieldAcc) ->
