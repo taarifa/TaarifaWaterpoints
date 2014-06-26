@@ -5,16 +5,16 @@
     <div gridster="gridsterOpts">
       <ul>
         <li gridster-item="item" ng-repeat="item in gridLayout.tiles">
-        <span class="tile-header">{{$parent.tiles[$index][0] || 'unknown' | titlecase}}</span>
+        <span class="tile-header">{{tiles[$index][0] || 'unknown' | titlecase}}</span>
         <br />
-        <span class="tile-number">{{$parent.tiles[$index][1].percent | number:2 }} %</span>
+        <span class="tile-number">{{tiles[$index][1].percent | number:2 }} %</span>
         <br />
-        <span class="tile-info">({{$parent.tiles[$index][1].count }})</span>
+        <span class="tile-info">({{tiles[$index][1].count }})</span>
         </li>
         <li gridster-item="gridLayout.problems">
         <span class="tile-header" translate>Top Problems</span>
         <br />
-        <ul ng-repeat="p in $parent.problems" class="">
+        <ul ng-repeat="p in problems" class="">
           <li><span class="tile-number">({{$index+1}}) - {{p.hardware_problem}}</span>
           <span class="tile-info">({{p.count}})</span></li>
         </ul>
