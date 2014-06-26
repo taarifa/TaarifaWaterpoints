@@ -13,27 +13,28 @@ angular.module('taarifaWaterpointsApp')
         enabled: false
 
     $scope.gridLayout =
-      statusPerLga: { sizeX: 6, sizeY: 4, row: 0, col: 0 }
-      topProblems: { sizeX: 6, sizeY: 4, row: 18, col: 0 }
-      constrYear: { sizeX: 6, sizeY: 2, row: 0, col: 6 }
-      breakYear: { sizeX: 6, sizeY: 2, row: 2, col: 6 }
+      statusPerLga: { sizeX: 6, sizeY: 4, row: 0, col: 0, title: "Functionality by LGA" }
+      topProblems: { sizeX: 6, sizeY: 4, row: 0, col: 6, title: "Top Problems"}
 
-      statusPerWard: { sizeX: 12, sizeY: 4, row: 4, col: 0 }
+      constrYear: { sizeX: 6, sizeY: 2, row: 4, col: 0, title: "Construction Year" }
+      breakYear: { sizeX: 6, sizeY: 2, row: 4, col: 6, title: "Breakdown Year" }
 
-      quantityPie: { sizeX: 3, sizeY: 3, row: 8, col: 0 }
-      qualityPie: { sizeX: 3, sizeY: 3, row: 8, col: 3 }
-      managementPie: { sizeX: 3, sizeY: 3, row: 8, col: 6 }
-      extractionPie: { sizeX: 3, sizeY: 3, row: 8, col: 9 }
+      statusPerWard: { sizeX: 12, sizeY: 5, row: 6, col: 0, title: "Functionality by Ward" }
 
-      statusPie: { sizeX: 3, sizeY: 3, row: 11, col: 0 }
-      paymentPie: { sizeX: 3, sizeY: 3, row: 11, col: 3 }
-      funderPie: { sizeX: 3, sizeY: 3, row: 11, col: 6 }
-      installerPie: { sizeX: 3, sizeY: 3, row: 11, col: 9 }
+      statusPie: { sizeX: 3, sizeY: 3, row: 11, col: 0, title: "Functionality" }
+      qualityPie: { sizeX: 3, sizeY: 3, row: 11, col: 3, title: "Water Quality" }
+      quantityPie: { sizeX: 3, sizeY: 3, row: 11, col: 6, title: "Water Quantity" }
+      extractionPie: { sizeX: 3, sizeY: 3, row: 11, col: 9, title: "Extraction Type" }
 
-      statusPerManagement: { sizeX: 6, sizeY: 4, row: 18, col: 6 }
-      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 14, col: 6 }
+      costImpactBubble: { sizeX: 12, sizeY: 4, row: 14, col: 0, title: "Functionality vs Cost" }
 
-      costImpactBubble: { sizeX: 12, sizeY: 5, row: 22, col: 0 }
+      paymentPie: { sizeX: 3, sizeY: 3, row: 18, col: 0, title: "Payment Method" }
+      managementPie: { sizeX: 3, sizeY: 3, row: 18, col: 3, title: "Management" }
+      funderPie: { sizeX: 3, sizeY: 3, row: 18, col: 6, title: "Funder" }
+      installerPie: { sizeX: 3, sizeY: 3, row: 18, col: 9, title: "Installer" }
+
+      statusPerManagement: { sizeX: 6, sizeY: 4, row: 21, col: 0, title: "Functionality by Management" }
+      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 21, col: 6, title: "Functionality by Extraction" }
 
     dimensions = []
     xfilter = null
@@ -64,7 +65,7 @@ angular.module('taarifaWaterpointsApp')
           setupCharts $scope.region
 
     # what value to use for year 0
-    YEAR_ZERO=1900
+    YEAR_ZERO=1950
 
     getData = (region, callback) ->
       filter =  region: region
@@ -344,12 +345,13 @@ angular.module('taarifaWaterpointsApp')
           .title((d) ->
             d.key +
              "\nFunctional: " + d.value.functional +
-             "\nNot functional: " + d.value["needs repair"])
+             "\nNeeds repair: " + d.value["needs repair"] +
+             "\nNot functional: " + d.value["not functional"])
           .legend(dc.legend().horizontal(true).itemWidth(85).x(50).y(0))
-          .on "preRender", (chart) ->
-            chart.rescale()
-          .on "preRedraw", (chart) ->
-            chart.rescale()
+          .on("preRender", (chart) ->
+            chart.rescale())
+          .on("preRedraw", (chart) ->
+            chart.rescale())
 
       pieChart = (chart, dim, group,all) ->
         chart
@@ -374,6 +376,7 @@ angular.module('taarifaWaterpointsApp')
           .margins({top: 20, left: 40, right: 20, bottom: 22})
           .group(group)
           .dimension(dim)
+          .centerBar(true)
           .ordering((d) -> d.key)
           .valueAccessor((p) -> p.value.functional)
           .stack(group, "Needs Repair", (d) -> d.value["needs repair"])
@@ -383,6 +386,10 @@ angular.module('taarifaWaterpointsApp')
           .gap(1)
           .x(d3.time.scale().domain([new Date(YEAR_ZERO, 0, 1), new Date(2014, 12, 31)]))
           .xUnits(d3.time.years)
+          .on("preRender", (chart) ->
+            chart.rescale())
+          .on("preRedraw", (chart) ->
+            chart.rescale())
           .yAxis().ticks(4)
 
       reduceStatus = (group) ->
