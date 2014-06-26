@@ -2,7 +2,8 @@
 
 app = angular
   .module('taarifaWaterpointsApp', [
-    'ui.bootstrap'
+    'ui.router',
+    'ui.bootstrap',
     'gridster',
     'ngResource',
     'ngRoute',
@@ -13,8 +14,8 @@ app = angular
     'gettext'
   ])
 
-  .config ($routeProvider, $httpProvider, flashProvider) ->
-    $routeProvider
+  .config ($urlRouterProvider, $httpProvider, flashProvider, $stateProvider) ->
+    $urlRouterProvider
       .when '/',
         templateUrl: 'views/main.html'
         controller: 'MapCtrl'
@@ -35,14 +36,34 @@ app = angular
         controller: 'RequestTriageCtrl'
       .when '/dashboard',
         templateUrl: 'views/dashboard.html'
-        #controller: 'DashboardCtrl'
       .otherwise
         redirectTo: '/'
     $httpProvider.defaults.headers.patch =
       'Content-Type': 'application/json;charset=utf-8'
     flashProvider.errorClassnames.push 'alert-danger'
 
-  .filter('titlecase', () -> 
+    $stateProvider\
+      .state('national', {
+        url: "/dashboard/national",
+        views: {
+          "nationalView": {
+            templateUrl: "views/dashboard-national.html",
+            controller: 'DashboardCtrl'
+          }
+        }
+      })
+      .state('regional', {
+        url: "/regional",
+        views: {
+          "nationalView": {
+            templateUrl: "views/dashboard-regional.html",
+            controller: 'DCPlotsCtrl'
+          }
+        }
+      })
+
+
+  .filter('titlecase', () ->
     return (s) -> 
       return s.toString().toLowerCase().replace( /\b([a-z])/g, (ch) -> return ch.toUpperCase()))
 
