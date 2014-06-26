@@ -85,6 +85,15 @@
     padding: 10px;
 }
 
+.gridster .gridster-item.gridster-item-chart {
+    padding: 0px;
+}
+
+.gridster-item-chart .panel-heading {
+    padding: 5px 15px;
+    cursor: move;
+}
+
 /* FIXME: This should not be needed, work around gridster bug (?) */
 li.gridster-item {
     position: absolute;
@@ -133,3 +142,16 @@ li.gridster-item {
     font-weight: bold;
 }
 
+.box-header {
+    background-color: #eee;
+    padding: 0 20px 0 10px;
+    border-bottom: 1px solid #ccc;
+    cursor: move;
+    position: relative;
+}
+
+
+.box-header h4 {
+    margin-top: 5px;
+    display: inline-block;
+}

@@ -8,7 +8,7 @@ angular.module('taarifaWaterpointsApp')
       pushing: true
       draggable:
         enabled: true
-        handle: '.draghandle'
+        handle: '.panel-heading'
       resizable:
         enabled: false
 
@@ -155,10 +155,10 @@ angular.module('taarifaWaterpointsApp')
       charts = dc.chartRegistry.list()
       charts.forEach (c) ->
         a = c.anchor()
-        d = getDimensions(a,10,35)
+        d = getDimensions(a,10,65)
         c.width(d.w)
         c.height(d.h)
-        if c.radius then c.radius((d.w / 2) - 15)
+        if c.radius then c.radius((d.w / 2) - 30)
         c.render()
 
     setupCharts = (region) ->
@@ -282,7 +282,7 @@ angular.module('taarifaWaterpointsApp')
         chart
           .width(null)
           .height(null)
-          .margins({top: 20, left: 10, right: 10, bottom: 20})
+          .margins({top: 10, left: 10, right: 10, bottom: 20})
           .group(group)
           .ordering((x) -> -x.value)
           .dimension(dim)
@@ -304,7 +304,7 @@ angular.module('taarifaWaterpointsApp')
           .keyAccessor(keyAcc)
           .valueAccessor(valueAcc)
           .radiusValueAccessor(radiusAcc)
-          .maxBubbleRelativeSize(0.2)
+          .maxBubbleRelativeSize(0.1)
           .x(d3.scale.linear().domain(d3.extent(group.all(),keyAcc)))
           .y(d3.scale.linear().domain(d3.extent(group.all(),valueAcc)))
           .r(d3.scale.linear().domain(d3.extent(group.all(),radiusAcc)))
@@ -328,7 +328,7 @@ angular.module('taarifaWaterpointsApp')
         chart
           .width(null)
           .height(null)
-          .margins({top: 20, left: 40, right: 10, bottom: 45})
+          .margins({top: 20, left: 40, right: 20, bottom: 55})
           .group(group,"Functional")
           .dimension(dim)
           .ordering((d) -> -d.value.functional / d.value.count)
@@ -375,7 +375,7 @@ angular.module('taarifaWaterpointsApp')
         chart
           .width(null)
           .height(null)
-          .margins({top: 20, left: 40, right: 15, bottom: 15})
+          .margins({top: 20, left: 40, right: 20, bottom: 22})
           .group(group)
           .dimension(dim)
           .ordering((d) -> d.key)
@@ -387,6 +387,7 @@ angular.module('taarifaWaterpointsApp')
           .gap(1)
           .x(d3.time.scale().domain([new Date(1900, 0, 1), new Date(2014, 12, 31)]))
           .xUnits(d3.time.years)
+          .yAxis().ticks(4)
 
       reduceStatus = (group) ->
         res = group.reduce(\

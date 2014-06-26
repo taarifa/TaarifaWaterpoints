@@ -52,7 +52,7 @@
           </div>
         </form>
         </li>
-        <li gridster-item="item" ng-repeat="item in gridLayout.plots">
+        <li gridster-item="item" ng-repeat="item in gridLayout.plots" class="gridster-item-chart">
         <div class="panel panel-primary plot">
           <div class="panel-heading">
             <h3 class="panel-title">{{plots[$index].title}}</h3>
@@ -83,11 +83,16 @@
     </form>
   </div>
 
-  <div class="row">
+  <div id="regionalPlots" class="row">
     <div id="dcgridster" gridster="gridsterOpts">
       <ul>
-        <li gridster-item="item" ng-repeat="(key,item) in gridLayout">
-        <div id="{{key}}"></div>
+        <li gridster-item="item" ng-repeat="(key,item) in gridLayout" class="gridster-item-chart">
+        <div class="panel panel-primary plot">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{key}}</h3>
+          </div>
+          <div class="panel-body" id="{{key}}"></div>
+        </div>
         </li>
       </ul>
     </div>
