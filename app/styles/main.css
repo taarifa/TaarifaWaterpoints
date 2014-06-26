@@ -142,16 +142,3 @@ li.gridster-item {
     font-weight: bold;
 }
 
-.box-header {
-    background-color: #eee;
-    padding: 0 20px 0 10px;
-    border-bottom: 1px solid #ccc;
-    cursor: move;
-    position: relative;
-}
-
-
-.box-header h4 {
-    margin-top: 5px;
-    display: inline-block;
-}

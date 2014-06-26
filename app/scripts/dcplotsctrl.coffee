@@ -40,7 +40,7 @@ angular.module('taarifaWaterpointsApp')
     $scope.openSpinner = () ->
       modalSpinner = $modal.open
         templateUrl: '/views/spinnerdlg.html'
-        #controller: ModalInstanceCtrl
+        backdrop: "static"
         size: "sm"
 
     $scope.closeSpinner = () ->
@@ -71,6 +71,7 @@ angular.module('taarifaWaterpointsApp')
           # all the charts have rendered.
           dc.renderlet () ->
             resizeCharts()
+            $scope.closeSpinner()
             # only keep the renderlet once
             dc.renderlet null
 
