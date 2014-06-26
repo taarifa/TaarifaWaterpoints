@@ -25,7 +25,7 @@
         </li>
         <li gridster-item row="gridLayout.filter.row" col="gridLayout.filter.col"
         size-x="gridLayout.filter.sizeX" size-y="gridLayout.filter.sizeY">
-        <form class="form-inline" role="form" ng-controller="DashboardCtrl">
+        <form class="form-inline" role="form">
           {{"Group By"|translate}}: <div class="form-group">
             <select ng-model="group" ng-options="v for v in groups"
               ng-change="groupBy()" class="form-control">

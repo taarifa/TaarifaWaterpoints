@@ -87,6 +87,7 @@ angular.module('taarifaWaterpointsApp')
       Request.update($routeParams.id, $scope.request)
 
   .controller 'DashboardCtrl', ($scope, $http) ->
+    $scope.params = {}
 
     $scope.gridsterOpts = {
         margins: [10, 10],
