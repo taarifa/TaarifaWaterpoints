@@ -119,8 +119,8 @@ angular.module('taarifaWaterpointsApp')
         { sizeX: 12, sizeY: 1, row: 6, col: 0 }
       plots: [
         { sizeX: 12, sizeY: 5, row: 7, col: 0 },
-        { sizeX: 12, sizeY: 5, row: 12, col: 0 }
-        { sizeX: 12, sizeY: 5, row: 18, col: 0 }
+        { sizeX: 6, sizeY: 5, row: 12, col: 0 }
+        { sizeX: 6, sizeY: 5, row: 18, col: 6 }
       ]
     };
 
