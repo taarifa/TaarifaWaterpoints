@@ -131,8 +131,11 @@ angular.module('taarifaWaterpointsApp')
       {id:"spendSummary", title: "Spend per Waterpoint"},
       {id:"spendImpact", title: "Spend vs Functionality"}]
 
-    # FIXME: Are these the right groupings? Shouldn't hard code those...
-    $scope.groups = ['region', 'lga', 'ward', 'funder', 'source_type']
+    $scope.groups = ['region', 'lga', 'ward', 'funder', 'source_type',
+                     'construction_year', 'quantity_group',
+                     'quality_group', 'extraction_type_group',
+                     'breakdown_year', 'payment_type', 'funder',
+                     'installer', 'management', 'hardware_problem']
 
     # default to region
     $scope.group = $scope.groups[0];
