@@ -1,6 +1,6 @@
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DCPlotsCtrl', ($scope, $http, $modal, populationData) ->
+  .controller 'DCPlotsCtrl', ($scope, $http, modalSpinner, populationData) ->
     $scope.gridsterOpts =
       margins: [10, 10]
       columns: 12
@@ -36,17 +36,6 @@ angular.module('taarifaWaterpointsApp')
       statusPerManagement: { sizeX: 6, sizeY: 4, row: 21, col: 0, title: "Functionality by Management" }
       statusPerExtraction: { sizeX: 6, sizeY: 4, row: 21, col: 6, title: "Functionality by Extraction" }
 
-    # FIXME: move to a factory/service
-    modalSpinner = null
-    $scope.openSpinner = () ->
-      modalSpinner = $modal.open
-        templateUrl: '/views/spinnerdlg.html'
-        backdrop: "static"
-        size: "sm"
-
-    $scope.closeSpinner = () ->
-      modalSpinner.close(null)
-
     dimensions = []
     xfilter = null
     popData = null
@@ -58,7 +47,7 @@ angular.module('taarifaWaterpointsApp')
       # only do once
       if dc.chartRegistry.list().length then return
 
-      $scope.openSpinner()
+      modalSpinner.open()
 
       # get all regions
       $http
@@ -73,7 +62,7 @@ angular.module('taarifaWaterpointsApp')
           # all the charts have rendered.
           dc.renderlet () ->
             resizeCharts()
-            $scope.closeSpinner()
+            modalSpinner.close()
             # only keep the renderlet once
             dc.renderlet null
 
@@ -119,7 +108,7 @@ angular.module('taarifaWaterpointsApp')
 
     # FIXME: see next comment
     $scope.rerenderCharts = () ->
-      $scope.openSpinner()
+      modalSpinner.open()
 
       # get all charts
       charts = dc.chartRegistry.list()
@@ -145,7 +134,7 @@ angular.module('taarifaWaterpointsApp')
       # FIXME: see above comment
       dc.renderlet () ->
         resizeCharts()
-        $scope.closeSpinner()
+        modalSpinner.close()
         # only keep the renderlet once
         dc.renderlet null
 

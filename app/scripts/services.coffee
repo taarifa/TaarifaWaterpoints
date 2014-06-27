@@ -2,6 +2,22 @@
 
 angular.module('taarifaWaterpointsApp')
 
+  .factory 'modalSpinner', ($modal) ->
+    modalDlg = null
+
+    openSpinner = () ->
+      modalDlg = $modal.open
+        templateUrl: '/views/spinnerdlg.html'
+        backdrop: "static"
+        size: "sm"
+
+    closeSpinner = () ->
+      modalDlg.close(null)
+
+    res =
+        open: openSpinner
+        close: closeSpinner
+
   .factory 'populationData', ($http, $q) ->
     def = $q.defer()
     url = '/data/population_novillages.json'
