@@ -1,6 +1,6 @@
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DCPlotsCtrl', ($scope, $http, $modal) ->
+  .controller 'DCPlotsCtrl', ($scope, $http, $modal, populationData) ->
     $scope.gridsterOpts =
       margins: [10, 10]
       columns: 12
@@ -36,6 +36,7 @@ angular.module('taarifaWaterpointsApp')
       statusPerManagement: { sizeX: 6, sizeY: 4, row: 21, col: 0, title: "Functionality by Management" }
       statusPerExtraction: { sizeX: 6, sizeY: 4, row: 21, col: 6, title: "Functionality by Extraction" }
 
+    # FIXME: move to a factory/service
     modalSpinner = null
     $scope.openSpinner = () ->
       modalSpinner = $modal.open
@@ -48,6 +49,7 @@ angular.module('taarifaWaterpointsApp')
 
     dimensions = []
     xfilter = null
+    popData = null
 
     # Called when the tab is activated for the first time
     # Has to be done on tab activation for else the charts can not pickup
@@ -75,7 +77,10 @@ angular.module('taarifaWaterpointsApp')
             # only keep the renderlet once
             dc.renderlet null
 
-          setupCharts $scope.region
+          # ensure we have the population data
+          populationData.then (data) ->
+            popData = data
+            setupCharts $scope.region
 
     # what value to use for year 0
     YEAR_ZERO=1950
@@ -317,7 +322,7 @@ angular.module('taarifaWaterpointsApp')
           .keyAccessor(keyAcc)
           .valueAccessor(valueAcc)
           .radiusValueAccessor(radiusAcc)
-          .maxBubbleRelativeSize(0.1)
+          .maxBubbleRelativeSize(0.06)
           .x(d3.scale.linear().domain(d3.extent(group.all(),keyAcc)))
           .y(d3.scale.linear().domain(d3.extent(group.all(),valueAcc)))
           .r(d3.scale.linear().domain(d3.extent(group.all(),radiusAcc)))
@@ -334,7 +339,7 @@ angular.module('taarifaWaterpointsApp')
             d.key +
              "\nAverage payment: " + valueAcc(d).toPrecision(4) +
              "\n% Functional: " + keyAcc(d).toPrecision(4) +
-             "\nPopulation served: " + radiusAcc(d))
+             "\nPopulation: " + radiusAcc(d))
           .renderTitle(true)
 
       removeEmptyGroups = (group) ->
@@ -428,25 +433,34 @@ angular.module('taarifaWaterpointsApp')
         res
 
       reduceCostStatus = (group) ->
+        isFunc = (x) -> x.status_group == "functional"
         res = group.reduce(\
           ((p, v) ->
             ++p.count
             p.total += v.amount_tsh
-            p.pop += v.population
-            p.numFun += (v.status_group == "functional") ? 1 : 0
+            p.pop_served_fun += if isFunc(v) then v.population else 0
+            p.numFun += if isFunc(v) then 1 else 0
             p.avgCost = p.total / p.count
             p.percFun = p.numFun / p.count * 100
             p),
           ((p, v) ->
             --p.count
             p.total -= v.amount_tsh
-            p.pop -= v.population
-            p.numFun -= (v.status_group == "functional") ? 1 : 0
+            p.pop_served_fun -= if isFunc(v) then v.population else 0
+            p.numFun -= if isFunc(v) then 1 else 0
             p.avgCost = (p.count) ? p.total / p.count * 1 : 0
             p.percFun = (p.count) ? p.numFun / p.count * 100 : 0
             p),
           (() ->
-            count: 0, total: 0, pop: 0, percFun: 0, numFun: 0, avgCost: 0))
+            count: 0, total: 0, pop_served_fun: 0, pop: 0, popReach: 0, percFun: 0, numFun: 0, avgCost: 0))
+
+        res.all().forEach((d) ->
+          # Lookup the population of the ward
+          pop = popData.lookup(null,null,d.key)
+          if pop > 0
+            d.value.pop = pop
+            d.value.popReach = d.value.pop_served_fun / d.value.pop * 100)
+
         res
 
       reduceAvg = (group, fieldAcc) ->
