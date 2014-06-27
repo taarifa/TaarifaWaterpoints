@@ -5,14 +5,23 @@ angular.module('taarifaWaterpointsApp')
   .factory 'modalSpinner', ($modal) ->
     modalDlg = null
 
+    # shared counter to allow multiple invocations of
+    # open/close
+    ctr = {val: 0}
+
     openSpinner = () ->
+      ++ctr.val
+      if ctr.val > 1 then return
       modalDlg = $modal.open
         templateUrl: '/views/spinnerdlg.html'
         backdrop: "static"
         size: "sm"
 
     closeSpinner = () ->
-      modalDlg.close(null)
+      --ctr.val
+      if ctr.val < 1
+        modalDlg.close(null)
+        ctr.val = 0
 
     res =
         open: openSpinner
