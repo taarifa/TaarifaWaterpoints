@@ -61,8 +61,12 @@ function updatePlots(region, lga, ward, groupfield, callback) {
     data.sort(comparator);
 
     plotStatusSummary("#statusSummary", data, groupfield);
-    plotSpendSummary("#spendSummary", data, groupfield);
+    //plotSpendSummary("#spendSummary", data, groupfield);
     plotSpendImpact("#spendImpact", data, groupfield);
+
+    if(_.contains(['region','lga','ward'], groupfield)){
+        plotLeaderChart("#percFunLeaders", data, groupfield);
+    }
 
     callback()
   });
@@ -297,6 +301,172 @@ function plotStatusSummary(selector, data, groupField) {
     });
 }
 
+function plotLeaderChart(selector, data, groupField) {
+
+  data.forEach(function(x) {
+    f = _.find(x.waterpoints, isFunctional);
+    x.percFun = f.count / x.count * 100;
+  });
+
+  var dims = getDimensions(selector);
+  var h = dims.h, w = dims.w;
+
+  var margin = {
+      top: 10,
+      right: 20,
+      bottom: 20,
+      left: 20
+    },
+    width = w - margin.left - margin.right,
+    height = h - margin.top - margin.bottom;
+
+  //to prevent creating overcrowded plots
+  data = data.slice(0,Math.floor(height/minColWidth));
+
+  var x = d3.scale.linear()
+    .domain([0, 100])
+    .rangeRound([0, width]);
+
+  var y = d3.scale.ordinal()
+    .domain(_.pluck(data, groupField))
+    .rangeRoundBands([0,height], .1);
+
+  var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .tickFormat("");
+
+  var color = d3.scale.category20();
+
+  svg = d3.select(selector + " svg");
+  if (!svg[0][0]) {
+    svg = d3.select(selector).append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    //transform within the margins
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")");
+
+    svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", -70)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end");
+  } else {
+    //Note width/height may have changed
+    svg.attr("width", width + margin.left + margin.right)
+       .attr("height", height + margin.top + margin.bottom);
+    svg = svg.select('g');
+  }
+
+  var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
+      return d[groupField];
+  });
+
+  svg.call(tip);
+
+  var rects = svg.selectAll("rect")
+    .data(data, function(d) {
+      return d[groupField];
+    });
+
+  var labels = svg.selectAll(".hor-bar-label")
+    .data(data, function(d) {
+      return d[groupField];
+    });
+
+  rects
+    .transition()
+    .duration(1000)
+    .attr("height", y.rangeBand())
+    .attr("y", function(d) {
+      return y(d[groupField]);
+    })
+    .attr("x", function(d) {
+      return x(0);
+    })
+    .attr("width", function(d) {
+      return x(d.percFun);
+    });
+
+  labels
+    .transition()
+    .duration(1000)
+    .attr("y", function(d) {
+      return y(d[groupField]) + y.rangeBand(d)/2;
+    })
+    .attr("x", function(d) {
+      return x(0) + 5;
+    })
+    .text(function(d){
+      return d[groupField];
+    });
+
+  rects.enter()
+    .append("rect")
+    .attr("class","hor-bar")
+    .attr("height", y.rangeBand())
+    .attr("y", function(d) {
+      return y(d[groupField]);
+    })
+    .attr("x", x(0))
+    .attr("width", 0)
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide)
+    .transition()
+    .duration(1000)
+    .attr("width", function(d) {
+      return x(d.percFun);
+    });
+
+  labels.enter()
+    .append("text")
+    .attr("class","hor-bar-label")
+    .text(function(d){
+      return d[groupField];
+    })
+    .style("opacity", 0)
+    .attr("y", function(d) {
+      return y(d[groupField]) + y.rangeBand(d)/2;
+    })
+    .attr("x", function(d) {
+      return x(0) + 5;
+    })
+    .transition()
+    .duration(1000)
+    .style("opacity", 1);
+
+  rects.exit()
+    .transition()
+    .duration(1000)
+    .attr("width",0)
+    .style("opacity", 0)
+    .remove();
+
+  labels.exit()
+    .transition()
+    .duration(1000)
+    .style("opacity", 0)
+    .remove();
+
+  //Update the axes
+  svg.select("g.x.axis").transition().duration(1000).call(xAxis)
+    .attr("transform", "translate(0," + height + ")");
+
+  svg.select("g.y.axis").transition().call(yAxis);
+
+}
 
 function plotSpendSummary(selector, data, groupField) {
 

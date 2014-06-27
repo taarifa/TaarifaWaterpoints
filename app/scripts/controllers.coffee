@@ -126,7 +126,7 @@ angular.module('taarifaWaterpointsApp')
 
     $scope.plots = [
       {id:"statusSummary", title: "Functioning Waterpoints"},
-      {id:"spendSummary", title: "Spend per Waterpoint"},
+      {id:"percFunLeaders", title: "Leaderboard: Percentage Functional"},
       {id:"spendImpact", title: "Spend vs Functionality"}]
 
     $scope.groups = ['region', 'lga', 'ward', 'funder', 'source_type',
