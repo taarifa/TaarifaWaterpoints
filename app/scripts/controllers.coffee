@@ -86,7 +86,8 @@ angular.module('taarifaWaterpointsApp')
         $scope.request.expected_datetime = $filter('date') $scope.expected_datetime, "EEE, dd MMM yyyy hh:mm:ss 'GMT'"
       Request.update($routeParams.id, $scope.request)
 
-  .controller 'DashboardCtrl', ($scope, $http, populationData) ->
+  .controller 'DashboardCtrl', ($scope, $http, modalSpinner, populationData) ->
+
     $scope.params = {}
 
     $scope.gridsterOpts = {
@@ -146,15 +147,18 @@ angular.module('taarifaWaterpointsApp')
           $scope.lgas = data.sort()
 
     getWard = () ->
+      modalSpinner.open()
       $http.get('/api/waterpoints/values/ward',
                 params:
                   region: $scope.params?.region
                   lga: $scope.params?.lga)
         .success (data, status, headers, config) ->
           $scope.wards = data.sort()
+          modalSpinner.close()
 
     # get the top 5 hardware problems
     getProblems = () ->
+      modalSpinner.open()
       $http.get('/api/waterpoints/stats_by/hardware_problem',
                 params:
                   region: $scope.params?.region
@@ -166,6 +170,7 @@ angular.module('taarifaWaterpointsApp')
           )
           $scope.problems = $scope.problems.filter((x) ->
             x.hardware_problem != 'none').slice(0,5)
+          modalSpinner.close()
 
     lookupSelectedPop = () ->
       # FIXME: we do not have pop data for LGAs!
@@ -175,6 +180,8 @@ angular.module('taarifaWaterpointsApp')
         $scope.params.ward)
 
     $scope.getStatus = (changed) ->
+      modalSpinner.open()
+
       $http.get('/api/waterpoints/stats_by/status_group', params: $scope.params)
         .success (data, status, headers, config) ->
           total = d3.sum(data, (x) -> x.count)
@@ -203,6 +210,7 @@ angular.module('taarifaWaterpointsApp')
 
           $scope.tiles = _.pairs(_.pick(statusMap,'functional','needs repair'))
           $scope.tiles.push(['population cover', popCover])
+          modalSpinner.close()
 
       if changed == 'region'
         getLGA()
@@ -217,7 +225,13 @@ angular.module('taarifaWaterpointsApp')
       drawPlots()
 
     drawPlots = () ->
-      updatePlots($scope.params?.region, $scope.params?.lga, $scope.params?.ward, $scope.group)
+      modalSpinner.open()
+      updatePlots(
+        $scope.params?.region
+        $scope.params?.lga
+        $scope.params?.ward
+        $scope.group
+        () -> modalSpinner.close())
 
     # FIXME: is this the proper way of doing things?
     popData = null

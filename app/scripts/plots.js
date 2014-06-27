@@ -1,3 +1,5 @@
+//FIXME: move this file into the controllers
+
 //to prevent creating overcrowded plots
 var minColWidth = 25;
 var statusColor = d3.scale.ordinal()
@@ -8,7 +10,7 @@ function isFunctional(s) {
     return s.status == "functional";
 }
 
-function updatePlots(region, lga, ward, groupfield) {
+function updatePlots(region, lga, ward, groupfield, callback) {
   groupfield = groupfield || "region";
   var url = "/api/waterpoints/stats_by/" + groupfield;
 
@@ -61,6 +63,8 @@ function updatePlots(region, lga, ward, groupfield) {
     plotStatusSummary("#statusSummary", data, groupfield);
     plotSpendSummary("#spendSummary", data, groupfield);
     plotSpendImpact("#spendImpact", data, groupfield);
+
+    callback()
   });
 }
 
