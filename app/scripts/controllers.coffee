@@ -88,8 +88,6 @@ angular.module('taarifaWaterpointsApp')
 
   .controller 'DashboardCtrl', ($scope, $http, modalSpinner, populationData) ->
 
-    $scope.params = {}
-
     $scope.gridsterOpts = {
         margins: [10, 10],
         columns: 12,
@@ -137,8 +135,9 @@ angular.module('taarifaWaterpointsApp')
                      'breakdown_year', 'payment_type', 'funder',
                      'installer', 'management', 'hardware_problem']
 
-    # default to region
-    $scope.group = $scope.groups[0];
+    # default group by to region
+    $scope.params =
+      group: $scope.groups[0]
 
     $http.get('/api/waterpoints/values/region').success (data, status, headers, config) ->
       $scope.regions = data.sort()
@@ -233,7 +232,7 @@ angular.module('taarifaWaterpointsApp')
         $scope.params?.region
         $scope.params?.lga
         $scope.params?.ward
-        $scope.group
+        $scope.params?.group
         () -> modalSpinner.close())
 
     # FIXME: is this the proper way of doing things?
