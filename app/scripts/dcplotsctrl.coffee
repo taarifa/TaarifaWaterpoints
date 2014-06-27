@@ -244,7 +244,7 @@ angular.module('taarifaWaterpointsApp')
         paymentTypes = createDim (d) -> d.payment_type
         paymentGroup = paymentTypes.group()
 
-        problems = createDim((d) -> d.hardware_problem).filter (d) -> d != "none"
+        problems = createDim((d) -> d.hardware_problem)
         problemsGroup = problems.group()
 
         amounts = createDim (d) -> d.amount_tsh
