@@ -97,6 +97,11 @@ def images(filename):
     return send_from_directory(app.root_path + '/dist/images/', filename)
 
 
+@app.route('/data/<path:filename>')
+def data(filename):
+    return send_from_directory(app.root_path + '/dist/data/', filename)
+
+
 @app.route('/views/<path:filename>')
 def views(filename):
     return send_from_directory(app.root_path + '/dist/views/', filename)
