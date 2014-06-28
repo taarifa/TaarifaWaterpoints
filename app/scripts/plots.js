@@ -1,4 +1,6 @@
-//FIXME: move this file into the controllers
+//FIXME: refactor file into controllers
+
+var $scope = null;
 
 //to prevent creating overcrowded plots
 var minColWidth = 25;
@@ -10,7 +12,9 @@ function isFunctional(s) {
     return s.status == "functional";
 }
 
-function updatePlots(region, lga, ward, groupfield, popData, callback) {
+function updatePlots(region, lga, ward, groupfield, popData, angularScope, callback) {
+  $scope = angularScope;
+
   groupfield = groupfield || "region";
   var url = "/api/waterpoints/stats_by/" + groupfield;
 
@@ -88,6 +92,34 @@ function getDimensions(selector, wMargin, hMargin){
 function createTip(getter) {
   var tip = d3.tip().style("z-index",100).attr('class', 'd3-tip').html(getter);
   return tip;
+}
+
+function barDblClick(groupField, d){
+  var geoField = _.contains(['region','lga','ward'], groupField);
+
+  if(geoField){
+    $scope.$apply(function(){
+      if(!$scope.params) $scope.params = {};
+
+      var gforder = {"region": "lga",
+                     "lga": "ward",
+                     "ward": "region"};
+
+      var newgf = gforder[groupField];
+
+      $scope.params.group = newgf;
+      if(newgf != "region"){
+        $scope.params[groupField] = d[groupField];
+        $scope.getStatus(groupField);
+      }else{
+        $scope.params.region = null;
+        $scope.params.lga = null;
+        $scope.params.ward = null;
+        $scope.params.group = "region";
+        $scope.getStatus("region");
+      }
+    });
+  }
 }
 
 /*
@@ -207,6 +239,10 @@ function plotStatusSummary(selector, data, groupField) {
     .attr("class", "group")
     .attr("transform", function(d) {
       return "translate(" + x(d[groupField]) + ",0)";
+    })
+    .on('dblclick', function(d,i){
+        tip.hide(d,i);
+        barDblClick(groupField,d);
     })
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide);

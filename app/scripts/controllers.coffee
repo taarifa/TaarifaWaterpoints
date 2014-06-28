@@ -226,6 +226,7 @@ angular.module('taarifaWaterpointsApp')
     $scope.groupBy = () ->
       drawPlots()
 
+    # FIXME: move into own controller
     drawPlots = () ->
       modalSpinner.open()
       updatePlots(
@@ -234,6 +235,7 @@ angular.module('taarifaWaterpointsApp')
         $scope.params?.ward
         $scope.params?.group
         popData
+        $scope
         () -> modalSpinner.close())
 
     # FIXME: is this the proper way of doing things?
