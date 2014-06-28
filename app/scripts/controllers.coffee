@@ -184,7 +184,7 @@ angular.module('taarifaWaterpointsApp')
     $scope.getStatus = (changed) ->
       modalSpinner.open()
 
-      $http.get('/api/waterpoints/stats_by/status_group', params: $scope.params)
+      $http.get('/api/waterpoints/stats_by/status_group', params: _.omit($scope.params,'group'))
         .success (data, status, headers, config) ->
           total = d3.sum(data, (x) -> x.count)
           data.forEach( (x) -> x.percent = x.count / total * 100)
