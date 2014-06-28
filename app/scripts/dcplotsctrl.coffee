@@ -106,10 +106,12 @@ angular.module('taarifaWaterpointsApp')
       dimensions.push(dim)
       dim
 
-    # FIXME: see next comment
-    $scope.rerenderCharts = () ->
-      modalSpinner.open()
+    $scope.$on "$locationChangeStart", (event, nextLocation, currentLocation) ->
+      # make sure we properly cleanup the global dc object when leaving the page
+      # otherwise causes problems when we come back to it
+      destroyCharts()
 
+    destroyCharts = () ->
       # get all charts
       charts = dc.chartRegistry.list()
 
@@ -130,6 +132,12 @@ angular.module('taarifaWaterpointsApp')
         c.expireCache()
 
       dc.deregisterAllCharts()
+
+    # FIXME: see next comment
+    $scope.rerenderCharts = () ->
+      modalSpinner.open()
+
+      destroyCharts()
 
       # FIXME: see above comment
       dc.renderlet () ->
