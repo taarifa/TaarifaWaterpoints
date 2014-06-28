@@ -125,9 +125,9 @@ angular.module('taarifaWaterpointsApp')
 
 
     $scope.plots = [
-      {id:"statusSummary", title: "Waterpoint status (by % Functional)"},
+      {id:"statusSummary", title: "Waterpoint status (ordered by % Functional)"},
       {id:"percFunLeaders", title: "Leaderboard: Percentage Functional"},
-      {id:"popReach", title: "Leaderboard: % Population Served"}]
+      {id:"popReach", title: "Leaderboard: Percentage of the Population Served"}]
 
     $scope.groups = ['region', 'lga', 'ward', 'funder', 'source_type',
                      'construction_year', 'quantity_group',
