@@ -2,6 +2,7 @@
 
 app = angular
   .module('taarifaWaterpointsApp', [
+    'ui.bootstrap'
     'gridster',
     'ngResource',
     'ngRoute',
@@ -34,7 +35,6 @@ app = angular
         controller: 'RequestTriageCtrl'
       .when '/dashboard',
         templateUrl: 'views/dashboard.html'
-        controller: 'DashboardCtrl'
       .otherwise
         redirectTo: '/'
     $httpProvider.defaults.headers.patch =

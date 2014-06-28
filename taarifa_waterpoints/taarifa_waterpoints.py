@@ -5,6 +5,12 @@ from taarifa_api import api as app, main
 
 app.name = 'TaarifaWaterpoints'
 
+# Override the maximum number of results on a single page
+# This is needed by the dashboard
+# FIXME: this should eventually be replaced by an incremental load
+# which is better for responsiveness
+app.config['PAGINATION_LIMIT'] = 10000
+
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/values/<field>')
 def waterpoint_values(field):
@@ -91,6 +97,11 @@ def images(filename):
     return send_from_directory(app.root_path + '/dist/images/', filename)
 
 
+@app.route('/data/<path:filename>')
+def data(filename):
+    return send_from_directory(app.root_path + '/dist/data/', filename)
+
+
 @app.route('/views/<path:filename>')
 def views(filename):
     return send_from_directory(app.root_path + '/dist/views/', filename)
@@ -99,11 +110,6 @@ def views(filename):
 @app.route("/")
 def index():
     return send_from_directory(app.root_path + '/dist/', 'index.html')
-
-
-@app.route("/dashboard")
-def dashboard():
-    return send_from_directory(app.root_path + '/dash/', 'index.html')
 
 
 @app.route("/favicon.ico")

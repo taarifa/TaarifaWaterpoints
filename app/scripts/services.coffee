@@ -2,6 +2,79 @@
 
 angular.module('taarifaWaterpointsApp')
 
+  .factory 'modalSpinner', ($modal) ->
+    modalDlg = null
+
+    # shared counter to allow multiple invocations of
+    # open/close
+    ctr = {val: 0}
+
+    openSpinner = () ->
+      ++ctr.val
+      if ctr.val > 1 then return
+      modalDlg = $modal.open
+        templateUrl: '/views/spinnerdlg.html'
+        backdrop: "static"
+        size: "sm"
+
+    closeSpinner = () ->
+      --ctr.val
+      if ctr.val < 1
+        modalDlg.close(null)
+        ctr.val = 0
+
+    res =
+        open: openSpinner
+        close: closeSpinner
+
+  .factory 'populationData', ($http, $q) ->
+    def = $q.defer()
+    url = '/data/population_novillages.json'
+    result = {}
+
+    $http.get(url).then((data) ->
+      #allGrouped = _.groupBy(data.data,"Region")
+      #_.keys(grouped).forEach((r) ->
+      #  grouped[r] = _.groupBy(grouped[r],"District")
+      #  _.keys(grouped[r]).forEach((d) ->
+      #    grouped[r][d] = _.groupBy(grouped[r][d],"Ward")))
+
+      # create 3 indices on the data for convenience
+      # we can do this since all names happen to be unique
+      # FIXME: eventually should be delegated to a database
+      regionGroups = _.groupBy(data.data, "Region")
+      districtGroups = _.groupBy(data.data, "District")
+      wardGroups = _.groupBy(data.data, "Ward")
+
+      lookup = (r,d,w) ->
+        try
+          if w
+            wardGroups[w][0].Both_Sexes
+          else if d
+            districtGroups[d].filter((d) ->
+              d.Ward == "")[0].Both_Sexes
+          else if r
+            regionGroups[r].filter((d) ->
+              !d.District)[0].Both_Sexes
+          else
+            d3.sum(_.chain(regionGroups)
+              .values(regionGroups)
+              .flatten()
+              .filter((d) ->
+                !d.District)
+              .pluck("Both_Sexes")
+              .value())
+        catch e
+          console.log("Warning: Failed to lookup population for " +
+            r + ", " + d + ", " + w)
+          return -1
+
+      result.lookup = lookup
+
+      def.resolve(result))
+
+    return def.promise
+
   .factory 'ApiResource', ($resource, $http, flash) ->
     (resource, args) ->
       Resource = $resource "/api/#{resource}/:id"

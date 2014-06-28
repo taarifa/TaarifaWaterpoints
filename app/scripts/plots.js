@@ -1,3 +1,7 @@
+//FIXME: refactor file into controllers
+
+var $scope = null;
+
 //to prevent creating overcrowded plots
 var minColWidth = 25;
 var statusColor = d3.scale.ordinal()
@@ -8,7 +12,9 @@ function isFunctional(s) {
     return s.status == "functional";
 }
 
-function updatePlots(region, lga, ward, groupfield) {
+function updatePlots(region, lga, ward, groupfield, popData, angularScope, callback) {
+  $scope = angularScope;
+
   groupfield = groupfield || "region";
   var url = "/api/waterpoints/stats_by/" + groupfield;
 
@@ -23,57 +29,97 @@ function updatePlots(region, lga, ward, groupfield) {
 
   if(filter) url += "?" + filter;
 
-  var comparator = function(a, b) {
-    var af = _.find(a.waterpoints, isFunctional);
-    var bf = _.find(b.waterpoints, isFunctional);
-
-    //ensure there is always a functional entry
-    if (!af) {
-      af = {
-        status: "functional",
-        count: 0
-      };
-      a.waterpoints.push(af);
-    }
-    if (!bf) {
-      bf = {
-        status: "functional",
-        count: 0
-      };
-      b.waterpoints.push(bf);
-    }
-
-    var aperc = af.count / a.count;
-    var bperc = bf.count / b.count;
-
-    //if percentage is equal sort by count
-    if(Math.abs(aperc - bperc) < 0.001){
-        return bf.count - a.count;
-    }else{
-        return bperc - aperc;
-    }
-  }
-
   d3.json(url, function(error, data) {
+    var geoField = _.contains(['region','lga','ward'], groupfield);
+
+    data.forEach(function(x) {
+        f = _.find(x.waterpoints, isFunctional);
+
+        //ensure there is always a functional entry
+        if (!f) {
+            f = {
+                status: "functional",
+                population: 0,
+                count: 0
+            };
+            x.waterpoints.push(f);
+        }
+        x.percFun = f.count / x.count * 100;
+
+        x.popReach = 0;
+
+        if(geoField){
+            pop = popData.lookup(
+                (groupfield == "region") ? x[groupfield] : null,
+                (groupfield == "lga") ? x[groupfield] : null,
+                (groupfield == "ward") ? x[groupfield] : null
+            )
+            if(pop > 0)
+                x.popReach = f.population / pop * 100;
+        }
+    });
+
     //sort by % functional waterpoints
-    data.sort(comparator);
+    data = _.sortBy(data, function(x){return -x.percFun;});
 
     plotStatusSummary("#statusSummary", data, groupfield);
-    plotSpendSummary("#spendSummary", data, groupfield);
-    plotSpendImpact("#spendImpact", data, groupfield);
+
+    if(_.contains(['region','lga','ward'], groupfield)){
+        leaderChart("#percFunLeaders", data, groupfield,
+                        function(x){return x.percFun;});
+
+        data = _.sortBy(data, function(x){return -x.popReach;});
+        leaderChart("#popReach", data, groupfield,
+                        function(x){return x.popReach;});
+    }
+
+    callback()
   });
 }
 
-function getDimensions(selector){
+function getDimensions(selector, wMargin, hMargin){
   // Compensate for well margins (20px)
   var pn = d3.select(selector).node().parentNode;
 
   //var h = d3.select(selector).style('height').replace('px', '') - 40;
   //var w = d3.select(selector).style('width').replace('px', '') - 40;
-  var h = d3.select(pn).style('height').replace('px', '') - 60;
-  var w = d3.select(pn).style('width').replace('px', '') - 40;
+  var h = d3.select(pn).style('height').replace('px', '') - (hMargin || 60);
+  var w = d3.select(pn).style('width').replace('px', '') - (wMargin || 40);
 
   return {h: h, w: w};
+}
+
+function createTip(getter) {
+  var tip = d3.tip().style("z-index",100).attr('class', 'd3-tip').html(getter);
+  return tip;
+}
+
+function barDblClick(groupField, d){
+  var geoField = _.contains(['region','lga','ward'], groupField);
+
+  if(geoField){
+    $scope.$apply(function(){
+      if(!$scope.params) $scope.params = {};
+
+      var gforder = {"region": "lga",
+                     "lga": "ward",
+                     "ward": "region"};
+
+      var newgf = gforder[groupField];
+
+      $scope.params.group = newgf;
+      if(newgf != "region"){
+        $scope.params[groupField] = d[groupField];
+        $scope.getStatus(groupField);
+      }else{
+        $scope.params.region = null;
+        $scope.params.lga = null;
+        $scope.params.ward = null;
+        $scope.params.group = "region";
+        $scope.getStatus("region");
+      }
+    });
+  }
 }
 
 /*
@@ -159,9 +205,16 @@ function plotStatusSummary(selector, data, groupField) {
     svg = svg.select('g');
   }
 
-  var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
-      return d[groupField];
+  var tip = createTip(function(d) {
+      s = d[groupField];
+
+      d.waterpoints.map(function(x){return _.pick(x,["status","count"]);})
+        .forEach(function(x){
+          s += '<br /><span style="color:' + statusColor(x.status) + '">' + x.status + ': ' + x.count + '</span>';})
+
+      return s
   });
+
   svg.call(tip);
 
   //bind the data to a group
@@ -186,6 +239,10 @@ function plotStatusSummary(selector, data, groupField) {
     .attr("class", "group")
     .attr("transform", function(d) {
       return "translate(" + x(d[groupField]) + ",0)";
+    })
+    .on('dblclick', function(d,i){
+        tip.hide(d,i);
+        barDblClick(groupField,d);
     })
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide);
@@ -293,6 +350,168 @@ function plotStatusSummary(selector, data, groupField) {
     });
 }
 
+function leaderChart(selector, data, groupField, getter) {
+
+  var dims = getDimensions(selector);
+  var h = dims.h, w = dims.w;
+
+  var margin = {
+      top: 10,
+      right: 20,
+      bottom: 20,
+      left: 20
+    },
+    width = w - margin.left - margin.right,
+    height = h - margin.top - margin.bottom;
+
+  //to prevent creating overcrowded plots
+  data = data.slice(0,Math.floor(height/minColWidth));
+
+  var x = d3.scale.linear()
+    .domain([0, 100])
+    .rangeRound([0, width]);
+
+  var y = d3.scale.ordinal()
+    .domain(_.pluck(data, groupField))
+    .rangeRoundBands([0,height], .1);
+
+  var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .tickFormat("");
+
+  var color = d3.scale.category20();
+
+  svg = d3.select(selector + " svg");
+  if (!svg[0][0]) {
+    svg = d3.select(selector).append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    //transform within the margins
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")");
+
+    svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", -70)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end");
+  } else {
+    //Note width/height may have changed
+    svg.attr("width", width + margin.left + margin.right)
+       .attr("height", height + margin.top + margin.bottom);
+    svg = svg.select('g');
+  }
+
+  var tip = createTip(function(d) {
+      s = d[groupField] + ": " + getter(d).toPrecision(4) + " %";
+      return s;
+  });
+
+  svg.call(tip);
+
+  var rects = svg.selectAll("rect")
+    .data(data, function(d) {
+      return d[groupField];
+    });
+
+  var labels = svg.selectAll(".hor-bar-label")
+    .data(data, function(d) {
+      return d[groupField];
+    });
+
+  rects
+    .transition()
+    .duration(1000)
+    .attr("height", y.rangeBand())
+    .attr("y", function(d) {
+      return y(d[groupField]);
+    })
+    .attr("x", function(d) {
+      return x(0);
+    })
+    .attr("width", function(d) {
+      return x(getter(d));
+    });
+
+  labels
+    .transition()
+    .duration(1000)
+    .attr("y", function(d) {
+      return y(d[groupField]) + y.rangeBand(d)/2;
+    })
+    .attr("x", function(d) {
+      return x(0) + 5;
+    })
+    .text(function(d){
+      return d[groupField];
+    });
+
+  rects.enter()
+    .append("rect")
+    .attr("class","hor-bar")
+    .attr("height", y.rangeBand())
+    .attr("y", function(d) {
+      return y(d[groupField]);
+    })
+    .attr("x", x(0))
+    .attr("width", 0)
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide)
+    .transition()
+    .duration(1000)
+    .attr("width", function(d) {
+      return x(getter(d));
+    });
+
+  labels.enter()
+    .append("text")
+    .attr("class","hor-bar-label")
+    .text(function(d){
+      return d[groupField];
+    })
+    .style("opacity", 0)
+    .attr("y", function(d) {
+      return y(d[groupField]) + y.rangeBand(d)/2;
+    })
+    .attr("x", function(d) {
+      return x(0) + 5;
+    })
+    .transition()
+    .duration(1000)
+    .style("opacity", 1);
+
+  rects.exit()
+    .transition()
+    .duration(1000)
+    .attr("width",0)
+    .style("opacity", 0)
+    .remove();
+
+  labels.exit()
+    .transition()
+    .duration(1000)
+    .style("opacity", 0)
+    .remove();
+
+  //Update the axes
+  svg.select("g.x.axis").transition().duration(1000).call(xAxis)
+    .attr("transform", "translate(0," + height + ")");
+
+  svg.select("g.y.axis").transition().call(yAxis);
+
+}
 
 function plotSpendSummary(selector, data, groupField) {
 
