@@ -16,25 +16,25 @@ angular.module('taarifaWaterpointsApp')
       statusPerLga: { sizeX: 6, sizeY: 4, row: 0, col: 0, title: "Functionality by LGA" }
       topProblems: { sizeX: 6, sizeY: 4, row: 0, col: 6, title: "Top Problems"}
 
-      constrYear: { sizeX: 6, sizeY: 2, row: 4, col: 0, title: "Construction Year" }
-      breakYear: { sizeX: 6, sizeY: 2, row: 4, col: 6, title: "Breakdown Year" }
+      constrYear: { sizeX: 6, sizeY: 3, row: 4, col: 0, title: "Construction Year" }
+      breakYear: { sizeX: 6, sizeY: 3, row: 4, col: 6, title: "Breakdown Year" }
 
-      statusPerWard: { sizeX: 12, sizeY: 5, row: 6, col: 0, title: "Functionality by Ward" }
+      statusPerWard: { sizeX: 12, sizeY: 5, row: 7, col: 0, title: "Functionality by Ward" }
 
-      statusPie: { sizeX: 3, sizeY: 3, row: 11, col: 0, title: "Functionality" }
-      qualityPie: { sizeX: 3, sizeY: 3, row: 11, col: 3, title: "Water Quality" }
-      quantityPie: { sizeX: 3, sizeY: 3, row: 11, col: 6, title: "Water Quantity" }
-      extractionPie: { sizeX: 3, sizeY: 3, row: 11, col: 9, title: "Extraction Type" }
+      statusPie: { sizeX: 3, sizeY: 3, row: 12, col: 0, title: "Functionality" }
+      qualityPie: { sizeX: 3, sizeY: 3, row: 12, col: 3, title: "Water Quality" }
+      quantityPie: { sizeX: 3, sizeY: 3, row: 12, col: 6, title: "Water Quantity" }
+      extractionPie: { sizeX: 3, sizeY: 3, row: 12, col: 9, title: "Extraction Type" }
 
-      costImpactBubble: { sizeX: 12, sizeY: 4, row: 14, col: 0, title: "Functionality vs Cost" }
+      costImpactBubble: { sizeX: 12, sizeY: 4, row: 15, col: 0, title: "Functionality vs Cost" }
 
-      paymentPie: { sizeX: 3, sizeY: 3, row: 18, col: 0, title: "Payment Method" }
-      managementPie: { sizeX: 3, sizeY: 3, row: 18, col: 3, title: "Management" }
-      funderPie: { sizeX: 3, sizeY: 3, row: 18, col: 6, title: "Funder" }
-      installerPie: { sizeX: 3, sizeY: 3, row: 18, col: 9, title: "Installer" }
+      paymentPie: { sizeX: 3, sizeY: 3, row: 19, col: 0, title: "Payment Method" }
+      managementPie: { sizeX: 3, sizeY: 3, row: 19, col: 3, title: "Management" }
+      funderPie: { sizeX: 3, sizeY: 3, row: 19, col: 6, title: "Funder" }
+      installerPie: { sizeX: 3, sizeY: 3, row: 19, col: 9, title: "Installer" }
 
-      statusPerManagement: { sizeX: 6, sizeY: 4, row: 21, col: 0, title: "Functionality by Management" }
-      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 21, col: 6, title: "Functionality by Extraction" }
+      statusPerManagement: { sizeX: 6, sizeY: 4, row: 22, col: 0, title: "Functionality by Management" }
+      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 22, col: 6, title: "Functionality by Extraction" }
 
     dimensions = []
     xfilter = null
