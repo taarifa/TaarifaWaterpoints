@@ -25,43 +25,25 @@ function updatePlots(region, lga, ward, groupfield, callback) {
 
   if(filter) url += "?" + filter;
 
-  var comparator = function(a, b) {
-    var af = _.find(a.waterpoints, isFunctional);
-    var bf = _.find(b.waterpoints, isFunctional);
-
-    //ensure there is always a functional entry
-    if (!af) {
-      af = {
-        status: "functional",
-        count: 0
-      };
-      a.waterpoints.push(af);
-    }
-    if (!bf) {
-      bf = {
-        status: "functional",
-        count: 0
-      };
-      b.waterpoints.push(bf);
-    }
-
-    var aperc = af.count / a.count;
-    var bperc = bf.count / b.count;
-
-    //if percentage is equal sort by count
-    if(Math.abs(aperc - bperc) < 0.001){
-        return bf.count - a.count;
-    }else{
-        return bperc - aperc;
-    }
-  }
-
   d3.json(url, function(error, data) {
+    data.forEach(function(x) {
+        f = _.find(x.waterpoints, isFunctional);
+
+        //ensure there is always a functional entry
+        if (!f) {
+            f = {
+                status: "functional",
+                count: 0
+            };
+            x.waterpoints.push(f);
+        }
+        x.percFun = f.count / x.count * 100;
+    });
+
     //sort by % functional waterpoints
-    data.sort(comparator);
+    data = _.sortBy(data, function(x){return -x.percFun;});
 
     plotStatusSummary("#statusSummary", data, groupfield);
-    //plotSpendSummary("#spendSummary", data, groupfield);
     plotSpendImpact("#spendImpact", data, groupfield);
 
     if(_.contains(['region','lga','ward'], groupfield)){
@@ -302,11 +284,6 @@ function plotStatusSummary(selector, data, groupField) {
 }
 
 function plotLeaderChart(selector, data, groupField) {
-
-  data.forEach(function(x) {
-    f = _.find(x.waterpoints, isFunctional);
-    x.percFun = f.count / x.count * 100;
-  });
 
   var dims = getDimensions(selector);
   var h = dims.h, w = dims.w;
