@@ -127,7 +127,7 @@ angular.module('taarifaWaterpointsApp')
     $scope.plots = [
       {id:"statusSummary", title: "Functioning Waterpoints"},
       {id:"percFunLeaders", title: "Leaderboard: Percentage Functional"},
-      {id:"spendImpact", title: "Spend vs Functionality"}]
+      {id:"popReach", title: "Leaderboard: % Population Served"}]
 
     $scope.groups = ['region', 'lga', 'ward', 'funder', 'source_type',
                      'construction_year', 'quantity_group',
@@ -233,6 +233,7 @@ angular.module('taarifaWaterpointsApp')
         $scope.params?.lga
         $scope.params?.ward
         $scope.params?.group
+        popData
         () -> modalSpinner.close())
 
     # FIXME: is this the proper way of doing things?

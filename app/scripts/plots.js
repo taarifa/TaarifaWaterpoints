@@ -10,7 +10,7 @@ function isFunctional(s) {
     return s.status == "functional";
 }
 
-function updatePlots(region, lga, ward, groupfield, callback) {
+function updatePlots(region, lga, ward, groupfield, popData, callback) {
   groupfield = groupfield || "region";
   var url = "/api/waterpoints/stats_by/" + groupfield;
 
@@ -26,6 +26,8 @@ function updatePlots(region, lga, ward, groupfield, callback) {
   if(filter) url += "?" + filter;
 
   d3.json(url, function(error, data) {
+    var geoField = _.contains(['region','lga','ward'], groupfield);
+
     data.forEach(function(x) {
         f = _.find(x.waterpoints, isFunctional);
 
@@ -33,21 +35,38 @@ function updatePlots(region, lga, ward, groupfield, callback) {
         if (!f) {
             f = {
                 status: "functional",
+                population: 0,
                 count: 0
             };
             x.waterpoints.push(f);
         }
         x.percFun = f.count / x.count * 100;
+
+        x.popReach = 0;
+
+        if(geoField){
+            pop = popData.lookup(
+                (groupfield == "region") ? x[groupfield] : null,
+                (groupfield == "lga") ? x[groupfield] : null,
+                (groupfield == "ward") ? x[groupfield] : null
+            )
+            if(pop > 0)
+                x.popReach = f.population / pop * 100;
+        }
     });
 
     //sort by % functional waterpoints
     data = _.sortBy(data, function(x){return -x.percFun;});
 
     plotStatusSummary("#statusSummary", data, groupfield);
-    plotSpendImpact("#spendImpact", data, groupfield);
 
     if(_.contains(['region','lga','ward'], groupfield)){
-        plotLeaderChart("#percFunLeaders", data, groupfield);
+        leaderChart("#percFunLeaders", data, groupfield,
+                        function(x){return x.percFun;});
+
+        data = _.sortBy(data, function(x){return -x.popReach;});
+        leaderChart("#popReach", data, groupfield,
+                        function(x){return x.popReach;});
     }
 
     callback()
@@ -283,7 +302,7 @@ function plotStatusSummary(selector, data, groupField) {
     });
 }
 
-function plotLeaderChart(selector, data, groupField) {
+function leaderChart(selector, data, groupField, getter) {
 
   var dims = getDimensions(selector);
   var h = dims.h, w = dims.w;
@@ -374,7 +393,7 @@ function plotLeaderChart(selector, data, groupField) {
       return x(0);
     })
     .attr("width", function(d) {
-      return x(d.percFun);
+      return x(getter(d));
     });
 
   labels
@@ -404,7 +423,7 @@ function plotLeaderChart(selector, data, groupField) {
     .transition()
     .duration(1000)
     .attr("width", function(d) {
-      return x(d.percFun);
+      return x(getter(d));
     });
 
   labels.enter()
