@@ -85,6 +85,11 @@ function getDimensions(selector, wMargin, hMargin){
   return {h: h, w: w};
 }
 
+function createTip(getter) {
+  var tip = d3.tip().style("z-index",100).attr('class', 'd3-tip').html(getter);
+  return tip;
+}
+
 /*
  * Stacked bar chart summarizing the status (functional/non functional)
  * of all the waterpoints by the given group field
@@ -168,9 +173,16 @@ function plotStatusSummary(selector, data, groupField) {
     svg = svg.select('g');
   }
 
-  var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
-      return d[groupField];
+  var tip = createTip(function(d) {
+      s = d[groupField];
+
+      d.waterpoints.map(function(x){return _.pick(x,["status","count"]);})
+        .forEach(function(x){
+          s += '<br /><span style="color:' + statusColor(x.status) + '">' + x.status + ': ' + x.count + '</span>';})
+
+      return s
   });
+
   svg.call(tip);
 
   //bind the data to a group
@@ -366,8 +378,9 @@ function leaderChart(selector, data, groupField, getter) {
     svg = svg.select('g');
   }
 
-  var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
-      return d[groupField];
+  var tip = createTip(function(d) {
+      s = d[groupField] + ": " + getter(d).toPrecision(4) + " %";
+      return s;
   });
 
   svg.call(tip);
