@@ -273,7 +273,7 @@ angular.module('taarifaWaterpointsApp')
         pieChart quantityChart, quantities, quantities.group(), all
         pieChart qualityChart, qualities, qualities.group(), all
         pieChart extractionChart, extractionTypes, extractionTypes.group(), all
-        pieChart statusChart, statuses, statusGroup, all
+        pieChart statusChart, statuses, statusGroup, all, statusColor
         pieChart paymentChart, paymentTypes, paymentGroup, all
         pieChart installerChart, installers, installersGroup, all
         pieChart funderChart, funders, fundersGroup, all
@@ -357,6 +357,7 @@ angular.module('taarifaWaterpointsApp')
           .stack(group, "Not Functional", (d) -> d.value["not functional"])
           .x(d3.scale.ordinal())
           .xUnits(dc.units.ordinal)
+          .colors(statusColor)
           .elasticY(true)
           .elasticX(true)
           .gap(gap || 10)
@@ -376,7 +377,7 @@ angular.module('taarifaWaterpointsApp')
           .on("preRedraw", (chart) ->
             chart.rescale())
 
-      pieChart = (chart, dim, group,all) ->
+      pieChart = (chart, dim, group,all, colorScale) ->
         chart
           .width(null)
           .height(null)
@@ -392,6 +393,8 @@ angular.module('taarifaWaterpointsApp')
           .title((d) ->
             d.key + " (" + Math.floor(d.value / all.value() * 100) + "%)")
 
+        if colorScale then chart.colors(colorScale)
+
       yearChart = (chart, dim, group, xlabel) ->
         chart
           .width(null)
@@ -404,6 +407,7 @@ angular.module('taarifaWaterpointsApp')
           .valueAccessor((p) -> p.value.functional)
           .stack(group, "Needs Repair", (d) -> d.value["needs repair"])
           .stack(group, "Not Functional", (d) -> d.value["not functional"])
+          .colors(statusColor)
           .elasticY(true)
           .elasticX(true)
           .gap(1)
