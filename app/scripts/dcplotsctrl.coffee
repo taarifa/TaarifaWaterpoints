@@ -324,8 +324,9 @@ angular.module('taarifaWaterpointsApp')
           .y(d3.scale.linear().domain(d3.extent(group.all(),valueAcc)))
           .r(d3.scale.linear().domain(d3.extent(group.all(),radiusAcc)))
           .elasticY(true)
-          .yAxisPadding(100)
-          .xAxisPadding(500)
+          .elasticX(true)
+          .yAxisPadding(0)
+          .xAxisPadding(0)
           .renderHorizontalGridLines(true)
           .renderVerticalGridLines(true)
           .xAxisLabel(xlabel)
@@ -338,6 +339,10 @@ angular.module('taarifaWaterpointsApp')
              "\n% Functional: " + keyAcc(d).toPrecision(4) +
              "\nPopulation: " + radiusAcc(d))
           .renderTitle(true)
+          .on("preRender", (chart) ->
+            chart.rescale())
+          .on("preRedraw", (chart) ->
+            chart.rescale())
 
       removeEmptyGroups = (group) ->
         group2 =
