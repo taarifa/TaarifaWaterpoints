@@ -181,6 +181,11 @@ angular.module('taarifaWaterpointsApp')
         if c.radius then c.radius((d.w / 2) - 30)
         c.render()
 
+    $scope.$on 'gridster-resized', (newSizes) ->
+      newWidth = newSizes[0]
+      newHeight = newSizes[1]
+      resizeCharts()
+
     setupCharts = (region) ->
       getData region, (data) ->
         statusPerLgaChart = dc.barChart("#statusPerLga")
