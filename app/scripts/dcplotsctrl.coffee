@@ -36,6 +36,13 @@ angular.module('taarifaWaterpointsApp')
       statusPerManagement: { sizeX: 6, sizeY: 4, row: 22, col: 0, title: "Functionality by Management" }
       statusPerExtraction: { sizeX: 6, sizeY: 4, row: 22, col: 6, title: "Functionality by Extraction" }
 
+    $scope.fields = ["status_group", "lga", "ward",
+                 "source_type", "amount_tsh", "population"
+                 "construction_year", "quantity_group",
+                 "quality_group", "extraction_type_group",
+                 "breakdown_year", "payment_type", "funder",
+                 "installer", "management", "hardware_problem"]
+
     dimensions = []
     xfilter = null
     popData = null
@@ -77,17 +84,10 @@ angular.module('taarifaWaterpointsApp')
     getData = (region, callback) ->
       filter =  region: region
 
-      project = ["status_group", "lga", "ward",
-                 "source_type", "amount_tsh", "population"
-                 "construction_year", "quantity_group",
-                 "quality_group", "extraction_type_group",
-                 "breakdown_year", "payment_type", "funder",
-                 "installer", "management", "hardware_problem"]
-
       ones = Array
-        .apply(null, new Array(project.length))
+        .apply(null, new Array($scope.fields.length))
         .map(Number.prototype.valueOf, 1)
-      projection = _.object(project, ones)
+      projection = _.object($scope.fields, ones)
 
       #FIXME: eventually load page by page to improve responsiveness
       url = "/api/waterpoints?where=" + JSON.stringify(filter) +
@@ -285,206 +285,235 @@ angular.module('taarifaWaterpointsApp')
         pieChart managementChart, managements, managementsGroup, all
 
         dc.dataCount(".dc-data-count").dimension(xfilter).group(all)
+        $scope.columns = ["ward","region"]
+        makeDataTable("#dc-data-table", wards)
 
         dc.renderAll()
 
-      regionsChoropleth = (chart, dim, group, json) ->
-        chart
-          .width(null)
-          .height(null)
-          .dimension(dim)
-          .group(group)
-          .colorDomain([0,100])
-          .overlayGeoJson(json, "region", (d) -> d.properties.REGNAME)
-          .title((d) -> d.key + ": " + d.value.percFun + " % functional")
+    regionsChoropleth = (chart, dim, group, json) ->
+      chart
+        .width(null)
+        .height(null)
+        .dimension(dim)
+        .group(group)
+        .colorDomain([0,100])
+        .overlayGeoJson(json, "region", (d) -> d.properties.REGNAME)
+        .title((d) -> d.key + ": " + d.value.percFun + " % functional")
 
-      rowChart = (chart, dim, group) ->
-        chart
-          .width(null)
-          .height(null)
-          .margins({top: 10, left: 10, right: 10, bottom: 20})
-          .group(group)
-          .ordering((x) -> -x.value)
-          .dimension(dim)
-          .cap(10)
-          .label((d) -> d.key)
-          .title((d) -> d.key)
-          .elasticX(true)
-          .xAxis().ticks(4)
+    rowChart = (chart, dim, group) ->
+      chart
+        .width(null)
+        .height(null)
+        .margins({top: 10, left: 10, right: 10, bottom: 20})
+        .group(group)
+        .ordering((x) -> -x.value)
+        .dimension(dim)
+        .cap(10)
+        .label((d) -> d.key)
+        .title((d) -> d.key)
+        .elasticX(true)
+        .xAxis().ticks(4)
 
-      bubbleChart = (chart, dim, group, colorAcc, keyAcc, valueAcc, radiusAcc, xlabel, ylabel) ->
-        chart
-          .width(null)
-          .height(null)
-          .transitionDuration(1500)
-          .margins({top: 10, right: 20, bottom: 30, left: 40})
-          .dimension(dim)
-          .group(group)
-          .colorAccessor(colorAcc)
-          .keyAccessor(keyAcc)
-          .valueAccessor(valueAcc)
-          .radiusValueAccessor(radiusAcc)
-          .maxBubbleRelativeSize(0.06)
-          .x(d3.scale.linear().domain(d3.extent(group.all(),keyAcc)))
-          .y(d3.scale.linear().domain(d3.extent(group.all(),valueAcc)))
-          .r(d3.scale.linear().domain(d3.extent(group.all(),radiusAcc)))
-          .elasticY(true)
-          .elasticX(true)
-          .yAxisPadding(0)
-          .xAxisPadding(0)
-          .renderHorizontalGridLines(true)
-          .renderVerticalGridLines(true)
-          .xAxisLabel(xlabel)
-          .yAxisLabel(ylabel)
-          .renderLabel(true)
-          .label((p) -> p.key)
-          .title((d) ->
-            d.key +
-             "\nAverage payment: " + valueAcc(d).toPrecision(4) +
-             "\n% Functional: " + keyAcc(d).toPrecision(4) +
-             "\nPopulation: " + radiusAcc(d))
-          .renderTitle(true)
-          .on("preRender", (chart) ->
-            chart.rescale())
-          .on("preRedraw", (chart) ->
-            chart.rescale())
+    bubbleChart = (chart, dim, group, colorAcc, keyAcc, valueAcc, radiusAcc, xlabel, ylabel) ->
+      chart
+        .width(null)
+        .height(null)
+        .transitionDuration(1500)
+        .margins({top: 10, right: 20, bottom: 30, left: 40})
+        .dimension(dim)
+        .group(group)
+        .colorAccessor(colorAcc)
+        .keyAccessor(keyAcc)
+        .valueAccessor(valueAcc)
+        .radiusValueAccessor(radiusAcc)
+        .maxBubbleRelativeSize(0.06)
+        .x(d3.scale.linear().domain(d3.extent(group.all(),keyAcc)))
+        .y(d3.scale.linear().domain(d3.extent(group.all(),valueAcc)))
+        .r(d3.scale.linear().domain(d3.extent(group.all(),radiusAcc)))
+        .elasticY(true)
+        .elasticX(true)
+        .yAxisPadding(0)
+        .xAxisPadding(0)
+        .renderHorizontalGridLines(true)
+        .renderVerticalGridLines(true)
+        .xAxisLabel(xlabel)
+        .yAxisLabel(ylabel)
+        .renderLabel(true)
+        .label((p) -> p.key)
+        .title((d) ->
+          d.key +
+            "\nAverage payment: " + valueAcc(d).toPrecision(4) +
+            "\n% Functional: " + keyAcc(d).toPrecision(4) +
+            "\nPopulation: " + radiusAcc(d))
+        .renderTitle(true)
+        .on("preRender", (chart) ->
+          chart.rescale())
+        .on("preRedraw", (chart) ->
+          chart.rescale())
 
-      removeEmptyGroups = (group) ->
-        group2 =
-          all: () ->
-            group.all().filter((d) -> d.value.count > 0)
+    removeEmptyGroups = (group) ->
+      group2 =
+        all: () ->
+          group.all().filter((d) -> d.value.count > 0)
 
-      statusBarChart = (chart, dim, group, gap) ->
-        chart
-          .width(null)
-          .height(null)
-          .margins({top: 20, left: 40, right: 20, bottom: 55})
-          .group(group,"Functional")
-          .dimension(dim)
-          .ordering((d) -> -d.value.functional / d.value.count)
-          .valueAccessor((p) -> p.value.functional)
-          .stack(group, "Needs Repair", (d) -> d.value["needs repair"])
-          .stack(group, "Not Functional", (d) -> d.value["not functional"])
-          .x(d3.scale.ordinal())
-          .xUnits(dc.units.ordinal)
-          .colors(statusColor)
-          .elasticY(true)
-          .elasticX(true)
-          .gap(gap || 10)
-          .renderlet((chart) ->
-            chart.selectAll("g.x text")
-            .attr('dx', '-30')
-            .attr('transform', "rotate(-65)"))
-          .label((d) -> d.key)
-          .title((d) ->
-            d.key +
-             "\nFunctional: " + d.value.functional +
-             "\nNeeds repair: " + d.value["needs repair"] +
-             "\nNot functional: " + d.value["not functional"])
-          .legend(dc.legend().horizontal(true).itemWidth(85).x(50).y(0))
-          .on("preRender", (chart) ->
-            chart.rescale())
-          .on("preRedraw", (chart) ->
-            chart.rescale())
+    statusBarChart = (chart, dim, group, gap) ->
+      chart
+        .width(null)
+        .height(null)
+        .margins({top: 20, left: 40, right: 20, bottom: 55})
+        .group(group,"Functional")
+        .dimension(dim)
+        .ordering((d) -> -d.value.functional / d.value.count)
+        .valueAccessor((p) -> p.value.functional)
+        .stack(group, "Needs Repair", (d) -> d.value["needs repair"])
+        .stack(group, "Not Functional", (d) -> d.value["not functional"])
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        .colors(statusColor)
+        .elasticY(true)
+        .elasticX(true)
+        .gap(gap || 10)
+        .renderlet((chart) ->
+          chart.selectAll("g.x text")
+          .attr('dx', '-30')
+          .attr('transform', "rotate(-65)"))
+        .label((d) -> d.key)
+        .title((d) ->
+          d.key +
+            "\nFunctional: " + d.value.functional +
+            "\nNeeds repair: " + d.value["needs repair"] +
+            "\nNot functional: " + d.value["not functional"])
+        .legend(dc.legend().horizontal(true).itemWidth(85).x(50).y(0))
+        .on("preRender", (chart) ->
+          chart.rescale())
+        .on("preRedraw", (chart) ->
+          chart.rescale())
 
-      pieChart = (chart, dim, group,all, colorScale) ->
-        chart
-          .width(null)
-          .height(null)
-          .innerRadius(30)
-          .dimension(dim)
-          .group(group)
-          .transitionDuration(1000)
-          .label((d) ->
-            if (chart.hasFilter() && !chart.hasFilter(d.key))
-              d.key + "(0%)"
-            else
-              d.key + " (" + Math.floor(d.value / all.value() * 100) + "%)")
-          .title((d) ->
+    pieChart = (chart, dim, group,all, colorScale) ->
+      chart
+        .width(null)
+        .height(null)
+        .innerRadius(30)
+        .dimension(dim)
+        .group(group)
+        .transitionDuration(1000)
+        .label((d) ->
+          if (chart.hasFilter() && !chart.hasFilter(d.key))
+            d.key + "(0%)"
+          else
             d.key + " (" + Math.floor(d.value / all.value() * 100) + "%)")
+        .title((d) ->
+          d.key + " (" + Math.floor(d.value / all.value() * 100) + "%)")
 
-        if colorScale then chart.colors(colorScale)
+      if colorScale then chart.colors(colorScale)
 
-      yearChart = (chart, dim, group, xlabel) ->
-        chart
-          .width(null)
-          .height(null)
-          .margins({top: 20, left: 40, right: 20, bottom: 22})
-          .group(group)
-          .dimension(dim)
-          .centerBar(true)
-          .ordering((d) -> d.key)
-          .valueAccessor((p) -> p.value.functional)
-          .stack(group, "Needs Repair", (d) -> d.value["needs repair"])
-          .stack(group, "Not Functional", (d) -> d.value["not functional"])
-          .colors(statusColor)
-          .elasticY(true)
-          .elasticX(true)
-          .gap(1)
-          .x(d3.time.scale().domain([new Date(YEAR_ZERO, 0, 1), new Date(2014, 12, 31)]))
-          .xUnits(d3.time.years)
-          .on("preRender", (chart) ->
-            chart.rescale())
-          .on("preRedraw", (chart) ->
-            chart.rescale())
-          .yAxis().ticks(4)
+    yearChart = (chart, dim, group, xlabel) ->
+      chart
+        .width(null)
+        .height(null)
+        .margins({top: 20, left: 40, right: 20, bottom: 22})
+        .group(group)
+        .dimension(dim)
+        .centerBar(true)
+        .ordering((d) -> d.key)
+        .valueAccessor((p) -> p.value.functional)
+        .stack(group, "Needs Repair", (d) -> d.value["needs repair"])
+        .stack(group, "Not Functional", (d) -> d.value["not functional"])
+        .colors(statusColor)
+        .elasticY(true)
+        .elasticX(true)
+        .gap(1)
+        .x(d3.time.scale().domain([new Date(YEAR_ZERO, 0, 1), new Date(2014, 12, 31)]))
+        .xUnits(d3.time.years)
+        .on("preRender", (chart) ->
+          chart.rescale())
+        .on("preRedraw", (chart) ->
+          chart.rescale())
+        .yAxis().ticks(4)
 
-      reduceStatus = (group) ->
-        res = group.reduce(\
-          ((p, v) ->
-            ++p.count
-            p[v.status_group] += 1
-            return p),
-          ((p, v) ->
-            --p.count
-            p[v.status_group] -= 1
-            return p),
-          (() ->
-            count: 0, functional: 0, "not functional": 0, "needs repair": 0))
-        res
+    makeDataTable = (selector, dim) ->
+      cols = $scope.fields.map((x) -> {mData: x, sDefaultContent: ""})
 
-      reduceCostStatus = (group) ->
-        isFunc = (x) -> x.status_group == "functional"
-        res = group.reduce(\
-          ((p, v) ->
-            ++p.count
-            p.total += v.amount_tsh
-            p.pop_served_fun += if isFunc(v) then v.population else 0
-            p.numFun += if isFunc(v) then 1 else 0
-            p.avgCost = p.total / p.count
-            p.percFun = p.numFun / p.count * 100
-            p),
-          ((p, v) ->
-            --p.count
-            p.total -= v.amount_tsh
-            p.pop_served_fun -= if isFunc(v) then v.population else 0
-            p.numFun -= if isFunc(v) then 1 else 0
-            p.avgCost = (p.count) ? p.total / p.count * 1 : 0
-            p.percFun = (p.count) ? p.numFun / p.count * 100 : 0
-            p),
-          (() ->
-            count: 0, total: 0, pop_served_fun: 0, pop: 0, popReach: 0, percFun: 0, numFun: 0, avgCost: 0))
+      datatable = $(selector).dataTable
+        bPaginate: true,
+        pagingType: "full",
+        iDisplayLength: 25,
+        scrollX: true,
+        scrollY: 500,
+        scrollCollapse: true,
+        bSort: true,
+        bDeferRender: true,
+        aaData: dim.top(Infinity),
+        bDestroy: true,
+        aoColumns: cols
 
-        res.all().forEach((d) ->
-          # Lookup the population of the ward
-          pop = popData.lookup(null,null,d.key)
-          if pop > 0
-            d.value.pop = pop
-            d.value.popReach = d.value.pop_served_fun / d.value.pop * 100)
+      refreshTable = () ->
+        dc.events.trigger () ->
+          alldata = dim.top(Infinity)
+          datatable.fnClearTable()
+          datatable.fnAddData(alldata)
+          datatable.fnDraw()
 
-        res
+      dc.chartRegistry.list().forEach (chart) ->
+        chart.on "filtered", refreshTable
 
-      reduceAvg = (group, fieldAcc) ->
-        res = group.reduce(\
-          ((p, v) ->
-            ++p.count
-            p.total += fieldAcc(v)
-            p.avg = p.total / p.count
-            p),
-          ((p, v) ->
-            --p.count
-            p.total -= fieldAcc(v)
-            p.avg = p.total / p.count
-            p),
-          (() -> count: 0, total: 0))
-        res
+    reduceStatus = (group) ->
+      res = group.reduce(\
+        ((p, v) ->
+          ++p.count
+          p[v.status_group] += 1
+          return p),
+        ((p, v) ->
+          --p.count
+          p[v.status_group] -= 1
+          return p),
+        (() ->
+          count: 0, functional: 0, "not functional": 0, "needs repair": 0))
+      res
+
+    reduceCostStatus = (group) ->
+      isFunc = (x) -> x.status_group == "functional"
+      res = group.reduce(\
+        ((p, v) ->
+          ++p.count
+          p.total += v.amount_tsh
+          p.pop_served_fun += if isFunc(v) then v.population else 0
+          p.numFun += if isFunc(v) then 1 else 0
+          p.avgCost = p.total / p.count
+          p.percFun = p.numFun / p.count * 100
+          p),
+        ((p, v) ->
+          --p.count
+          p.total -= v.amount_tsh
+          p.pop_served_fun -= if isFunc(v) then v.population else 0
+          p.numFun -= if isFunc(v) then 1 else 0
+          p.avgCost = (p.count) ? p.total / p.count * 1 : 0
+          p.percFun = (p.count) ? p.numFun / p.count * 100 : 0
+          p),
+        (() ->
+          count: 0, total: 0, pop_served_fun: 0, pop: 0, popReach: 0, percFun: 0, numFun: 0, avgCost: 0))
+
+      res.all().forEach((d) ->
+        # Lookup the population of the ward
+        pop = popData.lookup(null,null,d.key)
+        if pop > 0
+          d.value.pop = pop
+          d.value.popReach = d.value.pop_served_fun / d.value.pop * 100)
+
+      res
+
+    reduceAvg = (group, fieldAcc) ->
+      res = group.reduce(\
+        ((p, v) ->
+          ++p.count
+          p.total += fieldAcc(v)
+          p.avg = p.total / p.count
+          p),
+        ((p, v) ->
+          --p.count
+          p.total -= fieldAcc(v)
+          p.avg = p.total / p.count
+          p),
+        (() -> count: 0, total: 0))
+      res
+

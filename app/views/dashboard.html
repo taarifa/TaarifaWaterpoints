@@ -1,102 +1,113 @@
 <tabset>
-
-<tab heading="National">
-  <div class="row" ng-controller="DashboardCtrl">
-    <div gridster="gridsterOpts">
-      <ul>
-        <li gridster-item="item" ng-repeat="item in gridLayout.tiles">
-        <span class="tile-header">{{tiles[$index][0] || 'unknown' | titlecase}}</span>
-        <br />
-        <span class="tile-number">{{tiles[$index][1].percent | number:2 }} %</span>
-        <br />
-        <span class="tile-info">({{tiles[$index][1].count }})</span>
-        </li>
-        <li gridster-item="gridLayout.problems">
-        <span class="tile-header" translate>Top Problems</span>
-        <br />
-        <ul ng-repeat="p in problems" class="">
-          <li><span class="tile-number">({{$index+1}}) - {{p.hardware_problem}}</span>
-          <span class="tile-info">({{p.count}})</span></li>
+  <tab heading="National">
+    <div class="row" ng-controller="DashboardCtrl">
+      <div gridster="gridsterOpts">
+        <ul>
+          <li gridster-item="item" ng-repeat="item in gridLayout.tiles">
+          <span class="tile-header">{{tiles[$index][0] || 'unknown' | titlecase}}</span>
+          <br />
+          <span class="tile-number">{{tiles[$index][1].percent | number:2 }} %</span>
+          <br />
+          <span class="tile-info">({{tiles[$index][1].count }})</span>
+          </li>
+          <li gridster-item="gridLayout.problems">
+          <span class="tile-header" translate>Top Problems</span>
+          <br />
+          <ul ng-repeat="p in problems" class="">
+            <li><span class="tile-number">({{$index+1}}) - {{p.hardware_problem}}</span>
+            <span class="tile-info">({{p.count}})</span></li>
+          </ul>
+          </li>
+          <li gridster-item row="gridLayout.map.row" col="gridLayout.map.col" size-x="gridLayout.map.sizeX"
+          size-y="gridLayout.map.sizeY">
+          <div id="map_canvas" ng-controller="DashMapCtrl"></div>
+          </li>
+          <li gridster-item row="gridLayout.filter.row" col="gridLayout.filter.col"
+          size-x="gridLayout.filter.sizeX" size-y="gridLayout.filter.sizeY">
+          <form class="form-inline" role="form">
+            {{"Group By"|translate}}: <div class="form-group">
+              <select ng-model="params.group" ng-options="v for v in groups"
+                ng-change="groupBy()" class="form-control">
+              </select>
+            </div>
+            Filter:
+            <div class="form-group">
+              <select ng-model="params.region" ng-options="v for v in regions"
+                ng-change="getStatus('region')" class="form-control">
+                <option value="">{{"Region"|translate}}:</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <select ng-model="params.lga" ng-options="v for v in lgas"
+                ng-change="getStatus('lga')" class="form-control">
+                <option value="">{{"LGA"|translate}}:</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <select ng-model="params.ward" ng-options="v for v in wards"
+                ng-change="getStatus('ward')" class="form-control">
+                <option value="">{{"Ward"|translate}}:</option>
+              </select>
+            </div>
+          </form>
+          </li>
+          <li gridster-item="item" ng-repeat="item in gridLayout.plots" class="gridster-item-chart">
+          <div class="panel panel-primary plot">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{plots[$index].title}}</h3>
+            </div>
+            <div class="panel-body" id="{{plots[$index].id}}"></div>
+          </div>
+          </li>
         </ul>
-        </li>
-        <li gridster-item row="gridLayout.map.row" col="gridLayout.map.col" size-x="gridLayout.map.sizeX"
-        size-y="gridLayout.map.sizeY">
-        <div id="map_canvas" ng-controller="DashMapCtrl"></div>
-        </li>
-        <li gridster-item row="gridLayout.filter.row" col="gridLayout.filter.col"
-        size-x="gridLayout.filter.sizeX" size-y="gridLayout.filter.sizeY">
-        <form class="form-inline" role="form">
-          {{"Group By"|translate}}: <div class="form-group">
-            <select ng-model="params.group" ng-options="v for v in groups"
-              ng-change="groupBy()" class="form-control">
-            </select>
-          </div>
-          Filter:
-          <div class="form-group">
-            <select ng-model="params.region" ng-options="v for v in regions"
-              ng-change="getStatus('region')" class="form-control">
-              <option value="">{{"Region"|translate}}:</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <select ng-model="params.lga" ng-options="v for v in lgas"
-              ng-change="getStatus('lga')" class="form-control">
-              <option value="">{{"LGA"|translate}}:</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <select ng-model="params.ward" ng-options="v for v in wards"
-              ng-change="getStatus('ward')" class="form-control">
-              <option value="">{{"Ward"|translate}}:</option>
-            </select>
-          </div>
-        </form>
-        </li>
-        <li gridster-item="item" ng-repeat="item in gridLayout.plots" class="gridster-item-chart">
-        <div class="panel panel-primary plot">
-          <div class="panel-heading">
-            <h3 class="panel-title">{{plots[$index].title}}</h3>
-          </div>
-          <div class="panel-body" id="{{plots[$index].id}}"></div>
-        </div>
-        </li>
-      </ul>
-    </div>
-  </div>
-</tab>
-
-<!-- FIXME: controller does not belong here. Adopt: https://stackoverflow.com/a/21019370 -->
-<tab heading="Regional" select="initView()" ng-controller="DCPlotsCtrl">
-  <div class="row">
-    <form class="form-inline" role="form" style="padding: 10px">
-      <div class="form-group">
-        <label for="regionSelect" translate>Region</label>:
-        <select id="regionSelect" ng-model="region" ng-options="v for v in regions"
-          ng-change="rerenderCharts()" class="form-control">
-        </select>
-        <p class="help-block">
-        <div class="dc-data-count">
-          Selected <span class="filter-count"></span> out of <span class="total-count"></span> waterpoints | <a href="javascript:dc.filterAll(); dc.renderAll();">Reset all filters</a>
-        </div>
-        </p>
       </div>
-    </form>
-  </div>
-
-  <div id="regionalPlots" class="row">
-    <div id="dcgridster" gridster="gridsterOpts">
-      <ul>
-        <li gridster-item="item" ng-repeat="(key,item) in gridLayout" class="gridster-item-chart">
-        <div class="panel panel-primary plot">
-          <div class="panel-heading">
-            <h3 class="panel-title">{{item.title}}</h3>
-          </div>
-          <div class="panel-body" id="{{key}}"></div>
-        </div>
-        </li>
-      </ul>
     </div>
-  </div>
-</tab>
+  </tab>
 
+  <!-- FIXME: controller does not belong here. Adopt: https://stackoverflow.com/a/21019370 -->
+  <tab heading="Regional" select="initView()" ng-controller="DCPlotsCtrl">
+    <div class="row">
+      <form class="form-inline" role="form" style="padding: 10px">
+        <div class="form-group">
+          <label for="regionSelect" translate>Region</label>:
+          <select id="regionSelect" ng-model="region" ng-options="v for v in regions"
+            ng-change="rerenderCharts()" class="form-control">
+          </select>
+          <p class="help-block">
+          <div class="dc-data-count">
+            Selected <span class="filter-count"></span> out of <span class="total-count"></span> waterpoints | <a href="javascript:dc.filterAll(); dc.renderAll();">Reset all filters</a>
+          </div>
+          </p>
+        </div>
+      </form>
+    </div>
+
+    <tabset>
+      <tab heading="Charts">
+        <div id="regionalPlots" class="row">
+          <div id="dcgridster" gridster="gridsterOpts">
+            <ul>
+              <li gridster-item="item" ng-repeat="(key,item) in gridLayout" class="gridster-item-chart">
+              <div class="panel panel-primary plot">
+                <div class="panel-heading">
+                  <h3 class="panel-title">{{item.title}}</h3>
+                </div>
+                <div class="panel-body" id="{{key}}"></div>
+              </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </tab>
+      <tab heading="Data Table">
+        <table id="dc-data-table" class="list table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th ng-repeat="col in fields">{{col | titlecase}}</th>
+            </tr>
+          </thead>
+        </table>
+      </tab>
+    </tabset>
+  </tab>
 </tabset>
