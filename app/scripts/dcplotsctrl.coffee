@@ -186,6 +186,10 @@ angular.module('taarifaWaterpointsApp')
       newHeight = newSizes[1]
       resizeCharts()
 
+    $scope.initTable = () ->
+      # needed to fix table alignment if drawn when not visible
+      $("#dc-data-table").dataTable().fnAdjustColumnSizing()
+
     setupCharts = (region) ->
       getData region, (data) ->
         statusPerLgaChart = dc.barChart("#statusPerLga")
