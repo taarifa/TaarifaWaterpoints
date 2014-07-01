@@ -174,3 +174,11 @@ li.gridster-item {
   top: 100%;
   left: 0;
 }
+
+#dc-data-table_wrapper {
+  padding: 10px;
+}
+
+#dc-data-table th, td {
+  white-space: nowrap;
+}
