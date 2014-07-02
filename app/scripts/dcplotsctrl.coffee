@@ -46,6 +46,11 @@ angular.module('taarifaWaterpointsApp')
     dimensions = []
     xfilter = null
     popData = null
+    $scope.tabs =
+      regcharts:
+        active: true
+      regtable:
+        active: false
 
     # Called when the tab is activated for the first time
     # Has to be done on tab activation for else the charts can not pickup
@@ -136,6 +141,13 @@ angular.module('taarifaWaterpointsApp')
     # FIXME: see next comment
     $scope.rerenderCharts = () ->
       modalSpinner.open()
+
+      # Make sure we switch to the charts tab
+      # or else they are not going to render correctly
+      # when out of view
+      # FIXME: better solution?
+      $scope.tabs.regtable.active = false
+      $scope.tabs.regcharts.active = true
 
       destroyCharts()
 
