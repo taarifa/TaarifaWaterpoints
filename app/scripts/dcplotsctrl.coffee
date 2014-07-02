@@ -46,6 +46,11 @@ angular.module('taarifaWaterpointsApp')
     dimensions = []
     xfilter = null
     popData = null
+    $scope.tabs =
+      regcharts:
+        active: true
+      regtable:
+        active: false
 
     # Called when the tab is activated for the first time
     # Has to be done on tab activation for else the charts can not pickup
@@ -137,6 +142,13 @@ angular.module('taarifaWaterpointsApp')
     $scope.rerenderCharts = () ->
       modalSpinner.open()
 
+      # Make sure we switch to the charts tab
+      # or else they are not going to render correctly
+      # when out of view
+      # FIXME: better solution?
+      $scope.tabs.regtable.active = false
+      $scope.tabs.regcharts.active = true
+
       destroyCharts()
 
       # FIXME: see above comment
@@ -185,6 +197,11 @@ angular.module('taarifaWaterpointsApp')
       newWidth = newSizes[0]
       newHeight = newSizes[1]
       resizeCharts()
+
+    $scope.initTable = () ->
+      # needed to fix table alignment if drawn when not visible
+      table = $("#dc-data-table").dataTable()
+      table.fnAdjustColumnSizing()
 
     setupCharts = (region) ->
       getData region, (data) ->
@@ -285,7 +302,6 @@ angular.module('taarifaWaterpointsApp')
         pieChart managementChart, managements, managementsGroup, all
 
         dc.dataCount(".dc-data-count").dimension(xfilter).group(all)
-        $scope.columns = ["ward","region"]
         makeDataTable("#dc-data-table", wards)
 
         dc.renderAll()
@@ -431,31 +447,46 @@ angular.module('taarifaWaterpointsApp')
           chart.rescale())
         .yAxis().ticks(4)
 
+    reloadTable = (datatable,dim) ->
+      alldata = dim.top(Infinity)
+      datatable.fnClearTable()
+      datatable.fnAddData(alldata)
+      datatable.fnDraw()
+
     makeDataTable = (selector, dim) ->
-      cols = $scope.fields.map((x) -> {mData: x, sDefaultContent: ""})
+      exists = $.fn.DataTable.fnIsDataTable($(selector))
 
-      datatable = $(selector).dataTable
-        bPaginate: true,
-        pagingType: "full",
-        iDisplayLength: 25,
-        scrollX: true,
-        scrollY: 500,
-        scrollCollapse: true,
-        bSort: true,
-        bDeferRender: true,
-        aaData: dim.top(Infinity),
-        bDestroy: true,
-        aoColumns: cols
+      if exists
+        datatable = $(selector).dataTable()
+        reloadTable(datatable,dim)
+      else
+        cols = $scope.fields.map((x) ->
+          if x.endsWith("_year")
+            mData: x
+            sDefaultContent: ""
+            mRender: (obj) ->
+              y = obj.getFullYear()
+              if y == YEAR_ZERO then "unknown" else y
+          else
+            {mData: x, sDefaultContent: ""})
 
-      refreshTable = () ->
-        dc.events.trigger () ->
-          alldata = dim.top(Infinity)
-          datatable.fnClearTable()
-          datatable.fnAddData(alldata)
-          datatable.fnDraw()
+        datatable = $(selector).dataTable
+          bPaginate: true,
+          pagingType: "full",
+          iDisplayLength: 25,
+          scrollX: true,
+          scrollY: 500,
+          scrollCollapse: true,
+          bSort: true,
+          bDeferRender: true,
+          aaData: dim.top(Infinity),
+          bDestroy: true,
+          aoColumns: cols
 
       dc.chartRegistry.list().forEach (chart) ->
-        chart.on "filtered", refreshTable
+        chart.on "filtered", () ->
+          dc.events.trigger () ->
+            reloadTable(datatable,dim)
 
     reduceStatus = (group) ->
       res = group.reduce(\
@@ -517,3 +548,5 @@ angular.module('taarifaWaterpointsApp')
         (() -> count: 0, total: 0))
       res
 
+String.prototype.endsWith = (suffix) ->
+  this.indexOf(suffix, this.length - suffix.length) != -1
