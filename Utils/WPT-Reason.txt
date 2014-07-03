@@ -1,0 +1,107 @@
+
+MATENGENEZO VISIMA VYA MAJI (Avifanyi kazi)
+ -Kisima cha maji kimefungwa
+ -Vifaa vyote vimetolewa
+ -Kambi ya wakimbizi imefungwa
+ -Viongozi wa kijiji wamekubaliana
+ -Mwili wa mtu umekutwa ndani ya kisima
+ -Hakuna Mawasiliano
+ -Akija fanya kazi tangu kitengenezwe
+ -Maji machafu
+ -Maji machache
+ -Akuna aja ya kisima
+ -Imeunganishwa Kisima kilicho
+
+kalibu VISIMA VINAVYO ITAJI (Avifanyi kazi lakini havija telekezwa)
+
+WATERPOINT NEEDS FIXING (inactive but not yet abandoned)
+Accumulation  (but cf. "Intake" below)
+ - of sand
+ - blocked by mud
+"Broken"
+ - careless use
+Insufficient water supply
+ - water diverted (e.g. to another village)
+ - drought
+ - seasonal
+ - supply low (ran/running dry)
+ - pressure low (not the same as supply low. Might be same as pump insufficient)
+Free-flowing water
+Destroyed
+ - Destroyed by floods
+Poorly maintaned
+ - lack of supervision
+ - poor management
+ - leadership problems
+Poor water quality
+ - bad taste of water
+ - saline / salty
+ - defecation at site
+Cost
+ - bill not paid
+ - no fuel
+Land rights
+ - conflict
+Collapsed
+ - caving-in: soil fallen into hole (well?)
+ - earthquake
+Construction incomplete
+Dam
+ - collapsed
+ - silted-up
+Pump insufficient
+ - too weak: not pumping water up
+ - (is this different from Insufficient water supply? I think so)
+Under construction
+Too much resistance on the hand pump
+Outdated equipment
+
+
+
+COMPONENTS  (to be paired with FAILURE TYPE below)
+Valve (Footvalve, Gatevalve)	
+Tap
+Pipe(s)
+Pump  (Motorised, Hand)		
+Source
+Outlet
+Bearing
+Bibcock
+Collar
+Gater
+Handle
+Bucket
+Chain
+Cover
+Tank
+Cylinder
+Piston
+Piston seal (rubber)
+Plunger  (different from Piston?)
+Riser
+Distribution lines
+Engine (Generator, Power supply)
+Elbow
+Floor
+Roof
+Cables (Wires, Wiring)
+Gutter(s)
+Intake
+Nuts
+Meter
+Nail
+Slab
+Standpipe
+Connection (as in, not connected to tank/supply. Is this like Pipe?)
+Impeller
+Thread  (in this useful? Sub-part of another component)
+
+
+
+COMPONENT FAILURE TYPE
+Broken		(might be a default - not sure it's different from Damaged)
+Missing     (includes stolen)
+Damaged  -> (Sub-types of Cracked, Leaking, Bent, Salt damage, Rusted, Burst)
+Blocked
+Poorly sited
+
