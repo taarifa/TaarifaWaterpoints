@@ -176,9 +176,9 @@ create the waterpoint schemas: ::
   python manage.py create_facility
   python manage.py create_service
   
-Then upload the waterpoint data: ::
+Then upload the `waterpoint data <https://drive.google.com/file/d/0B5dKo9igl8W4Qm1LXzR0d3hsZ2s/edit?usp=sharing>`_: ::
 
-  python manage.py upload_waterpoints <path-to-waterpoints-csv.gz>
+  python manage.py upload_waterpoints <path/to/waterpoints/file.csv>
 
 Start the application from the TaarifaWaterpoints directory by running: ::
 
