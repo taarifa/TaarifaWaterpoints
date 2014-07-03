@@ -149,6 +149,14 @@ provisioning scripts again until successful: ::
 
   vagrant provision
 
+MacOS X note: you may find that the vagrant VM doesn't come up, failing because
+"pip" and "npm" are not present on the MacOS host. In that case, pip can be downloaded
+and installed using the following:
+  sudo easy_install pip
+npm is the package manager for Node.js, and can be installed with Node.js. Packaged
+installers for MacOS and other platforms are available here:
+  http://nodejs.org/download/
+
 Connect to the virtual machine and change into the `TaarifaWaterpoints`
 folder: ::
 
