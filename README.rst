@@ -253,13 +253,33 @@ Make sure the virtualenv is active: ::
 
   workon TaarifaAPI
 
-Create the waterpoint schemas and upload the `waterpoint data`_: ::
+Create the waterpoint schemas and upload the `waterpoint data`_, which may take
+several hours: ::
 
   foreman run python manage.py create_facility
   foreman run python manage.py create_service
   foreman run python manage.py upload_waterpoints <path/to/waterpoints/file.csv>
 
-The import might take several hours. Once finished you are ready to deploy: ::
+Alternatively, you can import a dump of your local database and import it. If
+`mongod` is not running, create a dump directly from the database files in a
+`dump` folder in your current directory: ::
+
+  sudo -u mongodb mongodump --journal --db TaarifaAPI --dbpath /var/lib/mongodb
+
+This assumes you have followed the `MongoDB installation instructions`_ on
+Ubuntu. Otherwise you might not need to run the command as the `mongodb` user
+and your database directory might be `/data/db`.
+
+Import the dump into your MongoLab database, running the following command: ::
+
+  mongorestore -h <host> -d <database> -u <user> -p <password> /path/to/dump/TaarifaAPI/
+
+Extract host, database, user and password from the `MONGOLAB_URI` Heroku
+configuration variable: ::
+
+  heroku config:get MONGOLAB_URI
+
+Once finished you are ready to deploy: ::
 
   git push heroku master
 
@@ -291,4 +311,5 @@ guidelines`_ for further details.
 .. _Heroku: https://toolbelt.heroku.com
 .. _Heroku tool belt: https://toolbelt.heroku.com
 .. _heroku-buildpack-multi: https://github.com/ddollar/heroku-buildpack-multi
+.. _MongoDB installation instructions: http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
 .. _contributing guidelines: CONTRIBUTING.rst
