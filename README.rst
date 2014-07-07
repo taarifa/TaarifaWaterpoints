@@ -176,7 +176,7 @@ create the waterpoint schemas: ::
   python manage.py create_facility
   python manage.py create_service
   
-Then upload the `waterpoint data <https://drive.google.com/file/d/0B5dKo9igl8W4Qm1LXzR0d3hsZ2s/edit?usp=sharing>`_: ::
+Then upload the `waterpoint data`_: ::
 
   python manage.py upload_waterpoints <path/to/waterpoints/file.csv>
 
@@ -220,6 +220,49 @@ run whenever the frontend in the `app` folder changes. Running `grunt serve` is
 not required in this case.
 
 
+Deployment to Heroku
+____________________
+
+To deploy to Heroku_, make sure the `Heroku tool belt`_ is installed. From the
+TaarifaWaterpoints root folder, create a new app: ::
+
+  heroku app:create <name>
+
+This will add a new Git remote `heroku`, which is used to deploy the app. Run
+`git remote -v` to check. To add the remote manually, do: ::
+
+  git remote add heroku git@heroku.com:<name>.git
+
+Since Taarifa uses Python for the API and Node.js to build the frontend, Heroku
+build packs for both stacks are required. heroku-buildpack-multi_ enables the
+use of multiple build packs, configured via the `.buildpacks` file. Before
+deploying for the first time, the app needs to be configured to use it: ::
+
+  heroku config:set BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git
+
+Add the MongoLab Sandbox to provide the MongoDB database ::
+
+  heroku addons:add mongolab
+
+To be able to import the data into the MongoLab database, copy down the heroku
+configuration to a `.env` file you can use with `foreman`: ::
+
+  heroku config:pull
+
+Make sure the virtualenv is active: ::
+
+  workon TaarifaAPI
+
+Create the waterpoint schemas and upload the `waterpoint data`_: ::
+
+  foreman run python manage.py create_facility
+  foreman run python manage.py create_service
+  foreman run python manage.py upload_waterpoints <path/to/waterpoints/file.csv>
+
+The import might take several hours. Once finished you are ready to deploy: ::
+
+  git push heroku master
+
 Contribute
 __________
 
@@ -244,4 +287,8 @@ guidelines`_ for further details.
 .. _Vagrant: http://vagrantup.com
 .. _Vagrantfile: Vagrantfile
 .. _VirtualBox: https://www.virtualbox.org
+.. _waterpoint data: https://drive.google.com/file/d/0B5dKo9igl8W4Qm1LXzR0d3hsZ2s/edit
+.. _Heroku: https://toolbelt.heroku.com
+.. _Heroku tool belt: https://toolbelt.heroku.com
+.. _heroku-buildpack-multi: https://github.com/ddollar/heroku-buildpack-multi
 .. _contributing guidelines: CONTRIBUTING.rst
