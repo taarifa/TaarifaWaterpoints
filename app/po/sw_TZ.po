@@ -14,52 +14,113 @@ msgstr ""
 
 #: app/scripts/plots.js
 msgid "% Functional"
-msgstr "% Vinafanya Kazi"
+msgstr "% Kazi"
+
+#: app/scripts/plots.js
+msgid "Average Price Per Bucket (TSH)"
+msgstr "Bei ya Ndoo Moja"
+
+#: app/scripts/plots.js
+msgid "Avg Bucket Price"
+msgstr "Bei ya Ndoo"
 
 #: app/views/dashboard.html
-msgid "1: Tap is Broken"
-msgstr "1: Bomba Limeharibika"
+msgid "Barrel leaks"
+msgstr "Tenki Linavuja"
 
-#: app/views/dashboard.html
-msgid "2: Barrel is Broken"
-msgstr "2: Tenki/Pipa Limeharibika"
+#: app/scripts/plots.js
+msgid "Coverage %"
+msgstr "Eneo"
 
-#: app/views/dashboard.html
-msgid "3: Barrel is Lost"
-msgstr "3: Tenki/Pipa Limepotea"
+#: app/index.html
+msgid "Dashboard"
+msgstr "Kwa Ujumla"
 
 #: app/views/dashboard.html
 msgid "District"
 msgstr "Wilaya"
 
 #: app/views/dashboard.html
-msgid "Group By"
-msgstr "Kwa"
+msgid "Filter"
+msgstr "Chujio"
 
 #: app/scripts/plots.js
-msgid "Number of Waterpointies"
-msgstr "Idadi ya Vituo vya Maji"
+msgid "Functional"
+msgstr "Kazi"
+
+#: app/views/dashboard.html
+msgid "Group By"
+msgstr "Kundi Kwa:-"
+
+#: app/views/dashboard.html
+msgid "Key Performance Indicators"
+msgstr "Viashiria vya Ufanyaji kazi"
+
+#: app/views/dashboard.html
+msgid "LGA"
+msgstr "Mamlaka za Serikali za mitaa"
+
+#: app/scripts/plots.js
+msgid "New Infrastructure Projects"
+msgstr "Miundombinu Mpya za Miradi"
+
+#: app/scripts/plots.js
+msgid "Not functional"
+msgstr "Hakifanyi Kazi"
+
+#: app/views/dashboard.html
+msgid "Population covered"
+msgstr "Idadi ya Watu Iliyofikiwa"
+
+#: app/scripts/plots.js
+msgid "Population served"
+msgstr "Idadi ya watu Iliyohudumiwa"
 
 #: app/views/dashboard.html
 msgid "Region"
 msgstr "Mkoa"
 
-#: app/scripts/plots.js
-msgid "Spend per Waterpoint ($)"
-msgstr "Kutumia Kwa Kituo cha Maji ($)"
-
-#: app/index.html
-msgid "Taarifa Waterpoints"
-msgstr "Taarifa za Vituo vya Maji"
+#: app/views/dashboard.html
+msgid "Salty water"
+msgstr "Maji Chumvi"
 
 #: app/views/dashboard.html
-msgid "Top Reasons for Faulty Waterpoints"
-msgstr "Sababu Kuu za Hitilafu katika Vituo vya Maji"
+msgid "Tap broken"
+msgstr "Bomba Limepasuka"
 
 #: app/views/dashboard.html
 msgid "Ward"
 msgstr "Kata"
 
 #: app/views/dashboard.html
+msgid "Waterpoint Map"
+msgstr "Ramani ya Kituo cha Maji"
+
+#: app/views/dashboard.html
 msgid "Waterpoint Status"
 msgstr "Hali ya Kituo cha Maji"
+
+#: app/index.html
+msgid "Waterpoints Dashboard"
+msgstr "Kituo cha Maji kwa Ujumla"
+
+#~ msgid "1: Tap is Broken"
+#~ msgstr "Bomba Limepasuka"
+
+#~ msgid "2: Barrel is Broken"
+#~ msgstr "Tenki / Pipa Limepasuka"
+
+#~ msgid "3: Barrel is Lost"
+#~ msgstr "Tenki/Pipa Limepotea"
+
+#~ msgid "Number of Waterpointies"
+#~ msgstr "Idadi ya Vituo vya Maji"
+
+#~ msgid "Spend per Waterpoint ($)"
+#~ msgstr "Kutumia Kwa Kituo cha Maji ($)"
+
+#~ msgid "Taarifa Waterpoints"
+#~ msgstr "Taarifa Kituo cha Maji Usimamizi"
+
+#~ msgid "Top Reasons for Faulty Waterpoints"
+#~ msgstr "Sababu Kuu za Mpasuko wa Vituo vya Maji"
