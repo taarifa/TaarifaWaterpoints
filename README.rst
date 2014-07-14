@@ -14,6 +14,8 @@ service offering that clients can interact with to create and triage
 'bugreports' relating to public infrastructure (e.g., the public toilet
 is broken).
 
+For information on how to get inovoled, scroll to the Contributing section
+at the bottom of the page.
 
 Waterpoints
 ___________
@@ -286,11 +288,20 @@ Contribute
 __________
 
 There is still much left do do and Taarifa is currently undergoing rapid
-development. To get started send a message to the taarifa-dev_
-mailinglist and check out the github issues. We use the github pull
-request model for all contributions. Refer to the `contributing
+development. We aspire to be a very friendly and welcoming community to 
+all skill levels.
+
+To get started send a message to the taarifa-dev_ mailinglist introducing
+yourself and your interest in Taarifa. With some luck you should also be
+able to find somebody on our `IRC channel`_.
+
+If you are comfortable you can also take a look at the github issues and
+comment/fix to you heart's content.
+
+We use the github pull request model for all contributions. Refer to the `contributing
 guidelines`_ for further details.
 
+.. _IRC channel: http://gwob.org/taarifa-irc
 .. _Taarifa: http://taarifa.org
 .. _taarifa-dev: https://groups.google.com/forum/#!forum/taarifa-dev
 .. _Taarifa API: http://github.com/taarifa/TaarifaAPI
