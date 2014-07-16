@@ -167,6 +167,9 @@ in the VM according to your preference.
 Usage
 _____
 
+.. note::
+  When using a virtual machine, run the following commands in the VM.
+
 Make sure the virtualenv is active: ::
 
   workon TaarifaAPI
@@ -193,7 +196,8 @@ from the outside is required (e.g. when running from inside a VM), run: ::
 The flags ``-r`` and ``-d`` cause the server to run in debug mode and reload
 automatically when files are changed.
 
-To check things are working, open a browser and navigate to: ::
+To check things are working, open a browser (on the host when using the VM) and
+navigate to: ::
 
   http://localhost:5000/api/waterpoints
 
@@ -204,7 +208,7 @@ To work on the frontend web application simply start the server using grunt: ::
 
   grunt serve --watch
 
-Then navigate to: ::
+Then navigate to (on the host when using the VM): ::
 
   http://localhost:9000
 
