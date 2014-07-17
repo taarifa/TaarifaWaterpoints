@@ -288,6 +288,14 @@ Once finished you are ready to deploy: ::
 
   git push heroku master
 
+To set up a custom domain for the deployed app, register with heroku: ::
+
+  heroku domains:add <domain>
+
+and add a DNS record for it: ::
+
+  <domain>.     10800   IN      CNAME   <appname>.herokuapp.com.
+
 Contribute
 __________
 
