@@ -117,6 +117,9 @@ angular.module('taarifaWaterpointsApp')
       destroyCharts()
 
     destroyCharts = () ->
+      # Just return if the regional charts were never loaded
+      if !xfilter then return
+
       # get all charts
       charts = dc.chartRegistry.list()
 
