@@ -60,13 +60,15 @@ angular.module('taarifaWaterpointsApp')
 
     getLGA = () ->
       $http.get('/api/waterpoints/values/lga',
-                params: {region: $scope.params?.region})
+                params: {region: $scope.params?.region}
+                cache: true)
         .success (data, status, headers, config) ->
           $scope.lgas = data.sort()
 
     getWard = () ->
       modalSpinner.open()
       $http.get('/api/waterpoints/values/ward',
+                cache: true
                 params:
                   region: $scope.params?.region
                   lga: $scope.params?.lga)
@@ -78,6 +80,7 @@ angular.module('taarifaWaterpointsApp')
     getProblems = () ->
       modalSpinner.open()
       $http.get('/api/waterpoints/stats_by/hardware_problem',
+                cache: true
                 params:
                   region: $scope.params?.region
                   lga: $scope.params?.lga
@@ -100,7 +103,9 @@ angular.module('taarifaWaterpointsApp')
     $scope.getStatus = (changed) ->
       modalSpinner.open()
 
-      $http.get('/api/waterpoints/stats_by/status_group', params: _.omit($scope.params,'group'))
+      $http.get('/api/waterpoints/stats_by/status_group',
+        cache: true
+        params: _.omit($scope.params,'group'))
         .success (data, status, headers, config) ->
           total = d3.sum(data, (x) -> x.count)
           data.forEach( (x) -> x.percent = x.count / total * 100)
@@ -161,53 +166,53 @@ angular.module('taarifaWaterpointsApp')
 
       if filter then url += "?" + filter
 
-      d3.json(url, (error, data) ->
-        geoField = _.contains(['region','lga','ward'], groupfield)
+      $http.get(url, cache: true)
+        .success (data, status, headers, config) ->
+          geoField = _.contains(['region','lga','ward'], groupfield)
 
-        data.forEach((x) ->
-          f = _.find(x.waterpoints, isFunctional)
+          data.forEach((x) ->
+            f = _.find(x.waterpoints, isFunctional)
 
-          # ensure there is always a functional entry
-          if !f
-            f = {
-              status: "functional",
-              population: 0,
-              count: 0
-            }
-            x.waterpoints.push(f)
+            # ensure there is always a functional entry
+            if !f
+              f = {
+                status: "functional",
+                population: 0,
+                count: 0
+              }
+              x.waterpoints.push(f)
 
-          x.percFun = f.count / x.count * 100
+            x.percFun = f.count / x.count * 100
 
-          x.popReach = 0
+            x.popReach = 0
 
-          if geoField
-            pop = popData.lookup(
-              if groupfield == "region" then x[groupfield] else null,
-              if groupfield == "lga" then x[groupfield] else null,
-              if groupfield == "ward" then x[groupfield] else null
-            )
-            if pop > 0
-              x.popReach = f.population / pop * 100
-        )
+            if geoField
+              pop = popData.lookup(
+                if groupfield == "region" then x[groupfield] else null,
+                if groupfield == "lga" then x[groupfield] else null,
+                if groupfield == "ward" then x[groupfield] else null
+              )
+              if pop > 0
+                x.popReach = f.population / pop * 100
+          )
 
-        # sort by % functional waterpoints
-        data = _.sortBy(data, (x) -> -x.percFun)
+          # sort by % functional waterpoints
+          data = _.sortBy(data, (x) -> -x.percFun)
 
-        plotStatusSummary("#statusSummary", data, groupfield, $scope)
+          plotStatusSummary("#statusSummary", data, groupfield, $scope)
 
-        if _.contains(['region','lga','ward'], groupfield)
-          leaderChart("#percFunLeaders", data, groupfield, (x) -> x.percFun)
+          if _.contains(['region','lga','ward'], groupfield)
+            leaderChart("#percFunLeaders", data, groupfield, (x) -> x.percFun)
 
-          data = _.sortBy(data, (x) -> -x.popReach)
-          leaderChart("#popReach", data, groupfield, (x) -> x.popReach)
+            data = _.sortBy(data, (x) -> -x.popReach)
+            leaderChart("#popReach", data, groupfield, (x) -> x.popReach)
 
-         modalSpinner.close()
-      )
+          modalSpinner.close()
 
-    ####################################################
+    ##########################################################################
     # Initialization code
 
-    # FIXME: is this the proper way of doing things?
+    # Ensure the population data is loaded
     popData = null
     populationData.then((data) ->
       popData = data

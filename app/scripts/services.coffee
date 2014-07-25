@@ -2,7 +2,7 @@
 
 angular.module('taarifaWaterpointsApp')
 
-  .factory 'modalSpinner', ($modal) ->
+  .factory 'modalSpinner', ($modal, $timeout) ->
     modalDlg = null
 
     # shared counter to allow multiple invocations of
@@ -20,7 +20,11 @@ angular.module('taarifaWaterpointsApp')
     closeSpinner = () ->
       --ctr.val
       if ctr.val < 1
-        modalDlg.close(null)
+        # If the close event comes really quickly after the
+        # open event the close will fail if the open is not
+        # yet completed. Hence add a timeout.
+        # FIXME: better solution?
+        $timeout(modalDlg.close, 300)
         ctr.val = 0
 
     res =
