@@ -1,7 +1,3 @@
-//FIXME: refactor file into controllers
-
-var $scope = null;
-
 //to prevent creating overcrowded plots
 var minColWidth = 25;
 var statusColor = d3.scale.ordinal()
@@ -10,71 +6,6 @@ var statusColor = d3.scale.ordinal()
 
 function isFunctional(s) {
     return s.status == "functional";
-}
-
-function updatePlots(region, lga, ward, groupfield, popData, angularScope, callback) {
-  $scope = angularScope;
-
-  groupfield = groupfield || "region";
-  var url = "/api/waterpoints/stats_by/" + groupfield;
-
-  var filterFields = {"region":region, "lga":lga, "ward":ward};
-  var filters = [];
-
-  _.keys(filterFields).forEach(function(x){
-    if(filterFields[x]) filters.push(x + "=" + filterFields[x]);
-  });
-
-  var filter = filters.join("&");
-
-  if(filter) url += "?" + filter;
-
-  d3.json(url, function(error, data) {
-    var geoField = _.contains(['region','lga','ward'], groupfield);
-
-    data.forEach(function(x) {
-        f = _.find(x.waterpoints, isFunctional);
-
-        //ensure there is always a functional entry
-        if (!f) {
-            f = {
-                status: "functional",
-                population: 0,
-                count: 0
-            };
-            x.waterpoints.push(f);
-        }
-        x.percFun = f.count / x.count * 100;
-
-        x.popReach = 0;
-
-        if(geoField){
-            pop = popData.lookup(
-                (groupfield == "region") ? x[groupfield] : null,
-                (groupfield == "lga") ? x[groupfield] : null,
-                (groupfield == "ward") ? x[groupfield] : null
-            )
-            if(pop > 0)
-                x.popReach = f.population / pop * 100;
-        }
-    });
-
-    //sort by % functional waterpoints
-    data = _.sortBy(data, function(x){return -x.percFun;});
-
-    plotStatusSummary("#statusSummary", data, groupfield);
-
-    if(_.contains(['region','lga','ward'], groupfield)){
-        leaderChart("#percFunLeaders", data, groupfield,
-                        function(x){return x.percFun;});
-
-        data = _.sortBy(data, function(x){return -x.popReach;});
-        leaderChart("#popReach", data, groupfield,
-                        function(x){return x.popReach;});
-    }
-
-    callback()
-  });
 }
 
 function getDimensions(selector, wMargin, hMargin){
@@ -94,7 +25,7 @@ function createTip(getter) {
   return tip;
 }
 
-function barDblClick(groupField, d){
+function barDblClick(groupField, d, $scope){
   var geoField = _.contains(['region','lga','ward'], groupField);
 
   if(geoField){
@@ -126,7 +57,7 @@ function barDblClick(groupField, d){
  * Stacked bar chart summarizing the status (functional/non functional)
  * of all the waterpoints by the given group field
  */
-function plotStatusSummary(selector, data, groupField) {
+function plotStatusSummary(selector, data, groupField, $scope) {
 
   data.forEach(function(group) {
     var y0 = 0;
@@ -242,7 +173,7 @@ function plotStatusSummary(selector, data, groupField) {
     })
     .on('dblclick', function(d,i){
         tip.hide(d,i);
-        barDblClick(groupField,d);
+        barDblClick(groupField,d,$scope);
     })
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide);
