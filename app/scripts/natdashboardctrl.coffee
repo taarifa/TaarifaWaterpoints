@@ -4,6 +4,9 @@ angular.module('taarifaWaterpointsApp')
 
   .controller 'DashboardCtrl', ($scope, $http, modalSpinner, populationData) ->
 
+    # should http calls be cached
+    cacheHttp = true
+
     $scope.gridsterOpts = {
         margins: [10, 10],
         columns: 12,
@@ -61,14 +64,14 @@ angular.module('taarifaWaterpointsApp')
     getLGA = () ->
       $http.get('/api/waterpoints/values/lga',
                 params: {region: $scope.params?.region}
-                cache: true)
+                cache: cacheHttp)
         .success (data, status, headers, config) ->
           $scope.lgas = data.sort()
 
     getWard = () ->
       modalSpinner.open()
       $http.get('/api/waterpoints/values/ward',
-                cache: true
+                cache: cacheHttp
                 params:
                   region: $scope.params?.region
                   lga: $scope.params?.lga)
@@ -80,7 +83,7 @@ angular.module('taarifaWaterpointsApp')
     getProblems = () ->
       modalSpinner.open()
       $http.get('/api/waterpoints/stats_by/hardware_problem',
-                cache: true
+                cache: cacheHttp
                 params:
                   region: $scope.params?.region
                   lga: $scope.params?.lga
@@ -104,7 +107,7 @@ angular.module('taarifaWaterpointsApp')
       modalSpinner.open()
 
       $http.get('/api/waterpoints/stats_by/status_group',
-        cache: true
+        cache: cacheHttp
         params: _.omit($scope.params,'group'))
         .success (data, status, headers, config) ->
           total = d3.sum(data, (x) -> x.count)
@@ -166,7 +169,7 @@ angular.module('taarifaWaterpointsApp')
 
       if filter then url += "?" + filter
 
-      $http.get(url, cache: true)
+      $http.get(url, cache: cacheHttp)
         .success (data, status, headers, config) ->
           geoField = _.contains(['region','lga','ward'], groupfield)
 
