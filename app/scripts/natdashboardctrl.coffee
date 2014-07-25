@@ -142,17 +142,70 @@ angular.module('taarifaWaterpointsApp')
     $scope.groupBy = () ->
       drawPlots()
 
-    # FIXME: move into own controller
     drawPlots = () ->
       modalSpinner.open()
-      updatePlots(
-        $scope.params?.region
-        $scope.params?.lga
-        $scope.params?.ward
-        $scope.params?.group
-        popData
-        $scope
-        () -> modalSpinner.close())
+
+      region = $scope.params?.region
+      lga = $scope.params?.lga
+      ward = $scope.params?.ward
+      groupfield = $scope.params?.group || "region"
+
+      url = "/api/waterpoints/stats_by/" + groupfield
+      filterFields = {"region":region, "lga":lga, "ward":ward}
+      filters = []
+
+      _.keys(filterFields).forEach((x) ->
+        if filterFields[x] then filters.push(x + "=" + filterFields[x]))
+
+      filter = filters.join("&")
+
+      if filter then url += "?" + filter
+
+      d3.json(url, (error, data) ->
+        geoField = _.contains(['region','lga','ward'], groupfield)
+
+        data.forEach((x) ->
+          f = _.find(x.waterpoints, isFunctional)
+
+          # ensure there is always a functional entry
+          if !f
+            f = {
+              status: "functional",
+              population: 0,
+              count: 0
+            }
+            x.waterpoints.push(f)
+
+          x.percFun = f.count / x.count * 100
+
+          x.popReach = 0
+
+          if geoField
+            pop = popData.lookup(
+              if groupfield == "region" then x[groupfield] else null,
+              if groupfield == "lga" then x[groupfield] else null,
+              if groupfield == "ward" then x[groupfield] else null
+            )
+            if pop > 0
+              x.popReach = f.population / pop * 100
+        )
+
+        # sort by % functional waterpoints
+        data = _.sortBy(data, (x) -> -x.percFun)
+
+        plotStatusSummary("#statusSummary", data, groupfield, $scope)
+
+        if _.contains(['region','lga','ward'], groupfield)
+          leaderChart("#percFunLeaders", data, groupfield, (x) -> x.percFun)
+
+          data = _.sortBy(data, (x) -> -x.popReach)
+          leaderChart("#popReach", data, groupfield, (x) -> x.popReach)
+
+         modalSpinner.close()
+      )
+
+    ####################################################
+    # Initialization code
 
     # FIXME: is this the proper way of doing things?
     popData = null
