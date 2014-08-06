@@ -58,8 +58,10 @@ angular.module('taarifaWaterpointsApp')
     $scope.params =
       group: $scope.groups[0]
 
-    $http.get('/api/waterpoints/values/region').success (data, status, headers, config) ->
-      $scope.regions = data.sort()
+    getRegion = () ->
+      $http.get('/api/waterpoints/values/region', cache: cacheHttp)
+        .success (data, status, headers, config) ->
+          $scope.regions = data.sort()
 
     getLGA = () ->
       $http.get('/api/waterpoints/values/lga',
@@ -179,6 +181,7 @@ angular.module('taarifaWaterpointsApp')
       popData = data
       $scope.getStatus())
 
+    getRegion()
     getLGA()
     getWard()
     getProblems()
