@@ -2,7 +2,7 @@
 
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DashboardCtrl', ($scope, $http, modalSpinner, populationData) ->
+  .controller 'DashboardCtrl', ($scope, $http, modalSpinner, populationData, waterpointStats) ->
 
     # should http calls be cached
     cacheHttp = true
@@ -158,59 +158,17 @@ angular.module('taarifaWaterpointsApp')
       ward = $scope.params?.ward
       groupfield = $scope.params?.group || "region"
 
-      url = "/api/waterpoints/stats_by/" + groupfield
-      filterFields = {"region":region, "lga":lga, "ward":ward}
-      filters = []
+      waterpointStats.getStats(region, lga, ward, groupfield, cacheHttp, (data) ->
 
-      _.keys(filterFields).forEach((x) ->
-        if filterFields[x] then filters.push(x + "=" + filterFields[x]))
+        plotStatusSummary("#statusSummary", data, groupfield, $scope)
 
-      filter = filters.join("&")
+        if _.contains(['region','lga','ward'], groupfield)
+          leaderChart("#percFunLeaders", data, groupfield, (x) -> x.percFun)
 
-      if filter then url += "?" + filter
+          data = _.sortBy(data, (x) -> -x.popReach)
+          leaderChart("#popReach", data, groupfield, (x) -> x.popReach)
 
-      $http.get(url, cache: cacheHttp)
-        .success (data, status, headers, config) ->
-          geoField = _.contains(['region','lga','ward'], groupfield)
-
-          data.forEach((x) ->
-            f = _.find(x.waterpoints, isFunctional)
-
-            # ensure there is always a functional entry
-            if !f
-              f = {
-                status: "functional",
-                population: 0,
-                count: 0
-              }
-              x.waterpoints.push(f)
-
-            x.percFun = f.count / x.count * 100
-
-            x.popReach = 0
-
-            if geoField
-              pop = popData.lookup(
-                if groupfield == "region" then x[groupfield] else null,
-                if groupfield == "lga" then x[groupfield] else null,
-                if groupfield == "ward" then x[groupfield] else null
-              )
-              if pop > 0
-                x.popReach = f.population / pop * 100
-          )
-
-          # sort by % functional waterpoints
-          data = _.sortBy(data, (x) -> -x.percFun)
-
-          plotStatusSummary("#statusSummary", data, groupfield, $scope)
-
-          if _.contains(['region','lga','ward'], groupfield)
-            leaderChart("#percFunLeaders", data, groupfield, (x) -> x.percFun)
-
-            data = _.sortBy(data, (x) -> -x.popReach)
-            leaderChart("#popReach", data, groupfield, (x) -> x.popReach)
-
-          modalSpinner.close()
+        modalSpinner.close())
 
     ##########################################################################
     # Initialization code
