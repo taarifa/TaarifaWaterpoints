@@ -2,6 +2,64 @@
 
 angular.module('taarifaWaterpointsApp')
 
+  .factory 'waterpointStats', ($http, populationData) ->
+    result = {}
+
+    getStats = (region, lga, ward, groupfield, cache, callback) ->
+      url = "/api/waterpoints/stats_by/" + groupfield
+      filterFields = {"region":region, "lga":lga, "ward":ward}
+      filters = []
+
+      _.keys(filterFields).forEach((x) ->
+        if filterFields[x] then filters.push(x + "=" + filterFields[x]))
+
+      filter = filters.join("&")
+
+      if filter then url += "?" + filter
+
+      # FIXME: use $cacheFactory to cache also the processed data
+      $http.get(url, cache: cache)
+        .success (data, status, headers, config) ->
+          geoField = _.contains(['region','lga','ward'], groupfield)
+
+          data.forEach((x) ->
+            f = _.find(x.waterpoints, isFunctional)
+
+            # ensure there is always a functional entry
+            if !f
+              f = {
+                status: "functional",
+                population: 0,
+                count: 0
+              }
+              x.waterpoints.push(f)
+
+            x.percFun = f.count / x.count * 100
+
+            x.popReach = 0
+
+            if geoField
+              populationData.then((popData) ->
+                pop = popData.lookup(
+                  if groupfield == "region" then x[groupfield] else null,
+                  if groupfield == "lga" then x[groupfield] else null,
+                  if groupfield == "ward" then x[groupfield] else null
+                )
+                if pop > 0
+                  x.popReach = f.population / pop * 100
+              )
+          )
+
+          # sort by % functional waterpoints
+          data = _.sortBy(data, (x) -> -x.percFun)
+
+          # all done, call the callback
+          callback(data)
+
+    result.getStats = getStats
+
+    return result
+
   .factory 'modalSpinner', ($modal, $timeout) ->
     modalDlg = null
 
