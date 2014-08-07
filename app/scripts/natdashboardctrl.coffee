@@ -2,7 +2,7 @@
 
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DashboardCtrl', ($scope, $http, modalSpinner, populationData, waterpointStats) ->
+  .controller 'DashboardCtrl', ($scope, $http, $timeout, modalSpinner, populationData, waterpointStats) ->
 
     # should http calls be cached
     cacheHttp = true
@@ -152,33 +152,43 @@ angular.module('taarifaWaterpointsApp')
     $scope.groupBy = () ->
       drawPlots()
 
-    barDblClick = (groupField, d) ->
+    $scope.drillDown = (fieldVal, fieldType, clearFilters) ->
+      groupField = fieldType || $scope.params.group
       geoField = _.contains(['region','lga','ward'], groupField)
 
       if !geoField then return
 
-      $scope.$apply(() ->
+      gforder =
+        "region": "lga"
+        "lga": "ward"
+        "ward": "region"
+
+      # Using timeout of zero instead of $scope.apply() in order to avoid
+      # this error: https://docs.angularjs.org/error/$rootScope/inprog?p0=$apply
+      # This happens, for example, when drillDown is called from the geojson feature
+      # click handler (by the leaflet directive)
+      # FIXME: a workaround, better solution?
+      $timeout(() ->
         if !$scope.params then $scope.params = {}
 
-        gforder =
-          "region": "lga"
-          "lga": "ward"
-          "ward": "region"
-
         newgf = gforder[groupField]
-
         $scope.params.group = newgf
 
-        if newgf != "region"
-          $scope.params[groupField] = d[groupField]
-          $scope.getStatus(groupField)
-        else
+        if clearFilters || newgf == "region"
           $scope.params.region = null
           $scope.params.lga = null
           $scope.params.ward = null
-          $scope.params.group = "region"
+
+        if newgf == "region"
           $scope.getStatus("region")
-      )
+        else
+          $scope.params[groupField] = fieldVal
+          $scope.getStatus(groupField)
+      ,0)
+
+    barDblClick = (d) ->
+      groupField = $scope.params.group
+      $scope.drillDown(d[groupField])
 
     drawPlots = () ->
       modalSpinner.open()

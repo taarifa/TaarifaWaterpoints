@@ -33,11 +33,35 @@ angular.module('taarifaWaterpointsApp')
       layer.setStyle
         weight: 2
         color: '#666'
-        fillOpacity: 1
+        fillOpacity: 0.8
       layer.bringToFront())
 
     $scope.$on("leafletDirectiveMap.geojsonClick", (ev, featureSelected, leafletEvent) ->
-      mapObj.fitBounds(leafletEvent.target.getBounds()))
+      # dont do this here, the watch below will take care of that
+      #mapObj.fitBounds(leafletEvent.target.getBounds())
+
+      regit = getRegItem(featureSelected)
+      if regit
+        $scope.drillDown(regit.region, 'region', true)
+    )
+
+    $scope.$watch('params.region', (val,val2) ->
+      # find the matching geojson feature and refocus the map
+
+      if !val then return
+
+      # only 26 regions so a simple linear search is ok
+      for f in $scope.geojson.data.features
+        r = f.properties.REGNAME.toLowerCase()
+
+        if r == val.toLowerCase()
+          # turn into lat lon arrays
+          points = L.GeoJSON.coordsToLatLngs(f.geometry.coordinates,2)
+          # instantiate as multipolygon to get the bounds
+          bounds = L.multiPolygon(points).getBounds()
+          mapObj.fitBounds(bounds)
+          return
+    )
 
     getRegItem = (feature) ->
       regname = feature.properties.REGNAME.toLowerCase()
