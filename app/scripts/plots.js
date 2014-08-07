@@ -25,6 +25,13 @@ function createTip(getter) {
   return tip;
 }
 
+function closeOpenTips() {
+  $('.d3-tip').filter(function(){
+    var $this = $(this);
+    return $this.css('opacity') == 1;
+  }).hide();
+}
+
 /*
  * Stacked bar chart summarizing the status (functional/non functional)
  * of all the waterpoints by the given group field
@@ -145,7 +152,7 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler) {
     })
     .on('dblclick', function(d,i){
         tip.hide(d,i);
-        dblClickHandler(groupField,d);
+        dblClickHandler(d);
     })
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide);
@@ -170,6 +177,8 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler) {
 
   //remove old groups
   state.exit()
+    .on('mouseover', null)
+    .on('mouseout', null)
     .transition()
     .duration(1000)
     .style("opacity", 0)
