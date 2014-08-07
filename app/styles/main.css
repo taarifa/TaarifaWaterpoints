@@ -182,3 +182,16 @@ li.gridster-item {
 #dc-data-table th, td {
   white-space: nowrap;
 }
+
+div.region-info {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+  font-weight: bold;
+  position: absolute;
+  bottom: 1em;
+  left: 1em;
+  z-index: 100;
+  padding: .2em .5em;
+  line-height: 1.1em;
+  text-align: center;
+}
