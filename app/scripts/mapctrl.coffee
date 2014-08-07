@@ -1,23 +1,105 @@
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DashMapCtrl', ($scope, $http) ->
-    cartoUrl = 'http://worldbank.cartodb.com/api/v2/viz/9af2a2ec-e414-11e3-94c5-0edbca4b5057/viz.json'
-    map = null
+  .controller 'DashMapCtrl', ($scope, $http, leafletData, $timeout, waterpointStats) ->
 
-    carto = cartodb.createVis 'map_canvas', cartoUrl,
-      center_lat: -5.5691
-      center_lon: 34.9090
+    $scope.regionMap = null
+    $scope.geojson = null
+    $scope.hoverText = null
+
+    mapObj = null
+
+    # keep a copy of the native map
+    leafletData.getMap("nationalDashMap").then( (map) -> mapObj = map )
+
+    $scope.center =
+      lat: -7.984246
+      lng: 34.672852
       zoom: 5
 
-    carto
-      .done (vis,layers) ->
-        # layer 0 is the base layer, layer 1 is cartodb layer
-        # setInteraction is disabled by default
-        layers[1].setInteraction true
+    $scope.layers =
+      baselayers:
+        osm:
+          name: 'OSM'
+          url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          type: 'xyz'
+        sat:
+          name: 'Satellite'
+          url: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+          type: 'xyz'
+          attribution: 'Tiles (c) Esri'
 
-        # you can get the native map to work with it
-        # depending if you use google maps or leaflet
-        map = vis.getNativeMap()
-      .error (err) ->
-        console.log err
-    return
+    $scope.$on("leafletDirectiveMap.geojsonMouseover", (ev, leafletEvent) ->
+      layer = leafletEvent.target
+      layer.setStyle
+        weight: 2
+        color: '#666'
+        fillOpacity: 1
+      layer.bringToFront())
+
+    $scope.$on("leafletDirectiveMap.geojsonClick", (ev, featureSelected, leafletEvent) ->
+      mapObj.fitBounds(leafletEvent.target.getBounds()))
+
+    getRegItem = (feature) ->
+      regname = feature.properties.REGNAME.toLowerCase()
+      regitem = $scope.regionMap[regname]
+
+    $scope.$watch("geojson.selected", (d) ->
+      if d
+        r = getRegItem(d)
+        if r
+          $scope.hoverText = r.region + ": " + r.percFun.toPrecision(3) + " %"
+        else
+          $scope.hoverText = ""
+      else
+        $scope.hoverText = ""
+    )
+
+    # get the region boundaries
+    $http.get("data/tz_regions.geojson", cache: true)
+      .success((regions, status) ->
+        # get the wateropint data per region
+        waterpointStats.getStats(null, null, null, "region", true, (waterpoints) ->
+
+          # create an associative map by region name
+          regs = _.pluck(waterpoints, "region").map((x) -> x.toLowerCase())
+          regionMap = _.object(regs, waterpoints)
+
+          colScale = d3.scale.linear()
+            .domain([0,50,100])
+            .range(["red","orange","green"])
+
+          # how to style the regions
+          style = (feature) ->
+            regitem = getRegItem(feature)
+
+            if not regitem
+              console.log("Warning: no region match for " + feature.properties.REGNAME)
+              color = "gray"
+            else
+              color = colScale(regitem.percFun)
+
+            s =
+              fillColor: color
+              weight: 2
+              opacity: 1
+              color: 'white'
+              dashArray: '3'
+              fillOpacity: 0.65
+
+          $scope.regionMap = regionMap
+
+          $scope.geojson =
+            data: regions
+            style: style
+            resetStyleOnMouseout: true
+        ))
+
+    redrawMap = () ->
+      leafletData.getMap("nationalDashMap").then((map) -> map.invalidateSize())
+
+    # FIXME: for some reason this does not work
+    #$scope.$on('gridster-resized',(newSizes) ->
+    #  redrawMap()
+    #)
+
+    $timeout(redrawMap, 1000)

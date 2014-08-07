@@ -20,7 +20,19 @@
           </li>
           <li gridster-item row="gridLayout.map.row" col="gridLayout.map.col" size-x="gridLayout.map.sizeX"
           size-y="gridLayout.map.sizeY">
-          <div id="map_canvas" ng-controller="DashMapCtrl"></div>
+          <!--div id="map_canvas" ng-controller="DashMapCtrl"></div-->
+          <div ng-controller="DashMapCtrl">
+            <div class="region-info">
+              {{ hoverText }}
+            </div>
+            <leaflet id="nationalDashMap"
+              center="center"
+              layers="layers"
+              geojson="geojson"
+              height="450px"
+              width="100%">
+            </leaflet>
+          </div>
           </li>
           <li gridster-item row="gridLayout.filter.row" col="gridLayout.filter.col"
           size-x="gridLayout.filter.sizeX" size-y="gridLayout.filter.sizeY">
