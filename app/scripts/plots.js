@@ -25,39 +25,11 @@ function createTip(getter) {
   return tip;
 }
 
-function barDblClick(groupField, d, $scope){
-  var geoField = _.contains(['region','lga','ward'], groupField);
-
-  if(geoField){
-    $scope.$apply(function(){
-      if(!$scope.params) $scope.params = {};
-
-      var gforder = {"region": "lga",
-                     "lga": "ward",
-                     "ward": "region"};
-
-      var newgf = gforder[groupField];
-
-      $scope.params.group = newgf;
-      if(newgf != "region"){
-        $scope.params[groupField] = d[groupField];
-        $scope.getStatus(groupField);
-      }else{
-        $scope.params.region = null;
-        $scope.params.lga = null;
-        $scope.params.ward = null;
-        $scope.params.group = "region";
-        $scope.getStatus("region");
-      }
-    });
-  }
-}
-
 /*
  * Stacked bar chart summarizing the status (functional/non functional)
  * of all the waterpoints by the given group field
  */
-function plotStatusSummary(selector, data, groupField, $scope) {
+function plotStatusSummary(selector, data, groupField, dblClickHandler) {
 
   data.forEach(function(group) {
     var y0 = 0;
@@ -173,7 +145,7 @@ function plotStatusSummary(selector, data, groupField, $scope) {
     })
     .on('dblclick', function(d,i){
         tip.hide(d,i);
-        barDblClick(groupField,d,$scope);
+        dblClickHandler(groupField,d);
     })
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide);

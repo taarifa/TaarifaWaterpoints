@@ -152,6 +152,34 @@ angular.module('taarifaWaterpointsApp')
     $scope.groupBy = () ->
       drawPlots()
 
+    barDblClick = (groupField, d) ->
+      geoField = _.contains(['region','lga','ward'], groupField)
+
+      if !geoField then return
+
+      $scope.$apply(() ->
+        if !$scope.params then $scope.params = {}
+
+        gforder =
+          "region": "lga"
+          "lga": "ward"
+          "ward": "region"
+
+        newgf = gforder[groupField]
+
+        $scope.params.group = newgf
+
+        if newgf != "region"
+          $scope.params[groupField] = d[groupField]
+          $scope.getStatus(groupField)
+        else
+          $scope.params.region = null
+          $scope.params.lga = null
+          $scope.params.ward = null
+          $scope.params.group = "region"
+          $scope.getStatus("region")
+      )
+
     drawPlots = () ->
       modalSpinner.open()
 
@@ -162,7 +190,7 @@ angular.module('taarifaWaterpointsApp')
 
       waterpointStats.getStats(region, lga, ward, groupfield, cacheHttp, (data) ->
 
-        plotStatusSummary("#statusSummary", data, groupfield, $scope)
+        plotStatusSummary("#statusSummary", data, groupfield, barDblClick)
 
         if _.contains(['region','lga','ward'], groupfield)
           leaderChart("#percFunLeaders", data, groupfield, (x) -> x.percFun)
@@ -171,6 +199,7 @@ angular.module('taarifaWaterpointsApp')
           leaderChart("#popReach", data, groupfield, (x) -> x.popReach)
 
         modalSpinner.close())
+
 
     ##########################################################################
     # Initialization code
