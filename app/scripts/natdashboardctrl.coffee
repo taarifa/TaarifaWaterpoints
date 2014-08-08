@@ -5,6 +5,7 @@ angular.module('taarifaWaterpointsApp')
   .controller 'DashboardCtrl', ($scope, $http, $timeout, modalSpinner, populationData, waterpointStats) ->
 
     # should http calls be cached
+    # FIXME: should be application level setting
     cacheHttp = true
 
     $scope.gridsterOpts = {
