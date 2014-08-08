@@ -104,9 +104,21 @@ angular.module('taarifaWaterpointsApp')
       # add a layer selector
       layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
 
-      choroplethSelector = L.control(
-        position: 'bottomleft'
+      # add a legend
+      legend = L.control(
+        position: 'bottomright'
       )
+
+      legend.onAdd = (map) ->
+        div = L.DomUtil.create('div', 'legend');
+
+        [0,25,50,75,100].forEach((x) ->
+          div.innerHTML += '<i style="background:' + colScale(x) + '"></i> ' + x + "%<br />";
+        )
+
+        return div;
+
+      legend.addTo(map);
 
       $scope.$watch('choroChoice', (val) ->
         if !val then return
