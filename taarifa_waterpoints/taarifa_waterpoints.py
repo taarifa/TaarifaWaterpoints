@@ -9,7 +9,7 @@ app.name = 'TaarifaWaterpoints'
 # This is needed by the dashboard
 # FIXME: this should eventually be replaced by an incremental load
 # which is better for responsiveness
-app.config['PAGINATION_LIMIT'] = 10000
+app.config['PAGINATION_LIMIT'] = 70000
 
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/values/<field>')
