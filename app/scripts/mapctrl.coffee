@@ -1,6 +1,6 @@
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DashMapCtrl', ($scope, $http, leafletData, $timeout, waterpointStats) ->
+  .controller 'DashMapCtrl', ($scope, $http, leafletData, $timeout, modalSpinner, waterpointStats, Waterpoint) ->
 
     $scope.hoverText = ""
     $scope.choroChoice = "percFun"
@@ -88,10 +88,24 @@ angular.module('taarifaWaterpointsApp')
         onEachFeature: onEachFeature
       )
 
+      categoryMap =
+        "functional" : 0
+        "not functional" : 1
+        "needs repair" : 2
+
+      clusterLayer = new PruneClusterForLeaflet()
+      clusterLayer.Cluster.Size = 100
+
+      waterpoints.forEach((x) ->
+        coords = x.location.coordinates
+        m = new PruneCluster.Marker(coords[1], coords[0])
+        m.category = categoryMap[x.status_group]
+        clusterLayer.RegisterMarker(m))
+
       map = L.map('nationalDashMap',
         center: new L.LatLng(-6.3153, 35.15625),
         zoom: 5,
-        layers: [osmLayer, satLayer, regLayer]
+        layers: [osmLayer, regLayer, clusterLayer]
       )
 
       baseMaps =
@@ -100,6 +114,7 @@ angular.module('taarifaWaterpointsApp')
 
       overlayMaps =
         "Regions": regLayer
+        #"Waterpoints": clusterLayer
 
       # add a layer selector
       layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
@@ -147,18 +162,22 @@ angular.module('taarifaWaterpointsApp')
       )
 
 
+    modalSpinner.open()
+
     # get the region boundaries
     $http.get("data/tz_regions.geojson", cache: true)
       .success((regions, status) ->
         # get the wateropint data per region
-        waterpointStats.getStats(null, null, null, "region", true, (waterpoints) ->
+        waterpointStats.getStats(null, null, null, "region", true, (regionStats) ->
 
           # create an associative map by region name
-          regs = _.pluck(waterpoints, "region").map((x) -> x.toLowerCase())
-          regionMap = _.object(regs, waterpoints)
+          regs = _.pluck(regionStats, "region").map((x) -> x.toLowerCase())
+          regionMap = _.object(regs, regionStats)
 
           $scope.regionMap = regionMap
 
-          initMap(regions, waterpoints)
+          initMap(regions, [])
+
+          modalSpinner.close()
         ))
 
