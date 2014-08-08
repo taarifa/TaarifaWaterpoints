@@ -20,26 +20,26 @@ angular.module('taarifaWaterpointsApp')
       # FIXME: use $cacheFactory to cache also the processed data
       $http.get(url, cache: cache)
         .success (data, status, headers, config) ->
-          geoField = _.contains(['region','lga','ward'], groupfield)
+          populationData.then( (popData) ->
+            geoField = _.contains(['region','lga','ward'], groupfield)
 
-          data.forEach((x) ->
-            f = _.find(x.waterpoints, isFunctional)
+            data.forEach((x) ->
+              f = _.find(x.waterpoints, isFunctional)
 
-            # ensure there is always a functional entry
-            if !f
-              f = {
-                status: "functional",
-                population: 0,
-                count: 0
-              }
-              x.waterpoints.push(f)
+              # ensure there is always a functional entry
+              if !f
+                f = {
+                  status: "functional",
+                  population: 0,
+                  count: 0
+                }
+                x.waterpoints.push(f)
 
-            x.percFun = f.count / x.count * 100
+              x.percFun = f.count / x.count * 100
 
-            x.popReach = 0
+              x.popReach = 0
 
-            if geoField
-              populationData.then((popData) ->
+              if geoField
                 pop = popData.lookup(
                   if groupfield == "region" then x[groupfield] else null,
                   if groupfield == "lga" then x[groupfield] else null,
@@ -47,14 +47,14 @@ angular.module('taarifaWaterpointsApp')
                 )
                 if pop > 0
                   x.popReach = f.population / pop * 100
-              )
+            )
+
+            # sort by % functional waterpoints
+            data = _.sortBy(data, (x) -> -x.percFun)
+
+            # all done, call the callback
+            callback(data)
           )
-
-          # sort by % functional waterpoints
-          data = _.sortBy(data, (x) -> -x.percFun)
-
-          # all done, call the callback
-          callback(data)
 
     result.getStats = getStats
 
