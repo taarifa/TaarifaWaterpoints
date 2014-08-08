@@ -25,13 +25,11 @@
             <div class="region-info">
               {{ hoverText }}
             </div>
-            <leaflet id="nationalDashMap"
-              center="center"
-              layers="layers"
-              geojson="geojson"
-              height="450px"
-              width="100%">
-            </leaflet>
+            <div id="nationalDashMap"></div>
+            <div id="choroplethSelect" class="btn-group">
+              <label class="btn btn-success" ng-model="choroChoice" btn-radio="'percFun'" uncheckable>Functional</label>
+              <label class="btn btn-success" ng-model="choroChoice" btn-radio="'popReach'" uncheckable>Coverage</label>
+            </div>
           </div>
           </li>
           <li gridster-item row="gridLayout.filter.row" col="gridLayout.filter.col"
