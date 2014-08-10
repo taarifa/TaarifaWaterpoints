@@ -50,8 +50,8 @@
           <li ng-class="{active: location.path() == '/'}"><a ng-href="#">Home</a></li>
           <li ng-class="{active: location.path() == '/requests'}"><a ng-href="#/requests">Triage</a></li>
           <li ng-class="{active: location.path() == '/dashboard'}"><a ng-href="#/dashboard">Dashboard</a></li>
-          <li><select class="form-control" ng-model="$root.fields.catalog.currentLanguage"
-              ng-options="key as value for (key, value) in $root.fields.languages"></select></li>
+          <li ng-controller="LocaleCtrl"><select class="form-control" ng-model="$root.fields.catalog.currentLanguage"
+              ng-options="key as value for (key, value) in $root.fields.languages" ng-change="update()"></select></li>
         </ul>
         <h3 class="text-muted" translate>Tanzania Waterpoints</h3>
       </div>
@@ -94,6 +94,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.13/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.13/angular-resource.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.13/angular-route.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.10/angular-cookies.min.js"></script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
 
