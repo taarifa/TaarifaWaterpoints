@@ -46,7 +46,7 @@ app = angular
     return (s) -> 
       return s.toString().toLowerCase().replace( /\b([a-z])/g, (ch) -> return ch.toUpperCase()))
 
-  .run (gettextCatalog,$rootScope) ->
+  .run (gettextCatalog, $rootScope, $cookies) ->
     $cookies.locale = 'en' unless !!$cookies.locale
     gettextCatalog.currentLanguage = $cookies.locale
     $rootScope.fields =
