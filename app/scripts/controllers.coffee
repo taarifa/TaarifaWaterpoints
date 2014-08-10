@@ -9,6 +9,10 @@ angular.module('taarifaWaterpointsApp')
     Waterpoint.query (waterpoints) ->
       $scope.waterpoints = waterpoints._items
 
+  .controller 'LocaleCtrl', ($scope, $cookies, gettextCatalog) ->
+    $scope.update = () ->
+      $cookies.locale = gettextCatalog.currentLanguage
+
   .controller 'MapCtrl', ($scope, Map) ->
     $scope.map = Map
 
