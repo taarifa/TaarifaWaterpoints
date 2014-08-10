@@ -6,6 +6,7 @@ app = angular
     'gridster',
     'ngResource',
     'ngRoute',
+    'ngCookies',
     'leaflet-directive',
     'dynform',
     'angular-flash.service',
@@ -46,7 +47,8 @@ app = angular
       return s.toString().toLowerCase().replace( /\b([a-z])/g, (ch) -> return ch.toUpperCase()))
 
   .run (gettextCatalog,$rootScope) ->
-    gettextCatalog.currentLanguage = 'en'
+    $cookies.locale = 'en' unless !!$cookies.locale
+    gettextCatalog.currentLanguage = $cookies.locale
     $rootScope.fields =
       catalog: gettextCatalog
       languages:
