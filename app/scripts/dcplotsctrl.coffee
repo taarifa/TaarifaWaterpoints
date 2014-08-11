@@ -62,26 +62,28 @@ angular.module('taarifaWaterpointsApp')
       modalSpinner.open()
 
       # get all regions
-      $http
-        .get('/api/waterpoints/values/region', cache: true)
-        .success (data, status, headers, config) ->
-          $scope.regions = data.sort()
-          $scope.region = $scope.regions[3]
+      $q.all([
+        $http.get('/api/waterpoints/values/region', cache: true)
+        populationData
+      ]).then((results) ->
+        regs = results[0].data
+        popData = results[1]
 
-          # FIXME:
-          # unfortunately, for some reason, not all dc charts manage to pickup the
-          # correct dimensions on their own. Manually set a resize renderlet to run once
-          # all the charts have rendered.
-          dc.renderlet () ->
-            resizeCharts()
-            modalSpinner.close()
-            # only keep the renderlet once
-            dc.renderlet null
+        $scope.regions = regs.sort()
+        $scope.region = $scope.regions[3]
 
-          # ensure we have the population data
-          populationData.then (data) ->
-            popData = data
-            setupCharts $scope.region
+        # FIXME:
+        # unfortunately, for some reason, not all dc charts manage to pickup the
+        # correct dimensions on their own. Manually set a resize renderlet to run once
+        # all the charts have rendered.
+        dc.renderlet () ->
+          resizeCharts()
+          modalSpinner.close()
+          # only keep the renderlet once
+          dc.renderlet null
+
+        setupCharts $scope.region
+      )
 
     # what value to use for year 0
     YEAR_ZERO=1950
