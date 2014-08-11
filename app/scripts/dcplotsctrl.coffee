@@ -13,30 +13,33 @@ angular.module('taarifaWaterpointsApp')
         enabled: false
 
     $scope.gridLayout =
-      statusPerLga: { sizeX: 6, sizeY: 4, row: 0, col: 0, title: "Functionality by LGA" }
-      topProblems: { sizeX: 6, sizeY: 4, row: 0, col: 6, title: "Top Problems"}
+      #markerMap: { sizeX: 6, sizeY: 4, row: 0, col: 0, title: "Waterpoint Locations" }
+      #wardChoropleth: { sizeX: 6, sizeY: 4, row: 0, col: 6, title: "Functionality by Ward"}
 
-      constrYear: { sizeX: 6, sizeY: 3, row: 4, col: 0, title: "Construction Year" }
-      breakYear: { sizeX: 6, sizeY: 3, row: 4, col: 6, title: "Breakdown Year" }
+      statusPerLga: { sizeX: 6, sizeY: 4, row: 4, col: 0, title: "Functionality by LGA" }
+      topProblems: { sizeX: 6, sizeY: 4, row: 4, col: 6, title: "Top Problems"}
 
-      statusPerWard: { sizeX: 12, sizeY: 5, row: 7, col: 0, title: "Functionality by Ward" }
+      constrYear: { sizeX: 6, sizeY: 3, row: 8, col: 0, title: "Construction Year" }
+      breakYear: { sizeX: 6, sizeY: 3, row: 8, col: 6, title: "Breakdown Year" }
 
-      statusPie: { sizeX: 3, sizeY: 3, row: 12, col: 0, title: "Functionality" }
-      qualityPie: { sizeX: 3, sizeY: 3, row: 12, col: 3, title: "Water Quality" }
-      quantityPie: { sizeX: 3, sizeY: 3, row: 12, col: 6, title: "Water Quantity" }
-      extractionPie: { sizeX: 3, sizeY: 3, row: 12, col: 9, title: "Extraction Type" }
+      statusPerWard: { sizeX: 12, sizeY: 5, row: 11, col: 0, title: "Functionality by Ward" }
 
-      costImpactBubble: { sizeX: 12, sizeY: 4, row: 15, col: 0, title: "Functionality vs Cost" }
+      statusPie: { sizeX: 3, sizeY: 3, row: 16, col: 0, title: "Functionality" }
+      qualityPie: { sizeX: 3, sizeY: 3, row: 16, col: 3, title: "Water Quality" }
+      quantityPie: { sizeX: 3, sizeY: 3, row: 16, col: 6, title: "Water Quantity" }
+      extractionPie: { sizeX: 3, sizeY: 3, row: 16, col: 9, title: "Extraction Type" }
 
-      paymentPie: { sizeX: 3, sizeY: 3, row: 19, col: 0, title: "Payment Method" }
-      managementPie: { sizeX: 3, sizeY: 3, row: 19, col: 3, title: "Management" }
-      funderPie: { sizeX: 3, sizeY: 3, row: 19, col: 6, title: "Funder" }
-      installerPie: { sizeX: 3, sizeY: 3, row: 19, col: 9, title: "Installer" }
+      costImpactBubble: { sizeX: 12, sizeY: 4, row: 19, col: 0, title: "Functionality vs Cost" }
 
-      statusPerManagement: { sizeX: 6, sizeY: 4, row: 22, col: 0, title: "Functionality by Management" }
-      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 22, col: 6, title: "Functionality by Extraction" }
+      paymentPie: { sizeX: 3, sizeY: 3, row: 23, col: 0, title: "Payment Method" }
+      managementPie: { sizeX: 3, sizeY: 3, row: 23, col: 3, title: "Management" }
+      funderPie: { sizeX: 3, sizeY: 3, row: 23, col: 6, title: "Funder" }
+      installerPie: { sizeX: 3, sizeY: 3, row: 23, col: 9, title: "Installer" }
 
-    $scope.fields = ["status_group", "lga", "ward",
+      statusPerManagement: { sizeX: 6, sizeY: 4, row: 26, col: 0, title: "Functionality by Management" }
+      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 26, col: 6, title: "Functionality by Extraction" }
+
+    $scope.fields = ["status_group", "lga", "ward", "location",
                  "source_type", "amount_tsh", "population"
                  "construction_year", "quantity_group",
                  "quality_group", "extraction_type_group",
@@ -65,9 +68,11 @@ angular.module('taarifaWaterpointsApp')
       $q.all([
         $http.get('/api/waterpoints/values/region', cache: true)
         populationData
+        #$http.get('data/tz_wards.geojson', cache: true)
       ]).then((results) ->
         regs = results[0].data
         popData = results[1]
+        #$scope.geojson = results[2]
 
         $scope.regions = regs.sort()
         $scope.region = $scope.regions[3]
@@ -231,10 +236,15 @@ angular.module('taarifaWaterpointsApp')
         statusPerManagement = dc.barChart("#statusPerManagement")
         costImpactBubbleChart = dc.bubbleChart("#costImpactBubble")
         problemsChart = dc.rowChart("#topProblems")
+        #markerMap = dc.leafletMarkerChart("#markerMap")
+        #wardChoropleth = dc.geoChoroplethChart("#wardChoropleth")
+        #wardChoropleth = dc.leafletMarkerChart("#wardChoropleth")
 
         # create Crossfilter Dimensions and Groups
         xfilter = crossfilter data
         all = xfilter.groupAll()
+
+        locations = createDim (d) -> d.location.coordinates
 
         lgas = createDim (d) -> d.lga
         statusPerLga = reduceStatus lgas.group()
@@ -283,6 +293,53 @@ angular.module('taarifaWaterpointsApp')
 
         amounts = createDim (d) -> d.amount_tsh
         costStatusGroup = reduceCostStatus wards.group()
+
+        ###
+        markerMap
+          .dimension(locations)
+          .group(costStatusGroup)
+          .width(200)
+          .height(200)
+          .center([-6.3153,35.15625])
+          .zoom(5)
+          .cluster(false)
+
+        wardChoropleth
+          .width(300)
+          .height(300)
+          .dimension(wards)
+          .group(costStatusGroup)
+          .colors(d3.scale.quantize().range(["#E2F2FF", "#C4E4FF", "#9ED2FF", "#81C5FF", "#6BBAFF", "#51AEFF", "#36A2FF", "#1E96FF", "#0089FF", "#0061B5"]))
+          .colorDomain([0, 100])
+          #.colorCalculator( (d) ->
+          #  return d ? usChart.colors()(d) : '#ccc')
+          .valueAccessor((p) ->
+            return p.value.percFun)
+          .overlayGeoJson($scope.geojson.data.features.slice(0,500), "ward", (d) ->
+            return d.properties.REGNAME)
+          .title((d) ->
+            return "Ward: " + d.key)
+
+        wardChoropleth.group(costStqtusGroup°
+          .dimension(locations)
+          .group(costStatusGroup)
+          .width(200)
+          .height(200)
+          .center([-6.3153,35.15625])
+          .zoom(5)
+          .geojson($scope.geojson)
+          .colors(['#fff7f3', '#fde0dd', '#fcc5c0', '#fa9fb5', '#f768a1', '#dd3497', '#ae017e', '#7a0177', '#49006a'])
+          .colorDomain(() ->
+            [dc.utils.groupMin(this.group(), this.valueAccessor()),
+            dc.utils.groupMax(this.group(), this.valueAccessor())]
+          )
+          .colorAccessor((d,i) ->
+            return d.value
+          )
+          .featureKeyAccessor((feature) ->
+            return feature.properties.code
+          )
+        ###
 
         statusBarChart statusPerLgaChart, lgas, statusPerLga, 15
         statusBarChart statusPerExtraction, extractionTypes, extractionStatusGroup
