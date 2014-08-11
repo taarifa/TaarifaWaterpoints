@@ -13,17 +13,19 @@ angular.module('taarifaWaterpointsApp')
 
     getWardItem = (feature) ->
       wardname = feature.properties.Ward_Name.toLowerCase()
-      regitem = $scope.wardMap[wardname]
+      warditem = $scope.wardMap[wardname]
+      [wardname, warditem]
 
     getRegItem = (feature) ->
       regname = feature.properties.REGNAME.toLowerCase()
       regitem = $scope.regionMap[regname]
+      [regname, regitem]
 
     getItem = (feature) ->
       if getFeatureType(feature) == "region"
-        return ["region", getRegItem(feature)]
+        return ["region", getRegItem(feature)[1]]
       else
-        return ["ward", getWardItem(feature)]
+        return ["ward", getWardItem(feature)[1]]
 
     initMap = (regions, wards, waterpoints) ->
 
@@ -36,12 +38,17 @@ angular.module('taarifaWaterpointsApp')
       )
 
       mouseOver = (e) ->
-        [type,item] = getItem(e.target.feature)
+        type = getFeatureType(e.target.feature)
+
+        if type == "region"
+          [name, item] = getRegItem(e.target.feature)
+        else
+          [name, item] = getWardItem(e.target.feature)
 
         if item
           hoverText = item[type] + ": " + item[$scope.choroChoice].toPrecision(3) + "%"
         else
-          hoverText = ""
+          hoverText = name + ": unknown"
 
         $scope.$apply (scope) ->
           scope.hoverText = hoverText
@@ -69,7 +76,7 @@ angular.module('taarifaWaterpointsApp')
         # dont do this here, the watch below will take care of that
         #map.fitBounds(e.target.getBounds())
 
-        regit = getRegItem(e.target.feature)
+        [regname, regit] = getRegItem(e.target.feature)
         if regit
           $scope.drillDown(regit.region, 'region', true)
 
