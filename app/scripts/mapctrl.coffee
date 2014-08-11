@@ -23,13 +23,12 @@ angular.module('taarifaWaterpointsApp')
         r = getRegItem(e.target.feature)
 
         if r
-          hoverText = r.region + ": " + r[$scope.choroChoice].toPrecision(3) + " %"
+          hoverText = r.region + ": " + r[$scope.choroChoice].toPrecision(3) + "%"
         else
           hoverText = ""
 
-        $scope.$apply(
-            $scope.hoverText = hoverText
-        )
+        $scope.$apply (scope) ->
+          scope.hoverText = hoverText
 
         layer = e.target
         layer.setStyle
@@ -42,9 +41,8 @@ angular.module('taarifaWaterpointsApp')
 
       regionMouseOut = (e) ->
         regLayer.resetStyle(e.target)
-        $scope.$apply(
-            $scope.hoverText = ""
-        )
+        $scope.$apply (scope) ->
+          scope.hoverText = ""
 
       regionClick = (e) ->
         # dont do this here, the watch below will take care of that
