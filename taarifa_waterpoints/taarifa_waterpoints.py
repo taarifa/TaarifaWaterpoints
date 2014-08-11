@@ -99,7 +99,9 @@ def images(filename):
 
 @app.route('/data/<path:filename>')
 def data(filename):
-    return send_from_directory(app.root_path + '/dist/data/', filename)
+    # FIXME: if we ever want to send non-JSON data this needs fixing
+    return send_from_directory(app.root_path + '/dist/data/', filename,
+                               mimetype="application/json")
 
 
 @app.route('/views/<path:filename>')
