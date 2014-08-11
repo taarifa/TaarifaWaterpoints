@@ -63,7 +63,7 @@ angular.module('taarifaWaterpointsApp')
 
       # get all regions
       $http
-        .get('/api/waterpoints/values/region')
+        .get('/api/waterpoints/values/region', cache: true)
         .success (data, status, headers, config) ->
           $scope.regions = data.sort()
           $scope.region = $scope.regions[3]
