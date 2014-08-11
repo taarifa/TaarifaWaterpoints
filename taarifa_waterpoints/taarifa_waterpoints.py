@@ -1,9 +1,20 @@
+import json
 from eve.render import send_response
 from flask import request, send_from_directory
 
 from taarifa_api import api as app, main
 
+
+def post_waterpoints_get_callback(request, payload):
+    """Strip all meta data but id from waterpoint payload."""
+    d = json.loads(payload.data)
+    d['_items'] = [dict((k, v) for k, v in it.items()
+                        if k == '_id' or not k.startswith('_'))
+                   for it in d['_items']]
+    payload.data = json.dumps(d)
+
 app.name = 'TaarifaWaterpoints'
+app.on_post_GET_waterpoints += post_waterpoints_get_callback
 
 # Override the maximum number of results on a single page
 # This is needed by the dashboard
