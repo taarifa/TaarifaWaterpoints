@@ -5,11 +5,27 @@ angular.module('taarifaWaterpointsApp')
     $scope.hoverText = ""
     $scope.choroChoice = "percFun"
 
+    getFeatureType = (feature) ->
+      if feature.properties.hasOwnProperty("REGNAME")
+        return "region"
+      else
+        return "ward"
+
+    getWardItem = (feature) ->
+      wardname = feature.properties.Ward_Name.toLowerCase()
+      regitem = $scope.wardMap[wardname]
+
     getRegItem = (feature) ->
       regname = feature.properties.REGNAME.toLowerCase()
       regitem = $scope.regionMap[regname]
 
-    initMap = (regions, waterpoints) ->
+    getItem = (feature) ->
+      if getFeatureType(feature) == "region"
+        return ["region", getRegItem(feature)]
+      else
+        return ["ward", getWardItem(feature)]
+
+    initMap = (regions, wards, waterpoints) ->
 
       osmLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution: '(c) OpenStreetMap'
@@ -19,11 +35,11 @@ angular.module('taarifaWaterpointsApp')
         attribution: '(c) Esri'
       )
 
-      regionMouseOver = (e) ->
-        r = getRegItem(e.target.feature)
+      mouseOver = (e) ->
+        [type,item] = getItem(e.target.feature)
 
-        if r
-          hoverText = r.region + ": " + r[$scope.choroChoice].toPrecision(3) + "%"
+        if item
+          hoverText = item[type] + ": " + item[$scope.choroChoice].toPrecision(3) + "%"
         else
           hoverText = ""
 
@@ -36,8 +52,10 @@ angular.module('taarifaWaterpointsApp')
           color: '#666'
           fillOpacity: 0.8
 
-        if !L.Browser.ie && !L.Browser.opera
-          layer.bringToFront()
+      wardMouseOut = (e) ->
+        wardLayer.resetStyle(e.target)
+        $scope.$apply (scope) ->
+          scope.hoverText = ""
 
       regionMouseOut = (e) ->
         regLayer.resetStyle(e.target)
@@ -58,13 +76,12 @@ angular.module('taarifaWaterpointsApp')
 
       # how to style the regions
       style = (feature) ->
-        regitem = getRegItem(feature)
+        [type, item] = getItem(feature)
 
-        if not regitem
-          console.log("Warning: no region match for " + feature.properties.REGNAME)
+        if not item
           color = "gray"
         else
-          color = colScale(regitem[$scope.choroChoice])
+          color = colScale(item[$scope.choroChoice])
 
         s =
           fillColor: color
@@ -74,16 +91,25 @@ angular.module('taarifaWaterpointsApp')
           dashArray: '3'
           fillOpacity: 0.65
 
-      onEachFeature = (feature, layer) ->
-        layer.on(
-          mouseover: regionMouseOver,
-          mouseout: regionMouseOut,
+      onEachRegionFeature = (feature, layer) ->
+        layer.on
+          mouseover: mouseOver
+          mouseout: regionMouseOut
           click: regionClick
-        )
+
+      onEachWardFeature = (feature, layer) ->
+        layer.on
+          mouseover: mouseOver
+          mouseout: wardMouseOut
 
       regLayer = L.geoJson(regions,
         style: style
-        onEachFeature: onEachFeature
+        onEachFeature: onEachRegionFeature
+      )
+
+      wardLayer = L.geoJson(wards,
+        style: style
+        onEachFeature: onEachWardFeature
       )
 
       categoryMap =
@@ -103,7 +129,7 @@ angular.module('taarifaWaterpointsApp')
       map = L.map('nationalDashMap',
         center: new L.LatLng(-6.3153, 35.15625),
         zoom: 5,
-        layers: [osmLayer, regLayer, clusterLayer]
+        layers: [satLayer, regLayer, clusterLayer]
       )
 
       baseMaps =
@@ -112,6 +138,7 @@ angular.module('taarifaWaterpointsApp')
 
       overlayMaps =
         "Regions": regLayer
+        "Wards": wardLayer
         #"Waterpoints": clusterLayer
 
       # add a layer selector
@@ -136,9 +163,16 @@ angular.module('taarifaWaterpointsApp')
       $scope.$watch('choroChoice', (val) ->
         if !val then return
 
-        map.removeLayer(regLayer)
         regLayer.setStyle(style)
-        map.addLayer(regLayer)
+        wardLayer.setStyle(style)
+
+        if map.hasLayer(regLayer)
+          map.removeLayer(regLayer)
+          map.addLayer(regLayer)
+
+        if map.hasLayer(wardLayer)
+          map.removeLayer(wardLayer)
+          map.addLayer(wardLayer)
       )
 
       $scope.$watch('params.region', (val) ->
@@ -165,18 +199,26 @@ angular.module('taarifaWaterpointsApp')
     # get the boundaries
     $q.all([
       $http.get("data/tz_regions.geojson", cache: true)
+      $http.get("data/tz_wards.geojson", cache: true)
       waterpointStats.getStats(null, null, null, "region", true)
+      # FIXME: relies on the fact that wards are uniquely named
+      waterpointStats.getStats(null, null, null, "ward", true)
     ]).then((results) ->
       regions = results[0].data
-      regionStats = results[1]
+      wards = results[1].data
+      regionStats = results[2]
+      wardStats = results[3]
 
-      # create an associative map by region name
+      # create an associative map by region/ward name
       regs = _.pluck(regionStats, "region").map((x) -> x.toLowerCase())
       regionMap = _.object(regs, regionStats)
-
       $scope.regionMap = regionMap
 
-      initMap(regions, [])
+      ws = _.pluck(wardStats, "ward").map((x) -> x.toLowerCase())
+      wardMap = _.object(ws, wardStats)
+      $scope.wardMap = wardMap
+
+      initMap(regions, wards, [])
 
       modalSpinner.close()
     )
