@@ -1,6 +1,6 @@
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DCPlotsCtrl', ($scope, $http, modalSpinner, populationData) ->
+  .controller 'DCPlotsCtrl', ($scope, $http, $q, modalSpinner, populationData) ->
     $scope.gridsterOpts =
       margins: [10, 10]
       columns: 12
@@ -99,12 +99,16 @@ angular.module('taarifaWaterpointsApp')
               "&projection=" + JSON.stringify(projection) +
               "&max_results=10000"
 
-      d3.json url, (data) ->
-        data._items.forEach (d) ->
+      $q.all([
+        $http.get(url, cache: true)
+      ]).then((results) ->
+        waterpoints = results[0].data._items
+
+        waterpoints.forEach (d) ->
           d.breakdown_year = new Date(d.breakdown_year || YEAR_ZERO, 0, 1)
           d.construction_year = new Date(d.construction_year || YEAR_ZERO, 0, 1)
 
-        callback data._items
+        callback waterpoints)
 
     createDim = (f) ->
       dim = xfilter.dimension(f)
