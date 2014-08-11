@@ -194,7 +194,7 @@ angular.module('taarifaWaterpointsApp')
     @markers = {}
     addMarkers = (waterpoints) =>
       for p in waterpoints._items
-        @markers[p._id] =
+        @markers['wp' + p._id] =
           # FIXME temporarily disable clustering since it is not properly
           # reinitialized when the MapCtrl controller reloads
           # group: p.district
