@@ -100,7 +100,7 @@ angular.module('taarifaWaterpointsApp')
       #FIXME: use the Waterpoint service
       url = "/api/waterpoints?where=" + JSON.stringify(filter) +
               "&projection=" + JSON.stringify(projection) +
-              "&max_results=10000"
+              "&max_results=10000&strip=1"
 
       $q.all([
         $http.get(url, cache: true)

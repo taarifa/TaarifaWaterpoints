@@ -217,6 +217,7 @@ angular.module('taarifaWaterpointsApp')
         location: 1
         wpt_code: 1
         status_group: 1
+      strip: 1
     , addMarkers
     return this
 
