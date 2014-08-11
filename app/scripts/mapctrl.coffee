@@ -134,8 +134,9 @@ angular.module('taarifaWaterpointsApp')
         clusterLayer.RegisterMarker(m))
 
       map = L.map('nationalDashMap',
-        center: new L.LatLng(-6.3153, 35.15625),
-        zoom: 5,
+        center: new L.LatLng(-6.3153, 35.15625)
+        zoom: 5
+        fullscreenControl: true
         layers: [satLayer, regLayer, clusterLayer]
       )
 
