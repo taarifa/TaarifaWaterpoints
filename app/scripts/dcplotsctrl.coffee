@@ -95,6 +95,7 @@ angular.module('taarifaWaterpointsApp')
       projection = _.object($scope.fields, ones)
 
       #FIXME: eventually load page by page to improve responsiveness
+      #FIXME: use the Waterpoint service
       url = "/api/waterpoints?where=" + JSON.stringify(filter) +
               "&projection=" + JSON.stringify(projection) +
               "&max_results=10000"
