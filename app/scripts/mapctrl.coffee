@@ -1,6 +1,6 @@
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DashMapCtrl', ($scope, $http, leafletData, $timeout, modalSpinner, waterpointStats, Waterpoint) ->
+  .controller 'DashMapCtrl', ($scope, $http, $q, leafletData, $timeout, modalSpinner, waterpointStats, Waterpoint) ->
 
     $scope.hoverText = ""
     $scope.choroChoice = "percFun"
@@ -162,19 +162,21 @@ angular.module('taarifaWaterpointsApp')
 
     modalSpinner.open()
 
-    # get the region boundaries
-    $http.get("data/tz_regions.geojson", cache: true)
-      .success((regions, status) ->
-        # get the wateropint data per region
-        waterpointStats.getStats(null, null, null, "region", true, (regionStats) ->
+    # get the boundaries
+    $q.all([
+      $http.get("data/tz_regions.geojson", cache: true)
+      waterpointStats.getStats(null, null, null, "region", true)
+    ]).then((results) ->
+      regions = results[0].data
+      regionStats = results[1]
 
-          # create an associative map by region name
-          regs = _.pluck(regionStats, "region").map((x) -> x.toLowerCase())
-          regionMap = _.object(regs, regionStats)
+      # create an associative map by region name
+      regs = _.pluck(regionStats, "region").map((x) -> x.toLowerCase())
+      regionMap = _.object(regs, regionStats)
 
-          $scope.regionMap = regionMap
+      $scope.regionMap = regionMap
 
-          initMap(regions, [])
+      initMap(regions, [])
 
-          modalSpinner.close()
-        ))
+      modalSpinner.close()
+    )
