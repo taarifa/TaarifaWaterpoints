@@ -2,10 +2,11 @@
 
 angular.module('taarifaWaterpointsApp')
 
-  .factory 'waterpointStats', ($http, populationData) ->
+  .factory 'waterpointStats', ($http, $q, populationData) ->
     result = {}
 
-    getStats = (region, lga, ward, groupfield, cache, callback) ->
+    getStats = (region, lga, ward, groupfield, cache) ->
+      def = $q.defer()
       url = "/api/waterpoints/stats_by/" + groupfield
       filterFields = {"region":region, "lga":lga, "ward":ward}
       filters = []
@@ -53,8 +54,10 @@ angular.module('taarifaWaterpointsApp')
             data = _.sortBy(data, (x) -> -x.percFun)
 
             # all done, call the callback
-            callback(data)
+            def.resolve(data)
           )
+
+      return def.promise
 
     result.getStats = getStats
 

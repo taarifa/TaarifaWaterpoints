@@ -199,7 +199,8 @@ angular.module('taarifaWaterpointsApp')
       ward = $scope.params?.ward
       groupfield = $scope.params?.group || "region"
 
-      waterpointStats.getStats(region, lga, ward, groupfield, cacheHttp, (data) ->
+      promise = waterpointStats.getStats(region, lga, ward, groupfield, cacheHttp)
+      promise.then( (data) ->
 
         plotStatusSummary("#statusSummary", data, groupfield, barDblClick)
 
