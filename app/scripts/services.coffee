@@ -130,8 +130,6 @@ angular.module('taarifaWaterpointsApp')
               .pluck("Both_Sexes")
               .value())
         catch e
-          console.log("Warning: Failed to lookup population for " +
-            r + ", " + d + ", " + w)
           return -1
 
       result.lookup = lookup
