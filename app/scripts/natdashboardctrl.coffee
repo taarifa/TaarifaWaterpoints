@@ -6,7 +6,7 @@ angular.module('taarifaWaterpointsApp')
 
     # should http calls be cached
     # FIXME: should be application level setting
-    cacheHttp = true
+    cacheHttp = false
 
     $scope.gridsterOpts = {
         margins: [10, 10],
