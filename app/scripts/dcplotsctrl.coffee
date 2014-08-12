@@ -16,28 +16,30 @@ angular.module('taarifaWaterpointsApp')
       #markerMap: { sizeX: 6, sizeY: 4, row: 0, col: 0, title: "Waterpoint Locations" }
       #wardChoropleth: { sizeX: 6, sizeY: 4, row: 0, col: 6, title: "Functionality by Ward"}
 
-      statusPerLga: { sizeX: 6, sizeY: 4, row: 4, col: 0, title: "Functionality by LGA" }
-      topProblems: { sizeX: 6, sizeY: 4, row: 4, col: 6, title: "Top Problems"}
+      wpLocations: { sizeX: 12, sizeY: 5, row: 0, col: 0, title: "Waterpoint Locations" }
 
-      constrYear: { sizeX: 6, sizeY: 3, row: 8, col: 0, title: "Construction Year" }
-      breakYear: { sizeX: 6, sizeY: 3, row: 8, col: 6, title: "Breakdown Year" }
+      statusPerLga: { sizeX: 6, sizeY: 4, row: 5, col: 0, title: "Functionality by LGA" }
+      topProblems: { sizeX: 6, sizeY: 4, row: 5, col: 6, title: "Top Problems"}
 
-      statusPerWard: { sizeX: 12, sizeY: 5, row: 11, col: 0, title: "Functionality by Ward" }
+      constrYear: { sizeX: 6, sizeY: 3, row: 9, col: 0, title: "Construction Year" }
+      breakYear: { sizeX: 6, sizeY: 3, row: 9, col: 6, title: "Breakdown Year" }
 
-      statusPie: { sizeX: 3, sizeY: 3, row: 16, col: 0, title: "Functionality" }
-      qualityPie: { sizeX: 3, sizeY: 3, row: 16, col: 3, title: "Water Quality" }
-      quantityPie: { sizeX: 3, sizeY: 3, row: 16, col: 6, title: "Water Quantity" }
-      extractionPie: { sizeX: 3, sizeY: 3, row: 16, col: 9, title: "Extraction Type" }
+      statusPerWard: { sizeX: 12, sizeY: 5, row: 12, col: 0, title: "Functionality by Ward" }
 
-      costImpactBubble: { sizeX: 12, sizeY: 4, row: 19, col: 0, title: "Functionality vs Cost" }
+      statusPie: { sizeX: 3, sizeY: 3, row: 17, col: 0, title: "Functionality" }
+      qualityPie: { sizeX: 3, sizeY: 3, row: 17, col: 3, title: "Water Quality" }
+      quantityPie: { sizeX: 3, sizeY: 3, row: 17, col: 6, title: "Water Quantity" }
+      extractionPie: { sizeX: 3, sizeY: 3, row: 17, col: 9, title: "Extraction Type" }
 
-      paymentPie: { sizeX: 3, sizeY: 3, row: 23, col: 0, title: "Payment Method" }
-      managementPie: { sizeX: 3, sizeY: 3, row: 23, col: 3, title: "Management" }
-      funderPie: { sizeX: 3, sizeY: 3, row: 23, col: 6, title: "Funder" }
-      installerPie: { sizeX: 3, sizeY: 3, row: 23, col: 9, title: "Installer" }
+      costImpactBubble: { sizeX: 12, sizeY: 4, row: 20, col: 0, title: "Functionality vs Cost" }
 
-      statusPerManagement: { sizeX: 6, sizeY: 4, row: 26, col: 0, title: "Functionality by Management" }
-      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 26, col: 6, title: "Functionality by Extraction" }
+      paymentPie: { sizeX: 3, sizeY: 3, row: 24, col: 0, title: "Payment Method" }
+      managementPie: { sizeX: 3, sizeY: 3, row: 24, col: 3, title: "Management" }
+      funderPie: { sizeX: 3, sizeY: 3, row: 24, col: 6, title: "Funder" }
+      installerPie: { sizeX: 3, sizeY: 3, row: 24, col: 9, title: "Installer" }
+
+      statusPerManagement: { sizeX: 6, sizeY: 4, row: 27, col: 0, title: "Functionality by Management" }
+      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 27, col: 6, title: "Functionality by Extraction" }
 
     $scope.fields = ["status_group", "lga", "ward", "location",
                  "source_type", "amount_tsh", "population"
@@ -49,6 +51,11 @@ angular.module('taarifaWaterpointsApp')
     dimensions = []
     xfilter = null
     popData = null
+    mapData = null
+
+    # what value to use for year 0
+    YEAR_ZERO=1950
+
     $scope.tabs =
       regcharts:
         active: true
@@ -89,9 +96,6 @@ angular.module('taarifaWaterpointsApp')
 
         setupCharts $scope.region
       )
-
-    # what value to use for year 0
-    YEAR_ZERO=1950
 
     getData = (region, callback) ->
       filter =  region: region
@@ -135,6 +139,9 @@ angular.module('taarifaWaterpointsApp')
       # get all charts
       charts = dc.chartRegistry.list()
 
+      # remove filtered listerers (e.g., for map and datatable)
+      charts.forEach (x) -> x.on "filtered", null
+
       # clear the filters on all charts
       dc.filterAll()
 
@@ -176,6 +183,7 @@ angular.module('taarifaWaterpointsApp')
       # simply recreate all charts
       setupCharts $scope.region
 
+    ###
     # FIXME: this should be the correct way of replacing
     # data. However, data in the groups/dims is properly
     # updated but dc.js is not updating the chart properly
@@ -195,6 +203,7 @@ angular.module('taarifaWaterpointsApp')
         charts.forEach (c) ->
           c.expireCache()
         dc.renderAll()
+    ###
 
     # redraw the charts taking the new dimensions from the
     # containing element
@@ -217,6 +226,7 @@ angular.module('taarifaWaterpointsApp')
       # needed to fix table alignment if drawn when not visible
       table = $("#dc-data-table").dataTable()
       table.fnAdjustColumnSizing()
+
 
     setupCharts = (region) ->
       getData region, (data) ->
@@ -243,8 +253,6 @@ angular.module('taarifaWaterpointsApp')
         # create Crossfilter Dimensions and Groups
         xfilter = crossfilter data
         all = xfilter.groupAll()
-
-        locations = createDim (d) -> d.location.coordinates
 
         lgas = createDim (d) -> d.lga
         statusPerLga = reduceStatus lgas.group()
@@ -369,7 +377,9 @@ angular.module('taarifaWaterpointsApp')
         pieChart managementChart, managements, managementsGroup, all
 
         dc.dataCount(".dc-data-count").dimension(xfilter).group(all)
-        makeDataTable("#dc-data-table", wards)
+
+        initDataTable("#dc-data-table", wards)
+        initMap("#wpLocations", wards)
 
         dc.renderAll()
 
@@ -520,7 +530,7 @@ angular.module('taarifaWaterpointsApp')
       datatable.fnAddData(alldata)
       datatable.fnDraw()
 
-    makeDataTable = (selector, dim) ->
+    initDataTable = (selector, dim) ->
       exists = $.fn.DataTable.fnIsDataTable($(selector))
 
       if exists
@@ -554,6 +564,69 @@ angular.module('taarifaWaterpointsApp')
         chart.on "filtered", () ->
           dc.events.trigger () ->
             reloadTable(datatable,dim)
+
+    initMap = (container, dim) ->
+      # Have we already initialized the map?
+      if !mapData
+        id = "regionalDashMap"
+        e = $('<div id="' + id + '"></div>')
+        $(container).append(e)
+
+        osmLayer = L.tileLayer(
+          'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          attribution: '(c) OpenStreetMap')
+
+        satLayer = L.tileLayer(
+          'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+          attribution: '(c) Esri')
+
+        markerLayer = L.featureGroup()
+
+        map = L.map id,
+          center: new L.LatLng(-6.3153, 35.15625)
+          zoom: 5
+          fullscreenControl: true
+          layers: [osmLayer, markerLayer]
+
+        baseMaps =
+          "Open Street Map": osmLayer
+          "Satellite": satLayer
+
+        overlayMaps =
+          #"Regions": regLayer
+          #"Wards": wardLayer
+          "Waterpoints": markerLayer
+
+        # add a layer selector
+        layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
+
+        mapData =
+          map: map
+          markerLayer: markerLayer
+
+      updateMap = () ->
+        alldata = dim.top(Infinity)
+        mapData.markerLayer.clearLayers()
+        alldata.forEach (x) ->
+          [lng,lat] = x.location.coordinates
+          m = L.circleMarker L.latLng(lat,lng),
+            stroke: false
+            opacity: 0.8
+            fillColor: statusColor(x.status_group)
+
+          html = _.keys(x).sort().map((k) -> '<span class="popup-key">' + k + '</span>: ' + x[k]).join('<br />')
+          html = '<div class="popup">' + html + '</div>'
+
+          m.bindPopup(html)
+          mapData.markerLayer.addLayer(m)
+        mapData.map.fitBounds(mapData.markerLayer.getBounds())
+
+      dc.chartRegistry.list().forEach (chart) ->
+        chart.on "filtered", () ->
+          dc.events.trigger () ->
+            updateMap()
+
+      updateMap()
 
     reduceStatus = (group) ->
       res = group.reduce(\
