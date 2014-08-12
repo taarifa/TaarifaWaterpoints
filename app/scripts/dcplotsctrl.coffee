@@ -1,6 +1,6 @@
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DCPlotsCtrl', ($scope, $http, $q, modalSpinner, populationData) ->
+  .controller 'DCPlotsCtrl', ($scope, $http, $q, $filter, modalSpinner, populationData) ->
     $scope.gridsterOpts =
       margins: [10, 10]
       columns: 12
@@ -565,6 +565,24 @@ angular.module('taarifaWaterpointsApp')
           dc.events.trigger () ->
             reloadTable(datatable,dim)
 
+    makePopup = (wp) ->
+      # FIXME: can't this be done by angular with some smart bindings
+
+      cleanKey = (k) ->
+        $filter('titlecase')(k.replace("_"," "))
+
+      cleanValue = (k,v) ->
+        if v instanceof Date
+          v.getFullYear()
+        else if k == "location"
+          v.coordinates.toString()
+        else
+          v
+
+      html = _.keys(wp).sort().map((k) ->
+        '<span class="popup-key">' + cleanKey(k) + '</span>: ' + cleanValue(k,wp[k])).join('<br />')
+      html = '<div class="popup">' + html + '</div>'
+
     initMap = (container, dim) ->
       # Have we already initialized the map?
       if !mapData
@@ -614,10 +632,9 @@ angular.module('taarifaWaterpointsApp')
             opacity: 0.8
             fillColor: statusColor(x.status_group)
 
-          html = _.keys(x).sort().map((k) -> '<span class="popup-key">' + k + '</span>: ' + x[k]).join('<br />')
-          html = '<div class="popup">' + html + '</div>'
-
+          html = makePopup(x)
           m.bindPopup(html)
+
           mapData.markerLayer.addLayer(m)
         mapData.map.fitBounds(mapData.markerLayer.getBounds())
 
