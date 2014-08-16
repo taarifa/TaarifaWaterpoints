@@ -38,7 +38,7 @@ function closeOpenTips() {
  */
 function plotStatusSummary(selector, data, groupField, dblClickHandler, translate, catalog) {
   //rename as gettext so string extraction will work
-  gettext = translate
+  gettext = translate;
 
   data.forEach(function(group) {
     var y0 = 0;
