@@ -235,9 +235,11 @@ angular.module('taarifaWaterpointsApp')
       if val and plotsDirty
         drawPlots()
 
+    # access object to the population data
+    # FIXME: better handled by a $resource perhaps?
+    popData = null
+
     initView = () ->
-      # Ensure the population data is loaded
-      popData = null
       populationData.then((data) ->
         popData = data
         $scope.getStatus())
