@@ -10,16 +10,16 @@
 
 <div class="panel panel-default" ng-repeat="request in requests">
   <div class="panel-heading">
-    <h3 class="panel-title" translate>
+    <h3 class="panel-title">
       <a class="glyphicon glyphicon-cog" href="#/requests/{{request._id}}"
         title="Triage"></a>
-      Waterpoint {{request.attribute.waterpoint_id}}
-      <span class="pull-right small">submitted on {{request._created}}</span>
+      {{"Waterpoint" | translate}} {{request.attribute.waterpoint_id}}
+      <span class="pull-right small">{{"submitted on" | translate}} {{request._created}}</span>
     </h3>
   </div>
   <div class="panel-body panel-body-nopad">
     <div class="col-sm-6">
-      <h4>User provided fields</h4>
+      <h4 translate>User provided fields</h4>
       <dl class="dl-horizontal">
         <dt ng-repeat-start="(k, v) in request.attribute" ng-if="k !=
         'waterpoint_id'">{{k}}</dt>
@@ -27,7 +27,7 @@
       </dl>
     </div>
     <div class="col-sm-6">
-      <h4>Metadata</h4>
+      <h4 translate>Metadata</h4>
       <dl class="dl-horizontal">
         <dt ng-repeat-start="(k, v) in request" ng-if="k[0] != '_' && k !=
         'attribute'">{{k}}</dt>
