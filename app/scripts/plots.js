@@ -36,7 +36,9 @@ function closeOpenTips() {
  * Stacked bar chart summarizing the status (functional/non functional)
  * of all the waterpoints by the given group field
  */
-function plotStatusSummary(selector, data, groupField, dblClickHandler) {
+function plotStatusSummary(selector, data, groupField, dblClickHandler, translate, catalog) {
+  //rename as gettext so string extraction will work
+  gettext = translate;
 
   data.forEach(function(group) {
     var y0 = 0;
@@ -103,11 +105,12 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler) {
       .attr("class", "y axis")
       .call(yAxis)
       .append("text")
+      .attr("class", "axislabel")
       .attr("transform", "rotate(-90)")
       .attr("y", -70)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Number of Waterpoints");
+      .text("");
   } else {
     //Note width/height may have changed
     svg.attr("width", width + margin.left + margin.right)
@@ -232,6 +235,7 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler) {
       return "rotate(-65)"
     });
 
+  svg.select("g.y.axis text.axislabel").text(gettext("Number of Waterpoints"));
   svg.select("g.y.axis").transition().call(yAxis);
 
   //add a legend
