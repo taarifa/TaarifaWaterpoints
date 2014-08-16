@@ -369,7 +369,7 @@ module.exports = function (grunt) {
     nggettext_extract: {
         pot: {
             files: {
-                'app/po/template.pot': ['app/*.html','app/views/*.html']
+                'app/po/template.pot': ['app/*.html','app/views/*.html','app/scripts/plots.js','app/scripts/*.coffee']
             }
         },
     },
