@@ -1,15 +1,15 @@
 <div class="panel panel-primary">
   <div class="panel-heading">
-    <h3 class="panel-title" translate>Waterpoint {{request.attribute.waterpoint_id}}
-      <small class="pull-right">submitted on {{request._created}}</small></h3>
+    <h3 class="panel-title">{{"Waterpoint" | translate}} {{request.attribute.waterpoint_id}}
+      <small class="pull-right">{{"submitted on" | translate}} {{request._created}}</small></h3>
   </div>
   <table class="table">
     <thead>
       <tr>
-        <th>Attribute</th>
-        <th>Current value</th>
-        <th>Reported value</th>
-        <th>Apply</th>
+        <th translate>Attribute</th>
+        <th translate>Current value</th>
+        <th translate>Reported value</th>
+        <th translate>Apply</th>
       </tr>
     </thead>
     <tbody>
@@ -34,31 +34,31 @@
   <div class="panel-body">
     <form class="form-horizontal" role="form">
       <div class="form-group">
-        <label for="statusNotes" class="col-sm-3 control-label">Status notes</label>
+        <label for="statusNotes" class="col-sm-3 control-label" translate>Status notes</label>
         <div class="col-sm-9">
           <input ng-model="request.status_notes" type="text" class="form-control" id="statusNotes">
         </div>
       </div>
       <div class="form-group">
-        <label for="agencyResponsible" class="col-sm-3 control-label">Agency responsible</label>
+        <label for="agencyResponsible" class="col-sm-3 control-label" translate>Agency responsible</label>
         <div class="col-sm-9">
           <input ng-model="request.agency_responsible" type="text" class="form-control" id="agencyResponsible">
         </div>
       </div>
       <div class="form-group">
-        <label for="serviceNotice" class="col-sm-3 control-label">Service notice</label>
+        <label for="serviceNotice" class="col-sm-3 control-label" translate>Service notice</label>
         <div class="col-sm-9">
           <input ng-model="request.service_notice" type="text" class="form-control" id="serviceNotice">
         </div>
       </div>
       <div class="form-group">
-        <label for="expectedDatetime" class="col-sm-3 control-label">Expected date</label>
+        <label for="expectedDatetime" class="col-sm-3 control-label" translate>Expected date</label>
         <div class="col-sm-9">
           <input ng-model="expected_datetime" type="date" class="form-control" id="expectedDatetime">
         </div>
       </div>
       <div class="form-group">
-        <label for="status" class="col-sm-3 control-label">Status</label>
+        <label for="status" class="col-sm-3 control-label" translate>Status</label>
         <div class="col-sm-9">
           <select class="form-control" ng-model="request.status" id="status"
             ng-options="k for k in ['open', 'closed']"></select>
@@ -66,7 +66,7 @@
       </div>
       <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
-          <button class="btn btn-success" ng-click="saveRequest()">Update request</button>
+          <button class="btn btn-success" ng-click="saveRequest()" translate>Update request</button>
         </div>
       </div>
     </form>
