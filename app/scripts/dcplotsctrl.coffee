@@ -1,6 +1,6 @@
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DCPlotsCtrl', ($scope, $http, $q, $filter, modalSpinner, populationData) ->
+  .controller 'RegionalDashboardCtrl', ($scope, $http, $q, $filter, modalSpinner, populationData) ->
     $scope.gridsterOpts =
       margins: [10, 10]
       columns: 12

@@ -2,7 +2,7 @@
 
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DashboardCtrl', ($scope, $http, $timeout, modalSpinner,
+  .controller 'NationalDashboardCtrl', ($scope, $http, $timeout, modalSpinner,
                                 gettextCatalog, gettext, populationData, waterpointStats) ->
 
     # should http calls be cached
