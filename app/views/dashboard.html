@@ -1,6 +1,6 @@
 <tabset>
   <tab heading="National">
-    <div class="row" ng-controller="DashboardCtrl">
+    <div class="row" ng-controller="NationalDashboardCtrl">
       <div gridster="gridsterOpts">
         <ul>
           <li gridster-item="item" ng-repeat="item in gridLayout.tiles">
@@ -75,7 +75,7 @@
   </tab>
 
   <!-- FIXME: controller does not belong here. Adopt: https://stackoverflow.com/a/21019370 -->
-  <tab heading="Regional" select="initView()" ng-controller="DCPlotsCtrl">
+  <tab heading="Regional" select="initView()" ng-controller="RegionalDashboardCtrl">
     <div class="row">
           <div id="" class="">
             <form class="form-inline" role="form" style="padding: 10px">
