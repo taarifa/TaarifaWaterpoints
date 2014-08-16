@@ -9,9 +9,28 @@ angular.module('taarifaWaterpointsApp')
     Waterpoint.query (waterpoints) ->
       $scope.waterpoints = waterpoints._items
 
-  .controller 'LocaleCtrl', ($scope, $cookies, gettextCatalog) ->
-    $scope.update = () ->
-      $cookies.locale = gettextCatalog.currentLanguage
+  .controller 'LocaleCtrl', ($scope, $cookies, $rootScope, gettextCatalog) ->
+    # get the current language from the cookie if available
+    $cookies.locale = 'en' unless !!$cookies.locale
+    gettextCatalog.currentLanguage = $cookies.locale
+
+    # Save the catalog on the root scope so others can access it
+    # e.g., in event handler
+    # FIXME: feels clunky, surprised you cant get at it from the event obj
+    $rootScope.langCatalog = gettextCatalog
+
+    $scope.languages =
+      current: gettextCatalog.currentLanguage
+      available:
+        en: "English"
+        sw_TZ: "Swahili"
+
+    $scope.$watch "languages.current", (lang) ->
+      if not lang then return
+      # Update the cookie
+      $cookies.locale = lang
+      # Using the setter function ensures the gettextLanguageChanged event gets fired
+      gettextCatalog.setCurrentLanguage(lang)
 
   .controller 'MapCtrl', ($scope, Map) ->
     $scope.map = Map
