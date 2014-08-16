@@ -2,7 +2,8 @@
 
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DashboardCtrl', ($scope, $http, $timeout, modalSpinner, populationData, waterpointStats) ->
+  .controller 'DashboardCtrl', ($scope, $http, $timeout, modalSpinner,
+                                gettextCatalog, gettext, populationData, waterpointStats) ->
 
     # should http calls be cached
     # FIXME: should be application level setting
@@ -194,6 +195,8 @@ angular.module('taarifaWaterpointsApp')
     drawPlots = () ->
       modalSpinner.open()
 
+      translate = (s) -> gettextCatalog.getString(s)
+
       region = $scope.params?.region
       lga = $scope.params?.lga
       ward = $scope.params?.ward
@@ -202,7 +205,7 @@ angular.module('taarifaWaterpointsApp')
       promise = waterpointStats.getStats(region, lga, ward, groupfield, cacheHttp)
       promise.then( (data) ->
 
-        plotStatusSummary("#statusSummary", data, groupfield, barDblClick)
+        plotStatusSummary("#statusSummary", data, groupfield, barDblClick, translate)
 
         if _.contains(['region','lga','ward'], groupfield)
           leaderChart("#percFunLeaders", data, groupfield, (x) -> x.percFun)
@@ -212,6 +215,9 @@ angular.module('taarifaWaterpointsApp')
 
         modalSpinner.close())
 
+    $scope.$on "gettextLanguageChanged", (e) ->
+      # redraw the plots so axis labels, etc are translated
+      drawPlots()
 
     ##########################################################################
     # Initialization code
