@@ -36,7 +36,7 @@ function closeOpenTips() {
  * Stacked bar chart summarizing the status (functional/non functional)
  * of all the waterpoints by the given group field
  */
-function plotStatusSummary(selector, data, groupField, dblClickHandler, translate, catalog) {
+function plotStatusSummary(selector, data, groupField, dblClickHandler, translate) {
   //rename as gettext so string extraction will work
   gettext = translate;
 
