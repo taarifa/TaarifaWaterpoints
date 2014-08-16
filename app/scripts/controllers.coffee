@@ -35,6 +35,13 @@ angular.module('taarifaWaterpointsApp')
   .controller 'MapCtrl', ($scope, Map) ->
     $scope.map = Map
 
+  .controller 'DashboardCtrl', ($scope, Map) ->
+    $scope.dashTabs =
+      national:
+        active: true
+      regional:
+        active: false
+
   .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, FacilityForm, flash) ->
     $scope.formTemplate = FacilityForm 'wpf001'
     # FIXME: Should not hardcode the facility code here
