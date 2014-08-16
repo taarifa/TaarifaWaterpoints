@@ -235,16 +235,16 @@ angular.module('taarifaWaterpointsApp')
       if val and plotsDirty
         drawPlots()
 
-    ##########################################################################
-    # Initialization code
+    initView = () ->
+      # Ensure the population data is loaded
+      popData = null
+      populationData.then((data) ->
+        popData = data
+        $scope.getStatus())
 
-    # Ensure the population data is loaded
-    popData = null
-    populationData.then((data) ->
-      popData = data
-      $scope.getStatus())
+      getRegion()
+      getLGA()
+      getWard()
+      getProblems()
 
-    getRegion()
-    getLGA()
-    getWard()
-    getProblems()
+    initView()
