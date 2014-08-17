@@ -91,6 +91,8 @@ angular.module('taarifaWaterpointsApp')
         query.where.status = $scope.where.status
       if $scope.where.status_group
         query.where['attribute.status_group'] = $scope.where.status_group
+      if $scope.where.waterpoint_id
+        query.where['attribute.waterpoint_id'] = $scope.where.waterpoint_id
       Request.query query, (requests) ->
         $scope.requests = requests._items
     $scope.filterStatus()
