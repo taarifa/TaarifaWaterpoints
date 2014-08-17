@@ -14,38 +14,37 @@ msgstr ""
 
 #: app/views/triage.html
 msgid "Agency responsible"
-msgstr ""
+msgstr "Wakala husika"
 
 #: app/views/triage.html
 msgid "Apply"
-msgstr ""
+msgstr "Tumia"
 
 #: app/views/triage.html
 msgid "Attribute"
-msgstr ""
+msgstr "Sifa"
 
 #: app/views/triage.html
 msgid "Current value"
-msgstr ""
+msgstr "Thamani/Hali ya sasa"
 
 #: app/views/triage.html
 msgid "Expected date"
-msgstr ""
+msgstr "Tarehe tarajiwa"
 
 #: app/views/dashboard.html
 msgid "Group By"
-msgstr "Kundi Kwa:-"
+msgstr "Kundi Kwa"
 
 #: app/views/dashboard.html
 msgid "LGA"
-msgstr "Mamlaka za Serikali za mitaa"
+msgstr "Halmashauri"
 
 #: app/views/requests.html
 msgid "Metadata"
 msgstr ""
 
 #: app/scripts/plots.js
-#, fuzzy
 msgid "Number of Waterpoints"
 msgstr "Idadi ya Vituo vya Maji"
 
@@ -55,45 +54,43 @@ msgstr "Mkoa"
 
 #: app/views/triage.html
 msgid "Reported value"
-msgstr ""
+msgstr "Thamani/Hali iliyoripotiwa"
 
 #: app/views/triage.html
 msgid "Service notice"
-msgstr ""
+msgstr "Taarifa ya matengenezo"
 
 #: app/views/triage.html
 msgid "Status"
-msgstr ""
+msgstr "Hali"
 
 #: app/views/triage.html
 msgid "Status notes"
-msgstr ""
+msgstr "Maelezo kuhusu hali"
 
 #: app/index.html
-#, fuzzy
 msgid "Tanzania Waterpoints"
-msgstr "Taarifa Kituo cha Maji Usimamizi"
+msgstr "Vituo vya Maji Tanzania"
 
 #: app/views/dashboard.html
 msgid "Top Problems"
-msgstr ""
+msgstr "Matatizo makuu"
 
 #: app/views/triage.html
 msgid "Update request"
-msgstr ""
+msgstr "Sasisha maombi"
 
 #: app/views/requests.html
 msgid "User provided fields"
-msgstr ""
+msgstr "Mambo yaliyoainishwa na mtumiaji"
 
 #: app/views/dashboard.html
 msgid "Ward"
 msgstr "Kata"
 
 #: app/views/requests.html app/views/triage.html
-#, fuzzy
 msgid "Waterpoint"
-msgstr "Ramani ya Kituo cha Maji"
+msgstr "Kituo cha Maji"
 
 #: app/views/dashboard3.html
 msgid "Waterpoint Status"
@@ -101,7 +98,7 @@ msgstr "Hali ya Kituo cha Maji"
 
 #: app/views/requests.html app/views/triage.html
 msgid "submitted on"
-msgstr ""
+msgstr "Tarehe ya uwasilishwaji"
 
 #~ msgid "% Functional"
 #~ msgstr "% Kazi"
@@ -168,3 +165,4 @@ msgstr ""
 
 #~ msgid "Top Reasons for Faulty Waterpoints"
 #~ msgstr "Sababu Kuu za Mpasuko wa Vituo vya Maji"
+
