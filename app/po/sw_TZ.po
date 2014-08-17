@@ -24,7 +24,7 @@ msgstr "Tumia"
 msgid "Attribute"
 msgstr "Sifa"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Breakdown Year"
 msgstr "Mwaka wa kuharibika"
 
@@ -32,7 +32,7 @@ msgstr "Mwaka wa kuharibika"
 msgid "Charts"
 msgstr "Chati"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Construction Year"
 msgstr "Mwaka wa ujenzi"
 
@@ -44,6 +44,10 @@ msgstr "Kiasi cha wanaohudumiwa"
 msgid "Current value"
 msgstr "Thamani/Hali ya sasa"
 
+#: app/index.html
+msgid "Dashboard"
+msgstr "Kwa Ujumla"
+
 #: app/views/dashboard.html
 msgid "Data Table"
 msgstr "Jedwali la Data"
@@ -52,39 +56,48 @@ msgstr "Jedwali la Data"
 msgid "Expected date"
 msgstr "Tarehe tarajiwa"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Extraction Type"
 msgstr "Njia ya uzalishaji"
+
+#: app/views/main.html
+msgid "Filter map view"
+msgstr ""
+
+#: app/views/requests.html
+#, fuzzy
+msgid "Filter requests"
+msgstr "Sasisha maombi"
 
 #: app/views/dashboard.html
 msgid "Functional"
 msgstr "Vinafanya kazi"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Functionality"
 msgstr "Ufanyaji kazi"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Functionality by Extraction"
 msgstr "Ufanyaji kazi na Njia ya uzalishaji"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Functionality by LGA"
 msgstr "Ufanyaji Kazi kwa Halmashauri"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Functionality by Management"
 msgstr "Ufanyaji kazi na Usimamizi"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Functionality by Ward"
 msgstr "Ufanyaji kazi kwa Kata"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Functionality vs Cost"
 msgstr "Ufanyaji kazi dhidi ya Gharama"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Funder"
 msgstr "Mfadhili"
 
@@ -92,7 +105,11 @@ msgstr "Mfadhili"
 msgid "Group By"
 msgstr "Kundi Kwa"
 
-#: .tmp/concat/scripts/scripts.js
+#: app/index.html
+msgid "Home"
+msgstr ""
+
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Installer"
 msgstr "Mkandarasi"
 
@@ -100,11 +117,11 @@ msgstr "Mkandarasi"
 msgid "LGA"
 msgstr "Halmashauri"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/natdashboardctrl.js
 msgid "Leaderboard: Percentage Functional"
 msgstr "Wanaoongoza kwa asilimia ya Vinavyofanya kazi"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/natdashboardctrl.js
 msgid "Leaderboard: Percentage Served"
 msgstr "Wanaoongoza kwa asilimia ya Wanaohudumiwa"
 
@@ -116,7 +133,12 @@ msgstr "Inapakia Data..."
 msgid "Loading waterpoint data."
 msgstr "Inapakia data za vituo vya maji."
 
-#: .tmp/concat/scripts/scripts.js
+#: app/views/edit.html
+#, fuzzy
+msgid "Location"
+msgstr "Kitaifa"
+
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Management"
 msgstr "Usimamizi"
 
@@ -128,16 +150,15 @@ msgstr ""
 msgid "National"
 msgstr "Kitaifa"
 
-#: app/scripts/plots.js .tmp/concat/scripts/scripts.js
-#: dist/scripts/c8ef7ace.scripts.js
+#: app/scripts/plots.js
 msgid "Number of Waterpoints"
 msgstr "Idadi ya Vituo vya Maji"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Payment Method"
 msgstr "Mfumo wa Malipo"
 
-#: app/views/dashboard.html
+#: app/views/dashboard.html app/views/main.html
 msgid "Region"
 msgstr "Mkoa"
 
@@ -148,6 +169,10 @@ msgstr "Kwa Mkoa"
 #: app/views/triage.html
 msgid "Reported value"
 msgstr "Thamani/Hali iliyoripotiwa"
+
+#: app/views/requests.html
+msgid "Request status"
+msgstr ""
 
 #: app/views/dashboard.html
 msgid "Reset all filters"
@@ -177,9 +202,13 @@ msgstr "Vituo vya Maji Tanzania"
 msgid "This may take a while depending on your connection"
 msgstr "Hii inaweza kuchukua muda kidogo kutegemeana na kasi ya mtandao"
 
-#: app/views/dashboard.html .tmp/concat/scripts/scripts.js
+#: app/views/dashboard.html .tmp/scripts/dcplotsctrl.js
 msgid "Top Problems"
 msgstr "Matatizo makuu"
+
+#: app/index.html
+msgid "Triage"
+msgstr ""
 
 #: app/views/triage.html
 msgid "Update request"
@@ -189,15 +218,24 @@ msgstr "Sasisha maombi"
 msgid "User provided fields"
 msgstr "Mambo yaliyoainishwa na mtumiaji"
 
+#: app/views/requests.html
+msgid "WP id"
+msgstr ""
+
+#: app/views/requests.html
+#, fuzzy
+msgid "WP status"
+msgstr "Hali"
+
 #: app/views/dashboard.html
 msgid "Ward"
 msgstr "Kata"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Water Quality"
 msgstr "Ubora wa Maji"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Water Quantity"
 msgstr "Kiasi cha Maji"
 
@@ -205,17 +243,49 @@ msgstr "Kiasi cha Maji"
 msgid "Waterpoint"
 msgstr "Kituo cha Maji"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/dcplotsctrl.js
 msgid "Waterpoint Locations"
 msgstr "Maeneo vilipo vituo vya Maji"
 
-#: .tmp/concat/scripts/scripts.js
+#: .tmp/scripts/natdashboardctrl.js
 msgid "Waterpoint status (ordered by % Functional)"
 msgstr "Hali ya vituo vya maji (Kufuatana na % ya vinavyofanya kazi)"
+
+#: app/views/main.html
+msgid "all"
+msgstr ""
+
+#: .tmp/scripts/natdashboardctrl.js
+#, fuzzy
+msgid "functional"
+msgstr "Vinafanya kazi"
+
+#: app/views/main.html
+msgid "maximum no. of results"
+msgstr ""
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "needs repair"
+msgstr ""
+
+#: .tmp/scripts/natdashboardctrl.js
+#, fuzzy
+msgid "not functional"
+msgstr "Hakifanyi Kazi"
 
 #: app/views/dashboard.html
 msgid "out of"
 msgstr "kati ya"
+
+#: .tmp/scripts/natdashboardctrl.js
+#, fuzzy
+msgid "population cover"
+msgstr "Idadi ya Watu Iliyofikiwa"
+
+#: app/views/main.html
+#, fuzzy
+msgid "status"
+msgstr "Hali"
 
 #: app/views/requests.html app/views/triage.html
 msgid "submitted on"
@@ -237,9 +307,6 @@ msgstr "Vituo vya Maji"
 #~ msgid "Barrel leaks"
 #~ msgstr "Tenki Linavuja"
 
-#~ msgid "Dashboard"
-#~ msgstr "Kwa Ujumla"
-
 #~ msgid "District"
 #~ msgstr "Wilaya"
 
@@ -251,12 +318,6 @@ msgstr "Vituo vya Maji"
 
 #~ msgid "New Infrastructure Projects"
 #~ msgstr "Miundombinu Mpya za Miradi"
-
-#~ msgid "Not functional"
-#~ msgstr "Hakifanyi Kazi"
-
-#~ msgid "Population covered"
-#~ msgstr "Idadi ya Watu Iliyofikiwa"
 
 #~ msgid "Population served"
 #~ msgstr "Idadi ya watu Iliyohudumiwa"

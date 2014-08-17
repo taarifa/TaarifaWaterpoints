@@ -32,10 +32,40 @@ angular.module('taarifaWaterpointsApp')
       # Using the setter function ensures the gettextLanguageChanged event gets fired
       gettextCatalog.setCurrentLanguage(lang)
 
-  .controller 'MapCtrl', ($scope, Map) ->
-    $scope.map = Map
+  .controller 'MapCtrl', ($scope, $http, $location, Waterpoint, Map) ->
+    map = Map "wpMap"
+    $scope.where = $location.search()
+    $scope.max_results = parseInt($scope.where.max_results) || 100
+    $http.get('/api/waterpoints/values/region', cache: true).success (regions) ->
+      $scope.regions = regions
+    $scope.updateMap = () ->
+      $location.search($scope.where)
+      $location.search('max_results', $scope.max_results)
+      delete $scope.where.max_results
+      map.clearMarkers()
+      Waterpoint.query
+        max_results: $scope.max_results
+        where: $scope.where
+        projection:
+          _id: 1
+          district: 1
+          location: 1
+          wpt_code: 1
+          status_group: 1
+        strip: 1
+      , (waterpoints) ->
+        for p in waterpoints._items
+          popup = "#{p.wpt_code}<br />" +
+            "Status: #{p.status_group}<br />" +
+            "<a href=\"#/waterpoints/edit/#{p._id}\">edit</a><br />" +
+            "<a href=\"#/requests/?waterpoint_id=#{p.wpt_code}\">show requests</a><br />" +
+            "<a href=\"#/requests/new?waterpoint_id=#{p.wpt_code}\">submit request</a>"
+          map.addWaterpoint p, popup
+      # FIXME: this currently fails, maybe bad data?
+      #map.zoomToMarkers()
+    $scope.updateMap()
 
-  .controller 'DashboardCtrl', ($scope, Map) ->
+  .controller 'DashboardCtrl', ($scope) ->
     $scope.dashTabs =
       national:
         active: true
@@ -57,15 +87,32 @@ angular.module('taarifaWaterpointsApp')
           for field, message of waterpoint._issues
             flash.error = "#{field}: #{message}"
 
-  .controller 'WaterpointEditCtrl', ($scope, $routeParams, Waterpoint, FacilityForm) ->
+  .controller 'WaterpointEditCtrl', ($scope, $routeParams,
+                                    Map, Waterpoint, FacilityForm) ->
     $scope.wp = Waterpoint
+
+    map = Map("editMap")
+
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
       $scope.form = waterpoint
+      map.clearMarkers()
+      map.addWaterpoint(waterpoint)
+      map.zoomToMarkers()
+
     $scope.formTemplate = FacilityForm 'wpf001'
     $scope.save = () ->
       Waterpoint.update($routeParams.id, $scope.form)
 
-  .controller 'RequestCreateCtrl', ($scope, $location, Request, RequestForm, flash) ->
+  .controller 'RequestCreateCtrl', ($scope, $location, $routeParams, Request, 
+                                    $timeout, Waterpoint, Map, RequestForm, flash) ->
+    map = Map("editMap")
+
+    Waterpoint.get where: {wpt_code: $routeParams.waterpoint_id}, (wp) ->
+      map.clearMarkers()
+      # FIXME: assumes wpt_code is unique!
+      map.addWaterpoint(wp._items[0])
+      map.zoomToMarkers()
+
     $scope.formTemplate = RequestForm 'wps001', $location.search()
     # FIXME: Should not hardcode the service code here
     $scope.form = {}

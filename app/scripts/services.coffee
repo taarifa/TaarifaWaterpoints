@@ -183,42 +183,52 @@ angular.module('taarifaWaterpointsApp')
   .factory 'Service', (ApiResource) ->
     ApiResource 'services'
 
-  .factory 'Map', (Waterpoint) ->
-    # Initially center on Dar es Salaam
-    @center =
-      lat: -6.7701973
-      lng: 39.2664484
-      zoom: 6
-    @markers = {}
-    addMarkers = (waterpoints) =>
-      for p in waterpoints._items
-        @markers['wp' + p._id] =
-          # FIXME temporarily disable clustering since it is not properly
-          # reinitialized when the MapCtrl controller reloads
-          # group: p.district
-          lat: p.location.coordinates[1]
-          lng: p.location.coordinates[0]
-          message: "#{p.wpt_code}<br />" +
-            "Status: #{p.status_group}<br />" +
-            "<a href=\"#/waterpoints/edit/#{p._id}\">edit</a><br />" +
-            "<a href=\"#/requests/?waterpoint_id=#{p.wpt_code}\">show requests</a><br />" +
-            "<a href=\"#/requests/new?waterpoint_id=#{p.wpt_code}\">submit request</a>"
-      # This would keep loading further waterpoints as long as there are any.
-      # Disabled for performance reasons
-      # if waterpoints._links.next
-      #   $http.get(waterpoints._links.next.href)
-      #     .success addMarkers
-    Waterpoint.query
-      max_results: 100
-      projection:
-        _id: 1
-        district: 1
-        location: 1
-        wpt_code: 1
-        status_group: 1
-      strip: 1
-    , addMarkers
-    return this
+  .factory 'Map', () ->
+    (id) =>
+      osmLayer = L.tileLayer(
+        'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        attribution: '(c) OpenStreetMap')
+
+      satLayer = L.tileLayer(
+        'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        attribution: '(c) Esri')
+
+      markerLayer = L.featureGroup()
+
+      map = L.map id,
+        center: new L.LatLng -6.3153, 35.15625
+        zoom: 5
+        fullscreenControl: true
+        layers: [osmLayer, markerLayer]
+
+      baseMaps =
+        "Open Street Map": osmLayer
+        "Satellite": satLayer
+
+      overlayMaps =
+        "Waterpoints": markerLayer
+
+      # add a layer selector
+      layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
+
+      @clearMarkers = () ->
+        markerLayer.clearLayers()
+
+      @addWaterpoint = (wp, popup) ->
+        [lng,lat] = wp.location.coordinates
+        m = L.marker L.latLng(lat,lng),
+          stroke: false
+          opacity: 0.8
+          fillColor: statusColor(wp.status_group)
+        if popup
+          m.bindPopup popup
+
+        markerLayer.addLayer(m)
+
+      @zoomToMarkers = () ->
+        map.fitBounds(markerLayer.getBounds())
+
+      return this
 
   # Get an angular-dynamic-forms compatible form description from a Facility
   # given a facility code
