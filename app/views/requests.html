@@ -7,11 +7,15 @@
     </select>
   </div>
   <div class="form-group">
-    <label for="waterpointStatus">Waterpoint status</label>
+    <label for="waterpointStatus">WP status</label>
     <select class="form-control" id="waterpointStatus" ng-model="where.status_group" ng-change="filterStatus()"
       ng-options="k for k in ['functional', 'not functional', 'needs repair']">
       <option value="">all</option>
     </select>
+  </div>
+  <div class="form-group">
+    <label for="waterpointId">WP id</label>
+    <input type="text" class="form-control" id="waterpointId" ng-model="where.waterpoint_id" ng-change="filterStatus()">
   </div>
 </form>
 
