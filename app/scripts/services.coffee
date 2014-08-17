@@ -201,6 +201,7 @@ angular.module('taarifaWaterpointsApp')
           message: "#{p.wpt_code}<br />" +
             "Status: #{p.status_group}<br />" +
             "<a href=\"#/waterpoints/edit/#{p._id}\">edit</a><br />" +
+            "<a href=\"#/requests/?waterpoint_id=#{p.wpt_code}\">show requests</a><br />" +
             "<a href=\"#/requests/new?waterpoint_id=#{p.wpt_code}\">submit request</a>"
       # This would keep loading further waterpoints as long as there are any.
       # Disabled for performance reasons

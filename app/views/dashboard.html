@@ -1,6 +1,6 @@
 <tabset>
-  <tab heading="National">
-    <div class="row" ng-controller="DashboardCtrl">
+  <tab heading="{{'National'|translate}}" ng-controller="NationalDashboardCtrl" active="dashTabs.national.active">
+    <div class="row">
       <div gridster="gridsterOpts">
         <ul>
           <li gridster-item="item" ng-repeat="item in gridLayout.tiles">
@@ -27,8 +27,8 @@
             </div>
             <div id="nationalDashMap"></div>
             <div id="choroplethSelect" class="btn-group map-control">
-              <label class="btn btn-success" ng-model="choroChoice" btn-radio="'percFun'" uncheckable>Functional</label>
-              <label class="btn btn-success" ng-model="choroChoice" btn-radio="'popReach'" uncheckable>Coverage</label>
+              <label class="btn btn-success" ng-model="choroChoice" btn-radio="'percFun'" uncheckable translate>Functional</label>
+              <label class="btn btn-success" ng-model="choroChoice" btn-radio="'popReach'" uncheckable translate>Coverage</label>
             </div>
           </div>
           </li>
@@ -75,7 +75,7 @@
   </tab>
 
   <!-- FIXME: controller does not belong here. Adopt: https://stackoverflow.com/a/21019370 -->
-  <tab heading="Regional" select="initView()" ng-controller="DCPlotsCtrl">
+  <tab heading="{{'Regional'|translate}}" select="initView()" ng-controller="RegionalDashboardCtrl" active="dashTabs.regional.active">
     <div class="row">
           <div id="" class="">
             <form class="form-inline" role="form" style="padding: 10px">
@@ -87,7 +87,7 @@
               </div>
               <p class="help-block">
               <div class="dc-data-count">
-                Selected <span class="filter-count"></span> out of <span class="total-count"></span> waterpoints | <a href="javascript:dc.filterAll(); dc.renderAll();">Reset all filters</a>
+                {{"Selected"|translate}} <span class="filter-count"></span> {{"out of"|translate}} <span class="total-count"></span> {{"waterpoints"|translate}} | <a href="javascript:dc.filterAll(); dc.renderAll();" translate>Reset all filters</a>
               </div>
               </p>
             </form>
@@ -95,7 +95,7 @@
     </div>
 
     <tabset>
-      <tab heading="Charts" active="tabs.regcharts.active">
+    <tab heading="{{'Charts'|translate}}" active="tabs.regcharts.active">
         <div id="regionalPlots" class="row">
           <div id="dcgridster" gridster="gridsterOpts">
             <ul>
@@ -111,7 +111,7 @@
           </div>
         </div>
       </tab>
-      <tab heading="Data Table" select="initTable()" active="tabs.regtable.active">
+      <tab heading="{{'Data Table'|translate}}" select="initTable()" active="tabs.regtable.active">
         <table id="dc-data-table" class="list table table-striped table-bordered">
           <thead>
             <tr>

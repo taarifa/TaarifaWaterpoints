@@ -35,6 +35,13 @@ angular.module('taarifaWaterpointsApp')
   .controller 'MapCtrl', ($scope, Map) ->
     $scope.map = Map
 
+  .controller 'DashboardCtrl', ($scope, Map) ->
+    $scope.dashTabs =
+      national:
+        active: true
+      regional:
+        active: false
+
   .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, FacilityForm, flash) ->
     $scope.formTemplate = FacilityForm 'wpf001'
     # FIXME: Should not hardcode the facility code here
@@ -75,10 +82,17 @@ angular.module('taarifaWaterpointsApp')
           for field, message of request._issues.attribute
             flash.error = "#{field}: #{message}"
 
-  .controller 'RequestListCtrl', ($scope, Request) ->
-    $scope.status = 'open'
+  .controller 'RequestListCtrl', ($scope, $location, Request) ->
+    $scope.where = $location.search()
     $scope.filterStatus = () ->
-      query = if $scope.status then where: {status: $scope.status} else {}
+      $location.search($scope.where)
+      query = where: {}
+      if $scope.where.status
+        query.where.status = $scope.where.status
+      if $scope.where.status_group
+        query.where['attribute.status_group'] = $scope.where.status_group
+      if $scope.where.waterpoint_id
+        query.where['attribute.waterpoint_id'] = $scope.where.waterpoint_id
       Request.query query, (requests) ->
         $scope.requests = requests._items
     $scope.filterStatus()

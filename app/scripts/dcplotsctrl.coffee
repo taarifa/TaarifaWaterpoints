@@ -1,6 +1,7 @@
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DCPlotsCtrl', ($scope, $http, $q, $filter, modalSpinner, populationData) ->
+  .controller 'RegionalDashboardCtrl', ($scope, $http, $q, $filter,
+                                        gettext, modalSpinner, populationData) ->
     $scope.gridsterOpts =
       margins: [10, 10]
       columns: 12
@@ -16,30 +17,30 @@ angular.module('taarifaWaterpointsApp')
       #markerMap: { sizeX: 6, sizeY: 4, row: 0, col: 0, title: "Waterpoint Locations" }
       #wardChoropleth: { sizeX: 6, sizeY: 4, row: 0, col: 6, title: "Functionality by Ward"}
 
-      wpLocations: { sizeX: 12, sizeY: 5, row: 0, col: 0, title: "Waterpoint Locations" }
+      wpLocations: { sizeX: 12, sizeY: 5, row: 0, col: 0, title: gettext("Waterpoint Locations") }
 
-      statusPerLga: { sizeX: 6, sizeY: 4, row: 5, col: 0, title: "Functionality by LGA" }
-      topProblems: { sizeX: 6, sizeY: 4, row: 5, col: 6, title: "Top Problems"}
+      statusPerLga: { sizeX: 6, sizeY: 4, row: 5, col: 0, title: gettext("Functionality by LGA") }
+      topProblems: { sizeX: 6, sizeY: 4, row: 5, col: 6, title: gettext("Top Problems")}
 
-      constrYear: { sizeX: 6, sizeY: 3, row: 9, col: 0, title: "Construction Year" }
-      breakYear: { sizeX: 6, sizeY: 3, row: 9, col: 6, title: "Breakdown Year" }
+      constrYear: { sizeX: 6, sizeY: 3, row: 9, col: 0, title: gettext("Construction Year") }
+      breakYear: { sizeX: 6, sizeY: 3, row: 9, col: 6, title: gettext("Breakdown Year") }
 
-      statusPerWard: { sizeX: 12, sizeY: 5, row: 12, col: 0, title: "Functionality by Ward" }
+      statusPerWard: { sizeX: 12, sizeY: 5, row: 12, col: 0, title: gettext("Functionality by Ward") }
 
-      statusPie: { sizeX: 3, sizeY: 3, row: 17, col: 0, title: "Functionality" }
-      qualityPie: { sizeX: 3, sizeY: 3, row: 17, col: 3, title: "Water Quality" }
-      quantityPie: { sizeX: 3, sizeY: 3, row: 17, col: 6, title: "Water Quantity" }
-      extractionPie: { sizeX: 3, sizeY: 3, row: 17, col: 9, title: "Extraction Type" }
+      statusPie: { sizeX: 3, sizeY: 3, row: 17, col: 0, title: gettext("Functionality") }
+      qualityPie: { sizeX: 3, sizeY: 3, row: 17, col: 3, title: gettext("Water Quality") }
+      quantityPie: { sizeX: 3, sizeY: 3, row: 17, col: 6, title: gettext("Water Quantity") }
+      extractionPie: { sizeX: 3, sizeY: 3, row: 17, col: 9, title: gettext("Extraction Type") }
 
-      costImpactBubble: { sizeX: 12, sizeY: 4, row: 20, col: 0, title: "Functionality vs Cost" }
+      costImpactBubble: { sizeX: 12, sizeY: 4, row: 20, col: 0, title: gettext("Functionality vs Cost") }
 
-      paymentPie: { sizeX: 3, sizeY: 3, row: 24, col: 0, title: "Payment Method" }
-      managementPie: { sizeX: 3, sizeY: 3, row: 24, col: 3, title: "Management" }
-      funderPie: { sizeX: 3, sizeY: 3, row: 24, col: 6, title: "Funder" }
-      installerPie: { sizeX: 3, sizeY: 3, row: 24, col: 9, title: "Installer" }
+      paymentPie: { sizeX: 3, sizeY: 3, row: 24, col: 0, title: gettext("Payment Method") }
+      managementPie: { sizeX: 3, sizeY: 3, row: 24, col: 3, title: gettext("Management") }
+      funderPie: { sizeX: 3, sizeY: 3, row: 24, col: 6, title: gettext("Funder") }
+      installerPie: { sizeX: 3, sizeY: 3, row: 24, col: 9, title: gettext("Installer") }
 
-      statusPerManagement: { sizeX: 6, sizeY: 4, row: 27, col: 0, title: "Functionality by Management" }
-      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 27, col: 6, title: "Functionality by Extraction" }
+      statusPerManagement: { sizeX: 6, sizeY: 4, row: 27, col: 0, title: gettext("Functionality by Management") }
+      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 27, col: 6, title: gettext("Functionality by Extraction") }
 
     $scope.fields = ["status_group", "lga", "ward", "location",
                  "source_type", "amount_tsh", "population"

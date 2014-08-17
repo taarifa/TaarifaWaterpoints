@@ -1,14 +1,31 @@
-<div class="row">
-  <div class="pull-right">
-    Request status filter:
-    <select class="form-control" ng-model="status" ng-change="filterStatus()"
-      ng-options="k for k in ['open', 'closed']">
-      <option value="">all</option>
-    </select>
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Filter requests</h3></div>
+  <div class="panel-body">
+    <form class="form-inline" role="form">
+      <div class="form-group">
+        <label for="requestStatus">Request status</label>
+        <select class="form-control" id="requestStatus" ng-model="where.status" ng-change="filterStatus()"
+          ng-options="k for k in ['open', 'closed']">
+          <option value="">all</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="waterpointStatus">WP status</label>
+        <select class="form-control" id="waterpointStatus" ng-model="where.status_group" ng-change="filterStatus()"
+          ng-options="k for k in ['functional', 'not functional', 'needs repair']">
+          <option value="">all</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="waterpointId">WP id</label>
+        <input type="text" class="form-control" id="waterpointId" ng-model="where.waterpoint_id" ng-change="filterStatus()">
+      </div>
+    </form>
   </div>
 </div>
 
-<div class="panel panel-default" ng-repeat="request in requests">
+<div class="panel panel-default" ng-repeat="request in requests"
+  ng-class="{'panel-info': request.status=='closed', 'panel-danger': request.status=='open'&&request.attribute.status_group=='not functional', 'panel-warning': request.status=='open'&&request.attribute.status_group=='needs repair', 'panel-success': request.status=='open'&&request.attribute.status_group=='not functional'}">
   <div class="panel-heading">
     <h3 class="panel-title">
       <a class="glyphicon glyphicon-cog" href="#/requests/{{request._id}}"

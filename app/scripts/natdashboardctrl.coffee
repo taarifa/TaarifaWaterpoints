@@ -2,12 +2,20 @@
 
 angular.module('taarifaWaterpointsApp')
 
+<<<<<<< HEAD
   .controller 'DashboardCtrl', ($scope, $http, $timeout, modalSpinner,
+=======
+  .controller 'NationalDashboardCtrl', ($scope, $http, $timeout, modalSpinner,
+>>>>>>> upstream/workshop-aug
                                 gettextCatalog, gettext, populationData, waterpointStats) ->
 
     # should http calls be cached
     # FIXME: should be application level setting
     cacheHttp = true
+
+    # a flag to keep track if the plots should be redrawn
+    # next time the tab is made visible
+    plotsDirty = false
 
     $scope.gridsterOpts = {
         margins: [10, 10],
@@ -46,9 +54,9 @@ angular.module('taarifaWaterpointsApp')
 
 
     $scope.plots = [
-      {id:"statusSummary", title: "Waterpoint status (ordered by % Functional)"},
-      {id:"percFunLeaders", title: "Leaderboard: Percentage Functional"},
-      {id:"popReach", title: "Leaderboard: Percentage Served"}]
+      {id:"statusSummary", title: gettext("Waterpoint status (ordered by % Functional)")},
+      {id:"percFunLeaders", title: gettext("Leaderboard: Percentage Functional")},
+      {id:"popReach", title: gettext("Leaderboard: Percentage Served")}]
 
     $scope.groups = ['region', 'lga', 'ward', 'funder', 'source_type',
                      'construction_year', 'quantity_group',
@@ -213,22 +221,40 @@ angular.module('taarifaWaterpointsApp')
           data = _.sortBy(data, (x) -> -x.popReach)
           leaderChart("#popReach", data, groupfield, (x) -> x.popReach)
 
+        plotsDirty = false
         modalSpinner.close())
 
     $scope.$on "gettextLanguageChanged", (e) ->
       # redraw the plots so axis labels, etc are translated
+<<<<<<< HEAD
       drawPlots()
+=======
+>>>>>>> upstream/workshop-aug
 
-    ##########################################################################
-    # Initialization code
+      # will only work if the tab is visible (else d3 fails)
+      if $scope.dashTabs.national.active
+        drawPlots()
+      else
+        # we have to remember to redraw the plots when the tab
+        # finally does become active
+        plotsDirty = true
 
-    # Ensure the population data is loaded
+    $scope.$watch "dashTabs.national.active", (val) ->
+      if val and plotsDirty
+        drawPlots()
+
+    # access object to the population data
+    # FIXME: better handled by a $resource perhaps?
     popData = null
-    populationData.then((data) ->
-      popData = data
-      $scope.getStatus())
 
-    getRegion()
-    getLGA()
-    getWard()
-    getProblems()
+    initView = () ->
+      populationData.then((data) ->
+        popData = data
+        $scope.getStatus())
+
+      getRegion()
+      getLGA()
+      getWard()
+      getProblems()
+
+    initView()
