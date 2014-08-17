@@ -32,7 +32,8 @@ angular.module('taarifaWaterpointsApp')
       # Using the setter function ensures the gettextLanguageChanged event gets fired
       gettextCatalog.setCurrentLanguage(lang)
 
-  .controller 'MapCtrl', ($scope, $http, $location, Map) ->
+  .controller 'MapCtrl', ($scope, $http, $location, Waterpoint, leafletMap) ->
+    map = leafletMap "wpMap"
     $scope.where = $location.search()
     $scope.max_results = parseInt($scope.where.max_results) || 100
     $http.get('/api/waterpoints/values/region', cache: true).success (regions) ->
@@ -41,7 +42,26 @@ angular.module('taarifaWaterpointsApp')
       $location.search($scope.where)
       $location.search('max_results', $scope.max_results)
       delete $scope.where.max_results
-      $scope.map = Map($scope.where, $scope.max_results)
+      map.clearMarkers()
+      Waterpoint.query
+        max_results: $scope.max_results
+        where: $scope.where
+        projection:
+          _id: 1
+          district: 1
+          location: 1
+          wpt_code: 1
+          status_group: 1
+        strip: 1
+      , (waterpoints) ->
+        for p in waterpoints._items
+          popup = "#{p.wpt_code}<br />" +
+            "Status: #{p.status_group}<br />" +
+            "<a href=\"#/waterpoints/edit/#{p._id}\">edit</a><br />" +
+            "<a href=\"#/requests/?waterpoint_id=#{p.wpt_code}\">show requests</a><br />" +
+            "<a href=\"#/requests/new?waterpoint_id=#{p.wpt_code}\">submit request</a>"
+          map.addWaterpoint p, popup
+        map.zoomToMarkers()
     $scope.updateMap()
 
   .controller 'DashboardCtrl', ($scope) ->
