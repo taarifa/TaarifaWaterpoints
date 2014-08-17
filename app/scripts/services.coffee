@@ -183,7 +183,7 @@ angular.module('taarifaWaterpointsApp')
   .factory 'Service', (ApiResource) ->
     ApiResource 'services'
 
-  .factory 'leafletMap', () ->
+  .factory 'Map', () ->
     (id) =>
       osmLayer = L.tileLayer(
         'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
