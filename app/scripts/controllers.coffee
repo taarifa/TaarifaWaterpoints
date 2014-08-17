@@ -33,9 +33,9 @@ angular.module('taarifaWaterpointsApp')
       gettextCatalog.setCurrentLanguage(lang)
 
   .controller 'MapCtrl', ($scope, Map) ->
-    $scope.map = Map
+    $scope.map = Map()
 
-  .controller 'DashboardCtrl', ($scope, Map) ->
+  .controller 'DashboardCtrl', ($scope) ->
     $scope.dashTabs =
       national:
         active: true
