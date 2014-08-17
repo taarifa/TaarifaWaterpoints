@@ -32,8 +32,17 @@ angular.module('taarifaWaterpointsApp')
       # Using the setter function ensures the gettextLanguageChanged event gets fired
       gettextCatalog.setCurrentLanguage(lang)
 
-  .controller 'MapCtrl', ($scope, Map) ->
-    $scope.map = Map()
+  .controller 'MapCtrl', ($scope, $http, $location, Map) ->
+    $scope.where = $location.search()
+    $scope.max_results = parseInt($scope.where.max_results) || 100
+    $http.get('/api/waterpoints/values/region', cache: true).success (regions) ->
+      $scope.regions = regions
+    $scope.updateMap = () ->
+      $location.search($scope.where)
+      $location.search('max_results', $scope.max_results)
+      delete $scope.where.max_results
+      $scope.map = Map($scope.where, $scope.max_results)
+    $scope.updateMap()
 
   .controller 'DashboardCtrl', ($scope) ->
     $scope.dashTabs =
