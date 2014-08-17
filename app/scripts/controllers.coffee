@@ -62,6 +62,7 @@ angular.module('taarifaWaterpointsApp')
 
     $scope.mapData = null
 
+    # FIXME: this needs to be refactored into a service
     initMap = () ->
       # Have we already initialized the map?
       if !$scope.mapData
