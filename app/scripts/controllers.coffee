@@ -32,8 +32,8 @@ angular.module('taarifaWaterpointsApp')
       # Using the setter function ensures the gettextLanguageChanged event gets fired
       gettextCatalog.setCurrentLanguage(lang)
 
-  .controller 'MapCtrl', ($scope, $http, $location, Waterpoint, leafletMap) ->
-    map = leafletMap "wpMap"
+  .controller 'MapCtrl', ($scope, $http, $location, Waterpoint, Map) ->
+    map = Map "wpMap"
     $scope.where = $location.search()
     $scope.max_results = parseInt($scope.where.max_results) || 100
     $http.get('/api/waterpoints/values/region', cache: true).success (regions) ->
@@ -88,10 +88,10 @@ angular.module('taarifaWaterpointsApp')
             flash.error = "#{field}: #{message}"
 
   .controller 'WaterpointEditCtrl', ($scope, $routeParams,
-                                    leafletMap, Waterpoint, FacilityForm) ->
+                                    Map, Waterpoint, FacilityForm) ->
     $scope.wp = Waterpoint
 
-    map = leafletMap("editMap")
+    map = Map("editMap")
 
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
       $scope.form = waterpoint
@@ -104,8 +104,8 @@ angular.module('taarifaWaterpointsApp')
       Waterpoint.update($routeParams.id, $scope.form)
 
   .controller 'RequestCreateCtrl', ($scope, $location, $routeParams, Request, 
-                                    $timeout, Waterpoint, leafletMap, RequestForm, flash) ->
-    map = leafletMap("editMap")
+                                    $timeout, Waterpoint, Map, RequestForm, flash) ->
+    map = Map("editMap")
 
     Waterpoint.get where: {wpt_code: $routeParams.waterpoint_id}, (wp) ->
       map.clearMarkers()
