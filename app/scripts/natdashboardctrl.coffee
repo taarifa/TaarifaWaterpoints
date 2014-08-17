@@ -224,7 +224,7 @@ angular.module('taarifaWaterpointsApp')
       # redraw the plots so axis labels, etc are translated
 
       # will only work if the tab is visible (else d3 fails)
-      if dashTabs.national.active
+      if $scope.dashTabs.national.active
         drawPlots()
       else
         # we have to remember to redraw the plots when the tab
