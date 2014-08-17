@@ -2,11 +2,7 @@
 
 angular.module('taarifaWaterpointsApp')
 
-<<<<<<< HEAD
-  .controller 'DashboardCtrl', ($scope, $http, $timeout, modalSpinner,
-=======
   .controller 'NationalDashboardCtrl', ($scope, $http, $timeout, modalSpinner,
->>>>>>> upstream/workshop-aug
                                 gettextCatalog, gettext, populationData, waterpointStats) ->
 
     # should http calls be cached
@@ -226,10 +222,6 @@ angular.module('taarifaWaterpointsApp')
 
     $scope.$on "gettextLanguageChanged", (e) ->
       # redraw the plots so axis labels, etc are translated
-<<<<<<< HEAD
-      drawPlots()
-=======
->>>>>>> upstream/workshop-aug
 
       # will only work if the tab is visible (else d3 fails)
       if $scope.dashTabs.national.active
