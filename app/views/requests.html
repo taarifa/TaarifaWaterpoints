@@ -24,7 +24,8 @@
   </div>
 </div>
 
-<div class="panel panel-default" ng-repeat="request in requests">
+<div class="panel panel-default" ng-repeat="request in requests"
+  ng-class="{'panel-info': request.status=='closed', 'panel-danger': request.status=='open'&&request.attribute.status_group=='not functional', 'panel-warning': request.status=='open'&&request.attribute.status_group=='needs repair', 'panel-success': request.status=='open'&&request.attribute.status_group=='not functional'}">
   <div class="panel-heading">
     <h3 class="panel-title">
       <a class="glyphicon glyphicon-cog" href="#/requests/{{request._id}}"
