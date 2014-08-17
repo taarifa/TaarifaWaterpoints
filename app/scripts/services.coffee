@@ -211,24 +211,22 @@ angular.module('taarifaWaterpointsApp')
       # add a layer selector
       layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
 
-      mapData =
-        map: map
-        markerLayer: markerLayer
-
       @clearMarkers = () ->
-        mapData.markerLayer.clearLayers()
+        markerLayer.clearLayers()
 
-      @addWaterpoint = (wp) ->
+      @addWaterpoint = (wp, popup) ->
         [lng,lat] = wp.location.coordinates
         m = L.marker L.latLng(lat,lng),
           stroke: false
           opacity: 0.8
           fillColor: statusColor(wp.status_group)
+        if popup
+          m.bindPopup popup
 
-        mapData.markerLayer.addLayer(m)
+        markerLayer.addLayer(m)
 
       @zoomToMarkers = () ->
-        mapData.map.fitBounds(mapData.markerLayer.getBounds())
+        map.fitBounds(markerLayer.getBounds())
 
       return this
 
