@@ -23,56 +23,6 @@ msgstr "Tumia"
 #: app/views/triage.html
 msgid "Attribute"
 msgstr "Sifa"
-<<<<<<< HEAD
-
-#: app/views/triage.html
-msgid "Current value"
-msgstr "Thamani/Hali ya sasa"
-
-#: app/views/triage.html
-msgid "Expected date"
-msgstr "Tarehe tarajiwa"
-
-#: app/views/dashboard.html
-msgid "Group By"
-msgstr "Kundi Kwa"
-
-#: app/views/dashboard.html
-msgid "LGA"
-msgstr "Halmashauri"
-
-#: app/views/requests.html
-msgid "Metadata"
-msgstr ""
-
-#: app/scripts/plots.js
-msgid "Number of Waterpoints"
-msgstr "Idadi ya Vituo vya Maji"
-
-#: app/views/dashboard.html
-msgid "Region"
-msgstr "Mkoa"
-
-#: app/views/triage.html
-msgid "Reported value"
-msgstr "Thamani/Hali iliyoripotiwa"
-
-#: app/views/triage.html
-msgid "Service notice"
-msgstr "Taarifa ya matengenezo"
-
-#: app/views/triage.html
-msgid "Status"
-msgstr "Hali"
-
-#: app/views/triage.html
-msgid "Status notes"
-msgstr "Maelezo kuhusu hali"
-
-#: app/index.html
-msgid "Tanzania Waterpoints"
-msgstr "Vituo vya Maji Tanzania"
-=======
 
 #: .tmp/concat/scripts/scripts.js
 msgid "Breakdown Year"
@@ -192,18 +142,11 @@ msgstr "Idadi ya Vituo vya Maji"
 #: .tmp/concat/scripts/scripts.js
 msgid "Payment Method"
 msgstr ""
->>>>>>> upstream/workshop-aug
 
 #: app/views/dashboard.html
-msgid "Top Problems"
-msgstr "Matatizo makuu"
+msgid "Region"
+msgstr "Mkoa"
 
-<<<<<<< HEAD
-#: app/views/triage.html
-msgid "Update request"
-msgstr "Sasisha maombi"
-
-=======
 #: app/views/dashboard.html
 #, fuzzy
 msgid "Regional"
@@ -249,7 +192,6 @@ msgstr "Matatizo makuu"
 msgid "Update request"
 msgstr "Sasisha maombi"
 
->>>>>>> upstream/workshop-aug
 #: app/views/requests.html
 msgid "User provided fields"
 msgstr "Mambo yaliyoainishwa na mtumiaji"
@@ -258,20 +200,6 @@ msgstr "Mambo yaliyoainishwa na mtumiaji"
 msgid "Ward"
 msgstr "Kata"
 
-<<<<<<< HEAD
-#: app/views/requests.html app/views/triage.html
-msgid "Waterpoint"
-msgstr "Kituo cha Maji"
-
-#: app/views/dashboard3.html
-msgid "Waterpoint Status"
-msgstr "Hali ya Kituo cha Maji"
-
-#: app/views/requests.html app/views/triage.html
-msgid "submitted on"
-msgstr "Tarehe ya uwasilishwaji"
-
-=======
 #: .tmp/concat/scripts/scripts.js
 #, fuzzy
 msgid "Water Quality"
@@ -307,7 +235,6 @@ msgstr "Tarehe ya uwasilishwaji"
 msgid "waterpoints"
 msgstr "Kituo cha Maji"
 
->>>>>>> upstream/workshop-aug
 #~ msgid "% Functional"
 #~ msgstr "% Kazi"
 
@@ -320,12 +247,6 @@ msgstr "Kituo cha Maji"
 #~ msgid "Barrel leaks"
 #~ msgstr "Tenki Linavuja"
 
-<<<<<<< HEAD
-#~ msgid "Coverage %"
-#~ msgstr "Eneo"
-
-=======
->>>>>>> upstream/workshop-aug
 #~ msgid "Dashboard"
 #~ msgstr "Kwa Ujumla"
 
@@ -335,12 +256,6 @@ msgstr "Kituo cha Maji"
 #~ msgid "Filter"
 #~ msgstr "Chujio"
 
-<<<<<<< HEAD
-#~ msgid "Functional"
-#~ msgstr "Kazi"
-
-=======
->>>>>>> upstream/workshop-aug
 #~ msgid "Key Performance Indicators"
 #~ msgstr "Viashiria vya Ufanyaji kazi"
 
@@ -379,4 +294,3 @@ msgstr "Kituo cha Maji"
 
 #~ msgid "Top Reasons for Faulty Waterpoints"
 #~ msgstr "Sababu Kuu za Mpasuko wa Vituo vya Maji"
-
