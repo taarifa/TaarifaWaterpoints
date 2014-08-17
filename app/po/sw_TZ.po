@@ -24,13 +24,30 @@ msgstr "Tumia"
 msgid "Attribute"
 msgstr "Sifa"
 
+#: app/views/dashboard.html
+msgid "Charts"
+msgstr ""
+
+#: app/views/dashboard.html
+#, fuzzy
+msgid "Coverage"
+msgstr "Eneo"
+
 #: app/views/triage.html
 msgid "Current value"
 msgstr "Thamani/Hali ya sasa"
 
+#: app/views/dashboard.html
+msgid "Data Table"
+msgstr ""
+
 #: app/views/triage.html
 msgid "Expected date"
 msgstr "Tarehe tarajiwa"
+
+#: app/views/dashboard.html
+msgid "Functional"
+msgstr "Kazi"
 
 #: app/views/dashboard.html
 msgid "Group By"
@@ -40,9 +57,22 @@ msgstr "Kundi Kwa"
 msgid "LGA"
 msgstr "Halmashauri"
 
+#: app/views/spinnerdlg.html
+msgid "Loading Data..."
+msgstr ""
+
+#: app/views/spinnerdlg.html
+msgid "Loading waterpoint data."
+msgstr ""
+
 #: app/views/requests.html
 msgid "Metadata"
 msgstr ""
+
+#: app/views/dashboard.html
+#, fuzzy
+msgid "National"
+msgstr "Kazi"
 
 #: app/scripts/plots.js
 msgid "Number of Waterpoints"
@@ -52,9 +82,22 @@ msgstr "Idadi ya Vituo vya Maji"
 msgid "Region"
 msgstr "Mkoa"
 
+#: app/views/dashboard.html
+#, fuzzy
+msgid "Regional"
+msgstr "Mkoa"
+
 #: app/views/triage.html
 msgid "Reported value"
 msgstr "Thamani/Hali iliyoripotiwa"
+
+#: app/views/dashboard.html
+msgid "Reset all filters"
+msgstr ""
+
+#: app/views/dashboard.html
+msgid "Selected"
+msgstr ""
 
 #: app/views/triage.html
 msgid "Service notice"
@@ -71,6 +114,10 @@ msgstr "Maelezo kuhusu hali"
 #: app/index.html
 msgid "Tanzania Waterpoints"
 msgstr "Vituo vya Maji Tanzania"
+
+#: app/views/spinnerdlg.html
+msgid "This may take a while depending on your connection"
+msgstr ""
 
 #: app/views/dashboard.html
 msgid "Top Problems"
@@ -92,13 +139,21 @@ msgstr "Kata"
 msgid "Waterpoint"
 msgstr "Kituo cha Maji"
 
-#: app/views/dashboard3.html
-msgid "Waterpoint Status"
-msgstr "Hali ya Kituo cha Maji"
+#: app/views/dashboard.html
+msgid "out of"
+msgstr ""
 
 #: app/views/requests.html app/views/triage.html
 msgid "submitted on"
 msgstr "Tarehe ya uwasilishwaji"
+
+#: app/views/dashboard.html
+#, fuzzy
+msgid "waterpoints"
+msgstr "Kituo cha Maji"
+
+#~ msgid "Waterpoint Status"
+#~ msgstr "Hali ya Kituo cha Maji"
 
 #~ msgid "% Functional"
 #~ msgstr "% Kazi"
@@ -112,9 +167,6 @@ msgstr "Tarehe ya uwasilishwaji"
 #~ msgid "Barrel leaks"
 #~ msgstr "Tenki Linavuja"
 
-#~ msgid "Coverage %"
-#~ msgstr "Eneo"
-
 #~ msgid "Dashboard"
 #~ msgstr "Kwa Ujumla"
 
@@ -123,9 +175,6 @@ msgstr "Tarehe ya uwasilishwaji"
 
 #~ msgid "Filter"
 #~ msgstr "Chujio"
-
-#~ msgid "Functional"
-#~ msgstr "Kazi"
 
 #~ msgid "Key Performance Indicators"
 #~ msgstr "Viashiria vya Ufanyaji kazi"
@@ -165,4 +214,3 @@ msgstr "Tarehe ya uwasilishwaji"
 
 #~ msgid "Top Reasons for Faulty Waterpoints"
 #~ msgstr "Sababu Kuu za Mpasuko wa Vituo vya Maji"
-
