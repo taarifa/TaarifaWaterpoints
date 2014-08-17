@@ -82,10 +82,15 @@ angular.module('taarifaWaterpointsApp')
           for field, message of request._issues.attribute
             flash.error = "#{field}: #{message}"
 
-  .controller 'RequestListCtrl', ($scope, Request) ->
-    $scope.status = 'open'
+  .controller 'RequestListCtrl', ($scope, $location, Request) ->
+    $scope.where = $location.search()
     $scope.filterStatus = () ->
-      query = if $scope.status then where: {status: $scope.status} else {}
+      $location.search($scope.where)
+      query = where: {}
+      if $scope.where.status
+        query.where.status = $scope.where.status
+      if $scope.where.status_group
+        query.where['attribute.status_group'] = $scope.where.status_group
       Request.query query, (requests) ->
         $scope.requests = requests._items
     $scope.filterStatus()
