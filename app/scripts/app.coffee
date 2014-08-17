@@ -7,7 +7,6 @@ app = angular
     'ngResource',
     'ngRoute',
     'ngCookies',
-    'leaflet-directive',
     'dynform',
     'angular-flash.service',
     'angular-flash.flash-alert-directive',
