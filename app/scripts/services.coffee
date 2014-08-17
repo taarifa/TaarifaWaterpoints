@@ -230,47 +230,6 @@ angular.module('taarifaWaterpointsApp')
 
       return this
 
-  .factory 'Map', (Waterpoint) ->
-    (where, max_results) =>
-      # Initially center on Dar es Salaam
-      @center =
-        lat: -6.7701973
-        lng: 39.2664484
-        zoom: 6
-      @markers = {}
-      addMarkers = (waterpoints) =>
-        for p in waterpoints._items
-          @markers['wp' + p._id] =
-            # FIXME temporarily disable clustering since it is not properly
-            # reinitialized when the MapCtrl controller reloads
-            # group: p.district
-            lat: p.location.coordinates[1]
-            lng: p.location.coordinates[0]
-            message: "#{p.wpt_code}<br />" +
-              "Status: #{p.status_group}<br />" +
-              "<a href=\"#/waterpoints/edit/#{p._id}\">edit</a><br />" +
-              "<a href=\"#/requests/?waterpoint_id=#{p.wpt_code}\">show requests</a><br />" +
-              "<a href=\"#/requests/new?waterpoint_id=#{p.wpt_code}\">submit request</a>"
-        # This would keep loading further waterpoints as long as there are any.
-        # Disabled for performance reasons
-        # if waterpoints._links.next
-        #   $http.get(waterpoints._links.next.href)
-        #     .success addMarkers
-
-      # show iringa waterpoints by default
-      Waterpoint.query
-        max_results: max_results || 100
-        where: where || {}
-        projection:
-          _id: 1
-          district: 1
-          location: 1
-          wpt_code: 1
-          status_group: 1
-        strip: 1
-      , addMarkers
-      return this
-
   # Get an angular-dynamic-forms compatible form description from a Facility
   # given a facility code
   .factory 'FacilityForm', (Facility) ->
