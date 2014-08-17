@@ -1,23 +1,23 @@
 <div class="panel panel-default">
-  <div class="panel-heading"><h3 class="panel-title">Filter requests</h3></div>
+  <div class="panel-heading"><h3 class="panel-title" translate>Filter requests</h3></div>
   <div class="panel-body">
     <form class="form-inline" role="form">
       <div class="form-group">
-        <label for="requestStatus">Request status</label>
+        <label for="requestStatus" translate>Request status</label>
         <select class="form-control" id="requestStatus" ng-model="where.status" ng-change="filterStatus()"
           ng-options="k for k in ['open', 'closed']">
           <option value="">all</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="waterpointStatus">WP status</label>
+        <label for="waterpointStatus" translate>WP status</label>
         <select class="form-control" id="waterpointStatus" ng-model="where.status_group" ng-change="filterStatus()"
           ng-options="k for k in ['functional', 'not functional', 'needs repair']">
           <option value="">all</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="waterpointId">WP id</label>
+        <label for="waterpointId" translate>WP id</label>
         <input type="text" class="form-control" id="waterpointId" ng-model="where.waterpoint_id" ng-change="filterStatus()">
       </div>
     </form>

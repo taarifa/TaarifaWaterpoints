@@ -273,6 +273,8 @@ angular.module('taarifaWaterpointsApp')
         # if waterpoints._links.next
         #   $http.get(waterpoints._links.next.href)
         #     .success addMarkers
+
+      # show iringa waterpoints by default
       Waterpoint.query
         max_results: max_results || 100
         where: where || {}
