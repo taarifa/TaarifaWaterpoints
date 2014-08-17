@@ -284,4 +284,3 @@ msgstr "Vituo vya Maji"
 
 #~ msgid "Top Reasons for Faulty Waterpoints"
 #~ msgstr "Sababu Kuu za Mpasuko wa Vituo vya Maji"
-
