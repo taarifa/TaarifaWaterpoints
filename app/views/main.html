@@ -6,14 +6,14 @@
         <label for="region" translate>Region</label>
         <select class="form-control" id="region" ng-model="where.region" ng-change="updateMap()"
           ng-options="r for r in regions">
-          <option value="" translate>all</option>
+          <option value="">all</option>
         </select>
       </div>
       <div class="form-group">
         <label for="waterpointStatus" translate>status</label>
         <select class="form-control" id="waterpointStatus" ng-model="where.status_group" ng-change="updateMap()"
           ng-options="k for k in ['functional', 'not functional', 'needs repair']">
-          <option value="" translate>all</option>
+          <option value="">all</option>
         </select>
       </div>
       <div class="form-group">
