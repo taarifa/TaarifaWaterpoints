@@ -24,17 +24,9 @@ msgstr "Tumia"
 msgid "Attribute"
 msgstr "Sifa"
 
-#: .tmp/concat/scripts/scripts.js
-msgid "Breakdown Year"
-msgstr "Mwaka wa kuharibika"
-
 #: app/views/dashboard.html
 msgid "Charts"
 msgstr "Chati"
-
-#: .tmp/concat/scripts/scripts.js
-msgid "Construction Year"
-msgstr "Mwaka wa ujenzi"
 
 #: app/views/dashboard.html
 msgid "Coverage"
@@ -44,6 +36,10 @@ msgstr "Kiasi cha wanaohudumiwa"
 msgid "Current value"
 msgstr "Thamani/Hali ya sasa"
 
+#: app/index.html
+msgid "Dashboard"
+msgstr "Kwa Ujumla"
+
 #: app/views/dashboard.html
 msgid "Data Table"
 msgstr "Jedwali la Data"
@@ -52,61 +48,30 @@ msgstr "Jedwali la Data"
 msgid "Expected date"
 msgstr "Tarehe tarajiwa"
 
-#: .tmp/concat/scripts/scripts.js
-msgid "Extraction Type"
-msgstr "Njia ya uzalishaji"
+#: app/views/main.html
+msgid "Filter map view"
+msgstr ""
+
+#: app/views/requests.html
+#, fuzzy
+msgid "Filter requests"
+msgstr "Sasisha maombi"
 
 #: app/views/dashboard.html
 msgid "Functional"
 msgstr "Vinafanya kazi"
 
-#: .tmp/concat/scripts/scripts.js
-msgid "Functionality"
-msgstr "Ufanyaji kazi"
-
-#: .tmp/concat/scripts/scripts.js
-msgid "Functionality by Extraction"
-msgstr "Ufanyaji kazi na Njia ya uzalishaji"
-
-#: .tmp/concat/scripts/scripts.js
-msgid "Functionality by LGA"
-msgstr "Ufanyaji Kazi kwa Halmashauri"
-
-#: .tmp/concat/scripts/scripts.js
-msgid "Functionality by Management"
-msgstr "Ufanyaji kazi na Usimamizi"
-
-#: .tmp/concat/scripts/scripts.js
-msgid "Functionality by Ward"
-msgstr "Ufanyaji kazi kwa Kata"
-
-#: .tmp/concat/scripts/scripts.js
-msgid "Functionality vs Cost"
-msgstr "Ufanyaji kazi dhidi ya Gharama"
-
-#: .tmp/concat/scripts/scripts.js
-msgid "Funder"
-msgstr "Mfadhili"
-
 #: app/views/dashboard.html
 msgid "Group By"
 msgstr "Kundi Kwa"
 
-#: .tmp/concat/scripts/scripts.js
-msgid "Installer"
-msgstr "Mkandarasi"
+#: app/index.html
+msgid "Home"
+msgstr ""
 
 #: app/views/dashboard.html
 msgid "LGA"
 msgstr "Halmashauri"
-
-#: .tmp/concat/scripts/scripts.js
-msgid "Leaderboard: Percentage Functional"
-msgstr "Wanaoongoza kwa asilimia ya Vinavyofanya kazi"
-
-#: .tmp/concat/scripts/scripts.js
-msgid "Leaderboard: Percentage Served"
-msgstr "Wanaoongoza kwa asilimia ya Wanaohudumiwa"
 
 #: app/views/spinnerdlg.html
 msgid "Loading Data..."
@@ -116,9 +81,10 @@ msgstr "Inapakia Data..."
 msgid "Loading waterpoint data."
 msgstr "Inapakia data za vituo vya maji."
 
-#: .tmp/concat/scripts/scripts.js
-msgid "Management"
-msgstr "Usimamizi"
+#: app/views/edit.html
+#, fuzzy
+msgid "Location"
+msgstr "Kitaifa"
 
 #: app/views/requests.html
 msgid "Metadata"
@@ -128,16 +94,11 @@ msgstr ""
 msgid "National"
 msgstr "Kitaifa"
 
-#: app/scripts/plots.js .tmp/concat/scripts/scripts.js
-#: dist/scripts/c8ef7ace.scripts.js
+#: app/scripts/plots.js
 msgid "Number of Waterpoints"
 msgstr "Idadi ya Vituo vya Maji"
 
-#: .tmp/concat/scripts/scripts.js
-msgid "Payment Method"
-msgstr "Mfumo wa Malipo"
-
-#: app/views/dashboard.html
+#: app/views/dashboard.html app/views/main.html
 msgid "Region"
 msgstr "Mkoa"
 
@@ -148,6 +109,10 @@ msgstr "Kwa Mkoa"
 #: app/views/triage.html
 msgid "Reported value"
 msgstr "Thamani/Hali iliyoripotiwa"
+
+#: app/views/requests.html
+msgid "Request status"
+msgstr ""
 
 #: app/views/dashboard.html
 msgid "Reset all filters"
@@ -177,9 +142,13 @@ msgstr "Vituo vya Maji Tanzania"
 msgid "This may take a while depending on your connection"
 msgstr "Hii inaweza kuchukua muda kidogo kutegemeana na kasi ya mtandao"
 
-#: app/views/dashboard.html .tmp/concat/scripts/scripts.js
+#: app/views/dashboard.html
 msgid "Top Problems"
 msgstr "Matatizo makuu"
+
+#: app/index.html
+msgid "Triage"
+msgstr ""
 
 #: app/views/triage.html
 msgid "Update request"
@@ -189,33 +158,39 @@ msgstr "Sasisha maombi"
 msgid "User provided fields"
 msgstr "Mambo yaliyoainishwa na mtumiaji"
 
+#: app/views/requests.html
+msgid "WP id"
+msgstr ""
+
+#: app/views/requests.html
+#, fuzzy
+msgid "WP status"
+msgstr "Hali"
+
 #: app/views/dashboard.html
 msgid "Ward"
 msgstr "Kata"
-
-#: .tmp/concat/scripts/scripts.js
-msgid "Water Quality"
-msgstr "Ubora wa Maji"
-
-#: .tmp/concat/scripts/scripts.js
-msgid "Water Quantity"
-msgstr "Kiasi cha Maji"
 
 #: app/views/requests.html app/views/triage.html
 msgid "Waterpoint"
 msgstr "Kituo cha Maji"
 
-#: .tmp/concat/scripts/scripts.js
-msgid "Waterpoint Locations"
-msgstr "Maeneo vilipo vituo vya Maji"
+#: app/views/main.html
+msgid "all"
+msgstr ""
 
-#: .tmp/concat/scripts/scripts.js
-msgid "Waterpoint status (ordered by % Functional)"
-msgstr "Hali ya vituo vya maji (Kufuatana na % ya vinavyofanya kazi)"
+#: app/views/main.html
+msgid "maximum no. of results"
+msgstr ""
 
 #: app/views/dashboard.html
 msgid "out of"
 msgstr "kati ya"
+
+#: app/views/main.html
+#, fuzzy
+msgid "status"
+msgstr "Hali"
 
 #: app/views/requests.html app/views/triage.html
 msgid "submitted on"
@@ -224,6 +199,63 @@ msgstr "Tarehe ya uwasilishwaji"
 #: app/views/dashboard.html
 msgid "waterpoints"
 msgstr "Vituo vya Maji"
+
+#~ msgid "Breakdown Year"
+#~ msgstr "Mwaka wa kuharibika"
+
+#~ msgid "Construction Year"
+#~ msgstr "Mwaka wa ujenzi"
+
+#~ msgid "Extraction Type"
+#~ msgstr "Njia ya uzalishaji"
+
+#~ msgid "Functionality"
+#~ msgstr "Ufanyaji kazi"
+
+#~ msgid "Functionality by Extraction"
+#~ msgstr "Ufanyaji kazi na Njia ya uzalishaji"
+
+#~ msgid "Functionality by LGA"
+#~ msgstr "Ufanyaji Kazi kwa Halmashauri"
+
+#~ msgid "Functionality by Management"
+#~ msgstr "Ufanyaji kazi na Usimamizi"
+
+#~ msgid "Functionality by Ward"
+#~ msgstr "Ufanyaji kazi kwa Kata"
+
+#~ msgid "Functionality vs Cost"
+#~ msgstr "Ufanyaji kazi dhidi ya Gharama"
+
+#~ msgid "Funder"
+#~ msgstr "Mfadhili"
+
+#~ msgid "Installer"
+#~ msgstr "Mkandarasi"
+
+#~ msgid "Leaderboard: Percentage Functional"
+#~ msgstr "Wanaoongoza kwa asilimia ya Vinavyofanya kazi"
+
+#~ msgid "Leaderboard: Percentage Served"
+#~ msgstr "Wanaoongoza kwa asilimia ya Wanaohudumiwa"
+
+#~ msgid "Management"
+#~ msgstr "Usimamizi"
+
+#~ msgid "Payment Method"
+#~ msgstr "Mfumo wa Malipo"
+
+#~ msgid "Water Quality"
+#~ msgstr "Ubora wa Maji"
+
+#~ msgid "Water Quantity"
+#~ msgstr "Kiasi cha Maji"
+
+#~ msgid "Waterpoint Locations"
+#~ msgstr "Maeneo vilipo vituo vya Maji"
+
+#~ msgid "Waterpoint status (ordered by % Functional)"
+#~ msgstr "Hali ya vituo vya maji (Kufuatana na % ya vinavyofanya kazi)"
 
 #~ msgid "% Functional"
 #~ msgstr "% Kazi"
@@ -236,9 +268,6 @@ msgstr "Vituo vya Maji"
 
 #~ msgid "Barrel leaks"
 #~ msgstr "Tenki Linavuja"
-
-#~ msgid "Dashboard"
-#~ msgstr "Kwa Ujumla"
 
 #~ msgid "District"
 #~ msgstr "Wilaya"

@@ -127,7 +127,7 @@ angular.module('taarifaWaterpointsApp')
 
           # ensure all three statusses are always represented
           empty = {count: 0, percent: 0}
-          statusses = ["functional", "not functional", "needs repair"]
+          statusses = [gettext("functional"), gettext("not functional"), gettext("needs repair")]
           statusses.forEach((x) -> statusMap[x] = statusMap[x] || empty)
 
           # the population covered
@@ -143,7 +143,7 @@ angular.module('taarifaWaterpointsApp')
           popCover = {count: funPop, percent: percent}
 
           $scope.tiles = _.pairs(_.pick(statusMap,'functional','needs repair'))
-          $scope.tiles.push(['population cover', popCover])
+          $scope.tiles.push([gettext('population cover'), popCover])
           modalSpinner.close()
 
       if changed == 'region'

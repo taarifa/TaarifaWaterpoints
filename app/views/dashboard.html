@@ -4,7 +4,7 @@
       <div gridster="gridsterOpts">
         <ul>
           <li gridster-item="item" ng-repeat="item in gridLayout.tiles">
-          <span class="tile-header">{{tiles[$index][0] || 'unknown' | titlecase}}</span>
+          <span class="tile-header">{{tiles[$index][0] || 'unknown' | titlecase | translate}}</span>
           <br />
           <span class="tile-number">{{tiles[$index][1].percent | number:2 }} %</span>
           <br />
