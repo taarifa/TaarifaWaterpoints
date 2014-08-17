@@ -24,8 +24,16 @@ msgstr "Tumia"
 msgid "Attribute"
 msgstr "Sifa"
 
+#: .tmp/concat/scripts/scripts.js
+msgid "Breakdown Year"
+msgstr ""
+
 #: app/views/dashboard.html
 msgid "Charts"
+msgstr ""
+
+#: .tmp/concat/scripts/scripts.js
+msgid "Construction Year"
 msgstr ""
 
 #: app/views/dashboard.html
@@ -45,17 +53,65 @@ msgstr ""
 msgid "Expected date"
 msgstr "Tarehe tarajiwa"
 
+#: .tmp/concat/scripts/scripts.js
+msgid "Extraction Type"
+msgstr ""
+
 #: app/views/dashboard.html
 msgid "Functional"
 msgstr "Kazi"
+
+#: .tmp/concat/scripts/scripts.js
+#, fuzzy
+msgid "Functionality"
+msgstr "Kazi"
+
+#: .tmp/concat/scripts/scripts.js
+msgid "Functionality by Extraction"
+msgstr ""
+
+#: .tmp/concat/scripts/scripts.js
+#, fuzzy
+msgid "Functionality by LGA"
+msgstr "Kazi"
+
+#: .tmp/concat/scripts/scripts.js
+msgid "Functionality by Management"
+msgstr ""
+
+#: .tmp/concat/scripts/scripts.js
+#, fuzzy
+msgid "Functionality by Ward"
+msgstr "Kazi"
+
+#: .tmp/concat/scripts/scripts.js
+#, fuzzy
+msgid "Functionality vs Cost"
+msgstr "Kazi"
+
+#: .tmp/concat/scripts/scripts.js
+msgid "Funder"
+msgstr ""
 
 #: app/views/dashboard.html
 msgid "Group By"
 msgstr "Kundi Kwa"
 
+#: .tmp/concat/scripts/scripts.js
+msgid "Installer"
+msgstr ""
+
 #: app/views/dashboard.html
 msgid "LGA"
 msgstr "Halmashauri"
+
+#: .tmp/concat/scripts/scripts.js
+msgid "Leaderboard: Percentage Functional"
+msgstr ""
+
+#: .tmp/concat/scripts/scripts.js
+msgid "Leaderboard: Percentage Served"
+msgstr ""
 
 #: app/views/spinnerdlg.html
 msgid "Loading Data..."
@@ -63,6 +119,10 @@ msgstr ""
 
 #: app/views/spinnerdlg.html
 msgid "Loading waterpoint data."
+msgstr ""
+
+#: .tmp/concat/scripts/scripts.js
+msgid "Management"
 msgstr ""
 
 #: app/views/requests.html
@@ -74,9 +134,14 @@ msgstr ""
 msgid "National"
 msgstr "Kazi"
 
-#: app/scripts/plots.js
+#: app/scripts/plots.js .tmp/concat/scripts/scripts.js
+#: dist/scripts/c8ef7ace.scripts.js
 msgid "Number of Waterpoints"
 msgstr "Idadi ya Vituo vya Maji"
+
+#: .tmp/concat/scripts/scripts.js
+msgid "Payment Method"
+msgstr ""
 
 #: app/views/dashboard.html
 msgid "Region"
@@ -119,7 +184,7 @@ msgstr "Vituo vya Maji Tanzania"
 msgid "This may take a while depending on your connection"
 msgstr ""
 
-#: app/views/dashboard.html
+#: app/views/dashboard.html .tmp/concat/scripts/scripts.js
 msgid "Top Problems"
 msgstr "Matatizo makuu"
 
@@ -135,9 +200,27 @@ msgstr "Mambo yaliyoainishwa na mtumiaji"
 msgid "Ward"
 msgstr "Kata"
 
+#: .tmp/concat/scripts/scripts.js
+#, fuzzy
+msgid "Water Quality"
+msgstr "Kituo cha Maji"
+
+#: .tmp/concat/scripts/scripts.js
+msgid "Water Quantity"
+msgstr ""
+
 #: app/views/requests.html app/views/triage.html
 msgid "Waterpoint"
 msgstr "Kituo cha Maji"
+
+#: .tmp/concat/scripts/scripts.js
+#, fuzzy
+msgid "Waterpoint Locations"
+msgstr "Hali ya Kituo cha Maji"
+
+#: .tmp/concat/scripts/scripts.js
+msgid "Waterpoint status (ordered by % Functional)"
+msgstr ""
 
 #: app/views/dashboard.html
 msgid "out of"
@@ -151,9 +234,6 @@ msgstr "Tarehe ya uwasilishwaji"
 #, fuzzy
 msgid "waterpoints"
 msgstr "Kituo cha Maji"
-
-#~ msgid "Waterpoint Status"
-#~ msgstr "Hali ya Kituo cha Maji"
 
 #~ msgid "% Functional"
 #~ msgstr "% Kazi"
