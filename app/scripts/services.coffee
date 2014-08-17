@@ -184,13 +184,7 @@ angular.module('taarifaWaterpointsApp')
     ApiResource 'services'
 
   .factory 'leafletMap', () ->
-    # Implements a very basic leaflet map
-    mapData = null
-
-    initMap = (id) ->
-      # Have we already initialized the map?
-      #if mapData then return mapData
-
+    (id) =>
       osmLayer = L.tileLayer(
         'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution: '(c) OpenStreetMap')
@@ -202,7 +196,7 @@ angular.module('taarifaWaterpointsApp')
       markerLayer = L.featureGroup()
 
       map = L.map id,
-        center: new L.LatLng(-6.3153, 35.15625)
+        center: new L.LatLng -6.3153, 35.15625
         zoom: 5
         fullscreenControl: true
         layers: [osmLayer, markerLayer]
@@ -221,31 +215,22 @@ angular.module('taarifaWaterpointsApp')
         map: map
         markerLayer: markerLayer
 
-    clearMarkers = () ->
-      mapData.markerLayer.clearLayers()
+      @clearMarkers = () ->
+        mapData.markerLayer.clearLayers()
 
-    addWaterpoint = (wp) ->
-      [lng,lat] = wp.location.coordinates
-      m = L.marker L.latLng(lat,lng),
-        stroke: false
-        opacity: 0.8
-        fillColor: statusColor(wp.status_group)
+      @addWaterpoint = (wp) ->
+        [lng,lat] = wp.location.coordinates
+        m = L.marker L.latLng(lat,lng),
+          stroke: false
+          opacity: 0.8
+          fillColor: statusColor(wp.status_group)
 
-        #html = makePopup(x)
-        #m.bindPopup(html)
+        mapData.markerLayer.addLayer(m)
 
-      mapData.markerLayer.addLayer(m)
+      @zoomToMarkers = () ->
+        mapData.map.fitBounds(mapData.markerLayer.getBounds())
 
-    zoomToMarkers = () ->
-      mapData.map.fitBounds(mapData.markerLayer.getBounds())
-
-    result =
-      initMap: initMap
-      addWaterpoint: addWaterpoint
-      clearMarkers: clearMarkers
-      zoomToMarkers: zoomToMarkers
-
-    return result
+      return this
 
   .factory 'Map', (Waterpoint) ->
     (where, max_results) =>

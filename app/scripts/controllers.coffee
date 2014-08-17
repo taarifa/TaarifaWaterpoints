@@ -70,13 +70,13 @@ angular.module('taarifaWaterpointsApp')
                                     leafletMap, Waterpoint, FacilityForm) ->
     $scope.wp = Waterpoint
 
-    leafletMap.initMap("editMap")
+    map = leafletMap("editMap")
 
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
       $scope.form = waterpoint
-      leafletMap.clearMarkers()
-      leafletMap.addWaterpoint(waterpoint)
-      leafletMap.zoomToMarkers()
+      map.clearMarkers()
+      map.addWaterpoint(waterpoint)
+      map.zoomToMarkers()
 
     $scope.formTemplate = FacilityForm 'wpf001'
     $scope.save = () ->
@@ -84,13 +84,13 @@ angular.module('taarifaWaterpointsApp')
 
   .controller 'RequestCreateCtrl', ($scope, $location, $routeParams, Request,
                                     $timeout, Waterpoint, leafletMap, RequestForm, flash) ->
-    leafletMap.initMap("editMap")
+    map = leafletMap("editMap")
 
     Waterpoint.get where: {wpt_code: $routeParams.waterpoint_id}, (wp) ->
-      leafletMap.clearMarkers()
+      map.clearMarkers()
       # FIXME: assumes wpt_code is unique!
-      leafletMap.addWaterpoint(wp._items[0])
-      leafletMap.zoomToMarkers()
+      map.addWaterpoint(wp._items[0])
+      map.zoomToMarkers()
 
     $scope.formTemplate = RequestForm 'wps001', $location.search()
     # FIXME: Should not hardcode the service code here
