@@ -66,72 +66,32 @@ angular.module('taarifaWaterpointsApp')
           for field, message of waterpoint._issues
             flash.error = "#{field}: #{message}"
 
-  .controller 'WaterpointEditCtrl', ($scope, $routeParams, Waterpoint, FacilityForm) ->
+  .controller 'WaterpointEditCtrl', ($scope, $routeParams,
+                                    leafletMap, Waterpoint, FacilityForm) ->
     $scope.wp = Waterpoint
 
-    $scope.mapData = null
+    leafletMap.initMap("editMap")
 
-    # FIXME: this needs to be refactored into a service
-    initMap = () ->
-      # Have we already initialized the map?
-      if !$scope.mapData
-        id = "waterpointEditMap"
-
-        osmLayer = L.tileLayer(
-          'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          attribution: '(c) OpenStreetMap')
-
-        satLayer = L.tileLayer(
-          'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-          attribution: '(c) Esri')
-
-        markerLayer = L.featureGroup()
-
-        map = L.map id,
-          center: new L.LatLng(-6.3153, 35.15625)
-          zoom: 5
-          fullscreenControl: true
-          layers: [osmLayer, markerLayer]
-
-        baseMaps =
-          "Open Street Map": osmLayer
-          "Satellite": satLayer
-
-        overlayMaps =
-          "Waterpoints": markerLayer
-
-        # add a layer selector
-        layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
-
-        $scope.mapData =
-          map: map
-          markerLayer: markerLayer
-
-    setWaterpoint = (wp) ->
-      $scope.mapData.markerLayer.clearLayers()
-      [lng,lat] = wp.location.coordinates
-      m = L.marker L.latLng(lat,lng),
-        stroke: false
-        opacity: 0.8
-        fillColor: statusColor(wp.status_group)
-
-        #html = makePopup(x)
-        #m.bindPopup(html)
-
-      $scope.mapData.markerLayer.addLayer(m)
-      $scope.mapData.map.fitBounds($scope.mapData.markerLayer.getBounds())
-
-
-    initMap()
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
       $scope.form = waterpoint
-      setWaterpoint(waterpoint)
+      leafletMap.clearMarkers()
+      leafletMap.addWaterpoint(waterpoint)
+      leafletMap.zoomToMarkers()
 
     $scope.formTemplate = FacilityForm 'wpf001'
     $scope.save = () ->
       Waterpoint.update($routeParams.id, $scope.form)
 
-  .controller 'RequestCreateCtrl', ($scope, $location, Request, RequestForm, flash) ->
+  .controller 'RequestCreateCtrl', ($scope, $location, $routeParams, Request,
+                                    $timeout, Waterpoint, leafletMap, RequestForm, flash) ->
+    leafletMap.initMap("editMap")
+
+    Waterpoint.get where: {wpt_code: $routeParams.waterpoint_id}, (wp) ->
+      leafletMap.clearMarkers()
+      # FIXME: assumes wpt_code is unique!
+      leafletMap.addWaterpoint(wp._items[0])
+      leafletMap.zoomToMarkers()
+
     $scope.formTemplate = RequestForm 'wps001', $location.search()
     # FIXME: Should not hardcode the service code here
     $scope.form = {}

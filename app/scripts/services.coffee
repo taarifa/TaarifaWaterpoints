@@ -183,6 +183,70 @@ angular.module('taarifaWaterpointsApp')
   .factory 'Service', (ApiResource) ->
     ApiResource 'services'
 
+  .factory 'leafletMap', () ->
+    # Implements a very basic leaflet map
+    mapData = null
+
+    initMap = (id) ->
+      # Have we already initialized the map?
+      #if mapData then return mapData
+
+      osmLayer = L.tileLayer(
+        'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        attribution: '(c) OpenStreetMap')
+
+      satLayer = L.tileLayer(
+        'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        attribution: '(c) Esri')
+
+      markerLayer = L.featureGroup()
+
+      map = L.map id,
+        center: new L.LatLng(-6.3153, 35.15625)
+        zoom: 5
+        fullscreenControl: true
+        layers: [osmLayer, markerLayer]
+
+      baseMaps =
+        "Open Street Map": osmLayer
+        "Satellite": satLayer
+
+      overlayMaps =
+        "Waterpoints": markerLayer
+
+      # add a layer selector
+      layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
+
+      mapData =
+        map: map
+        markerLayer: markerLayer
+
+    clearMarkers = () ->
+      mapData.markerLayer.clearLayers()
+
+    addWaterpoint = (wp) ->
+      [lng,lat] = wp.location.coordinates
+      m = L.marker L.latLng(lat,lng),
+        stroke: false
+        opacity: 0.8
+        fillColor: statusColor(wp.status_group)
+
+        #html = makePopup(x)
+        #m.bindPopup(html)
+
+      mapData.markerLayer.addLayer(m)
+
+    zoomToMarkers = () ->
+      mapData.map.fitBounds(mapData.markerLayer.getBounds())
+
+    result =
+      initMap: initMap
+      addWaterpoint: addWaterpoint
+      clearMarkers: clearMarkers
+      zoomToMarkers: zoomToMarkers
+
+    return result
+
   .factory 'Map', (Waterpoint) ->
     (where, max_results) =>
       # Initially center on Dar es Salaam
