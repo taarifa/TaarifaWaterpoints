@@ -25,7 +25,7 @@
         <td>
           <button type="checkbox" ng-if="request.attribute[k] != waterpoint[k]"
             ng-click="apply(k)" class="btn btn-success">
-            <span class="glyphicon glyphicon-ok-circle"></span> Apply
+            <span class="glyphicon glyphicon-ok-circle"></span> {{"Apply" | translate }}
           </button>
         </td>
       </tr>
@@ -66,7 +66,7 @@
       </div>
       <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
-          <button class="btn btn-success" ng-click="saveRequest()" translate>Update request</button>
+          <button class="btn btn-success" ng-click="saveRequest()" translate>Update report</button>
         </div>
       </div>
     </form>
