@@ -28,6 +28,15 @@ app.on_post_GET_waterpoints += post_waterpoints_get_callback
 app.config['PAGINATION_LIMIT'] = 70000
 
 
+@app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/requests')
+def waterpoint_requests():
+    "Return the unique values for a given field in the waterpoints collection."
+    # FIXME: Direct call to the PyMongo driver, should be abstracted
+    requests = app.data.driver.db['requests'].find({'status': 'open'},
+                                                   ['attribute.waterpoint_id'])
+    return send_response('requests', (requests.distinct('attribute.waterpoint_id'),))
+
+
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/values/<field>')
 def waterpoint_values(field):
     "Return the unique values for a given field in the waterpoints collection."
