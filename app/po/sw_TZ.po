@@ -116,14 +116,6 @@ msgstr "Mkandarasi"
 msgid "LGA"
 msgstr "Halmashauri"
 
-#: .tmp/scripts/natdashboardctrl.js
-msgid "Leaderboard: Percentage Functional"
-msgstr "Wanaoongoza kwa asilimia ya Vinavyofanya kazi"
-
-#: .tmp/scripts/natdashboardctrl.js
-msgid "Leaderboard: Percentage Served"
-msgstr "Wanaoongoza kwa asilimia ya Wanaohudumiwa"
-
 #: app/views/spinnerdlg.html
 msgid "Loading Data..."
 msgstr "Inapakia Data..."
@@ -140,6 +132,11 @@ msgstr "Mahali"
 msgid "Management"
 msgstr "Usimamizi"
 
+#: app/views/main.html
+#, fuzzy
+msgid "Max no. results"
+msgstr "Idadi ya juu ya matokeo"
+
 #: app/views/requests.html
 msgid "Metadata"
 msgstr ""
@@ -155,6 +152,22 @@ msgstr "Idadi ya Vituo vya Maji"
 #: .tmp/scripts/dcplotsctrl.js
 msgid "Payment Method"
 msgstr "Mfumo wa Malipo"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "Performance Table: % Functional"
+msgstr ""
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "Performance Table: % Served"
+msgstr ""
+
+#: app/views/dashboard.html
+msgid "Print"
+msgstr ""
+
+#: app/views/dashboard.html
+msgid "Publish"
+msgstr ""
 
 #: app/views/dashboard.html app/views/main.html
 msgid "Region"
@@ -180,11 +193,15 @@ msgstr "Seti upya chujio"
 msgid "Selected"
 msgstr "Vilivyochaguliwa"
 
+#: app/views/edit.html
+msgid "Sensor readings"
+msgstr ""
+
 #: app/views/triage.html
 msgid "Service notice"
 msgstr "Taarifa ya matengenezo"
 
-#: app/views/triage.html
+#: app/views/main.html app/views/triage.html
 msgid "Status"
 msgstr "Hali"
 
@@ -209,7 +226,8 @@ msgid "Triage"
 msgstr "Dharura ('Triage')"
 
 #: app/views/triage.html
-msgid "Update request"
+#, fuzzy
+msgid "Update report"
 msgstr "Sasisha maombi"
 
 #: app/views/requests.html
@@ -223,6 +241,10 @@ msgstr "Na. ya kituo cha maji"
 #: app/views/requests.html
 msgid "WP status"
 msgstr "Hali ya kituo cha maji"
+
+#: app/views/main.html
+msgid "WPs with reports"
+msgstr ""
 
 #: app/views/dashboard.html
 msgid "Ward"
@@ -248,17 +270,9 @@ msgstr "Maeneo vilipo vituo vya Maji"
 msgid "Waterpoint status (ordered by % Functional)"
 msgstr "Hali ya vituo vya maji (Kufuatana na % ya vinavyofanya kazi)"
 
-#: app/views/main.html
-msgid "all"
-msgstr "vyote"
-
 #: .tmp/scripts/natdashboardctrl.js
 msgid "functional"
 msgstr "vinavyofanya kazi"
-
-#: app/views/main.html
-msgid "maximum no. of results"
-msgstr "Idadi ya juu ya matokeo"
 
 #: .tmp/scripts/natdashboardctrl.js
 msgid "needs repair"
@@ -276,10 +290,6 @@ msgstr "kati ya"
 msgid "population cover"
 msgstr "idadi ya Watu wanaofikiwa"
 
-#: app/views/main.html
-msgid "status"
-msgstr "hali"
-
 #: app/views/requests.html app/views/triage.html
 msgid "submitted on"
 msgstr "Tarehe ya uwasilishwaji"
@@ -287,6 +297,18 @@ msgstr "Tarehe ya uwasilishwaji"
 #: app/views/dashboard.html
 msgid "waterpoints"
 msgstr "Vituo vya Maji"
+
+#~ msgid "Leaderboard: Percentage Functional"
+#~ msgstr "Wanaoongoza kwa asilimia ya Vinavyofanya kazi"
+
+#~ msgid "Leaderboard: Percentage Served"
+#~ msgstr "Wanaoongoza kwa asilimia ya Wanaohudumiwa"
+
+#~ msgid "status"
+#~ msgstr "hali"
+
+#~ msgid "all"
+#~ msgstr "vyote"
 
 #~ msgid "% Functional"
 #~ msgstr "% Kazi"
