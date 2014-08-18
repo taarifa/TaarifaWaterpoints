@@ -207,8 +207,10 @@ angular.module('taarifaWaterpointsApp')
 
     # FIXME: for some reason this watch never gets triggered beyond first load...
     # resorting to ugly click event workaround
-    $scope.$watch "statusChoice", (oldval, newval) ->
-      console.log(oldval + "->" + newval)
+    # Note: using ngChange only paritally solves this. If you click
+    # between radio buttons too quickly it stops working all together
+    #$scope.$watch "statusChoice", (oldval, newval) ->
+    #  console.log(oldval + "->" + newval)
 
     $scope.selectStatusClicked = (event) ->
       status = event.target.attributes.value.value
