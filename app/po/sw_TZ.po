@@ -228,6 +228,10 @@ msgstr "Na. ya kituo cha maji"
 msgid "WP status"
 msgstr "Hali ya kituo cha maji"
 
+#: app/views/main.html
+msgid "WPs with reports"
+msgstr ""
+
 #: app/views/dashboard.html
 msgid "Ward"
 msgstr "Kata"
@@ -257,7 +261,8 @@ msgid "functional"
 msgstr "vinavyofanya kazi"
 
 #: app/views/main.html
-msgid "maximum no. of results"
+#, fuzzy
+msgid "max results"
 msgstr "Idadi ya juu ya matokeo"
 
 #: .tmp/scripts/natdashboardctrl.js
