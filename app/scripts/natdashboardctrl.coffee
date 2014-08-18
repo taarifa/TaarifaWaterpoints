@@ -112,6 +112,9 @@ angular.module('taarifaWaterpointsApp')
         $scope.params.ward)
 
     $scope.getStatus = (changed) ->
+      # the filtering has changed, reset the selected status
+      $scope.statusChoice = "all"
+
       modalSpinner.open()
 
       $http.get('/api/waterpoints/stats_by/status_group',
@@ -156,6 +159,8 @@ angular.module('taarifaWaterpointsApp')
       drawPlots()
 
     $scope.groupBy = () ->
+      # the grouping field has changed, reset the selected status
+      $scope.statusChoice = "all"
       drawPlots()
 
     $scope.drillDown = (fieldVal, fieldType, clearFilters) ->
@@ -196,6 +201,29 @@ angular.module('taarifaWaterpointsApp')
       groupField = $scope.params.group
       $scope.drillDown(d[groupField])
 
+    $scope.statusChoice = "all"
+    $scope.statusses = statusColor.domain().concat(["all"])
+
+    # FIXME: for some reason this watch never gets triggered beyond first load...
+    # resorting to ugly click event workaround
+    $scope.$watch "statusChoice", (oldval, newval) ->
+      console.log(oldval + "->" + newval)
+
+    $scope.selectStatusClicked = (event) ->
+      status = event.target.attributes.value.value
+      $scope.statusChoice = status
+
+      translate = (x) -> gettextCatalog.getString(x)
+      region = $scope.params?.region
+      lga = $scope.params?.lga
+      ward = $scope.params?.ward
+      groupfield = $scope.params?.group || "region"
+      #status = $scope.statusChoice
+
+      promise = waterpointStats.getStats(region, lga, ward, groupfield, cacheHttp)
+      promise.then (data) ->
+        plotStatusSummary("#statusSummary", data, groupfield, barDblClick, translate, status)
+
     drawPlots = () ->
       modalSpinner.open()
 
@@ -205,11 +233,12 @@ angular.module('taarifaWaterpointsApp')
       lga = $scope.params?.lga
       ward = $scope.params?.ward
       groupfield = $scope.params?.group || "region"
+      status = $scope.statusChoice
 
       promise = waterpointStats.getStats(region, lga, ward, groupfield, cacheHttp)
       promise.then( (data) ->
 
-        plotStatusSummary("#statusSummary", data, groupfield, barDblClick, translate)
+        plotStatusSummary("#statusSummary", data, groupfield, barDblClick, translate, status)
 
         if _.contains(['region','lga','ward'], groupfield)
           leaderChart("#percFunLeaders", data, groupfield, (x) -> x.percFun)
