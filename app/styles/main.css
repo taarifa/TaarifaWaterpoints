@@ -249,3 +249,7 @@ div.region-info {
 .popup-key {
   font-weight: bold;
 }
+
+.statusSelector label {
+  padding-right: 15px;
+}

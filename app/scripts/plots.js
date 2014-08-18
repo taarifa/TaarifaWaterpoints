@@ -1,5 +1,6 @@
 //to prevent creating overcrowded plots
 var minColWidth = 25;
+//FIXME: hardcoded list of possible status fields
 var statusColor = d3.scale.ordinal()
     .domain(["functional","needs repair", "not functional"])
     .range(["#0a871f","orange","#d50000"]);
@@ -36,7 +37,7 @@ function closeOpenTips() {
  * Stacked bar chart summarizing the status (functional/non functional)
  * of all the waterpoints by the given group field
  */
-function plotStatusSummary(selector, data, groupField, dblClickHandler, translate) {
+function plotStatusSummary(selector, data, groupField, dblClickHandler, translate, selectedStatus) {
   //rename as gettext so string extraction will work
   gettext = translate;
 
@@ -45,8 +46,11 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
     //status type is not always in the same order due to mongo, sort here
     group.waterpoints = _.sortBy(group.waterpoints, "status");
     group.waterpoints.forEach(function(x) {
-      x.y0 = y0;
-      x.y1 = (y0 += x.count);
+      //only calculate the rectangle offsets for the requested status
+      if(selectedStatus == "all" || x.status == selectedStatus) {
+        x.y0 = y0;
+        x.y1 = (y0 += x.count);
+      }
     });
   });
   //data.sort(function(a, b) { return b.count - a.count; });
@@ -90,6 +94,7 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
   var svg = d3.select(selector + " svg");
 
   if (!svg[0][0]) {
+
     svg = d3.select(selector).append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
@@ -130,17 +135,30 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
 
   svg.call(tip);
 
+  var filterSelected = function(waterpoints) {
+    var wp = waterpoints.filter(function(x){
+      if(selectedStatus == "all"){
+        return true;
+      }else{
+        return x.status == selectedStatus;
+      }
+    });
+
+    return wp;
+  }
+
   //bind the data to a group
   var state = svg.selectAll(".group")
     .data(data, function(d) {
-        return d[groupField];
+        return d[groupField] + "_" + selectedStatus;
         //return groupField + "_" + d[groupField] + "_" + d.count;
     });
 
   //bind to each rect within the group
   var rects = state.selectAll("rect")
     .data(function(d) {
-      return d.waterpoints;
+      //only keep the waterpoint groups with the status we want
+      return filterSelected(d.waterpoints);
     }, function(d) {
         return d.status;
         //return d.status + "_" + d.count;
@@ -163,29 +181,12 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
   //new rects in new groups
   var rectsEnter = statesEnter.selectAll("rect")
     .data(function(d) {
-      return d.waterpoints;
+      //only keep the waterpoint groups with the status we want
+      return filterSelected(d.waterpoints);
     }, function(d) {
         return d.status;
         //return d.status + "_" + d.count;
     })
-
-  //remove old rects
-  rects.exit()
-    .transition()
-    .duration(1000)
-    .attr("y", y(0))
-    .attr("height", 0)
-    .call(tip.hide)
-    .remove();
-
-  //remove old groups
-  state.exit()
-    .on('mouseover', null)
-    .on('mouseout', null)
-    .transition()
-    .duration(1000)
-    .style("opacity", 0)
-    .remove();
 
   //update existing groups
   state.attr("transform", function(d) {
@@ -206,6 +207,24 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
     .attr("height", function(d) {
       return y(d.y0) - y(d.y1);
     });
+
+  //remove old rects
+  rects.exit()
+    .transition()
+    .duration(1000)
+    .attr("y", y(0))
+    .attr("height", 0)
+    .call(tip.hide);
+  //  .remove();
+
+  //remove old groups
+  state.exit()
+    .on('mouseover', null)
+    .on('mouseout', null)
+    .transition()
+    .duration(1000)
+    .style("opacity", 0)
+    .remove();
 
   //add new rects
   rectsEnter.enter().append("rect")
@@ -239,24 +258,27 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
   svg.select("g.y.axis").transition().call(yAxis);
 
   //add a legend
-  svg.selectAll(".legend").remove();
+  if ($(selector + " svg .legend").length) return;
 
-  var legend = svg.selectAll(".legend")
-    .data(statusColor.domain());
+  var legend = svg.append("g")
+    .attr("class", "legend");
 
-  legend.enter().append("g")
-    .attr("class", "legend")
+  var legItems = legend.selectAll(".legend-item")
+    .data(statusColor.domain())
+    .enter()
+    .append("g")
+    .attr("class", "legend-item")
     .attr("transform", function(d, i) {
       return "translate(0," + i * 20 + ")";
     });
 
-  legend.append("rect")
+  legItems.append("rect")
     .attr("x", width - 18)
     .attr("width", 18)
     .attr("height", 18)
     .style("fill", function(d){return statusColor(d);});
 
-  legend.append("text")
+  legItems.append("text")
     .attr("x", width - 24)
     .attr("y", 9)
     .attr("dy", ".35em")

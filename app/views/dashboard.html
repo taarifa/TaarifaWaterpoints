@@ -66,7 +66,17 @@
             <div class="panel-heading">
               <h3 class="panel-title">{{plots[$index].title | translate}}</h3>
             </div>
-            <div class="panel-body" id="{{plots[$index].id}}"></div>
+            <div class="panel-body" id="{{plots[$index].id}}">
+
+              <div ng-if="plots[$index].id == 'statusSummary'" class="statusSelector">
+                <label ng-repeat="st in statusses">
+                  <input type="radio" name="statusSelect"
+                  value="{{st}}" ng-model="statusChoice" ng-click="selectStatusClicked($event)" />
+                  {{st | titlecase | translate}}
+                </label>
+              </div>
+
+            </div>
           </div>
           </li>
         </ul>
