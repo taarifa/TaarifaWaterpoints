@@ -61,8 +61,7 @@ angular.module('taarifaWaterpointsApp')
             "<a href=\"#/requests/?waterpoint_id=#{p.wpt_code}\">show requests</a><br />" +
             "<a href=\"#/requests/new?waterpoint_id=#{p.wpt_code}\">submit request</a>"
           map.addWaterpoint p, popup
-      # FIXME: this currently fails, maybe bad data?
-      #map.zoomToMarkers()
+        map.zoomToMarkers()
     $scope.updateMap()
 
   .controller 'DashboardCtrl', ($scope) ->
