@@ -18,6 +18,7 @@ app = angular
       .when '/',
         templateUrl: 'views/main.html'
         controller: 'MapCtrl'
+        reloadOnSearch: false
       .when '/waterpoints/edit/:id',
         templateUrl: 'views/edit.html'
         controller: 'WaterpointEditCtrl'
