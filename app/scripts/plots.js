@@ -257,6 +257,7 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
   svg.select("g.y.axis text.axislabel").text(gettext("Number of Waterpoints"));
   svg.select("g.y.axis").transition().call(yAxis);
 
+  /*
   //add a legend
   if ($(selector + " svg .legend").length) return;
 
@@ -286,6 +287,7 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
     .text(function(d) {
       return d;
     });
+    */
 }
 
 function leaderChart(selector, data, groupField, getter) {
