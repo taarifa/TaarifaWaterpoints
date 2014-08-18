@@ -183,7 +183,7 @@ angular.module('taarifaWaterpointsApp')
   .factory 'Service', (ApiResource) ->
     ApiResource 'services'
 
-  .factory 'Map', () ->
+  .factory 'Map', ($filter) ->
     (id) =>
       osmLayer = L.tileLayer(
         'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -210,6 +210,33 @@ angular.module('taarifaWaterpointsApp')
 
       # add a layer selector
       layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
+
+      @makePopup = (wp) ->
+        cleanKey = (k) ->
+          $filter('titlecase')(k.replace("_"," "))
+
+        cleanValue = (k,v) ->
+          if v instanceof Date
+            v.getFullYear()
+          else if k == "location"
+            v.coordinates.toString()
+          else
+            v
+
+        header = '<h5>' + wp.wpt_code + ' (<a href="#/waterpoints/edit/' + wp._id + '">Edit</a>)</h5>' +
+                 '<span class="popup-key">Status</span>: ' + wp.status_group + '<br />' +
+                 '<a href="#/requests/?waterpoint_id=' + wp.wpt_code + '">Show reports</a> | ' +
+                 '<a href="#/requests/new?waterpoint_id=' + wp.wpt_code + '">Submit report</a>' +
+                 '<hr style="margin-top:10px; margin-bottom: 10px;" />'
+
+        # FIXME: can't this be offloaded to angular somehow?
+        fields = _.keys(wp).sort().map((k) ->
+            #cleanKey(k) + String(cleanValue(k, wp[k]))
+            '<span class="popup-key">' + cleanKey(k) + '</span>: ' +
+            '<span class="popup-value">' + String(cleanValue(k,wp[k])) + '</span>'
+          ).join('<br />')
+
+        html = '<div class="popup">' + header + fields + '</div>'
 
       @clearMarkers = () ->
         markerLayer.clearLayers()
