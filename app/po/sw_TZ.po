@@ -180,6 +180,10 @@ msgstr "Seti upya chujio"
 msgid "Selected"
 msgstr "Vilivyochaguliwa"
 
+#: app/views/edit.html
+msgid "Sensor readings"
+msgstr ""
+
 #: app/views/triage.html
 msgid "Service notice"
 msgstr "Taarifa ya matengenezo"
@@ -248,10 +252,6 @@ msgstr "Maeneo vilipo vituo vya Maji"
 msgid "Waterpoint status (ordered by % Functional)"
 msgstr "Hali ya vituo vya maji (Kufuatana na % ya vinavyofanya kazi)"
 
-#: app/views/main.html
-msgid "all"
-msgstr "vyote"
-
 #: .tmp/scripts/natdashboardctrl.js
 msgid "functional"
 msgstr "vinavyofanya kazi"
@@ -287,6 +287,9 @@ msgstr "Tarehe ya uwasilishwaji"
 #: app/views/dashboard.html
 msgid "waterpoints"
 msgstr "Vituo vya Maji"
+
+#~ msgid "all"
+#~ msgstr "vyote"
 
 #~ msgid "% Functional"
 #~ msgstr "% Kazi"
