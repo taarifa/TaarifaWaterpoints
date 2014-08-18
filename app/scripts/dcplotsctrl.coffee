@@ -631,7 +631,7 @@ angular.module('taarifaWaterpointsApp')
           [lng,lat] = x.location.coordinates
           m = L.circleMarker L.latLng(lat,lng),
             stroke: false
-            opacity: 0.9
+            opacity: 1
             fillColor: statusColor(x.status_group)
 
           html = makePopup(x)
