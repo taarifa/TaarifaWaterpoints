@@ -35,17 +35,28 @@ angular.module('taarifaWaterpointsApp')
   .controller 'MapCtrl', ($scope, $http, $location, Waterpoint, Map) ->
     map = Map "wpMap"
     $scope.where = $location.search()
-    $scope.max_results = parseInt($scope.where.max_results) || 100
+    $scope.where.max_results = parseInt($scope.where.max_results) || 100
+    $scope.where.reports_only = parseInt($scope.where.reports_only) || 0
     $http.get('/api/waterpoints/values/region', cache: true).success (regions) ->
       $scope.regions = regions
     $scope.updateMap = () ->
       $location.search($scope.where)
-      $location.search('max_results', $scope.max_results)
-      delete $scope.where.max_results
+      where = {}
+      if $scope.where.region
+        where.region = $scope.where.region
+      if $scope.where.status_group
+        where.status_group = $scope.where.status_group
+      if $scope.where.reports_only
+        $http.get('/api/waterpoints/requests', cache: true).success (requests) ->
+          where.wpt_code = "$in": requests
+          query where, $scope.where.max_results
+      else
+        query where, $scope.where.max_results
+    query = (where, max_results) ->
       map.clearMarkers()
       Waterpoint.query
-        max_results: $scope.max_results
-        where: $scope.where
+        max_results: max_results
+        where: where
         projection:
           _id: 1
           district: 1
