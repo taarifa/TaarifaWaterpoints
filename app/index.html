@@ -73,6 +73,12 @@
         <span class="alert-message">{{flash.message}}</span>
       </div>
 
+      <div flash-alert="info" active-class="in alert" class="fade" duration="0">
+        <button type="button" class="close" ng-click="hide()">&times;</button>
+        <strong class="alert-heading">Info:</strong>
+        <span class="alert-message">{{flash.message}}</span>
+      </div>
+
       <div class="content" ng-view></div>
     </div>
 
