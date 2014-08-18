@@ -4,7 +4,7 @@
       <div gridster="gridsterOpts">
         <ul>
           <li gridster-item="item" ng-repeat="item in gridLayout.tiles">
-          <span class="tile-header">{{tiles[$index][0] || 'unknown' | titlecase | translate}}</span>
+          <span class="tile-header">{{tiles[$index][0] || 'unknown' | translate | titlecase}}</span>
           <br />
           <span class="tile-number">{{tiles[$index][1].percent | number:2 }} %</span>
           <br />
@@ -73,8 +73,8 @@
                   <div ng-switch on="st == 'all'">
                     <input type="radio" name="statusSelect"
                       value="{{st}}" ng-model="statusChoice" ng-click="selectStatusClicked($event)" />
-                    <span ng-switch-when="true" style="color:black;">{{st | titlecase | translate}}</span>
-                    <span ng-switch-default style="color:{{statusColor(st)}};">{{st | titlecase | translate}}</span>
+                      <span ng-switch-when="true" style="color:black;">{{st | translate | titlecase }}</span>
+                    <span ng-switch-default style="color:{{statusColor(st)}};">{{st | translate | titlecase}}</span>
                   </div>
                 </label>
               </div>
