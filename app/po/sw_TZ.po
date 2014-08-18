@@ -116,14 +116,6 @@ msgstr "Mkandarasi"
 msgid "LGA"
 msgstr "Halmashauri"
 
-#: .tmp/scripts/natdashboardctrl.js
-msgid "Leaderboard: Percentage Functional"
-msgstr "Wanaoongoza kwa asilimia ya Vinavyofanya kazi"
-
-#: .tmp/scripts/natdashboardctrl.js
-msgid "Leaderboard: Percentage Served"
-msgstr "Wanaoongoza kwa asilimia ya Wanaohudumiwa"
-
 #: app/views/spinnerdlg.html
 msgid "Loading Data..."
 msgstr "Inapakia Data..."
@@ -160,6 +152,22 @@ msgstr "Idadi ya Vituo vya Maji"
 #: .tmp/scripts/dcplotsctrl.js
 msgid "Payment Method"
 msgstr "Mfumo wa Malipo"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "Performance Table: % Functional"
+msgstr ""
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "Performance Table: % Served"
+msgstr ""
+
+#: app/views/dashboard.html
+msgid "Print"
+msgstr ""
+
+#: app/views/dashboard.html
+msgid "Publish"
+msgstr ""
 
 #: app/views/dashboard.html app/views/main.html
 msgid "Region"
@@ -289,6 +297,12 @@ msgstr "Tarehe ya uwasilishwaji"
 #: app/views/dashboard.html
 msgid "waterpoints"
 msgstr "Vituo vya Maji"
+
+#~ msgid "Leaderboard: Percentage Functional"
+#~ msgstr "Wanaoongoza kwa asilimia ya Vinavyofanya kazi"
+
+#~ msgid "Leaderboard: Percentage Served"
+#~ msgstr "Wanaoongoza kwa asilimia ya Wanaohudumiwa"
 
 #~ msgid "status"
 #~ msgstr "hali"
