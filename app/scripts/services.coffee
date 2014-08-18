@@ -184,7 +184,7 @@ angular.module('taarifaWaterpointsApp')
     ApiResource 'services'
 
   .factory 'Map', ($filter) ->
-    (id) =>
+    (id, clustering) =>
       osmLayer = L.tileLayer(
         'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution: '(c) OpenStreetMap')
@@ -193,7 +193,21 @@ angular.module('taarifaWaterpointsApp')
         'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         attribution: '(c) Esri')
 
-      markerLayer = L.featureGroup()
+      categoryMap =
+        "functional" : 0
+        "not functional" : 1
+        "needs repair" : 2
+
+      if clustering
+        markerLayer = new PruneClusterForLeaflet()
+        markerLayer.Cluster.Size = 100
+        markerLayer.PrepareLeafletMarker = (leafletMarker, data) ->
+          if leafletMarker.getPopup()
+            leafletMarker.setPopupContent data
+          else
+            leafletMarker.bindPopup data
+      else
+        markerLayer = L.featureGroup()
 
       map = L.map id,
         center: new L.LatLng -6.3153, 35.15625
@@ -239,23 +253,33 @@ angular.module('taarifaWaterpointsApp')
         html = '<div class="popup">' + header + fields + '</div>'
 
       @clearMarkers = () ->
-        markerLayer.clearLayers()
+        if clustering
+          markerLayer.RemoveMarkers()
+        else
+          markerLayer.clearLayers()
 
       @addWaterpoint = (wp, popup) ->
         [lng,lat] = wp.location.coordinates
-        m = L.marker L.latLng(lat,lng),
-          stroke: false
-          opacity: 0.8
-          fillColor: statusColor(wp.status_group)
-        if popup
-          m.bindPopup popup
-
-        markerLayer.addLayer(m)
+        if clustering
+          m = new PruneCluster.Marker lat, lng, popup
+          m.category = categoryMap[wp.status_group]
+          markerLayer.RegisterMarker m
+        else
+          m = L.marker L.latLng(lat,lng),
+            stroke: false
+            opacity: 0.8
+            fillColor: statusColor(wp.status_group)
+          if popup
+            m.bindPopup popup
+          markerLayer.addLayer(m)
 
       @zoomToMarkers = () ->
-        bounds = markerLayer.getBounds()
-        if bounds.isValid()
-          map.fitBounds(bounds)
+        if clustering
+          markerLayer.FitBounds()
+        else
+          bounds = markerLayer.getBounds()
+          if bounds.isValid()
+            map.fitBounds(bounds)
 
       return this
 
