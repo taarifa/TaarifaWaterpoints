@@ -10,18 +10,18 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="waterpointStatus" translate>status</label>
+        <label for="waterpointStatus" translate>Status</label>
         <select class="form-control" id="waterpointStatus" ng-model="where.status_group" ng-change="updateMap()"
           ng-options="k for k in ['functional', 'not functional', 'needs repair']">
           <option value="">all</option>
         </select>
       </div>
-      <div class="form-group">
-        <label for="reportsOnly" translate>WPs with reports</label>
+      <div style="margin-left:20px" class="form-group">
         <input type="checkbox" class="form-control" id="reportsOnly" ng-model="where.reports_only" ng-true-value="1" ng-false-value="0" ng-change="updateMap()">
+        <label for="reportsOnly" translate>WPs with reports</label>
       </div>
-      <div class="form-group">
-        <label for="maxResults" translate>max results</label>
+      <div style="margin-left:20px" class="form-group">
+        <label for="maxResults" translate>Max no. results</label>
         <select class="form-control" id="maxResults" ng-model="where.max_results" ng-change="updateMap()"
           ng-options="k for k in [25, 50, 100, 200, 500, 1000]">
         </select>
