@@ -253,7 +253,9 @@ angular.module('taarifaWaterpointsApp')
         markerLayer.addLayer(m)
 
       @zoomToMarkers = () ->
-        map.fitBounds(markerLayer.getBounds())
+        bounds = markerLayer.getBounds()
+        if bounds.isValid()
+          map.fitBounds(bounds)
 
       return this
 
