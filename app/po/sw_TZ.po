@@ -140,6 +140,11 @@ msgstr "Mahali"
 msgid "Management"
 msgstr "Usimamizi"
 
+#: app/views/main.html
+#, fuzzy
+msgid "Max no. results"
+msgstr "Idadi ya juu ya matokeo"
+
 #: app/views/requests.html
 msgid "Metadata"
 msgstr ""
@@ -188,7 +193,7 @@ msgstr ""
 msgid "Service notice"
 msgstr "Taarifa ya matengenezo"
 
-#: app/views/triage.html
+#: app/views/main.html app/views/triage.html
 msgid "Status"
 msgstr "Hali"
 
@@ -213,7 +218,8 @@ msgid "Triage"
 msgstr "Dharura ('Triage')"
 
 #: app/views/triage.html
-msgid "Update request"
+#, fuzzy
+msgid "Update report"
 msgstr "Sasisha maombi"
 
 #: app/views/requests.html
@@ -260,11 +266,6 @@ msgstr "Hali ya vituo vya maji (Kufuatana na % ya vinavyofanya kazi)"
 msgid "functional"
 msgstr "vinavyofanya kazi"
 
-#: app/views/main.html
-#, fuzzy
-msgid "max results"
-msgstr "Idadi ya juu ya matokeo"
-
 #: .tmp/scripts/natdashboardctrl.js
 msgid "needs repair"
 msgstr "vinavyohitaji marekebisho"
@@ -281,10 +282,6 @@ msgstr "kati ya"
 msgid "population cover"
 msgstr "idadi ya Watu wanaofikiwa"
 
-#: app/views/main.html
-msgid "status"
-msgstr "hali"
-
 #: app/views/requests.html app/views/triage.html
 msgid "submitted on"
 msgstr "Tarehe ya uwasilishwaji"
@@ -292,6 +289,9 @@ msgstr "Tarehe ya uwasilishwaji"
 #: app/views/dashboard.html
 msgid "waterpoints"
 msgstr "Vituo vya Maji"
+
+#~ msgid "status"
+#~ msgstr "hali"
 
 #~ msgid "all"
 #~ msgstr "vyote"
