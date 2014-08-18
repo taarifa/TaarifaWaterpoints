@@ -1,6 +1,6 @@
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DashMapCtrl', ($scope, $http, $q, leafletData, $timeout, modalSpinner, waterpointStats, Waterpoint) ->
+  .controller 'DashMapCtrl', ($scope, $http, $q, $timeout, modalSpinner, waterpointStats, Waterpoint) ->
 
     $scope.hoverText = ""
     $scope.choroChoice = "percFun"
