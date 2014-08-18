@@ -258,6 +258,22 @@ angular.module('taarifaWaterpointsApp')
         else
           markerLayer.clearLayers()
 
+      # FIXME: more hardcoded statusses
+      makeAwesomeIcon = (status) ->
+        if status == 'functional'
+          color = 'blue'
+        else if status == 'not functional'
+          color = 'red'
+        else if status == 'needs repair'
+          color = 'orange'
+        else
+          color = 'black'
+
+        icon = L.AwesomeMarkers.icon
+          prefix: 'glyphicon',
+          icon: 'tint',
+          markerColor: color
+
       @addWaterpoint = (wp, popup) ->
         [lng,lat] = wp.location.coordinates
         if clustering
@@ -267,8 +283,10 @@ angular.module('taarifaWaterpointsApp')
         else
           m = L.marker L.latLng(lat,lng),
             stroke: false
-            opacity: 0.8
+            opacity: 1
             fillColor: statusColor(wp.status_group)
+            icon: makeAwesomeIcon(wp.status_group)
+
           if popup
             m.bindPopup popup
           markerLayer.addLayer(m)
