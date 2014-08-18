@@ -7,7 +7,7 @@ angular.module('taarifaWaterpointsApp')
 
     # should http calls be cached
     # FIXME: should be application level setting
-    cacheHttp = true
+    cacheHttp = false
 
     # a flag to keep track if the plots should be redrawn
     # next time the tab is made visible
