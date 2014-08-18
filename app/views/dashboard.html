@@ -70,9 +70,12 @@
 
               <div ng-if="plots[$index].id == 'statusSummary'" class="statusSelector">
                 <label ng-repeat="st in statusses">
-                  <input type="radio" name="statusSelect"
-                  value="{{st}}" ng-model="statusChoice" ng-click="selectStatusClicked($event)" />
-                  {{st | titlecase | translate}}
+                  <div ng-switch on="st == 'all'">
+                    <input type="radio" name="statusSelect"
+                      value="{{st}}" ng-model="statusChoice" ng-click="selectStatusClicked($event)" />
+                    <span ng-switch-when="true" style="color:black;">{{st | titlecase | translate}}</span>
+                    <span ng-switch-default style="color:{{statusColor(st)}};">{{st | titlecase | translate}}</span>
+                  </div>
                 </label>
               </div>
 

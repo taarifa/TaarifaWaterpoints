@@ -256,36 +256,6 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
 
   svg.select("g.y.axis text.axislabel").text(gettext("Number of Waterpoints"));
   svg.select("g.y.axis").transition().call(yAxis);
-
-  //add a legend
-  if ($(selector + " svg .legend").length) return;
-
-  var legend = svg.append("g")
-    .attr("class", "legend");
-
-  var legItems = legend.selectAll(".legend-item")
-    .data(statusColor.domain())
-    .enter()
-    .append("g")
-    .attr("class", "legend-item")
-    .attr("transform", function(d, i) {
-      return "translate(0," + i * 20 + ")";
-    });
-
-  legItems.append("rect")
-    .attr("x", width - 18)
-    .attr("width", 18)
-    .attr("height", 18)
-    .style("fill", function(d){return statusColor(d);});
-
-  legItems.append("text")
-    .attr("x", width - 24)
-    .attr("y", 9)
-    .attr("dy", ".35em")
-    .style("text-anchor", "end")
-    .text(function(d) {
-      return d;
-    });
 }
 
 function leaderChart(selector, data, groupField, getter) {

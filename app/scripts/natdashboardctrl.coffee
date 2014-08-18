@@ -202,6 +202,7 @@ angular.module('taarifaWaterpointsApp')
       $scope.drillDown(d[groupField])
 
     $scope.statusChoice = "all"
+    $scope.statusColor = statusColor
     $scope.statusses = statusColor.domain().concat(["all"])
 
     # FIXME: for some reason this watch never gets triggered beyond first load...
