@@ -125,6 +125,10 @@ li.gridster-item {
     font-size: 20px;
 }
 
+.problemsTile {
+  text-align: left !important;
+}
+
 .dc-chart g.row text {
     fill: black
 }
