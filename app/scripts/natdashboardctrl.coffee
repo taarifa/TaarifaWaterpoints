@@ -51,8 +51,8 @@ angular.module('taarifaWaterpointsApp')
 
     $scope.plots = [
       {id:"statusSummary", title: gettext("Waterpoint status (ordered by % Functional)")},
-      {id:"percFunLeaders", title: gettext("Leaderboard: Percentage Functional")},
-      {id:"popReach", title: gettext("Leaderboard: Percentage Served")}]
+      {id:"percFunLeaders", title: gettext("Performance Table: % Functional")},
+      {id:"popReach", title: gettext("Performance Table: % Served")}]
 
     $scope.groups = ['region', 'lga', 'ward', 'funder', 'source_type',
                      'construction_year', 'quantity_group',
