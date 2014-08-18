@@ -62,12 +62,11 @@ msgstr "Njia ya uzalishaji"
 
 #: app/views/main.html
 msgid "Filter map view"
-msgstr ""
+msgstr "Chuja muonekano wa ramani"
 
 #: app/views/requests.html
-#, fuzzy
 msgid "Filter requests"
-msgstr "Sasisha maombi"
+msgstr "Chuja maombi"
 
 #: app/views/dashboard.html
 msgid "Functional"
@@ -107,7 +106,7 @@ msgstr "Kundi Kwa"
 
 #: app/index.html
 msgid "Home"
-msgstr ""
+msgstr "Nymbani"
 
 #: .tmp/scripts/dcplotsctrl.js
 msgid "Installer"
@@ -134,9 +133,8 @@ msgid "Loading waterpoint data."
 msgstr "Inapakia data za vituo vya maji."
 
 #: app/views/edit.html
-#, fuzzy
 msgid "Location"
-msgstr "Kitaifa"
+msgstr "Mahali"
 
 #: .tmp/scripts/dcplotsctrl.js
 msgid "Management"
@@ -172,7 +170,7 @@ msgstr "Thamani/Hali iliyoripotiwa"
 
 #: app/views/requests.html
 msgid "Request status"
-msgstr ""
+msgstr "Hali ya ombi"
 
 #: app/views/dashboard.html
 msgid "Reset all filters"
@@ -208,7 +206,7 @@ msgstr "Matatizo makuu"
 
 #: app/index.html
 msgid "Triage"
-msgstr ""
+msgstr "Dharura ('Triage')"
 
 #: app/views/triage.html
 msgid "Update request"
@@ -220,12 +218,11 @@ msgstr "Mambo yaliyoainishwa na mtumiaji"
 
 #: app/views/requests.html
 msgid "WP id"
-msgstr ""
+msgstr "Na. ya kituo cha maji"
 
 #: app/views/requests.html
-#, fuzzy
 msgid "WP status"
-msgstr "Hali"
+msgstr "Hali ya kituo cha maji"
 
 #: app/views/dashboard.html
 msgid "Ward"
@@ -253,39 +250,35 @@ msgstr "Hali ya vituo vya maji (Kufuatana na % ya vinavyofanya kazi)"
 
 #: app/views/main.html
 msgid "all"
-msgstr ""
+msgstr "vyote"
 
 #: .tmp/scripts/natdashboardctrl.js
-#, fuzzy
 msgid "functional"
-msgstr "Vinafanya kazi"
+msgstr "vinavyofanya kazi"
 
 #: app/views/main.html
 msgid "maximum no. of results"
-msgstr ""
+msgstr "Idadi ya juu ya matokeo"
 
 #: .tmp/scripts/natdashboardctrl.js
 msgid "needs repair"
-msgstr ""
+msgstr "vinavyohitaji marekebisho"
 
 #: .tmp/scripts/natdashboardctrl.js
-#, fuzzy
 msgid "not functional"
-msgstr "Hakifanyi Kazi"
+msgstr "visivyofanya kazi"
 
 #: app/views/dashboard.html
 msgid "out of"
 msgstr "kati ya"
 
 #: .tmp/scripts/natdashboardctrl.js
-#, fuzzy
 msgid "population cover"
-msgstr "Idadi ya Watu Iliyofikiwa"
+msgstr "idadi ya Watu wanaofikiwa"
 
 #: app/views/main.html
-#, fuzzy
 msgid "status"
-msgstr "Hali"
+msgstr "hali"
 
 #: app/views/requests.html app/views/triage.html
 msgid "submitted on"
