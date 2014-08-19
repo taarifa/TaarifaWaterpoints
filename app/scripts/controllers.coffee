@@ -81,11 +81,16 @@ angular.module('taarifaWaterpointsApp')
       regional:
         active: false
 
-  .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, FacilityForm, flash) ->
+  .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, FacilityForm, flash, geolocation) ->
     $scope.formTemplate = FacilityForm 'wpf001'
     # FIXME: Should not hardcode the facility code here
     $scope.form =
       facility_code: "wpf001"
+    geolocation.getLocation().then (data) ->
+      flash.success = "Geolocation succeeded: got coordinates #{data.coords.longitude}, #{data.coords.latitude}"
+      $scope.form.location = coordinates: [data.coords.longitude, data.coords.latitude]
+    , (reason) ->
+      flash.error = "Geolocation failed: #{reason}"
     $scope.save = () ->
       Waterpoint.save $scope.form, (waterpoint) ->
         if waterpoint._status == 'OK'

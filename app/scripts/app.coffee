@@ -10,6 +10,7 @@ app = angular
     'dynform',
     'angular-flash.service',
     'angular-flash.flash-alert-directive',
+    'geolocation',
     'gettext'
   ])
 
