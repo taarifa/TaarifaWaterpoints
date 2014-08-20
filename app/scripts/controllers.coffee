@@ -83,9 +83,15 @@ angular.module('taarifaWaterpointsApp')
 
   .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, FacilityForm, Map, flash, geolocation) ->
     $scope.formTemplate = FacilityForm 'wpf001'
+    # Default to today
+    d = new Date()
+    today = d.toGMTString()
+
     # FIXME: Should not hardcode the facility code here
     $scope.form =
       facility_code: "wpf001"
+      date_recorded: today
+
     geolocation.getLocation().then (data) ->
       flash.success = "Geolocation succeeded: got coordinates #{data.coords.longitude}, #{data.coords.latitude}"
       $scope.form.location = coordinates: [data.coords.longitude, data.coords.latitude]
