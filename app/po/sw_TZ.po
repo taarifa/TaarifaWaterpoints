@@ -12,6 +12,10 @@ msgstr ""
 "X-Generator: Poedit 1.6.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: app/index.html
+msgid "Add Waterpoint"
+msgstr "Ongeza Kituo cha Maji"
+
 #: app/views/triage.html
 msgid "Agency responsible"
 msgstr "Wakala husika"
