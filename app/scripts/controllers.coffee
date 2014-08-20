@@ -112,6 +112,11 @@ angular.module('taarifaWaterpointsApp')
     map = Map("editMap")
 
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
+      # We are editing a waterpoint so set the date_recorded
+      # field to today, should it be saved.
+      d = new Date()
+      waterpoint.date_recorded = d.toGMTString()
+
       $scope.form = waterpoint
       map.clearMarkers()
       map.addWaterpoint(waterpoint)
