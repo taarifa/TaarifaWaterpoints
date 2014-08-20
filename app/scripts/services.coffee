@@ -193,6 +193,7 @@ angular.module('taarifaWaterpointsApp')
         'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         attribution: '(c) Esri')
 
+      # FIXME: hardcoded categories
       categoryMap =
         "functional" : 0
         "not functional" : 1
