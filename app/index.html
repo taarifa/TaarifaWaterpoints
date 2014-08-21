@@ -47,8 +47,9 @@
           </a></li-->
           <li ng-class="{active: location.path() == '/'}"><a ng-href="#" translate>Home</a></li>
           <li ng-class="{active: location.path() == '/requests'}"><a ng-href="#/requests" translate>Triage</a></li>
+          <li ng-class="{active: location.path() == '/waterpoints/new'}">
+            <a ng-href="#/waterpoints/new"><span class="glyphicon glyphicon-plus"></span> {{"Add Waterpoint" | translate}}</a></li>
           <li ng-class="{active: location.path() == '/dashboard'}"><a ng-href="#/dashboard" translate>Dashboard</a></li>
-          <li ng-class="{active: location.path() == '/waterpoints/new'}"><a ng-href="#/waterpoints/new"><span class="glyphicon glyphicon-plus"></span> {{"Add Waterpoint" | translate}}</a></li>
           <li ng-controller="LocaleCtrl">
             <select class="form-control" ng-model="languages.current"
               ng-options="key as value for (key, value) in languages.available">
