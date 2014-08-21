@@ -83,7 +83,7 @@ angular.module('taarifaWaterpointsApp')
         #$scope.geojson = results[2]
 
         $scope.regions = regs.sort()
-        $scope.region = $scope.regions[3]
+        $scope.region = $scope.regions[7]
 
         # FIXME:
         # unfortunately, for some reason, not all dc charts manage to pickup the
