@@ -95,7 +95,7 @@ angular.module('taarifaWaterpointsApp')
     geolocation.getLocation().then (data) ->
       flash.success = "Geolocation succeeded: got coordinates #{data.coords.longitude}, #{data.coords.latitude}"
       $scope.form.location = coordinates: [data.coords.longitude, data.coords.latitude]
-      map = Map("editMap")
+      map = Map("editMap", {})
       map.clearMarkers()
       map.addWaterpoint($scope.form)
       map.zoomToMarkers()
@@ -115,7 +115,7 @@ angular.module('taarifaWaterpointsApp')
                                     Map, Waterpoint, FacilityForm) ->
     $scope.wp = Waterpoint
 
-    map = Map("editMap")
+    map = Map("editMap", {})
 
     Waterpoint.get id: $routeParams.id, (waterpoint) ->
       # We are editing a waterpoint so set the date_recorded

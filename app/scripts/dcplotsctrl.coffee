@@ -1,6 +1,6 @@
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'RegionalDashboardCtrl', ($scope, $http, $q, $filter,
+  .controller 'RegionalDashboardCtrl', ($scope, $http, $q, $filter, Map,
                                         gettext, modalSpinner, populationData) ->
     $scope.gridsterOpts =
       margins: [10, 10]
@@ -44,7 +44,7 @@ angular.module('taarifaWaterpointsApp')
 
     $scope.fields = ["status_group", "lga", "ward", "location",
                  "source_type", "amount_tsh", "population"
-                 "construction_year", "quantity_group",
+                 "construction_year", "quantity_group", "wpt_code",
                  "quality_group", "extraction_type_group",
                  "breakdown_year", "payment_type", "funder",
                  "installer", "management", "hardware_problem"]
@@ -52,7 +52,7 @@ angular.module('taarifaWaterpointsApp')
     dimensions = []
     xfilter = null
     popData = null
-    mapData = null
+    map = null
 
     # what value to use for year 0
     YEAR_ZERO=1950
@@ -567,79 +567,25 @@ angular.module('taarifaWaterpointsApp')
           dc.events.trigger () ->
             reloadTable(datatable,dim)
 
-    makePopup = (wp) ->
-      # FIXME: can't this be done by angular with some smart bindings
-
-      cleanKey = (k) ->
-        $filter('titlecase')(k.replace("_"," "))
-
-      cleanValue = (k,v) ->
-        if v instanceof Date
-          v.getFullYear()
-        else if k == "location"
-          v.coordinates.toString()
-        else
-          v
-
-      html = _.keys(wp).sort().map((k) ->
-        '<span class="popup-key">' + cleanKey(k) + '</span>: ' + cleanValue(k,wp[k])).join('<br />')
-      html = '<div class="popup">' + html + '</div>'
-
     initMap = (container, dim) ->
       # Have we already initialized the map?
-      if !mapData
+      if !map
         id = "regionalDashMap"
         e = $('<div id="' + id + '"></div>')
         $(container).append(e)
 
-        osmLayer = L.tileLayer(
-          'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          attribution: '(c) OpenStreetMap')
+        options =
+          clustering: false
+          markerType: "circle"
 
-        satLayer = L.tileLayer(
-          'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-          attribution: '(c) Esri')
-
-        markerLayer = L.featureGroup()
-
-        map = L.map id,
-          center: new L.LatLng(-6.3153, 35.15625)
-          zoom: 5
-          fullscreenControl: true
-          layers: [osmLayer, markerLayer]
-
-        baseMaps =
-          "Open Street Map": osmLayer
-          "Satellite": satLayer
-
-        overlayMaps =
-          #"Regions": regLayer
-          #"Wards": wardLayer
-          "Waterpoints": markerLayer
-
-        # add a layer selector
-        layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
-
-        mapData =
-          map: map
-          markerLayer: markerLayer
+        map = Map(id, options)
 
       updateMap = () ->
         alldata = dim.top(Infinity)
-        mapData.markerLayer.clearLayers()
-        alldata.forEach (x) ->
-          [lng,lat] = x.location.coordinates
-          m = L.circleMarker L.latLng(lat,lng),
-            radius: 5
-            stroke: false
-            fillOpacity: 1
-            fillColor: statusColor(x.status_group)
-
-          html = makePopup(x)
-          m.bindPopup(html)
-
-          mapData.markerLayer.addLayer(m)
-        mapData.map.fitBounds(mapData.markerLayer.getBounds())
+        map.clearMarkers()
+        alldata.forEach (wp) ->
+          map.addWaterpoint(wp)
+        map.zoomToMarkers()
 
       dc.chartRegistry.list().forEach (chart) ->
         chart.on "filtered", () ->

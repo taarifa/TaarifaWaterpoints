@@ -184,7 +184,14 @@ angular.module('taarifaWaterpointsApp')
     ApiResource 'services'
 
   .factory 'Map', ($filter) ->
-    (id, clustering) =>
+    (id, opts) =>
+
+      defaults =
+        clustering: false
+        markerType: "regular"
+
+      options = _.extend(defaults, opts)
+
       osmLayer = L.tileLayer(
         'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution: '(c) OpenStreetMap')
@@ -199,7 +206,7 @@ angular.module('taarifaWaterpointsApp')
         "not functional" : 1
         "needs repair" : 2
 
-      if clustering
+      if options.clustering
         markerLayer = new PruneClusterForLeaflet()
         markerLayer.Cluster.Size = 100
         markerLayer.PrepareLeafletMarker = (leafletMarker, data) ->
@@ -254,7 +261,7 @@ angular.module('taarifaWaterpointsApp')
         html = '<div class="popup">' + header + fields + '</div>'
 
       @clearMarkers = () ->
-        if clustering
+        if options.clustering
           markerLayer.RemoveMarkers()
         else
           markerLayer.clearLayers()
@@ -275,25 +282,37 @@ angular.module('taarifaWaterpointsApp')
           icon: 'tint',
           markerColor: color
 
-      @addWaterpoint = (wp, popup) ->
+      makeMarker = (wp) ->
         [lng,lat] = wp.location.coordinates
-        if clustering
+        mt = options.markerType
+
+        if mt == "circle"
+          m = L.circleMarker L.latLng(lat,lng),
+            stroke: false
+            radius: 5
+            fillOpacity: 1
+            fillColor: statusColor(wp.status_group)
+        else
+          m = L.marker L.latLng(lat,lng),
+              icon: makeAwesomeIcon(wp.status_group)
+
+
+      @addWaterpoint = (wp, popup) ->
+        if not popup
+          popup = @makePopup(wp)
+        [lng,lat] = wp.location.coordinates
+        if options.clustering
           m = new PruneCluster.Marker lat, lng, popup
           m.category = categoryMap[wp.status_group]
           markerLayer.RegisterMarker m
         else
-          m = L.marker L.latLng(lat,lng),
-            stroke: false
-            opacity: 1
-            fillColor: statusColor(wp.status_group)
-            icon: makeAwesomeIcon(wp.status_group)
-
+          m = makeMarker(wp)
           if popup
             m.bindPopup popup
           markerLayer.addLayer(m)
 
       @zoomToMarkers = () ->
-        if clustering
+        if options.clustering
           markerLayer.FitBounds()
         else
           bounds = markerLayer.getBounds()
