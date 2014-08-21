@@ -549,6 +549,11 @@ angular.module('taarifaWaterpointsApp')
             mRender: (obj) ->
               y = obj.getFullYear()
               if y == YEAR_ZERO then "unknown" else y
+          else if x == "location"
+            mData: x
+            sDefaultContent: ""
+            mRender: (obj) ->
+              y = String(obj.coordinates)
           else
             {mData: x, sDefaultContent: ""})
 
