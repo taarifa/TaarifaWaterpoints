@@ -52,7 +52,6 @@ angular.module('taarifaWaterpointsApp')
     dimensions = []
     xfilter = null
     popData = null
-    map = null
 
     # what value to use for year 0
     YEAR_ZERO=1950
@@ -382,8 +381,8 @@ angular.module('taarifaWaterpointsApp')
 
         dc.dataCount(".dc-data-count").dimension(xfilter).group(all)
 
-        initDataTable("#dc-data-table", wards)
-        initMap("#wpLocations", wards)
+        loadDataTable("#dc-data-table", wards)
+        loadMap("#wpLocations", wards)
 
         dc.renderAll()
 
@@ -529,19 +528,10 @@ angular.module('taarifaWaterpointsApp')
           chart.rescale())
         .yAxis().ticks(4)
 
-    reloadTable = (datatable,dim) ->
-      alldata = dim.top(Infinity)
-      datatable.fnClearTable()
-      datatable.fnAddData(alldata)
-      datatable.fnDraw()
-
-    initDataTable = (selector, dim) ->
+    loadDataTable = (selector, dim) ->
       exists = $.fn.DataTable.fnIsDataTable($(selector))
 
-      if exists
-        datatable = $(selector).dataTable()
-        reloadTable(datatable,dim)
-      else
+      if !exists
         cols = $scope.fields.map((x) ->
           if x.endsWith("_year")
             mData: x
@@ -569,16 +559,30 @@ angular.module('taarifaWaterpointsApp')
           aaData: dim.top(Infinity),
           bDestroy: true,
           aoColumns: cols
+      else
+        datatable = $(selector).dataTable()
+
+      reloadTable = () ->
+        alldata = dim.top(Infinity)
+        datatable.fnClearTable()
+        datatable.fnAddData(alldata)
+        datatable.fnDraw()
 
       dc.chartRegistry.list().forEach (chart) ->
         chart.on "filtered", () ->
           dc.events.trigger () ->
-            reloadTable(datatable,dim)
+            reloadTable()
 
-    initMap = (container, dim) ->
-      # Have we already initialized the map?
-      if !map
-        id = "regionalDashMap"
+      if exists
+        reloadTable()
+
+    # controller level map object
+    map = null
+
+    loadMap = (container, dim) ->
+      id = "regionalDashMap"
+
+      if not $('#' + id).length
         e = $('<div id="' + id + '"></div>')
         $(container).append(e)
 
