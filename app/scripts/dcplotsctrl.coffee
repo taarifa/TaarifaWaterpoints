@@ -228,6 +228,9 @@ angular.module('taarifaWaterpointsApp')
       table = $("#dc-data-table").dataTable()
       table.fnAdjustColumnSizing()
 
+    $scope.clearFilters = () ->
+     dc.filterAll()
+     dc.renderAll()
 
     setupCharts = (region) ->
       getData region, (data) ->
