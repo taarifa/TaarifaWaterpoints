@@ -1,16 +1,23 @@
+<div style="text-align:right">
+  <button class="btn btn-success btn-sm" disabled>
+    <span class="glyphicon glyphicon-cloud-download"></span> {{"Publish"|translate}}</a>
+  <button type="submit" class="btn btn-success btn-sm" onclick="window.print();">
+    <span class="glyphicon glyphicon-print"></span> {{"Print"|translate}}</button>
+</div>
+
 <tabset>
-  <tab heading="National">
-    <div class="row" ng-controller="DashboardCtrl">
+  <tab heading="{{'National'|translate}}" ng-controller="NationalDashboardCtrl" active="dashTabs.national.active">
+    <div class="row">
       <div gridster="gridsterOpts">
         <ul>
           <li gridster-item="item" ng-repeat="item in gridLayout.tiles">
-          <span class="tile-header">{{tiles[$index][0] || 'unknown' | titlecase}}</span>
+          <span class="tile-header">{{tiles[$index][0] || 'unknown' | translate | titlecase}}</span>
           <br />
           <span class="tile-number">{{tiles[$index][1].percent | number:2 }} %</span>
           <br />
           <span class="tile-info">({{tiles[$index][1].count }})</span>
           </li>
-          <li gridster-item="gridLayout.problems">
+          <li gridster-item="gridLayout.problems" class="problemsTile">
           <span class="tile-header" translate>Top Problems</span>
           <br />
           <ul ng-repeat="p in problems" class="">
@@ -27,8 +34,8 @@
             </div>
             <div id="nationalDashMap"></div>
             <div id="choroplethSelect" class="btn-group map-control">
-              <label class="btn btn-success" ng-model="choroChoice" btn-radio="'percFun'" uncheckable>Functional</label>
-              <label class="btn btn-success" ng-model="choroChoice" btn-radio="'popReach'" uncheckable>Coverage</label>
+              <label class="btn btn-success" ng-model="choroChoice" btn-radio="'percFun'" uncheckable translate>Functional</label>
+              <label class="btn btn-success" ng-model="choroChoice" btn-radio="'popReach'" uncheckable translate>Coverage</label>
             </div>
           </div>
           </li>
@@ -64,9 +71,22 @@
           <li gridster-item="item" ng-repeat="item in gridLayout.plots" class="gridster-item-chart">
           <div class="panel panel-primary plot">
             <div class="panel-heading">
-              <h3 class="panel-title">{{plots[$index].title}}</h3>
+              <h3 class="panel-title">{{plots[$index].title | translate}}</h3>
             </div>
-            <div class="panel-body" id="{{plots[$index].id}}"></div>
+            <div class="panel-body" id="{{plots[$index].id}}">
+
+              <div ng-if="plots[$index].id == 'statusSummary'" class="statusSelector">
+                <label ng-repeat="st in statusses">
+                  <div ng-switch on="st == 'all'">
+                    <input type="radio" name="statusSelect"
+                      value="{{st}}" ng-model="statusChoice" ng-click="selectStatusClicked($event)" />
+                      <span ng-switch-when="true" style="color:black;">{{st | translate | titlecase }}</span>
+                    <span ng-switch-default style="color:{{statusColor(st)}};">{{st | translate | titlecase}}</span>
+                  </div>
+                </label>
+              </div>
+
+            </div>
           </div>
           </li>
         </ul>
@@ -75,7 +95,7 @@
   </tab>
 
   <!-- FIXME: controller does not belong here. Adopt: https://stackoverflow.com/a/21019370 -->
-  <tab heading="Regional" select="initView()" ng-controller="DCPlotsCtrl">
+  <tab heading="{{'Regional'|translate}}" select="initView()" ng-controller="RegionalDashboardCtrl" active="dashTabs.regional.active">
     <div class="row">
           <div id="" class="">
             <form class="form-inline" role="form" style="padding: 10px">
@@ -87,7 +107,7 @@
               </div>
               <p class="help-block">
               <div class="dc-data-count">
-                Selected <span class="filter-count"></span> out of <span class="total-count"></span> waterpoints | <a href="javascript:dc.filterAll(); dc.renderAll();">Reset all filters</a>
+                {{"Selected"|translate}} <span class="filter-count"></span> {{"out of"|translate}} <span class="total-count"></span> {{"waterpoints"|translate}} | <a href="" ng-click="clearFilters()" translate>Reset all filters</a>
               </div>
               </p>
             </form>
@@ -95,14 +115,14 @@
     </div>
 
     <tabset>
-      <tab heading="Charts" active="tabs.regcharts.active">
+    <tab heading="{{'Charts'|translate}}" active="tabs.regcharts.active">
         <div id="regionalPlots" class="row">
           <div id="dcgridster" gridster="gridsterOpts">
             <ul>
               <li gridster-item="item" ng-repeat="(key,item) in gridLayout" class="gridster-item-chart">
               <div class="panel panel-primary plot">
                 <div class="panel-heading">
-                  <h3 class="panel-title">{{item.title}}</h3>
+                  <h3 class="panel-title">{{item.title | translate}}</h3>
                 </div>
                 <div class="panel-body" id="{{key}}"></div>
               </div>
@@ -111,7 +131,7 @@
           </div>
         </div>
       </tab>
-      <tab heading="Data Table" select="initTable()" active="tabs.regtable.active">
+      <tab heading="{{'Data Table'|translate}}" select="initTable()" active="tabs.regtable.active">
         <table id="dc-data-table" class="list table table-striped table-bordered">
           <thead>
             <tr>

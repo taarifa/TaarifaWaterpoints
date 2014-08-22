@@ -7,10 +7,10 @@ app = angular
     'ngResource',
     'ngRoute',
     'ngCookies',
-    'leaflet-directive',
     'dynform',
     'angular-flash.service',
     'angular-flash.flash-alert-directive',
+    'geolocation',
     'gettext'
   ])
 
@@ -18,7 +18,8 @@ app = angular
     $routeProvider
       .when '/',
         templateUrl: 'views/main.html'
-        controller: 'MapCtrl'
+        controller: 'MainCtrl'
+        reloadOnSearch: false
       .when '/waterpoints/edit/:id',
         templateUrl: 'views/edit.html'
         controller: 'WaterpointEditCtrl'
@@ -36,6 +37,7 @@ app = angular
         controller: 'RequestTriageCtrl'
       .when '/dashboard',
         templateUrl: 'views/dashboard.html'
+        controller: 'DashboardCtrl'
       .otherwise
         redirectTo: '/'
     $httpProvider.defaults.headers.patch =

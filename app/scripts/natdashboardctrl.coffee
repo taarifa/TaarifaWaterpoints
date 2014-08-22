@@ -2,11 +2,16 @@
 
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DashboardCtrl', ($scope, $http, $timeout, modalSpinner, populationData, waterpointStats) ->
+  .controller 'NationalDashboardCtrl', ($scope, $http, $timeout, modalSpinner,
+                                gettextCatalog, gettext, populationData, waterpointStats) ->
 
     # should http calls be cached
     # FIXME: should be application level setting
-    cacheHttp = true
+    cacheHttp = false
+
+    # a flag to keep track if the plots should be redrawn
+    # next time the tab is made visible
+    plotsDirty = false
 
     $scope.gridsterOpts = {
         margins: [10, 10],
@@ -45,9 +50,9 @@ angular.module('taarifaWaterpointsApp')
 
 
     $scope.plots = [
-      {id:"statusSummary", title: "Waterpoint status (ordered by % Functional)"},
-      {id:"percFunLeaders", title: "Leaderboard: Percentage Functional"},
-      {id:"popReach", title: "Leaderboard: Percentage Served"}]
+      {id:"statusSummary", title: gettext("Waterpoint status (ordered by % Functional)")},
+      {id:"percFunLeaders", title: gettext("Performance Table: % Functional")},
+      {id:"popReach", title: gettext("Performance Table: % Served")}]
 
     $scope.groups = ['region', 'lga', 'ward', 'funder', 'source_type',
                      'construction_year', 'quantity_group',
@@ -107,6 +112,9 @@ angular.module('taarifaWaterpointsApp')
         $scope.params.ward)
 
     $scope.getStatus = (changed) ->
+      # the filtering has changed, reset the selected status
+      $scope.statusChoice = "all"
+
       modalSpinner.open()
 
       $http.get('/api/waterpoints/stats_by/status_group',
@@ -122,7 +130,7 @@ angular.module('taarifaWaterpointsApp')
 
           # ensure all three statusses are always represented
           empty = {count: 0, percent: 0}
-          statusses = ["functional", "not functional", "needs repair"]
+          statusses = [gettext("functional"), gettext("not functional"), gettext("needs repair")]
           statusses.forEach((x) -> statusMap[x] = statusMap[x] || empty)
 
           # the population covered
@@ -138,7 +146,7 @@ angular.module('taarifaWaterpointsApp')
           popCover = {count: funPop, percent: percent}
 
           $scope.tiles = _.pairs(_.pick(statusMap,'functional','needs repair'))
-          $scope.tiles.push(['population cover', popCover])
+          $scope.tiles.push([gettext('population cover'), popCover])
           modalSpinner.close()
 
       if changed == 'region'
@@ -151,6 +159,8 @@ angular.module('taarifaWaterpointsApp')
       drawPlots()
 
     $scope.groupBy = () ->
+      # the grouping field has changed, reset the selected status
+      $scope.statusChoice = "all"
       drawPlots()
 
     $scope.drillDown = (fieldVal, fieldType, clearFilters) ->
@@ -191,18 +201,46 @@ angular.module('taarifaWaterpointsApp')
       groupField = $scope.params.group
       $scope.drillDown(d[groupField])
 
-    drawPlots = () ->
-      modalSpinner.open()
+    $scope.statusChoice = "all"
+    $scope.statusColor = statusColor
+    $scope.statusses = statusColor.domain().concat(["all"])
 
+    # FIXME: for some reason this watch never gets triggered beyond first load...
+    # resorting to ugly click event workaround
+    # Note: using ngChange only paritally solves this. If you click
+    # between radio buttons too quickly it stops working all together
+    #$scope.$watch "statusChoice", (oldval, newval) ->
+    #  console.log(oldval + "->" + newval)
+
+    $scope.selectStatusClicked = (event) ->
+      status = event.target.attributes.value.value
+      $scope.statusChoice = status
+
+      translate = (x) -> gettextCatalog.getString(x)
       region = $scope.params?.region
       lga = $scope.params?.lga
       ward = $scope.params?.ward
       groupfield = $scope.params?.group || "region"
 
       promise = waterpointStats.getStats(region, lga, ward, groupfield, cacheHttp)
+      promise.then (data) ->
+        plotStatusSummary("#statusSummary", data, groupfield, barDblClick, translate, status)
+
+    drawPlots = () ->
+      modalSpinner.open()
+
+      translate = (s) -> gettextCatalog.getString(s)
+
+      region = $scope.params?.region
+      lga = $scope.params?.lga
+      ward = $scope.params?.ward
+      groupfield = $scope.params?.group || "region"
+      status = $scope.statusChoice
+
+      promise = waterpointStats.getStats(region, lga, ward, groupfield, cacheHttp)
       promise.then( (data) ->
 
-        plotStatusSummary("#statusSummary", data, groupfield, barDblClick)
+        plotStatusSummary("#statusSummary", data, groupfield, barDblClick, translate, status)
 
         if _.contains(['region','lga','ward'], groupfield)
           leaderChart("#percFunLeaders", data, groupfield, (x) -> x.percFun)
@@ -210,19 +248,36 @@ angular.module('taarifaWaterpointsApp')
           data = _.sortBy(data, (x) -> -x.popReach)
           leaderChart("#popReach", data, groupfield, (x) -> x.popReach)
 
+        plotsDirty = false
         modalSpinner.close())
 
+    $scope.$on "gettextLanguageChanged", (e) ->
+      # redraw the plots so axis labels, etc are translated
 
-    ##########################################################################
-    # Initialization code
+      # will only work if the tab is visible (else d3 fails)
+      if $scope.dashTabs.national.active
+        drawPlots()
+      else
+        # we have to remember to redraw the plots when the tab
+        # finally does become active
+        plotsDirty = true
 
-    # Ensure the population data is loaded
+    $scope.$watch "dashTabs.national.active", (val) ->
+      if val and plotsDirty
+        drawPlots()
+
+    # access object to the population data
+    # FIXME: better handled by a $resource perhaps?
     popData = null
-    populationData.then((data) ->
-      popData = data
-      $scope.getStatus())
 
-    getRegion()
-    getLGA()
-    getWard()
-    getProblems()
+    initView = () ->
+      populationData.then((data) ->
+        popData = data
+        $scope.getStatus())
+
+      getRegion()
+      getLGA()
+      getWard()
+      getProblems()
+
+    initView()

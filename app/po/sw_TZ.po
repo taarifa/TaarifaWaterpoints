@@ -9,100 +9,340 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.5\n"
+"X-Generator: Poedit 1.6.8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: app/scripts/plots.js
-msgid "% Functional"
-msgstr "% Kazi"
+#: app/index.html
+msgid "Add Waterpoint"
+msgstr "Ongeza Kituo cha Maji"
 
-#: app/scripts/plots.js
-msgid "Average Price Per Bucket (TSH)"
-msgstr "Bei ya Ndoo Moja"
+#: app/views/triage.html
+msgid "Agency responsible"
+msgstr "Wakala husika"
 
-#: app/scripts/plots.js
-msgid "Avg Bucket Price"
-msgstr "Bei ya Ndoo"
+#: app/views/triage.html
+msgid "Apply"
+msgstr "Tumia"
+
+#: app/views/triage.html
+msgid "Attribute"
+msgstr "Sifa"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Breakdown Year"
+msgstr "Mwaka wa kuharibika"
 
 #: app/views/dashboard.html
-msgid "Barrel leaks"
-msgstr "Tenki Linavuja"
+msgid "Charts"
+msgstr "Chati"
 
-#: app/scripts/plots.js
-msgid "Coverage %"
-msgstr "Eneo"
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Construction Year"
+msgstr "Mwaka wa ujenzi"
+
+#: app/views/dashboard.html
+msgid "Coverage"
+msgstr "Kiasi cha wanaohudumiwa"
+
+#: app/views/triage.html
+msgid "Current value"
+msgstr "Thamani/Hali ya sasa"
 
 #: app/index.html
 msgid "Dashboard"
 msgstr "Kwa Ujumla"
 
 #: app/views/dashboard.html
-msgid "District"
-msgstr "Wilaya"
+msgid "Data Table"
+msgstr "Jedwali la Data"
+
+#: app/views/triage.html
+msgid "Expected date"
+msgstr "Tarehe tarajiwa"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Extraction Type"
+msgstr "Njia ya uzalishaji"
+
+#: app/views/main.html
+msgid "Filter map view"
+msgstr "Chuja muonekano wa ramani"
+
+#: app/views/requests.html
+msgid "Filter requests"
+msgstr "Chuja masuala"
 
 #: app/views/dashboard.html
-msgid "Filter"
-msgstr "Chujio"
-
-#: app/scripts/plots.js
 msgid "Functional"
-msgstr "Kazi"
+msgstr "Vinafanya kazi"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Functionality"
+msgstr "Ufanyaji kazi"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Functionality by Extraction"
+msgstr "Ufanyaji kazi na Njia ya uzalishaji"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Functionality by LGA"
+msgstr "Ufanyaji Kazi kwa Halmashauri"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Functionality by Management"
+msgstr "Ufanyaji kazi na Usimamizi"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Functionality by Ward"
+msgstr "Ufanyaji kazi kwa Kata"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Functionality vs Cost"
+msgstr "Ufanyaji kazi dhidi ya Gharama"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Funder"
+msgstr "Mfadhili"
 
 #: app/views/dashboard.html
 msgid "Group By"
-msgstr "Kundi Kwa:-"
+msgstr "Kundi Kwa"
 
-#: app/views/dashboard.html
-msgid "Key Performance Indicators"
-msgstr "Viashiria vya Ufanyaji kazi"
+#: app/index.html
+msgid "Home"
+msgstr "Nymbani"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Installer"
+msgstr "Mkandarasi"
 
 #: app/views/dashboard.html
 msgid "LGA"
-msgstr "Mamlaka za Serikali za mitaa"
+msgstr "Halmashauri"
 
-#: app/scripts/plots.js
-msgid "New Infrastructure Projects"
-msgstr "Miundombinu Mpya za Miradi"
+#: app/views/spinnerdlg.html
+msgid "Loading Data..."
+msgstr "Inapakia Data..."
 
-#: app/scripts/plots.js
-msgid "Not functional"
-msgstr "Hakifanyi Kazi"
+#: app/views/spinnerdlg.html
+msgid "Loading waterpoint data."
+msgstr "Inapakia data za vituo vya maji."
+
+#: app/views/edit.html
+msgid "Location"
+msgstr "Mahali"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Management"
+msgstr "Usimamizi"
+
+#: app/views/main.html
+msgid "Max no. results"
+msgstr "Kikomo cha juu cha matokeo"
+
+#: app/views/requests.html
+msgid "Metadata"
+msgstr ""
 
 #: app/views/dashboard.html
-msgid "Population covered"
-msgstr "Idadi ya Watu Iliyofikiwa"
+msgid "National"
+msgstr "Kitaifa"
 
 #: app/scripts/plots.js
-msgid "Population served"
-msgstr "Idadi ya watu Iliyohudumiwa"
+msgid "Number of Waterpoints"
+msgstr "Idadi ya Vituo vya Maji"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Payment Method"
+msgstr "Mfumo wa Malipo"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "Performance Table: % Functional"
+msgstr "Jedwali la Utendaji: % Vinavyofanya kazi"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "Performance Table: % Served"
+msgstr "Jedwali la Utendaji: % Wanaohudumiwa"
 
 #: app/views/dashboard.html
+msgid "Print"
+msgstr "Chapa"
+
+#: app/views/dashboard.html
+msgid "Publish"
+msgstr "Sambaza"
+
+#: app/views/dashboard.html app/views/main.html
 msgid "Region"
 msgstr "Mkoa"
 
 #: app/views/dashboard.html
-msgid "Salty water"
-msgstr "Maji Chumvi"
+msgid "Regional"
+msgstr "Kwa Mkoa"
+
+#: app/views/triage.html
+msgid "Reported value"
+msgstr "Thamani/Hali iliyoripotiwa"
+
+#: app/views/requests.html
+msgid "Request status"
+msgstr "Hali ya suala"
 
 #: app/views/dashboard.html
-msgid "Tap broken"
-msgstr "Bomba Limepasuka"
+msgid "Reset all filters"
+msgstr "Seti upya chujio"
+
+#: app/views/dashboard.html
+msgid "Selected"
+msgstr "Vilivyochaguliwa"
+
+#: app/views/triage.html
+msgid "Service notice"
+msgstr "Taarifa ya matengenezo"
+
+#: app/views/main.html app/views/triage.html
+msgid "Status"
+msgstr "Hali"
+
+#: app/views/triage.html
+msgid "Status notes"
+msgstr "Maelezo kuhusu hali"
+
+#: app/index.html
+msgid "Tanzania Waterpoints"
+msgstr "Vituo vya Maji Tanzania"
+
+#: app/views/spinnerdlg.html
+msgid "This may take a while depending on your connection"
+msgstr "Hii inaweza kuchukua muda kidogo kutegemeana na kasi ya mtandao"
+
+#: app/views/dashboard.html .tmp/scripts/regdashboardctrl.js
+msgid "Top Problems"
+msgstr "Matatizo makuu"
+
+#: app/index.html
+msgid "Triage"
+msgstr "Dharura ('Triage')"
+
+#: app/views/triage.html
+msgid "Update report"
+msgstr "Sasisha ripoti"
+
+#: app/views/requests.html
+msgid "User provided fields"
+msgstr "Mambo yaliyoainishwa na mtumiaji"
+
+#: app/views/requests.html
+msgid "WP id"
+msgstr "Na. ya kituo cha maji"
+
+#: app/views/requests.html
+msgid "WP status"
+msgstr "Hali ya kituo cha maji"
+
+#: app/views/main.html
+msgid "WPs with reports"
+msgstr "Vituo vya maji na ripoti"
 
 #: app/views/dashboard.html
 msgid "Ward"
 msgstr "Kata"
 
-#: app/views/dashboard.html
-msgid "Waterpoint Map"
-msgstr "Ramani ya Kituo cha Maji"
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Water Quality"
+msgstr "Ubora wa Maji"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Water Quantity"
+msgstr "Kiasi cha Maji"
+
+#: app/views/requests.html app/views/triage.html
+msgid "Waterpoint"
+msgstr "Kituo cha Maji"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Waterpoint Locations"
+msgstr "Maeneo vilipo vituo vya Maji"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "Waterpoint status (ordered by % Functional)"
+msgstr "Hali ya vituo vya maji (Kufuatana na % ya vinavyofanya kazi)"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "functional"
+msgstr "vinavyofanya kazi"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "needs repair"
+msgstr "vinavyohitaji marekebisho"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "not functional"
+msgstr "visivyofanya kazi"
 
 #: app/views/dashboard.html
-msgid "Waterpoint Status"
-msgstr "Hali ya Kituo cha Maji"
+msgid "out of"
+msgstr "kati ya"
 
-#: app/index.html
-msgid "Waterpoints Dashboard"
-msgstr "Kituo cha Maji kwa Ujumla"
+#: .tmp/scripts/natdashboardctrl.js
+msgid "population cover"
+msgstr "idadi ya Watu wanaofikiwa"
+
+#: app/views/requests.html app/views/triage.html
+msgid "submitted on"
+msgstr "Tarehe ya uwasilishwaji"
+
+#: app/views/dashboard.html
+msgid "waterpoints"
+msgstr "Vituo vya Maji"
+
+#~ msgid "Leaderboard: Percentage Functional"
+#~ msgstr "Wanaoongoza kwa asilimia ya Vinavyofanya kazi"
+
+#~ msgid "Leaderboard: Percentage Served"
+#~ msgstr "Wanaoongoza kwa asilimia ya Wanaohudumiwa"
+
+#~ msgid "status"
+#~ msgstr "hali"
+
+#~ msgid "all"
+#~ msgstr "vyote"
+
+#~ msgid "% Functional"
+#~ msgstr "% Kazi"
+
+#~ msgid "Average Price Per Bucket (TSH)"
+#~ msgstr "Bei ya Ndoo Moja"
+
+#~ msgid "Avg Bucket Price"
+#~ msgstr "Bei ya Ndoo"
+
+#~ msgid "Barrel leaks"
+#~ msgstr "Tenki Linavuja"
+
+#~ msgid "District"
+#~ msgstr "Wilaya"
+
+#~ msgid "Filter"
+#~ msgstr "Chujio"
+
+#~ msgid "Key Performance Indicators"
+#~ msgstr "Viashiria vya Ufanyaji kazi"
+
+#~ msgid "New Infrastructure Projects"
+#~ msgstr "Miundombinu Mpya za Miradi"
+
+#~ msgid "Population served"
+#~ msgstr "Idadi ya watu Iliyohudumiwa"
+
+#~ msgid "Salty water"
+#~ msgstr "Maji Chumvi"
+
+#~ msgid "Tap broken"
+#~ msgstr "Bomba Limepasuka"
+
+#~ msgid "Waterpoints Dashboard"
+#~ msgstr "Kituo cha Maji kwa Ujumla"
 
 #~ msgid "1: Tap is Broken"
 #~ msgstr "Bomba Limepasuka"
@@ -113,14 +353,8 @@ msgstr "Kituo cha Maji kwa Ujumla"
 #~ msgid "3: Barrel is Lost"
 #~ msgstr "Tenki/Pipa Limepotea"
 
-#~ msgid "Number of Waterpointies"
-#~ msgstr "Idadi ya Vituo vya Maji"
-
 #~ msgid "Spend per Waterpoint ($)"
 #~ msgstr "Kutumia Kwa Kituo cha Maji ($)"
-
-#~ msgid "Taarifa Waterpoints"
-#~ msgstr "Taarifa Kituo cha Maji Usimamizi"
 
 #~ msgid "Top Reasons for Faulty Waterpoints"
 #~ msgstr "Sababu Kuu za Mpasuko wa Vituo vya Maji"

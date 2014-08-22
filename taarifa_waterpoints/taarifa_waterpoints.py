@@ -12,11 +12,15 @@ def post_waterpoints_get_callback(request, payload):
     """Strip all meta data but id from waterpoint payload if 'strip' is set to
     a non-zero value in the query string."""
     if request.args.get('strip', 0):
-        d = json.loads(payload.data)
-        d['_items'] = [dict((k, v) for k, v in it.items()
-                            if k == '_id' or not k.startswith('_'))
-                       for it in d['_items']]
-        payload.data = json.dumps(d)
+        try:
+            d = json.loads(payload.data)
+            d['_items'] = [dict((k, v) for k, v in it.items()
+                                if k == '_id' or not k.startswith('_'))
+                           for it in d['_items']]
+            payload.data = json.dumps(d)
+        except (KeyError, ValueError):
+            # If JSON decoding fails or the object has no key _items
+            pass
 
 app.name = 'TaarifaWaterpoints'
 app.on_post_GET_waterpoints += post_waterpoints_get_callback
@@ -26,6 +30,15 @@ app.on_post_GET_waterpoints += post_waterpoints_get_callback
 # FIXME: this should eventually be replaced by an incremental load
 # which is better for responsiveness
 app.config['PAGINATION_LIMIT'] = 70000
+
+
+@app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/requests')
+def waterpoint_requests():
+    "Return the unique values for a given field in the waterpoints collection."
+    # FIXME: Direct call to the PyMongo driver, should be abstracted
+    requests = app.data.driver.db['requests'].find({'status': 'open'},
+                                                   ['attribute.waterpoint_id'])
+    return send_response('requests', (requests.distinct('attribute.waterpoint_id'),))
 
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/values/<field>')

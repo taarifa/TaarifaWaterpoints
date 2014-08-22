@@ -183,41 +183,143 @@ angular.module('taarifaWaterpointsApp')
   .factory 'Service', (ApiResource) ->
     ApiResource 'services'
 
-  .factory 'Map', (Waterpoint) ->
-    # Initially center on Dar es Salaam
-    @center =
-      lat: -6.7701973
-      lng: 39.2664484
-      zoom: 6
-    @markers = {}
-    addMarkers = (waterpoints) =>
-      for p in waterpoints._items
-        @markers['wp' + p._id] =
-          # FIXME temporarily disable clustering since it is not properly
-          # reinitialized when the MapCtrl controller reloads
-          # group: p.district
-          lat: p.location.coordinates[1]
-          lng: p.location.coordinates[0]
-          message: "#{p.wpt_code}<br />" +
-            "Status: #{p.status_group}<br />" +
-            "<a href=\"#/waterpoints/edit/#{p._id}\">edit</a><br />" +
-            "<a href=\"#/requests/new?waterpoint_id=#{p.wpt_code}\">submit request</a>"
-      # This would keep loading further waterpoints as long as there are any.
-      # Disabled for performance reasons
-      # if waterpoints._links.next
-      #   $http.get(waterpoints._links.next.href)
-      #     .success addMarkers
-    Waterpoint.query
-      max_results: 100
-      projection:
-        _id: 1
-        district: 1
-        location: 1
-        wpt_code: 1
-        status_group: 1
-      strip: 1
-    , addMarkers
-    return this
+  .factory 'Map', ($filter) ->
+    (id, opts) =>
+
+      defaults =
+        clustering: false
+        markerType: "regular"
+
+      options = _.extend(defaults, opts)
+
+      osmLayer = L.tileLayer(
+        'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        attribution: '(c) OpenStreetMap')
+
+      satLayer = L.tileLayer(
+        'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        attribution: '(c) Esri')
+
+      # FIXME: hardcoded categories
+      categoryMap =
+        "functional" : 0
+        "not functional" : 1
+        "needs repair" : 2
+
+      if options.clustering
+        markerLayer = new PruneClusterForLeaflet()
+        markerLayer.Cluster.Size = 100
+        markerLayer.PrepareLeafletMarker = (leafletMarker, data) ->
+          if leafletMarker.getPopup()
+            leafletMarker.setPopupContent data
+          else
+            leafletMarker.bindPopup data
+      else
+        markerLayer = L.featureGroup()
+
+      map = L.map id,
+        center: new L.LatLng -6.3153, 35.15625
+        zoom: 5
+        fullscreenControl: true
+        layers: [osmLayer, markerLayer]
+
+      baseMaps =
+        "Open Street Map": osmLayer
+        "Satellite": satLayer
+
+      overlayMaps =
+        "Waterpoints": markerLayer
+
+      # add a layer selector
+      layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
+
+      @makePopup = (wp) ->
+        cleanKey = (k) ->
+          $filter('titlecase')(k.replace("_"," "))
+
+        cleanValue = (k,v) ->
+          if v instanceof Date
+            v.getFullYear()
+          else if k == "location"
+            v.coordinates.toString()
+          else
+            v
+
+        header = '<h5>' + wp.wpt_code + ' (<a href="#/waterpoints/edit/' + wp._id + '">Edit</a>)</h5>' +
+                 '<span class="popup-key">Status</span>: ' + wp.status_group + '<br />' +
+                 '<a href="#/requests/?waterpoint_id=' + wp.wpt_code + '">Show reports</a> | ' +
+                 '<a href="#/requests/new?waterpoint_id=' + wp.wpt_code + '">Submit report</a>' +
+                 '<hr style="margin-top:10px; margin-bottom: 10px;" />'
+
+        # FIXME: can't this be offloaded to angular somehow?
+        fields = _.keys(wp).sort().map((k) ->
+            #cleanKey(k) + String(cleanValue(k, wp[k]))
+            '<span class="popup-key">' + cleanKey(k) + '</span>: ' +
+            '<span class="popup-value">' + String(cleanValue(k,wp[k])) + '</span>'
+          ).join('<br />')
+
+        html = '<div class="popup">' + header + fields + '</div>'
+
+      @clearMarkers = () ->
+        if options.clustering
+          markerLayer.RemoveMarkers()
+        else
+          markerLayer.clearLayers()
+
+      # FIXME: more hardcoded statusses
+      makeAwesomeIcon = (status) ->
+        if status == 'functional'
+          color = 'blue'
+        else if status == 'not functional'
+          color = 'red'
+        else if status == 'needs repair'
+          color = 'orange'
+        else
+          color = 'black'
+
+        icon = L.AwesomeMarkers.icon
+          prefix: 'glyphicon',
+          icon: 'tint',
+          markerColor: color
+
+      makeMarker = (wp) ->
+        [lng,lat] = wp.location.coordinates
+        mt = options.markerType
+
+        if mt == "circle"
+          m = L.circleMarker L.latLng(lat,lng),
+            stroke: false
+            radius: 5
+            fillOpacity: 1
+            fillColor: statusColor(wp.status_group)
+        else
+          m = L.marker L.latLng(lat,lng),
+              icon: makeAwesomeIcon(wp.status_group)
+
+
+      @addWaterpoint = (wp, popup) ->
+        if not popup
+          popup = @makePopup(wp)
+        [lng,lat] = wp.location.coordinates
+        if options.clustering
+          m = new PruneCluster.Marker lat, lng, popup
+          m.category = categoryMap[wp.status_group]
+          markerLayer.RegisterMarker m
+        else
+          m = makeMarker(wp)
+          if popup
+            m.bindPopup popup
+          markerLayer.addLayer(m)
+
+      @zoomToMarkers = () ->
+        if options.clustering
+          markerLayer.FitBounds()
+        else
+          bounds = markerLayer.getBounds()
+          if bounds.isValid()
+            map.fitBounds(bounds)
+
+      return this
 
   # Get an angular-dynamic-forms compatible form description from a Facility
   # given a facility code

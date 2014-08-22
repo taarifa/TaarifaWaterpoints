@@ -1,6 +1,10 @@
 /* http://angular-ui.github.io/bootstrap/#/getting_started */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
+.form-control {
+  padding: 3px;
+}
+
 .fade {
   display: none;
 }
@@ -110,6 +114,12 @@ li.gridster-item {
     vertical-align: middle;
 }
 
+@media (max-width: 1024px) {
+  .gridster-item .form-control {
+    font-size: 12px;
+  }
+}
+
 .tile-header {
     font-size: 18px;
     font-color: white;
@@ -118,11 +128,20 @@ li.gridster-item {
 
 .tile-number{
     font-weight: bold;
+    font-size: 24px;
+}
+@media (min-width: 1024px) {
+  .tile-number{
     font-size: 32px;
+  }
 }
 
 .tile-info {
     font-size: 20px;
+}
+
+.problemsTile {
+  text-align: left !important;
 }
 
 .dc-chart g.row text {
@@ -248,4 +267,8 @@ div.region-info {
 
 .popup-key {
   font-weight: bold;
+}
+
+.statusSelector label {
+  padding-right: 15px;
 }

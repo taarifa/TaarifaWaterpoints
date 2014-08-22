@@ -16,10 +16,7 @@
     <!-- Leaflet -->
     <link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
     <link rel="stylesheet" href="//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.2/leaflet.fullscreen.css" />
-
-    <!-- Clustering -->
-    <link rel="stylesheet" href="//leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="//leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.0/leaflet.awesome-markers.css" />
 
     <!-- angular gridster -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/css/jquery-ui.min.css" />
@@ -48,9 +45,11 @@
             <span class="glyphicon glyphicon-plus"></span>
             Create waterpoint
           </a></li-->
-          <li ng-class="{active: location.path() == '/'}"><a ng-href="#">Home</a></li>
-          <li ng-class="{active: location.path() == '/requests'}"><a ng-href="#/requests">Triage</a></li>
-          <li ng-class="{active: location.path() == '/dashboard'}"><a ng-href="#/dashboard">Dashboard</a></li>
+          <li ng-class="{active: location.path() == '/'}"><a ng-href="#" translate>Home</a></li>
+          <li ng-class="{active: location.path() == '/requests'}"><a ng-href="#/requests" translate>Triage</a></li>
+          <li ng-class="{active: location.path() == '/waterpoints/new'}">
+            <a ng-href="#/waterpoints/new"><span class="glyphicon glyphicon-plus"></span> {{"Add Waterpoint" | translate}}</a></li>
+          <li ng-class="{active: location.path() == '/dashboard'}"><a ng-href="#/dashboard" translate>Dashboard</a></li>
           <li ng-controller="LocaleCtrl">
             <select class="form-control" ng-model="languages.current"
               ng-options="key as value for (key, value) in languages.available">
@@ -70,6 +69,12 @@
       <div flash-alert="error" active-class="in alert" class="fade" duration="0">
         <button type="button" class="close" ng-click="hide()">&times;</button>
         <strong class="alert-heading">Error:</strong>
+        <span class="alert-message">{{flash.message}}</span>
+      </div>
+
+      <div flash-alert="info" active-class="in alert" class="fade" duration="0">
+        <button type="button" class="close" ng-click="hide()">&times;</button>
+        <strong class="alert-heading">Info:</strong>
         <span class="alert-message">{{flash.message}}</span>
       </div>
 
@@ -103,9 +108,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
 
     <script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js"></script>
-    <script src="//tombatossals.github.io/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
     <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.2/Leaflet.fullscreen.min.js'></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.0/leaflet.awesome-markers.min.js"></script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>
@@ -119,17 +123,17 @@
     <script src="vendor/dynamic-forms.js"></script>
     <script src="vendor/flash-service.js"></script>
     <script src="vendor/flash-alert-directive.js"></script>
+    <script src="vendor/geolocation.js"></script>
     <script src="vendor/angular-gettext.min.js"></script>
     <script src="vendor/angular-gridster.min.js"></script>
     <script src="vendor/dc.min.js"></script>
-    <!--script src="vendor/dc.leaflet.js"></script-->
     <script src="scripts/plots.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/services.js"></script>
     <script src="scripts/controllers.js"></script>
     <script src="scripts/mapctrl.js"></script>
     <script src="scripts/natdashboardctrl.js"></script>
-    <script src="scripts/dcplotsctrl.js"></script>
+    <script src="scripts/regdashboardctrl.js"></script>
     <script src="scripts/translations.js"></script>
     <!-- endbuild -->
 </body>
