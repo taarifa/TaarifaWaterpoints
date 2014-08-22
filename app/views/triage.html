@@ -17,16 +17,9 @@
         ng-class="{success: request.attribute[k] == waterpoint[k]}">
         <td>{{k}}</td>
         <td>{{waterpoint[k]}}</td>
+        <td>{{request.attribute[k]}}</td>
         <td>
-          <div class="form-group">
-            <input ng-model="request.attribute[k]" type="text" class="form-control">
-          </div>
-        </td>
-        <td>
-          <button type="checkbox" ng-if="request.attribute[k] != waterpoint[k]"
-            ng-click="apply(k)" class="btn btn-success">
-            <span class="glyphicon glyphicon-ok-circle"></span> {{"Apply" | translate }}
-          </button>
+          <input type="checkbox" ng-model="apply[k]" ng-disabled="waterpoint[k] == request.attribute[k]">
         </td>
       </tr>
     </tbody>

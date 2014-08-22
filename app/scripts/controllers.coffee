@@ -174,6 +174,7 @@ angular.module('taarifaWaterpointsApp')
     $scope.filterStatus()
 
   .controller 'RequestTriageCtrl', ($scope, $routeParams, $filter, Request, Waterpoint, flash) ->
+    $scope.apply = {}
     Request.get id: $routeParams.id, (request) ->
       if request.expected_datetime
         $scope.expected_datetime = new Date(request.expected_datetime)
@@ -182,19 +183,21 @@ angular.module('taarifaWaterpointsApp')
         $scope.waterpoint = waterpoint._items[0]
         if not request.agency_responsible
           request.agency_responsible = $scope.waterpoint.management
-    $scope.apply = (key) ->
+    $scope.saveRequest = () ->
       d = {}
-      d[key] = $scope.request.attribute[key]
+      for key of $scope.apply
+        d[key] = $scope.request.attribute[key]
       Waterpoint.patch($scope.waterpoint._id, d, $scope.waterpoint._etag)
       .success (data, status) ->
         if status == 200 and data._status == 'OK'
           flash.success = 'Waterpoint successfully updated!'
           $scope.waterpoint._etag = data._etag
-          $scope.waterpoint[key] = $scope.request.attribute[key]
+          for key of $scope.apply
+            $scope.waterpoint[key] = $scope.request.attribute[key]
+          $scope.apply = {}
+          if $scope.expected_datetime
+            $scope.request.expected_datetime = $filter('date') $scope.expected_datetime, "EEE, dd MMM yyyy hh:mm:ss 'GMT'"
+          Request.update($routeParams.id, $scope.request)
         if status == 200 and data._status == 'ERR'
           for field, message of data._issues
             flash.error = "#{field}: #{message}"
-    $scope.saveRequest = () ->
-      if $scope.expected_datetime
-        $scope.request.expected_datetime = $filter('date') $scope.expected_datetime, "EEE, dd MMM yyyy hh:mm:ss 'GMT'"
-      Request.update($routeParams.id, $scope.request)
