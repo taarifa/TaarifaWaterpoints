@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.5\n"
+"X-Generator: Poedit 1.6.8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: app/index.html
@@ -28,7 +28,7 @@ msgstr "Tumia"
 msgid "Attribute"
 msgstr "Sifa"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Breakdown Year"
 msgstr "Mwaka wa kuharibika"
 
@@ -36,7 +36,7 @@ msgstr "Mwaka wa kuharibika"
 msgid "Charts"
 msgstr "Chati"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Construction Year"
 msgstr "Mwaka wa ujenzi"
 
@@ -60,7 +60,7 @@ msgstr "Jedwali la Data"
 msgid "Expected date"
 msgstr "Tarehe tarajiwa"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Extraction Type"
 msgstr "Njia ya uzalishaji"
 
@@ -76,31 +76,31 @@ msgstr "Chuja masuala"
 msgid "Functional"
 msgstr "Vinafanya kazi"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality"
 msgstr "Ufanyaji kazi"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality by Extraction"
 msgstr "Ufanyaji kazi na Njia ya uzalishaji"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality by LGA"
 msgstr "Ufanyaji Kazi kwa Halmashauri"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality by Management"
 msgstr "Ufanyaji kazi na Usimamizi"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality by Ward"
 msgstr "Ufanyaji kazi kwa Kata"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality vs Cost"
 msgstr "Ufanyaji kazi dhidi ya Gharama"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Funder"
 msgstr "Mfadhili"
 
@@ -112,7 +112,7 @@ msgstr "Kundi Kwa"
 msgid "Home"
 msgstr "Nymbani"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Installer"
 msgstr "Mkandarasi"
 
@@ -132,7 +132,7 @@ msgstr "Inapakia data za vituo vya maji."
 msgid "Location"
 msgstr "Mahali"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Management"
 msgstr "Usimamizi"
 
@@ -152,7 +152,7 @@ msgstr "Kitaifa"
 msgid "Number of Waterpoints"
 msgstr "Idadi ya Vituo vya Maji"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Payment Method"
 msgstr "Mfumo wa Malipo"
 
@@ -196,10 +196,6 @@ msgstr "Seti upya chujio"
 msgid "Selected"
 msgstr "Vilivyochaguliwa"
 
-#: app/views/edit.html
-msgid "Sensor readings"
-msgstr ""
-
 #: app/views/triage.html
 msgid "Service notice"
 msgstr "Taarifa ya matengenezo"
@@ -220,7 +216,7 @@ msgstr "Vituo vya Maji Tanzania"
 msgid "This may take a while depending on your connection"
 msgstr "Hii inaweza kuchukua muda kidogo kutegemeana na kasi ya mtandao"
 
-#: app/views/dashboard.html .tmp/scripts/dcplotsctrl.js
+#: app/views/dashboard.html .tmp/scripts/regdashboardctrl.js
 msgid "Top Problems"
 msgstr "Matatizo makuu"
 
@@ -252,11 +248,11 @@ msgstr "Vituo vya maji na ripoti"
 msgid "Ward"
 msgstr "Kata"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Water Quality"
 msgstr "Ubora wa Maji"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Water Quantity"
 msgstr "Kiasi cha Maji"
 
@@ -264,7 +260,7 @@ msgstr "Kiasi cha Maji"
 msgid "Waterpoint"
 msgstr "Kituo cha Maji"
 
-#: .tmp/scripts/dcplotsctrl.js
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Waterpoint Locations"
 msgstr "Maeneo vilipo vituo vya Maji"
 
