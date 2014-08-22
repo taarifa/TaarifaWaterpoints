@@ -114,6 +114,12 @@ li.gridster-item {
     vertical-align: middle;
 }
 
+@media (max-width: 1024px) {
+  .gridster-item .form-control {
+    font-size: 12px;
+  }
+}
+
 .tile-header {
     font-size: 18px;
     font-color: white;
@@ -122,7 +128,12 @@ li.gridster-item {
 
 .tile-number{
     font-weight: bold;
+    font-size: 24px;
+}
+@media (min-width: 1024px) {
+  .tile-number{
     font-size: 32px;
+  }
 }
 
 .tile-info {
