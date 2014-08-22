@@ -228,8 +228,18 @@ angular.module('taarifaWaterpointsApp')
       table.fnAdjustColumnSizing()
 
     $scope.clearFilters = () ->
+     # note this triggeres a whole set of filtered events
      dc.filterAll()
      dc.renderAll()
+
+    # central handler and listeners for dc filtered events
+    # used by the map and datatable widgets
+    # FIXME: eventually this should be replaced by making the map
+    # and data table proper dc charts
+    filterHandlers = []
+    onFilteredHandler = () ->
+      filterHandlers.forEach (x) ->
+        x()
 
     setupCharts = (region) ->
       getData region, (data) ->
@@ -383,6 +393,14 @@ angular.module('taarifaWaterpointsApp')
 
         loadDataTable("#dc-data-table", wards)
         loadMap("#wpLocations", wards)
+
+        dc.chartRegistry.list().forEach (chart) ->
+          chart.on "filtered", () ->
+            # its important to throttle events here to prevent
+            # countless needless redraws
+            dc.events.trigger () ->
+              onFilteredHandler()
+            , 70
 
         dc.renderAll()
 
@@ -568,21 +586,19 @@ angular.module('taarifaWaterpointsApp')
         datatable.fnAddData(alldata)
         datatable.fnDraw()
 
-      dc.chartRegistry.list().forEach (chart) ->
-        chart.on "filtered", () ->
-          dc.events.trigger () ->
-            reloadTable()
-
       if exists
         reloadTable()
+      else
+        filterHandlers.push(reloadTable)
 
     # controller level map object
     map = null
 
     loadMap = (container, dim) ->
       id = "regionalDashMap"
+      exists = $('#' + id).length > 0
 
-      if not $('#' + id).length
+      if not exists
         e = $('<div id="' + id + '"></div>')
         $(container).append(e)
 
@@ -599,10 +615,8 @@ angular.module('taarifaWaterpointsApp')
           map.addWaterpoint(wp)
         map.zoomToMarkers()
 
-      dc.chartRegistry.list().forEach (chart) ->
-        chart.on "filtered", () ->
-          dc.events.trigger () ->
-            updateMap()
+      if not exists
+        filterHandlers.push(updateMap)
 
       updateMap()
 
