@@ -52,3 +52,5 @@ app/bower_components
 *.lock
 *.DS_Store
 *.swp
+*.swo
+.ropeproject
