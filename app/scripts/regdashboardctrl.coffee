@@ -2,6 +2,10 @@ angular.module('taarifaWaterpointsApp')
 
   .controller 'RegionalDashboardCtrl', ($scope, $http, $q, $filter, Map,
                                         gettext, modalSpinner, populationData) ->
+    # should http calls be cached
+    # FIXME: should be application level setting
+    cacheHttp = false
+
     $scope.gridsterOpts =
       margins: [10, 10]
       columns: 12
@@ -65,7 +69,7 @@ angular.module('taarifaWaterpointsApp')
     # Called when the tab is activated for the first time
     # Has to be done on tab activation for else the charts can not pickup
     # the correct dimensions from their containing elements.
-    $scope.initView = () ->
+    initView = () ->
       # only do once
       if dc.chartRegistry.list().length then return
 
@@ -73,9 +77,9 @@ angular.module('taarifaWaterpointsApp')
 
       # get all regions
       $q.all([
-        $http.get('/api/waterpoints/values/region', cache: true)
+        $http.get('/api/waterpoints/values/region', cache: cacheHttp)
         populationData
-        #$http.get('data/tz_wards.geojson', cache: true)
+        #$http.get('data/tz_wards.geojson', cache: cacheHttp)
       ]).then((results) ->
         regs = results[0].data
         popData = results[1]
@@ -112,7 +116,7 @@ angular.module('taarifaWaterpointsApp')
               "&max_results=10000&strip=1"
 
       $q.all([
-        $http.get(url, cache: true)
+        $http.get(url, cache: cacheHttp)
       ]).then((results) ->
         waterpoints = results[0].data._items
 
@@ -684,5 +688,5 @@ angular.module('taarifaWaterpointsApp')
         (() -> count: 0, total: 0))
       res
 
-String.prototype.endsWith = (suffix) ->
-  this.indexOf(suffix, this.length - suffix.length) != -1
+    # kick off everything
+    initView()

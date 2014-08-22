@@ -1,0 +1,84 @@
+<div style="text-align:right">
+  <button class="btn btn-success btn-sm" disabled>
+    <span class="glyphicon glyphicon-cloud-download"></span> {{"Publish"|translate}}</a>
+  <button type="submit" class="btn btn-success btn-sm" onclick="window.print();">
+    <span class="glyphicon glyphicon-print"></span> {{"Print"|translate}}</button>
+</div>
+
+<div class="row">
+  <div gridster="gridsterOpts">
+    <ul>
+      <li gridster-item="item" ng-repeat="item in gridLayout.tiles">
+      <span class="tile-header">{{tiles[$index][0] || 'unknown' | translate | titlecase}}</span>
+      <br />
+      <span class="tile-number">{{tiles[$index][1].percent | number:2 }} %</span>
+      <br />
+      <span class="tile-info">({{tiles[$index][1].count }})</span>
+      </li>
+      <li gridster-item="gridLayout.problems" class="problemsTile">
+      <span class="tile-header" translate>Top Problems</span>
+      <br />
+      <ul ng-repeat="p in problems" class="">
+        <li><span class="tile-number">({{$index+1}}) - {{p.hardware_problem}}</span>
+        <span class="tile-info">({{p.count}})</span></li>
+      </ul>
+      </li>
+      <li gridster-item row="gridLayout.map.row" col="gridLayout.map.col" size-x="gridLayout.map.sizeX"
+      size-y="gridLayout.map.sizeY">
+      <!--div id="map_canvas" ng-controller="DashMapCtrl"></div-->
+      <div ng-controller="DashMapCtrl" style="height: 100%">
+        <div class="region-info">
+          {{ hoverText }}
+        </div>
+        <div id="nationalDashMap"></div>
+        <div id="choroplethSelect" class="btn-group map-control">
+          <label class="btn btn-success" ng-model="choroChoice" btn-radio="'percFun'" uncheckable translate>Functional</label>
+          <label class="btn btn-success" ng-model="choroChoice" btn-radio="'popReach'" uncheckable translate>Coverage</label>
+        </div>
+      </div>
+      </li>
+      <li gridster-item="item" ng-repeat="item in gridLayout.plots" class="gridster-item-chart">
+        <div class="panel panel-primary plot">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{plots[$index].title | translate}}</h3>
+          </div>
+          <div class="panel-body" id="{{plots[$index].id}}">
+
+            <div ng-if="plots[$index].id == 'statusSummary'" class="statusSelector">
+              <div class="row">
+
+                <div class="col-md-7 col-sm-7 col-xs-7">
+                  <form class="form-horizontal" role="form">
+                      <div class="form-group">
+                          <label ng-repeat="st in statusses" class="radio-inline">
+                            <div ng-switch on="st == 'all'">
+                              <input type="radio" name="statusSelect" class=""
+                              value="{{st}}" ng-model="statusChoice" ng-click="selectStatusClicked($event)" >
+                              <span ng-switch-when="true" style="color:black;">{{st | translate | titlecase }}</span>
+                              <span ng-switch-default style="color:{{statusColor(st)}};">{{st | translate | titlecase}}</span>
+                            </div>
+                          </label>
+                      </div>
+                  </form>
+                </div>
+
+                <div class="col-md-5 col-sm-5 col-xs-5">
+                  <form class="form form-horizontal">
+                    <div class="form-group">
+                      <label for="groupselect" class="col-md-6 col-sm-6 col-xs-6 control-label">{{"Group By"|translate}}:</label>
+                      <div class="col-md-6 col-sm-6 col-xs-6">
+                        <select id="groupselect" ng-model="params.group" ng-options="v for v in groups" ng-change="groupBy()" class="form-control"></select>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

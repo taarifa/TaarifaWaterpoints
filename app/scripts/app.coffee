@@ -35,9 +35,12 @@ app = angular
       .when '/requests/:id',
         templateUrl: 'views/triage.html'
         controller: 'RequestTriageCtrl'
-      .when '/dashboard',
-        templateUrl: 'views/dashboard.html'
-        controller: 'DashboardCtrl'
+      .when '/dashboard/national',
+        templateUrl: 'views/natdashboard.html'
+        controller: 'NationalDashboardCtrl'
+      .when '/dashboard/regional',
+        templateUrl: 'views/regdashboard.html'
+        controller: 'RegionalDashboardCtrl'
       .otherwise
         redirectTo: '/'
     $httpProvider.defaults.headers.patch =
