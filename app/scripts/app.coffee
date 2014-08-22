@@ -18,7 +18,7 @@ app = angular
     $routeProvider
       .when '/',
         templateUrl: 'views/main.html'
-        controller: 'MapCtrl'
+        controller: 'MainCtrl'
         reloadOnSearch: false
       .when '/waterpoints/edit/:id',
         templateUrl: 'views/edit.html'
