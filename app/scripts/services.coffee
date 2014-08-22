@@ -2,7 +2,68 @@
 
 angular.module('taarifaWaterpointsApp')
 
-  .factory 'modalSpinner', ($modal) ->
+  .factory 'waterpointStats', ($http, $q, populationData) ->
+    result = {}
+
+    getStats = (region, lga, ward, groupfield, cache) ->
+      def = $q.defer()
+      url = "/api/waterpoints/stats_by/" + groupfield
+      filterFields = {"region":region, "lga":lga, "ward":ward}
+      filters = []
+
+      _.keys(filterFields).forEach((x) ->
+        if filterFields[x] then filters.push(x + "=" + filterFields[x]))
+
+      filter = filters.join("&")
+
+      if filter then url += "?" + filter
+
+      # FIXME: use $cacheFactory to cache also the processed data
+      $http.get(url, cache: cache)
+        .success (data, status, headers, config) ->
+          populationData.then( (popData) ->
+            geoField = _.contains(['region','lga','ward'], groupfield)
+
+            data.forEach((x) ->
+              f = _.find(x.waterpoints, isFunctional)
+
+              # ensure there is always a functional entry
+              if !f
+                f = {
+                  status: "functional",
+                  population: 0,
+                  count: 0
+                }
+                x.waterpoints.push(f)
+
+              x.percFun = f.count / x.count * 100
+
+              x.popReach = 0
+
+              if geoField
+                pop = popData.lookup(
+                  if groupfield == "region" then x[groupfield] else null,
+                  if groupfield == "lga" then x[groupfield] else null,
+                  if groupfield == "ward" then x[groupfield] else null
+                )
+                if pop > 0
+                  x.popReach = f.population / pop * 100
+            )
+
+            # sort by % functional waterpoints
+            data = _.sortBy(data, (x) -> -x.percFun)
+
+            # all done, call the callback
+            def.resolve(data)
+          )
+
+      return def.promise
+
+    result.getStats = getStats
+
+    return result
+
+  .factory 'modalSpinner', ($modal, $timeout) ->
     modalDlg = null
 
     # shared counter to allow multiple invocations of
@@ -20,7 +81,11 @@ angular.module('taarifaWaterpointsApp')
     closeSpinner = () ->
       --ctr.val
       if ctr.val < 1
-        modalDlg.close(null)
+        # If the close event comes really quickly after the
+        # open event the close will fail if the open is not
+        # yet completed. Hence add a timeout.
+        # FIXME: better solution?
+        $timeout(modalDlg.close, 300)
         ctr.val = 0
 
     res =
@@ -65,8 +130,6 @@ angular.module('taarifaWaterpointsApp')
               .pluck("Both_Sexes")
               .value())
         catch e
-          console.log("Warning: Failed to lookup population for " +
-            r + ", " + d + ", " + w)
           return -1
 
       result.lookup = lookup
@@ -129,7 +192,7 @@ angular.module('taarifaWaterpointsApp')
     @markers = {}
     addMarkers = (waterpoints) =>
       for p in waterpoints._items
-        @markers[p._id] =
+        @markers['wp' + p._id] =
           # FIXME temporarily disable clustering since it is not properly
           # reinitialized when the MapCtrl controller reloads
           # group: p.district
@@ -152,6 +215,7 @@ angular.module('taarifaWaterpointsApp')
         location: 1
         wpt_code: 1
         status_group: 1
+      strip: 1
     , addMarkers
     return this
 

@@ -1,15 +1,31 @@
+import json
+import requests
 from eve.render import send_response
-from flask import request, send_from_directory
+from flask import request, Response, send_from_directory
+from werkzeug.contrib.cache import SimpleCache
+cache = SimpleCache()
 
 from taarifa_api import api as app, main
 
+
+def post_waterpoints_get_callback(request, payload):
+    """Strip all meta data but id from waterpoint payload if 'strip' is set to
+    a non-zero value in the query string."""
+    if request.args.get('strip', 0):
+        d = json.loads(payload.data)
+        d['_items'] = [dict((k, v) for k, v in it.items()
+                            if k == '_id' or not k.startswith('_'))
+                       for it in d['_items']]
+        payload.data = json.dumps(d)
+
 app.name = 'TaarifaWaterpoints'
+app.on_post_GET_waterpoints += post_waterpoints_get_callback
 
 # Override the maximum number of results on a single page
 # This is needed by the dashboard
 # FIXME: this should eventually be replaced by an incremental load
 # which is better for responsiveness
-app.config['PAGINATION_LIMIT'] = 10000
+app.config['PAGINATION_LIMIT'] = 70000
 
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/values/<field>')
@@ -97,9 +113,24 @@ def images(filename):
     return send_from_directory(app.root_path + '/dist/images/', filename)
 
 
+@app.route('/data/<path:filename>.geojson')
+def geojson(filename):
+    url = 'http://162.243.57.235/geoserver/wfs?srsName=EPSG%3A4326&typename=geonode%3A' \
+            + filename + '&outputFormat=json&version=1.0.0&service=WFS&request=GetFeature'
+    resp = cache.get(filename)
+    if resp is None:
+        r = requests.get(url)
+        resp = Response(r.content, status=r.status_code,
+                        content_type=r.headers['content-type'])
+        cache.set(filename, resp, timeout=24*60*60)
+    return resp
+
+
 @app.route('/data/<path:filename>')
 def data(filename):
-    return send_from_directory(app.root_path + '/dist/data/', filename)
+    # FIXME: if we ever want to send non-JSON data this needs fixing
+    return send_from_directory(app.root_path + '/dist/data/', filename,
+                               mimetype="application/json")
 
 
 @app.route('/views/<path:filename>')
