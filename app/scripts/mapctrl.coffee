@@ -206,8 +206,8 @@ angular.module('taarifaWaterpointsApp')
 
     # get the boundaries
     $q.all([
-      $http.get("data/tz_regions.geojson", cache: true)
-      $http.get("data/tz_wards.geojson", cache: true)
+      $http.get("data/tanzania_regions.geojson", cache: true)
+      $http.get("data/tanzania_wards.geojson", cache: true)
       waterpointStats.getStats(null, null, null, "region", true)
       # FIXME: relies on the fact that wards are uniquely named
       waterpointStats.getStats(null, null, null, "ward", true)

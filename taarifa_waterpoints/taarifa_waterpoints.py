@@ -113,14 +113,19 @@ def images(filename):
     return send_from_directory(app.root_path + '/dist/images/', filename)
 
 
+@app.route('/data/<path:filename>.geojson')
+def geojson(filename):
+    url = 'http://162.243.57.235/geoserver/wfs?srsName=EPSG%3A4326&typename=geonode%3A' \
+            + filename + '&outputFormat=json&version=1.0.0&service=WFS&request=GetFeature'
+    geofile = cache.get(filename)
+    if geofile is None:
+        geofile = requests.get(url).content
+        cache.set(filename, geofile, timeout=24*60*60)
+    return geofile
+
+
 @app.route('/data/<path:filename>')
 def data(filename):
-    if filename == 'tz_wards.geojson':
-        wards = cache.get('tz_wards')
-        if wards is None:
-            wards = requests.get('http://162.243.57.235/geoserver/wfs?srsName=EPSG%3A4326&typename=geonode%3Atanzania_wards&outputFormat=json&version=1.0.0&service=WFS&request=GetFeature').content
-            cache.set('tz_wards', wards, timeout=24*60*60)
-        return wards
     # FIXME: if we ever want to send non-JSON data this needs fixing
     return send_from_directory(app.root_path + '/dist/data/', filename,
                                mimetype="application/json")
