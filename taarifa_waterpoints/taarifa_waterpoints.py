@@ -1,7 +1,7 @@
 import json
 import requests
 from eve.render import send_response
-from flask import request, send_from_directory
+from flask import request, Response, send_from_directory
 from werkzeug.contrib.cache import SimpleCache
 cache = SimpleCache()
 
@@ -117,11 +117,13 @@ def images(filename):
 def geojson(filename):
     url = 'http://162.243.57.235/geoserver/wfs?srsName=EPSG%3A4326&typename=geonode%3A' \
             + filename + '&outputFormat=json&version=1.0.0&service=WFS&request=GetFeature'
-    geofile = cache.get(filename)
-    if geofile is None:
-        geofile = requests.get(url).content
-        cache.set(filename, geofile, timeout=24*60*60)
-    return geofile
+    resp = cache.get(filename)
+    if resp is None:
+        r = requests.get(url)
+        resp = Response(r.content, status=r.status_code,
+                        content_type=r.headers['content-type'])
+        cache.set(filename, resp, timeout=24*60*60)
+    return resp
 
 
 @app.route('/data/<path:filename>')
