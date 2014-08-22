@@ -11,15 +11,16 @@ from taarifa_waterpoints.schemas import facility_schema, service_schema
 manager = Manager(app)
 
 
-def check(response, success=201):
+def check(response, success=201, print_status=True):
     data, _, _, status = response
     if status == success:
-        print " Succeeeded"
+        if print_status:
+            print " Succeeded"
         return True
-    else:
-        print "Failed with status", status
-        pprint(data)
-        return False
+
+    print "Failed with status", status
+    pprint(data)
+    return False
 
 
 @manager.option("resource", help="Resource to show the schema for")
@@ -73,6 +74,9 @@ def delete_requests():
 @manager.option("--limit", type=int, help="Only upload a number of records")
 def upload_waterpoints(filename, skip=0, limit=None):
     """Upload waterpoints from a CSV file."""
+    # Use sys.stdout.write so waterpoints can be printed nicely and succinctly
+    import sys
+
     date_converter = lambda s: datetime.strptime(s, '%Y-%m-%d')
     bool_converter = lambda s: s == "true"
 
@@ -104,20 +108,25 @@ def upload_waterpoints(filename, skip=0, limit=None):
     }
 
     facility_code = "wpf001"
+    print_every = 1000
+    print "Adding waterpoints. Please be patient. We'll update you every %d operations." % print_every
 
     with open(filename) as f:
         reader = DictReader(f)
         for i in range(skip):
             reader.next()
         for i, d in enumerate(reader):
-            print "Adding line", i + skip + 2
+            actual_index = i + skip + 2
+            do_print = actual_index % print_every == 0
 
+            if do_print:
+                sys.stdout.write("Adding line %d... " % actual_index)
             try:
                 d = dict((k, convert.get(k, str)(v)) for k, v in d.items() if v)
                 coords = [d.pop('longitude'), d.pop('latitude')]
                 d['location'] = {'type': 'Point', 'coordinates': coords}
                 d['facility_code'] = facility_code
-                if not check(add_document('waterpoints', d)):
+                if not check(add_document('waterpoints', d), 201, do_print):
                     raise Exception()
 
             except Exception as e:
@@ -129,6 +138,7 @@ def upload_waterpoints(filename, skip=0, limit=None):
                 break
     # Create a 2dsphere index on the location field for geospatial queries
     app.data.driver.db['facilities'].create_index([('location', '2dsphere')])
+    print "Waterpoints uploaded!"
 
 
 @manager.option("status", help="Status (functional or non functional)")
