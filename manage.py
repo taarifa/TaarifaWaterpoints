@@ -107,9 +107,13 @@ def upload_waterpoints(filename, skip=0, limit=None):
         'status_group': status_converter
     }
 
+    def print_flush(msg):
+        sys.stdout.write(msg)
+        sys.stdout.flush()
+
     facility_code = "wpf001"
     print_every = 1000
-    print "Adding waterpoints. Please be patient. We'll update you every %d operations." % print_every
+    print_flush("Adding waterpoints. Please be patient.")
 
     with open(filename) as f:
         reader = DictReader(f)
@@ -118,16 +122,15 @@ def upload_waterpoints(filename, skip=0, limit=None):
         for i, d in enumerate(reader):
             actual_index = i + skip + 2
             do_print = actual_index % print_every == 0
-
-            if do_print:
-                sys.stdout.write("Adding line %d... " % actual_index)
             try:
                 d = dict((k, convert.get(k, str)(v)) for k, v in d.items() if v)
                 coords = [d.pop('longitude'), d.pop('latitude')]
                 d['location'] = {'type': 'Point', 'coordinates': coords}
                 d['facility_code'] = facility_code
-                if not check(add_document('waterpoints', d), 201, do_print):
+                if not check(add_document('waterpoints', d), 201, False):
                     raise Exception()
+                if do_print:
+                    print_flush(".")
 
             except Exception as e:
                 print "Error adding waterpoint", e
