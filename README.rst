@@ -108,7 +108,7 @@ Clone the repository ::
 Change into directory and install the requirements ::
   
   cd TaarifaWaterpoints
-  pip install -r requirements.txt
+  pip install -r requirements/dev.txt
 
 Ensure you have node.js and npm installed. Then, from the
 `TaarifaWaterpoints` directory, install the dependencies: ::
@@ -162,7 +162,6 @@ that both the `TaarifaAPI` and the `TaarifaWaterpoints` folders in the VM are
 mounted from the host i.e. changes made on the host are immediately reflected in
 the VM and vice versa. This allows you to work on the code either on the host or
 in the VM according to your preference.
-
 
 Usage
 _____
@@ -224,6 +223,19 @@ This creates a distribution in the `dist` folder, which is served via the
 Flask development server running on port 5000. The build step needs to be run
 again whenever the frontend in the `app` folder changes. Running `grunt serve`
 is not required in this case.
+
+
+Requirements
+------------
+
+Taarifa uses pip to install and manage python dependencies.
+
+Conventionally this uses `requirements.txt`, but Heroku automatically installs
+from there. Therefore a `requirements` folder is used as following:
+
+    * Dev and deploy requirements in `requirements/base.txt`
+    * Development *only* in `requirements/dev.txt`
+    * Deployment *only* in `requirements/deploy.txt`
 
 
 Deployment to Heroku
