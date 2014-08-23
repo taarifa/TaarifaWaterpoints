@@ -61,16 +61,16 @@ module.exports = function (grunt) {
       proxies: [
         {
           context: ['/api', '/data'],
-          host: 'localhost',
-          port: 5000,
+          host: grunt.option('host') || '0.0.0.0',
+          port: grunt.option('proxy') || 5000,
           https: false,
           changeOrigin: false
         }
       ],
       options: {
-        port: 9000,
+        port: grunt.option('port') || 9000,
         // Change this to '0.0.0.0' to access the server from outside.
-        hostname: '0.0.0.0',
+        hostname: grunt.option('host') || '0.0.0.0',
         livereload: 35729
       },
       livereload: {
