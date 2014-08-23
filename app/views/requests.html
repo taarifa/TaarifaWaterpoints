@@ -12,7 +12,7 @@
       <div class="form-group">
         <label for="waterpointStatus" translate>WP status</label>
         <select class="form-control" id="waterpointStatus" ng-model="where.status_group" ng-change="filterStatus()"
-          ng-options="k for k in ['functional', 'not functional', 'needs repair']">
+          ng-options="k for k in waterpointStatuses">
           <option value="">all</option>
         </select>
       </div>

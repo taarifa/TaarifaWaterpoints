@@ -287,11 +287,11 @@ angular.module('taarifaWaterpointsApp')
 
         installers = createDim (d) -> d.installer
         installersGroup = installers.group()
-        installersStatusGroup = reduceStatus installers.group()
+        installersStatusGroup = reduceStatus installersGroup
 
         funders = createDim (d) -> d.funder
         fundersGroup = funders.group()
-        fundersStatusGroup = reduceStatus funders.group()
+        fundersStatusGroup = reduceStatus fundersGroup
 
         qualities = createDim (d) -> d.quality_group
         qualitiesStatusGroup = reduceStatus qualities.group()
@@ -304,10 +304,7 @@ angular.module('taarifaWaterpointsApp')
 
         managements = createDim (d) -> d.management
         managementsGroup = managements.group()
-        managementsStatusGroup = reduceStatus managements.group()
-
-        statuses = createDim (d) -> d.status_group
-        statusGroup = statuses.group()
+        managementsStatusGroup = reduceStatus managementsGroup
 
         paymentTypes = createDim (d) -> d.payment_type
         paymentGroup = paymentTypes.group()
@@ -645,7 +642,7 @@ angular.module('taarifaWaterpointsApp')
           ++p.count
           p.total += v.amount_tsh
           p.pop_served_fun += if isFunc(v) then v.population else 0
-          p.numFun += if isFunc(v) then 1 else 0
+          p.numFun += +isFunc(v)
           p.avgCost = p.total / p.count
           p.percFun = p.numFun / p.count * 100
           p),
@@ -653,7 +650,7 @@ angular.module('taarifaWaterpointsApp')
           --p.count
           p.total -= v.amount_tsh
           p.pop_served_fun -= if isFunc(v) then v.population else 0
-          p.numFun -= if isFunc(v) then 1 else 0
+          p.numFun -= +isFunc(v)
           p.avgCost = if p.count then p.total / p.count * 1 else 0
           p.percFun = if p.count then p.numFun / p.count * 100 else 0
           p),

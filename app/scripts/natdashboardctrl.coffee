@@ -3,7 +3,7 @@
 angular.module('taarifaWaterpointsApp')
 
   .controller 'NationalDashboardCtrl', ($scope, $http, $timeout, modalSpinner,
-                                gettextCatalog, gettext, populationData, waterpointStats) ->
+                                gettextCatalog, gettext, populationData, waterpointStats, WaterpointStatus) ->
 
     # should http calls be cached
     # FIXME: should be application level setting
@@ -128,26 +128,23 @@ angular.module('taarifaWaterpointsApp')
           statusMap = _.object(_.pluck(data,"status_group"), data)
           $scope.status = statusMap
 
-          # ensure all three statusses are always represented
-          empty = {count: 0, percent: 0}
-          statusses = [gettext("functional"), gettext("not functional"), gettext("needs repair")]
-          statusses.forEach((x) -> statusMap[x] = statusMap[x] || empty)
+          WaterpointStatus.getAll().then (statuses) ->
+            # ensure all statuses are always represented
+            empty = {count: 0, percent: 0}
+            for k, v in statuses
+                statusMap[k] = statusMap[k] || empty
 
-          # the population covered
-          if statusMap.functional.waterpoints
-            funPop = statusMap.functional.waterpoints[0].population
-          else
-            # will happen for an invalid selection
-            funPop = 0
+            # the population covered or 0 if invalid selection
+            funPop = statusMap.functional.waterpoints?[0].population or 0
 
-          pop = lookupSelectedPop()
-          percent = if pop > 0 then funPop/pop*100 else "unknown"
+            pop = lookupSelectedPop()
+            percent = if pop > 0 then funPop/pop*100 else "unknown"
 
-          popCover = {count: funPop, percent: percent}
+            popCover = {count: funPop, percent: percent}
 
-          $scope.tiles = _.pairs(_.pick(statusMap,'functional','needs repair'))
-          $scope.tiles.push([gettext('population cover'), popCover])
-          modalSpinner.close()
+            $scope.tiles = _.pairs(_.pick(statusMap,'functional','needs repair'))
+            $scope.tiles.push([gettext('population cover'), popCover])
+            modalSpinner.close()
 
       if changed == 'region'
         getLGA()

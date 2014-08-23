@@ -1,6 +1,6 @@
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'DashMapCtrl', ($scope, $http, $q, $timeout, modalSpinner, waterpointStats, Waterpoint) ->
+  .controller 'DashMapCtrl', ($scope, $http, $q, $timeout, modalSpinner, waterpointStats, Waterpoint, WaterpointStatus) ->
 
     $scope.hoverText = ""
     $scope.choroChoice = "percFun"
@@ -114,19 +114,8 @@ angular.module('taarifaWaterpointsApp')
         attribution: '(c) Esri'
       )
 
-      categoryMap =
-        "functional" : 0
-        "not functional" : 1
-        "needs repair" : 2
-
       clusterLayer = new PruneClusterForLeaflet()
       clusterLayer.Cluster.Size = 100
-
-      waterpoints.forEach((x) ->
-        coords = x.location.coordinates
-        m = new PruneCluster.Marker(coords[1], coords[0])
-        m.category = categoryMap[x.status_group]
-        clusterLayer.RegisterMarker(m))
 
       ################
       ### OVERLAYS ###
@@ -150,60 +139,71 @@ angular.module('taarifaWaterpointsApp')
           "Regions": regionLayer
           "Wards": wardLayer
 
-        map = L.map('nationalDashMap',
-          center: mapCenter
-          zoom: 5
-          fullscreenControl: true
-          layers: [satLayer, regionLayer, clusterLayer]
-        )
-        makeLegend(map)
+        WaterpointStatus.getCategoryMap().then (categoryMap) ->
+          waterpoints.forEach((x) ->
+            coords = x.location.coordinates
+            m = new PruneCluster.Marker(coords[1], coords[0])
+            m.category = categoryMap[x.status_group]
+            clusterLayer.RegisterMarker(m))
 
-        # Add a layer selector
-        layerSelector = L.control.layers(baseMaps, overlayControls).addTo(map)
+          map = L.map 'nationalDashMap',
+            center: mapCenter
+            zoom: 5
+            fullscreenControl: true
+            layers: [satLayer, regionLayer, clusterLayer]
 
-        # Start watching
-        $scope.$watch('choroChoice', (val) ->
-          return unless val
+          # add a legend
+          legend = L.control(
+            position: 'bottomright'
+          )
+          makeLegend(map)
 
-          regionLayer.setStyle(style)
-          wardLayer.setStyle(style)
+          # Add a layer selector
+          layerSelector = L.control.layers(baseMaps, overlayControls).addTo(map)
 
-          if map.hasLayer(regionLayer)
-            map.removeLayer(regionLayer)
-            map.addLayer(regionLayer)
+          # Start watching
+          $scope.$watch('choroChoice', (val) ->
+            return unless val
 
-          if map.hasLayer(wardLayer)
-            map.removeLayer(wardLayer)
-            map.addLayer(wardLayer)
-        )
+            regionLayer.setStyle(style)
+            wardLayer.setStyle(style)
 
-        $scope.$watch('params.region', (val) ->
-          # find the matching geojson feature and refocus the map
-          return unless val
+            if map.hasLayer(regionLayer)
+              map.removeLayer(regionLayer)
+              map.addLayer(regionLayer)
 
-          # only 26 regions so a simple linear search is ok
-          for f in regions
-            r = f.properties.REGNAME.toLowerCase()
+            if map.hasLayer(wardLayer)
+              map.removeLayer(wardLayer)
+              map.addLayer(wardLayer)
+          )
 
-            if r == val.toLowerCase()
-              # I don't really understand why this works, but it does...
-              # FIXME if you can!
-              numToUnpack = 2
-              if f.geometry.coordinates.length is 3
-                coordsToUse = f.geometry.coordinates
-              else
-                coordsToUse = [f.geometry.coordinates]
-              points = L.GeoJSON.coordsToLatLngs(coordsToUse, numToUnpack)
-              # instantiate as multipolygon to get the bounds
-              bounds = L.multiPolygon(points).getBounds()
-              map.fitBounds(bounds)
-              return
-        )
-        # FIXME: find a better solution than this "magic number" for timeout
-        $timeout ->
-          map.invalidateSize()
-        , 2000
-        return map
+          $scope.$watch('params.region', (val) ->
+            # find the matching geojson feature and refocus the map
+            return unless val
+
+            # only 26 regions so a simple linear search is ok
+            for f in regions
+              r = f.properties.REGNAME.toLowerCase()
+
+              if r == val.toLowerCase()
+                # I don't really understand why this works, but it does...
+                # FIXME if you can!
+                numToUnpack = 2
+                if f.geometry.coordinates.length is 3
+                  coordsToUse = f.geometry.coordinates
+                else
+                  coordsToUse = [f.geometry.coordinates]
+                points = L.GeoJSON.coordsToLatLngs(coordsToUse, numToUnpack)
+                # instantiate as multipolygon to get the bounds
+                bounds = L.multiPolygon(points).getBounds()
+                map.fitBounds(bounds)
+                return
+          )
+          # FIXME: find a better solution than this "magic number" for timeout
+          $timeout ->
+            map.invalidateSize()
+          , 2000
+          return map
       )
 
     modalSpinner.open()

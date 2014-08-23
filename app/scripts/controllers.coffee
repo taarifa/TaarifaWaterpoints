@@ -28,7 +28,7 @@ angular.module('taarifaWaterpointsApp')
       # Using the setter function ensures the gettextLanguageChanged event gets fired
       gettextCatalog.setCurrentLanguage(lang)
 
-  .controller 'MainCtrl', ($scope, $http, $location, Waterpoint, Map, flash, gettext) ->
+  .controller 'MainCtrl', ($scope, $http, $location, $q, Waterpoint, Map, flash, gettext) ->
     map = Map "wpMap", showScale:true
     $scope.where = $location.search()
     $scope.where.max_results = parseInt($scope.where.max_results) || 100
@@ -77,8 +77,8 @@ angular.module('taarifaWaterpointsApp')
         if waterpoints._items.length == 0
           flash.info = gettext('No waterpoints match your filter criteria!')
           return
-        map.addWaterpoints(waterpoints._items)
-        map.zoomToMarkers() unless nozoom
+        $q.all(map.addWaterpoints(waterpoints._items)).then ->
+          map.zoomToMarkers() unless nozoom
     $scope.updateMap()
 
   .controller 'DashboardCtrl', ($scope) ->

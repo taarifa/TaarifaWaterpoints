@@ -2,6 +2,52 @@
 
 angular.module('taarifaWaterpointsApp')
 
+  # Add the statuses to the root scope of the app
+  .run ($rootScope, WaterpointStatus) ->
+    WaterpointStatus.getNames().then (names) ->
+      $rootScope.waterpointStatuses = names
+
+  # Various methods for retrieving status-related data
+  .factory 'WaterpointStatus', ($http, $q) ->
+    names = undefined
+    statuses = undefined
+    categoryMap = undefined
+
+    return {
+      apiPath: '/api/waterpoints/statuses'
+      getAll: ->
+        return $q.when(statuses) if statuses
+        deferred = $q.defer()
+        $http.get(@apiPath).success (data) ->
+          statuses = data
+          deferred.resolve data
+        .error ->
+          deferred.reject "Could not retrieve the waterpoint statuses."
+        return deferred.promise
+
+      getCategoryMap: ->
+        return $q.when(categoryMap) if categoryMap
+        @getAll().then (statuses) ->
+          categoryMap = {}
+          for k, v of statuses
+            categoryMap[k] = v["index"]
+          return categoryMap
+
+      getColor: (status) ->
+        @getAll().then (statuses) ->
+          return statuses[status]?.color or 'black'
+
+      getNamedColor: (status) ->
+        @getAll().then (statuses) ->
+          return statuses[status]?.namedColor or 'black'
+
+      getNames: ->
+        return $q.when(names) if names
+        @getAll().then (statuses) ->
+          names = Object.keys(statuses)
+          return names
+    }
+
   .factory 'waterpointStats', ($http, $q, populationData) ->
     result = {}
 
@@ -187,7 +233,7 @@ angular.module('taarifaWaterpointsApp')
   .factory 'Service', (ApiResource) ->
     ApiResource 'services'
 
-  .factory 'Map', ($filter) ->
+  .factory 'Map', ($filter, WaterpointStatus) ->
     (id, opts) =>
 
       defaults =
@@ -212,12 +258,6 @@ angular.module('taarifaWaterpointsApp')
         "Satellite": satLayer
 
       overlays = {}
-
-      # FIXME: hardcoded categories
-      categoryMap =
-        "functional" : 0
-        "not functional" : 1
-        "needs repair" : 2
 
       if options.clustering
         markerLayer = new PruneClusterForLeaflet()
@@ -307,23 +347,7 @@ angular.module('taarifaWaterpointsApp')
         else
           markerLayer.clearLayers()
 
-      # FIXME: more hardcoded statusses
-      makeAwesomeIcon = (status) ->
-        if status == 'functional'
-          color = 'blue'
-        else if status == 'not functional'
-          color = 'red'
-        else if status == 'needs repair'
-          color = 'orange'
-        else
-          color = 'black'
-
-        icon = L.AwesomeMarkers.icon
-          prefix: 'glyphicon',
-          icon: 'tint',
-          markerColor: color
-
-      makeMarker = (wp) ->
+      makeMarker = (wp, color) ->
         [lng,lat] = wp.location.coordinates
         mt = options.markerType
 
@@ -332,28 +356,34 @@ angular.module('taarifaWaterpointsApp')
             stroke: false
             radius: 5
             fillOpacity: 1
-            fillColor: statusColor(wp.status_group)
+            fillColor: color
         else
           m = L.marker L.latLng(lat,lng),
-              icon: makeAwesomeIcon(wp.status_group)
+            icon: L.AwesomeMarkers.icon
+              prefix: 'glyphicon',
+              icon: 'tint',
+              markerColor: color
 
       @addWaterpoints = (wps) ->
-        wps.forEach (wp) ->
+        promises = wps.map (wp) ->
           [lng,lat] = wp.location.coordinates
 
           if options.clustering
-            m = new PruneCluster.Marker lat, lng, popup
-            m.category = categoryMap[wp.status_group]
-            markerLayer.RegisterMarker m
+            WaterpointStatus.getCategoryMap().then (categoryMap) ->
+              m = new PruneCluster.Marker lat, lng, popup
+              m.category = categoryMap[wp.status_group]
+              markerLayer.RegisterMarker m
           else
-            m = makeMarker(wp)
-            popup = makePopup(wp)
-            m.bindPopup popup
-            markerLayer.addLayer(m)
+            WaterpointStatus.getNamedColor(wp.status_group).then (color) ->
+              m = makeMarker(wp, color)
+              popup = makePopup(wp)
+              m.bindPopup popup
+              markerLayer.addLayer(m)
 
         if options.coverage
           coords = wps.map (x) -> [x.location.coordinates[1], x.location.coordinates[0]]
           coverageLayer.setData coords
+        return promises
 
         if options.heatmap
           costMap =
@@ -381,7 +411,7 @@ angular.module('taarifaWaterpointsApp')
           if bounds.isValid()
             map.fitBounds(bounds)
 
-      return this
+      return @
 
   # Get an angular-dynamic-forms compatible form description from a Facility
   # given a facility code
