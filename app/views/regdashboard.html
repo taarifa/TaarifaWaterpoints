@@ -6,21 +6,17 @@
 </div>
 
 <div class="row">
-  <div id="" class="">
-    <form class="form-inline" role="form" style="padding: 10px">
-      <div class="form-group">
-          <label for="regionSelect" translate>Region</label>:
-          <select id="regionSelect" ng-model="region" ng-options="v for v in regions"
-            ng-change="rerenderCharts()" class="form-control">
-          </select>
-      </div>
-      <p class="help-block">
-      <div class="dc-data-count">
-        {{"Selected"|translate}} <span class="filter-count"></span> {{"out of"|translate}} <span class="total-count"></span> {{"waterpoints"|translate}} | <a href="" ng-click="clearFilters()" translate>Reset all filters</a>
-      </div>
-      </p>
-    </form>
-  </div>
+  <form class="form-inline" role="form" style="padding: 10px">
+    <div class="form-group">
+        <label for="regionSelect" translate>Region</label>:
+        <select id="regionSelect" ng-model="region" ng-options="v for v in regions"
+          ng-change="rerenderCharts()" class="form-control">
+        </select>
+    </div>
+    <div class="dc-data-count pull-right">
+      {{"Selected"|translate}} <span class="filter-count"></span> {{"out of"|translate}} <span class="total-count"></span> {{"waterpoints"|translate}} | <a href="" ng-click="clearFilters()" translate>Reset all filters</a>
+    </div>
+  </form>
 </div>
 
 <tabset style="margin-top: 15px;">
