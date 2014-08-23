@@ -115,7 +115,7 @@ Ensure you have node.js and npm installed. Then, from the
 
   npm install
 
-Install the Grunt_ command line interface (may require `sudo`): ::
+Install the Grunt_ command line interface (may require Adminstrator permission)
 
   npm install -g grunt-cli
 
