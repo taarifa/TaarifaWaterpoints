@@ -196,15 +196,16 @@ from the outside is required (e.g. when running from inside a VM), run: ::
 The flags ``-r`` and ``-d`` cause the server to run in debug mode and reload
 automatically when files are changed.
 
-To check things are working, open a browser (on the host when using the VM) and
-navigate to: ::
+To verify things are working, open a browser (on the host when using the VM)
+and navigate to: ::
 
   http://localhost:5000/api/waterpoints
 
 This should show a list of all the waterpoint resources currently in the
 database.
 
-To work on the frontend web application simply start the server using grunt: ::
+To work on the frontend web application start the `grunt` server (with the API
+server running on port 5000) using: ::
 
   grunt serve --watch
 
@@ -215,14 +216,14 @@ Then navigate to (on the host when using the VM): ::
 Grunt watches the `app` folder for changes and automatically reloads the
 frontend in your browser as soon as you make changes.
 
-If you intend to use the frontend as-is you can also build it using ::
+To build the frontend (which is automatically done on deployment), use: ::
 
   grunt build
 
-This creates a distribution in the `dist` folder, which is served via the Flask
-development server running on port 5000. The build step only only needs to be
-run whenever the frontend in the `app` folder changes. Running `grunt serve` is
-not required in this case.
+This creates a distribution in the `dist` folder, which is served via the
+Flask development server running on port 5000. The build step needs to be run
+again whenever the frontend in the `app` folder changes. Running `grunt serve`
+is not required in this case.
 
 
 Deployment to Heroku
