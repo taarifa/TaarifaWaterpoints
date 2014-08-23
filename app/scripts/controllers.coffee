@@ -47,7 +47,7 @@ angular.module('taarifaWaterpointsApp')
       if $scope.where.status_group
         where.status_group = $scope.where.status_group
       if $scope.where.reports_only
-        $http.get('/api/waterpoints/requests', cache: true).success (requests) ->
+        $http.get('/api/waterpoints/requests').success (requests) ->
           where.wpt_code = "$in": requests
           query where, $scope.where.max_results
       else
