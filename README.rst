@@ -73,9 +73,9 @@ the actual package installation):
 2.  Install pip_.
 3.  Install nodejs_ and npm_ (these need to be added to the $PATH variable!)
 4.  Install and run MongoDB_, which does not automagically come with a service,
-    so it needs to be started manually: ::
+    so it needs to be started manually. Open a command prompt and run: ::
 
-    "c:\Program Files\MongoDB 2.6 Standard\bin\mongod.exe" --dbpath c:\temp\taarifa\
+    "c:\Program Files\MongoDB 2.6 Standard\bin\mongod.exe" --dbpath c:\mongo_databases\taarifa\
 
 
 Installation
