@@ -1,3 +1,5 @@
+from .taarifa_waterpoints import STATUSES
+
 waterpoint_schema = {
     'gid': {
         'type': 'integer',
@@ -207,7 +209,7 @@ waterpoint_schema = {
     'status_group': {
         'type': 'string',
         'label': 'Status group',
-        'allowed': ['functional', 'not functional', 'needs repair'],
+        'allowed': STATUSES.keys(),
     },
     'waterpoint_type': {
         'type': 'string',
@@ -257,13 +259,8 @@ service_schema = {
          "required": True,
          "datatype_description": "Select an option from the list",
          "order": 2,
-         "description": "Status of this waterpoint",
-         "values": [{"key": "functional",
-                     "name": "Functional"},
-                    {"key": "not functional",
-                     "name": "Not functional"},
-                    {"key": "needs repair",
-                     "name": "Functional, but needs repair"}]},
+         "description": "Status of this waterpoint (%s)" % ", ".join(STATUSES.keys()),
+         "values": [{"key": k, "name": v["description"]} for k, v in STATUSES.iteritems()]},
         {"variable": True,
          "code": "status_detail",
          "datatype": "string",

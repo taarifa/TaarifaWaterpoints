@@ -1,6 +1,6 @@
 import json
 from eve.render import send_response
-from flask import request, send_from_directory
+from flask import jsonify, request, send_from_directory
 from werkzeug.contrib.cache import SimpleCache
 cache = SimpleCache()
 
@@ -23,6 +23,26 @@ def post_waterpoints_get_callback(request, payload):
 
 app.name = 'TaarifaWaterpoints'
 app.on_post_GET_waterpoints += post_waterpoints_get_callback
+STATUSES = {
+    "functional":
+        {"description": "This waterpoint is functional",
+            "aliases": ["Functional"],
+            "index": 0,
+            "namedColor": "green",
+            "color": "#0a871f"},
+    "not functional":
+        {"description": "This waterpoint is broken",
+            "aliases": ["broken"],
+            "index": 1,
+            "namedColor": "red",
+            "color": "#d50000"},
+    "needs repair":
+        {"description": "This waterpoint needs repair",
+            "aliases": ["needs fixing"],
+            "index": 2,
+            "namedColor": "orange",
+            "color": "orange"},
+}
 
 # Override the maximum number of results on a single page
 # This is needed by the dashboard
@@ -60,6 +80,12 @@ def waterpoint_stats():
         ['district', 'status_group'], dict(request.args.items()),
         initial={'count': 0},
         reduce="function(curr, result) {result.count++;}"),))
+
+
+@app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/statuses')
+def waterpoint_statuses():
+    "Return defined statuses of waterpoints as JSON object."
+    return jsonify(**STATUSES)
 
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/status')
