@@ -39,7 +39,7 @@ angular.module('taarifaWaterpointsApp')
     $scope.where.reports_only = parseInt($scope.where.reports_only) || 0
     $http.get('/api/waterpoints/values/region', cache: true).success (regions) ->
       $scope.regions = regions
-    $scope.updateMap = () ->
+    $scope.updateMap = (nozoom) ->
       $location.search($scope.where)
       where = {}
       if $scope.where.region
@@ -49,10 +49,10 @@ angular.module('taarifaWaterpointsApp')
       if $scope.where.reports_only
         $http.get('/api/waterpoints/requests').success (requests) ->
           where.wpt_code = "$in": requests
-          query where, $scope.where.max_results
+          query where, $scope.where.max_results, nozoom
       else
-        query where, $scope.where.max_results
-    query = (where, max_results) ->
+        query where, $scope.where.max_results, nozoom
+    query = (where, max_results, nozoom) ->
       map.clearMarkers()
       Waterpoint.query
         max_results: max_results
@@ -71,7 +71,7 @@ angular.module('taarifaWaterpointsApp')
         for p in waterpoints._items
           popup = map.makePopup(p)
           map.addWaterpoint p, popup
-        map.zoomToMarkers()
+        map.zoomToMarkers() unless nozoom
     $scope.updateMap()
 
   .controller 'DashboardCtrl', ($scope) ->
