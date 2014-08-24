@@ -32,7 +32,7 @@ angular.module('taarifaWaterpointsApp')
       # Using the setter function ensures the gettextLanguageChanged event gets fired
       gettextCatalog.setCurrentLanguage(lang)
 
-  .controller 'MainCtrl', ($scope, $http, $location, Waterpoint, Map, flash) ->
+  .controller 'MainCtrl', ($scope, $http, $location, Waterpoint, Map, flash, gettext) ->
     map = Map "wpMap"
     $scope.where = $location.search()
     $scope.where.max_results = parseInt($scope.where.max_results) || 100
@@ -66,7 +66,7 @@ angular.module('taarifaWaterpointsApp')
         strip: 1
       , (waterpoints) ->
         if waterpoints._items.length == 0
-          flash.info = 'No waterpoints match your filter criteria!'
+          flash.info = gettext('No waterpoints match your filter criteria!')
           return
         for p in waterpoints._items
           popup = map.makePopup(p)
@@ -81,7 +81,8 @@ angular.module('taarifaWaterpointsApp')
       regional:
         active: false
 
-  .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, FacilityForm, Map, flash, geolocation) ->
+  .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, FacilityForm,
+                                        Map, flash, gettext, geolocation) ->
     $scope.formTemplate = FacilityForm 'wpf001'
     # Default to today
     d = new Date()
@@ -93,21 +94,21 @@ angular.module('taarifaWaterpointsApp')
       date_recorded: today
 
     geolocation.getLocation().then (data) ->
-      flash.success = "Geolocation succeeded: got coordinates #{data.coords.longitude}, #{data.coords.latitude}"
+      flash.success = gettext("Geolocation succeeded: got coordinates") + " #{data.coords.longitude}, #{data.coords.latitude}"
       $scope.form.location = coordinates: [data.coords.longitude, data.coords.latitude]
       map = Map("editMap", {})
       map.clearMarkers()
       map.addWaterpoint($scope.form)
       map.zoomToMarkers()
     , (reason) ->
-      flash.error = "Geolocation failed: #{reason}"
+      flash.error = gettext("Geolocation failed:") + " #{reason}"
     $scope.save = () ->
       Waterpoint.save $scope.form, (waterpoint) ->
         if waterpoint._status == 'OK'
           console.log "Successfully created waterpoint", waterpoint
-          flash.success = 'Waterpoint successfully created!'
+          flash.success = gettext('Waterpoint successfully created!')
         if waterpoint._status == 'ERR'
-          console.log "Failed to create waterpoint", waterpoint
+          console.log gettext("Failed to create waterpoint"), waterpoint
           for field, message of waterpoint._issues
             flash.error = "#{field}: #{message}"
 
@@ -132,7 +133,7 @@ angular.module('taarifaWaterpointsApp')
     $scope.save = () ->
       Waterpoint.update($routeParams.id, $scope.form)
 
-  .controller 'RequestCreateCtrl', ($scope, $location, $routeParams, Request,
+  .controller 'RequestCreateCtrl', ($scope, $location, $routeParams, Request, gettext,
                                     $timeout, Waterpoint, Map, RequestForm, flash) ->
     map = Map("editMap")
 
@@ -152,7 +153,7 @@ angular.module('taarifaWaterpointsApp')
       Request.save form, (request) ->
         if request._status == 'OK'
           console.log "Successfully created request", request
-          flash.success = 'Request successfully created!'
+          flash.success = gettext('Request successfully created!')
         if request._status == 'ERR'
           console.log "Failed to create request", request
           for field, message of request._issues.attribute
@@ -173,7 +174,8 @@ angular.module('taarifaWaterpointsApp')
         $scope.requests = requests._items
     $scope.filterStatus()
 
-  .controller 'RequestTriageCtrl', ($scope, $routeParams, $filter, Request, Waterpoint, flash) ->
+  .controller 'RequestTriageCtrl', ($scope, $routeParams, $filter,
+                                    Request, Waterpoint, flash, gettext) ->
     $scope.apply = {}
     Request.get id: $routeParams.id, (request) ->
       if request.expected_datetime
@@ -190,7 +192,7 @@ angular.module('taarifaWaterpointsApp')
       Waterpoint.patch($scope.waterpoint._id, d, $scope.waterpoint._etag)
       .success (data, status) ->
         if status == 200 and data._status == 'OK'
-          flash.success = 'Waterpoint successfully updated!'
+          flash.success = gettext('Waterpoint successfully updated!')
           $scope.waterpoint._etag = data._etag
           for key of $scope.apply
             $scope.waterpoint[key] = $scope.request.attribute[key]
