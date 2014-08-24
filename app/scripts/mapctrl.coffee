@@ -8,13 +8,13 @@ angular.module('taarifaWaterpointsApp')
     # FIXME: "ward" and "region" should be defined elsewhere I think
     # NOTE: Rewritten to avoid too much "ward" / "region" lookup
     getFeatureType = (feature) ->
-      return if feature.id.match /ward/ then "ward" else "region"
+      return if feature.properties.hasOwnProperty "REGNAME" then "region" else "ward"
 
     getFeaturedItem = (feature) ->
       itemType = getFeatureType(feature)
       nameProperty = if itemType == "region" then "REGNAME" else "Ward_Name"
       name = feature.properties[nameProperty].toLowerCase()
-      item = $scope[itemType + "name"]
+      item = $scope[itemType + "Map"][name]
       [name, item, itemType]
 
     getItem = (feature) ->
@@ -28,10 +28,10 @@ angular.module('taarifaWaterpointsApp')
       ### EVENT HANDLERS ###
       ######################
       mouseOver = (e) ->
-        [name, item] = getFeaturedItem(e.target.feature)
+        [name, item, itemType] = getFeaturedItem(e.target.feature)
 
         if item
-          hoverText = item[type] + ": " + item[$scope.choroChoice].toPrecision(3) + "%"
+          hoverText = item[itemType] + ": " + item[$scope.choroChoice].toPrecision(3) + "%"
         else
           hoverText = name + ": unknown"
 
@@ -95,7 +95,7 @@ angular.module('taarifaWaterpointsApp')
         })
         deferred.promise
 
-      makeLegend: (map) ->
+      makeLegend = (map) ->
         legend = L.control(
           position: 'bottomright'
         )
@@ -164,6 +164,7 @@ angular.module('taarifaWaterpointsApp')
           fullscreenControl: true
           layers: [satLayer, regionLayer, wardLayer, clusterLayer]
         )
+        makeLegend(map)
 
         # Add a layer selector
         layerSelector = L.control.layers(baseMaps, overlayControls).addTo(map)
