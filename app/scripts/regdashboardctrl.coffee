@@ -236,9 +236,12 @@ angular.module('taarifaWaterpointsApp')
     # used by the map and datatable widgets
     # FIXME: eventually this should be replaced by making the map
     # and data table proper dc charts
-    filterHandlers = []
+    filterHandlers =
+      table: null
+      map: null
+
     onFilteredHandler = () ->
-      filterHandlers.forEach (x) ->
+      _.values(filterHandlers).forEach (x) ->
         x()
 
     setupCharts = (region) ->
@@ -561,7 +564,7 @@ angular.module('taarifaWaterpointsApp')
             mData: x
             sDefaultContent: ""
             mRender: (obj) ->
-              y = String(obj.coordinates)
+              String(obj.coordinates)
           else
             {mData: x, sDefaultContent: ""})
 
@@ -586,10 +589,11 @@ angular.module('taarifaWaterpointsApp')
         datatable.fnAddData(alldata)
         datatable.fnDraw()
 
+      filterHandlers.table = reloadTable
+
       if exists
         reloadTable()
-      else
-        filterHandlers.push(reloadTable)
+
 
     # controller level map object
     map = null
@@ -615,9 +619,7 @@ angular.module('taarifaWaterpointsApp')
           map.addWaterpoint(wp)
         map.zoomToMarkers()
 
-      if not exists
-        filterHandlers.push(updateMap)
-
+      filterHandlers.map = updateMap
       updateMap()
 
     reduceStatus = (group) ->
