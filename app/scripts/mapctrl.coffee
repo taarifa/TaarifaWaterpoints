@@ -72,28 +72,19 @@ angular.module('taarifaWaterpointsApp')
       ### HELPERS ###
       ###############
       getTopoJsonLayer = (url, featureName, doClick) ->
-        deferred = $q.defer()
-        $.ajax({
-          url
-          dataType: 'json'
-          success: (response) ->
-            features = topojson.feature(response, response.objects[featureName]).features
-            geojson = L.geoJson(features, {
-              style
-              onEachFeature: (feature, layer) ->
-                layer.on
-                  mouseover: mouseOver
-                  mouseout: (e) ->
-                    geojson.resetStyle(e.target)
-                    $scope.$apply (scope) ->
-                      scope.hoverText = ""
-                  click: onClick if doClick
-            })
-            deferred.resolve geojson
-          error: (response) ->
-            deferred.reject response
-        })
-        deferred.promise
+        $http.get(url).then (response) ->
+          features = topojson.feature(response.data, response.data.objects[featureName]).features
+          geojson = L.geoJson(features, {
+            style
+            onEachFeature: (feature, layer) ->
+              layer.on
+                mouseover: mouseOver
+                mouseout: (e) ->
+                  geojson.resetStyle(e.target)
+                  $scope.$apply (scope) ->
+                    scope.hoverText = ""
+                click: onClick if doClick
+          })
 
       makeLegend = (map) ->
         legend = L.control(
