@@ -5,45 +5,30 @@ angular.module('taarifaWaterpointsApp')
     $scope.hoverText = ""
     $scope.choroChoice = "percFun"
 
+    # FIXME: "ward" and "region" should be defined elsewhere I think
+    # NOTE: Rewritten to avoid too much "ward" / "region" lookup
     getFeatureType = (feature) ->
-      if feature.properties.hasOwnProperty("REGNAME")
-        return "region"
-      else
-        return "ward"
+      return if feature.id.match /ward/ then "ward" else "region"
 
-    getWardItem = (feature) ->
-      wardname = feature.properties.Ward_Name.toLowerCase()
-      warditem = $scope.wardMap[wardname]
-      [wardname, warditem]
-
-    getRegItem = (feature) ->
-      regname = feature.properties.REGNAME.toLowerCase()
-      regitem = $scope.regionMap[regname]
-      [regname, regitem]
+    getFeaturedItem = (feature) ->
+      itemType = getFeatureType(feature)
+      nameProperty = if itemType == "region" then "REGNAME" else "Ward_Name"
+      name = feature.properties[nameProperty].toLowerCase()
+      item = $scope[itemType + "name"]
+      [name, item, itemType]
 
     getItem = (feature) ->
-      if getFeatureType(feature) == "region"
-        return ["region", getRegItem(feature)[1]]
-      else
-        return ["ward", getWardItem(feature)[1]]
+      featureType = getFeatureType(feature)
+      return [featureType, getFeaturedItem(feature)[1]]
 
-    initMap = (regions, wards, waterpoints) ->
 
-      osmLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        attribution: '(c) OpenStreetMap'
-      )
+    initMap = (waterpoints, mapCenter) ->
 
-      satLayer = L.tileLayer('http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        attribution: '(c) Esri'
-      )
-
+      ######################
+      ### EVENT HANDLERS ###
+      ######################
       mouseOver = (e) ->
-        type = getFeatureType(e.target.feature)
-
-        if type == "region"
-          [name, item] = getRegItem(e.target.feature)
-        else
-          [name, item] = getWardItem(e.target.feature)
+        [name, item] = getFeaturedItem(e.target.feature)
 
         if item
           hoverText = item[type] + ": " + item[$scope.choroChoice].toPrecision(3) + "%"
@@ -59,36 +44,21 @@ angular.module('taarifaWaterpointsApp')
           color: '#666'
           fillOpacity: 0.8
 
-      wardMouseOut = (e) ->
-        wardLayer.resetStyle(e.target)
-        $scope.$apply (scope) ->
-          scope.hoverText = ""
+      onClick = (e) ->
+        [name, item, itemType] = getFeaturedItem(e.target.feature)
+        if item
+          $scope.drillDown(item.region, itemType, true)
 
-      regionMouseOut = (e) ->
-        regLayer.resetStyle(e.target)
-        $scope.$apply (scope) ->
-          scope.hoverText = ""
-
-      regionClick = (e) ->
-        # dont do this here, the watch below will take care of that
-        #map.fitBounds(e.target.getBounds())
-
-        [regname, regit] = getRegItem(e.target.feature)
-        if regit
-          $scope.drillDown(regit.region, 'region', true)
-
+      ##############
+      ### STYLES ###
+      ##############
       colScale = d3.scale.linear()
                     .domain([0,50,100])
                     .range(["red","orange","green"])
 
-      # how to style the regions
       style = (feature) ->
         [type, item] = getItem(feature)
-
-        if not item
-          color = "gray"
-        else
-          color = colScale(item[$scope.choroChoice])
+        color = unless item then "gray" else colScale(item[$scope.choroChoice])
 
         s =
           fillColor: color
@@ -98,25 +68,58 @@ angular.module('taarifaWaterpointsApp')
           dashArray: '3'
           fillOpacity: 0.65
 
-      onEachRegionFeature = (feature, layer) ->
-        layer.on
-          mouseover: mouseOver
-          mouseout: regionMouseOut
-          click: regionClick
+      ###############
+      ### HELPERS ###
+      ###############
+      getTopoJsonLayer = (url, featureName, doClick) ->
+        deferred = $q.defer()
+        $.ajax({
+          url
+          dataType: 'json'
+          success: (response) ->
+            features = topojson.feature(response, response.objects[featureName]).features
+            geojson = L.geoJson(features, {
+              style
+              onEachFeature: (feature, layer) ->
+                layer.on
+                  mouseover: mouseOver
+                  mouseout: (e) ->
+                    geojson.resetStyle(e.target)
+                    $scope.$apply (scope) ->
+                      scope.hoverText = ""
+                  click: onClick if doClick
+            })
+            deferred.resolve geojson
+          error: (response) ->
+            deferred.reject response
+        })
+        deferred.promise
 
-      onEachWardFeature = (feature, layer) ->
-        layer.on
-          mouseover: mouseOver
-          mouseout: wardMouseOut
+      makeLegend: (map) ->
+        legend = L.control(
+          position: 'bottomright'
+        )
 
-      regLayer = L.geoJson(regions,
-        style: style
-        onEachFeature: onEachRegionFeature
+        legend.onAdd = (map) ->
+          div = L.DomUtil.create('div', 'legend')
+
+          [0,25,50,75,100].forEach((x) ->
+            div.innerHTML += '<i style="background:' + colScale(x) + '"></i> ' + x + "%<br />"
+          )
+
+          return div
+
+        legend.addTo(map)
+
+      ##############
+      ### LAYERS ###
+      ##############
+      osmLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        attribution: '(c) OpenStreetMap'
       )
 
-      wardLayer = L.geoJson(wards,
-        style: style
-        onEachFeature: onEachWardFeature
+      satLayer = L.tileLayer('http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        attribution: '(c) Esri'
       )
 
       categoryMap =
@@ -133,100 +136,90 @@ angular.module('taarifaWaterpointsApp')
         m.category = categoryMap[x.status_group]
         clusterLayer.RegisterMarker(m))
 
-      map = L.map('nationalDashMap',
-        center: new L.LatLng(-6.3153, 35.15625)
-        zoom: 5
-        fullscreenControl: true
-        layers: [satLayer, regLayer, clusterLayer]
-      )
+      ################
+      ### OVERLAYS ###
+      ################
+      $q.all([
+        getTopoJsonLayer("data/tz_regions.topojson", "tz_regions", true)
+        getTopoJsonLayer("data/tz_wards.topojson", "tz_wards", false)
+      ]).then((data) ->
 
-      baseMaps =
-        "Open Street Map": osmLayer
-        "Satellite": satLayer
+        regionLayer = data[0]
+        wardLayer   = data[1]
 
-      overlayMaps =
-        "Regions": regLayer
-        "Wards": wardLayer
-        #"Waterpoints": clusterLayer
+        ################
+        ### MAKE MAP ###
+        ################
+        baseMaps =
+          "Open Street Map": osmLayer
+          "Satellite": satLayer
 
-      # add a layer selector
-      layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
+        overlayControls =
+          "Regions": regionLayer
+          "Wards": wardLayer
 
-      # add a legend
-      legend = L.control(
-        position: 'bottomright'
-      )
-
-      legend.onAdd = (map) ->
-        div = L.DomUtil.create('div', 'legend');
-
-        [0,25,50,75,100].forEach((x) ->
-          div.innerHTML += '<i style="background:' + colScale(x) + '"></i> ' + x + "%<br />";
+        map = L.map('nationalDashMap',
+          center: mapCenter
+          zoom: 5
+          fullscreenControl: true
+          layers: [satLayer, regionLayer, wardLayer, clusterLayer]
         )
 
-        return div;
+        # Add a layer selector
+        layerSelector = L.control.layers(baseMaps, overlayControls).addTo(map)
 
-      legend.addTo(map);
+        # Start watching
+        $scope.$watch('choroChoice', (val) ->
+          return unless val
 
-      $scope.$watch('choroChoice', (val) ->
-        if !val then return
+          regionLayer.setStyle(style)
+          wardLayer.setStyle(style)
 
-        regLayer.setStyle(style)
-        wardLayer.setStyle(style)
+          if map.hasLayer(regionLayer)
+            map.removeLayer(regionLayer)
+            map.addLayer(regionLayer)
 
-        if map.hasLayer(regLayer)
-          map.removeLayer(regLayer)
-          map.addLayer(regLayer)
+          if map.hasLayer(wardLayer)
+            map.removeLayer(wardLayer)
+            map.addLayer(wardLayer)
+        )
 
-        if map.hasLayer(wardLayer)
-          map.removeLayer(wardLayer)
-          map.addLayer(wardLayer)
+        $scope.$watch('params.region', (val) ->
+          # find the matching geojson feature and refocus the map
+          return unless val
+
+          # only 26 regions so a simple linear search is ok
+          for f in regions.features
+            r = f.properties.REGNAME.toLowerCase()
+
+            if r == val.toLowerCase()
+              # turn into lat lon arrays
+              points = L.GeoJSON.coordsToLatLngs(f.geometry.coordinates,2)
+              # instantiate as multipolygon to get the bounds
+              bounds = L.multiPolygon(points).getBounds()
+              map.fitBounds(bounds)
+              return
+        )
       )
-
-      $scope.$watch('params.region', (val) ->
-        # find the matching geojson feature and refocus the map
-
-        if !val then return
-
-        # only 26 regions so a simple linear search is ok
-        for f in regions.features
-          r = f.properties.REGNAME.toLowerCase()
-
-          if r == val.toLowerCase()
-            # turn into lat lon arrays
-            points = L.GeoJSON.coordsToLatLngs(f.geometry.coordinates,2)
-            # instantiate as multipolygon to get the bounds
-            bounds = L.multiPolygon(points).getBounds()
-            map.fitBounds(bounds)
-            return
-      )
-
 
     modalSpinner.open()
 
-    # get the boundaries
+    # Get the boundaries and layers
     $q.all([
-      $http.get("data/tanzania_regions.geojson", cache: true)
-      $http.get("data/tanzania_wards.geojson", cache: true)
       waterpointStats.getStats(null, null, null, "region", true)
       # FIXME: relies on the fact that wards are uniquely named
       waterpointStats.getStats(null, null, null, "ward", true)
-    ]).then((results) ->
-      regions = results[0].data
-      wards = results[1].data
-      regionStats = results[2]
-      wardStats = results[3]
+    ]).then((data) ->
+      # Add the regions and wards to the template scope
+      addToScope = (stats, name) ->
+        tmp = _.pluck(stats, name).map((x) -> x.toLowerCase())
+        $scope[name + "Map"] = _.object(tmp, stats)
 
-      # create an associative map by region/ward name
-      regs = _.pluck(regionStats, "region").map((x) -> x.toLowerCase())
-      regionMap = _.object(regs, regionStats)
-      $scope.regionMap = regionMap
+      # data contains stats for region and ward
+      addToScope(data[0], "region")
+      addToScope(data[1], "ward")
 
-      ws = _.pluck(wardStats, "ward").map((x) -> x.toLowerCase())
-      wardMap = _.object(ws, wardStats)
-      $scope.wardMap = wardMap
-
-      initMap(regions, wards, [])
-
+      # Initialise the map
+      map = initMap([], new L.LatLng(-6.3153, 35.15625))
       modalSpinner.close()
     )

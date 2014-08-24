@@ -1,7 +1,6 @@
 import json
-import requests
 from eve.render import send_response
-from flask import request, Response, send_from_directory
+from flask import request, send_from_directory
 from werkzeug.contrib.cache import SimpleCache
 cache = SimpleCache()
 
@@ -36,9 +35,10 @@ app.config['PAGINATION_LIMIT'] = 70000
 def waterpoint_requests():
     "Return the unique values for a given field in the waterpoints collection."
     # FIXME: Direct call to the PyMongo driver, should be abstracted
-    requests = app.data.driver.db['requests'].find({'status': 'open'},
-                                                   ['attribute.waterpoint_id'])
-    return send_response('requests', (requests.distinct('attribute.waterpoint_id'),))
+    reqs = app.data.driver.db['requests'].find(
+        {'status': 'open'},
+        ['attribute.waterpoint_id'])
+    return send_response('requests', (reqs.distinct('attribute.waterpoint_id'),))
 
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/values/<field>')
@@ -126,17 +126,9 @@ def images(filename):
     return send_from_directory(app.root_path + '/dist/images/', filename)
 
 
-@app.route('/data/<path:filename>.geojson')
+@app.route('/data/<path:filename>.topojson')
 def geojson(filename):
-    url = 'http://162.243.57.235/geoserver/wfs?srsName=EPSG%3A4326&typename=geonode%3A' \
-            + filename + '&outputFormat=json&version=1.0.0&service=WFS&request=GetFeature'
-    resp = cache.get(filename)
-    if resp is None:
-        r = requests.get(url)
-        resp = Response(r.content, status=r.status_code,
-                        content_type=r.headers['content-type'])
-        cache.set(filename, resp, timeout=24*60*60)
-    return resp
+    return send_from_directory(app.root_path + '/app/data/', filename + '.topojson', mimetype="application/json")
 
 
 @app.route('/data/<path:filename>')
