@@ -22,7 +22,7 @@ msgstr "Wakala husika"
 
 #: app/views/triage.html
 msgid "Apply"
-msgstr "Tumia"
+msgstr "Tuma"
 
 #: app/views/triage.html
 msgid "Attribute"
@@ -138,7 +138,7 @@ msgstr "Usimamizi"
 
 #: app/views/main.html
 msgid "Max no. results"
-msgstr "Kikomo cha juu cha matokeo"
+msgstr "Idadi"
 
 #: app/views/requests.html
 msgid "Metadata"
@@ -242,7 +242,7 @@ msgstr "Hali ya kituo cha maji"
 
 #: app/views/main.html
 msgid "WPs with reports"
-msgstr "Vituo vya maji na ripoti"
+msgstr "Vituo vyenye ripoti"
 
 #: app/views/dashboard.html
 msgid "Ward"
