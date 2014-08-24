@@ -12,6 +12,10 @@ msgstr ""
 "X-Generator: Poedit 1.6.8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: app/views/triage.html
+msgid "Accept change"
+msgstr ""
+
 #: app/index.html
 msgid "Add Waterpoint"
 msgstr "Ongeza Kituo cha Maji"
@@ -19,10 +23,6 @@ msgstr "Ongeza Kituo cha Maji"
 #: app/views/triage.html
 msgid "Agency responsible"
 msgstr "Wakala husika"
-
-#: app/views/triage.html
-msgid "Apply"
-msgstr "Tuma"
 
 #: app/views/triage.html
 msgid "Attribute"
@@ -35,6 +35,10 @@ msgstr "Mwaka wa kuharibika"
 #: app/views/dashboard.html
 msgid "Charts"
 msgstr "Chati"
+
+#: app/views/triage.html
+msgid "Comments"
+msgstr ""
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Construction Year"
@@ -57,7 +61,8 @@ msgid "Data Table"
 msgstr "Jedwali la Data"
 
 #: app/views/triage.html
-msgid "Expected date"
+#, fuzzy
+msgid "Expected completion date"
 msgstr "Tarehe tarajiwa"
 
 #: .tmp/scripts/regdashboardctrl.js
@@ -103,6 +108,10 @@ msgstr "Ufanyaji kazi dhidi ya Gharama"
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Funder"
 msgstr "Mfadhili"
+
+#: app/views/triage.html
+msgid "Further information or comments about the problem"
+msgstr ""
 
 #: app/views/dashboard.html
 msgid "Group By"
@@ -164,6 +173,10 @@ msgstr "Jedwali la Utendaji: % Vinavyofanya kazi"
 msgid "Performance Table: % Served"
 msgstr "Jedwali la Utendaji: % Wanaohudumiwa"
 
+#: app/views/triage.html
+msgid "Planned actions"
+msgstr ""
+
 #: app/views/dashboard.html
 msgid "Print"
 msgstr "Chapa"
@@ -181,6 +194,11 @@ msgid "Regional"
 msgstr "Kwa Mkoa"
 
 #: app/views/triage.html
+#, fuzzy
+msgid "Report status"
+msgstr "Hali ya suala"
+
+#: app/views/triage.html
 msgid "Reported value"
 msgstr "Thamani/Hali iliyoripotiwa"
 
@@ -196,17 +214,13 @@ msgstr "Seti upya chujio"
 msgid "Selected"
 msgstr "Vilivyochaguliwa"
 
-#: app/views/triage.html
-msgid "Service notice"
-msgstr "Taarifa ya matengenezo"
-
-#: app/views/main.html app/views/triage.html
+#: app/views/main.html
 msgid "Status"
 msgstr "Hali"
 
 #: app/views/triage.html
-msgid "Status notes"
-msgstr "Maelezo kuhusu hali"
+msgid "Steps that will be taken to fix the problem"
+msgstr ""
 
 #: app/index.html
 msgid "Tanzania Waterpoints"
@@ -295,6 +309,15 @@ msgstr "Tarehe ya uwasilishwaji"
 #: app/views/dashboard.html
 msgid "waterpoints"
 msgstr "Vituo vya Maji"
+
+#~ msgid "Apply"
+#~ msgstr "Tuma"
+
+#~ msgid "Service notice"
+#~ msgstr "Taarifa ya matengenezo"
+
+#~ msgid "Status notes"
+#~ msgstr "Maelezo kuhusu hali"
 
 #~ msgid "Leaderboard: Percentage Functional"
 #~ msgstr "Wanaoongoza kwa asilimia ya Vinavyofanya kazi"
