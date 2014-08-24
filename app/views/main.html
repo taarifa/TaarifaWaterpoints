@@ -4,8 +4,15 @@
     <form class="form-inline" role="form">
       <div class="form-group">
         <label for="region" translate>Region</label>
-        <select class="form-control" id="region" ng-model="where.region" ng-change="updateMap()"
+        <select class="form-control" id="region" ng-model="where.region" ng-change="clearLGA();updateMap()"
           ng-options="r for r in regions">
+          <option value="">all</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="lga" translate>LGA</label>
+        <select class="form-control" id="lga" ng-model="where.lga" ng-change="updateMap()"
+          ng-options="l for l in lgas">
           <option value="">all</option>
         </select>
       </div>

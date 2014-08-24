@@ -48,7 +48,7 @@ def waterpoint_values(field):
     resources = app.data.driver.db['resources']
     if request.args:
         resources = resources.find(dict(request.args.items()))
-    return send_response('resources', (resources.distinct(field),))
+    return send_response('resources', (sorted(resources.distinct(field)),))
 
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/stats')
