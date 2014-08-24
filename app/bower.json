@@ -23,6 +23,7 @@
     "angular-gettext": "~1.1.0",
     "angular-gridster": "~0.9.16",
     "PruneCluster": "~0.8.0",
-    "angularjs-geolocation": "~0.1.1"
+    "angularjs-geolocation": "~0.1.1",
+    "angular-flash": "~0.1.13"
   }
 }
