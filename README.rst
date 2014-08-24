@@ -245,7 +245,7 @@ To deploy to Heroku_, make sure the `Heroku tool belt`_ is installed. From the
 TaarifaWaterpoints root folder, create a new app: ::
 
   heroku app:create <name>
-
+(If you stuck on Heroku installation visit this link Heroku-Dev-Center_)
 This will add a new Git remote `heroku`, which is used to deploy the app. Run
 `git remote -v` to check. To add the remote manually, do: ::
 
@@ -348,3 +348,4 @@ guidelines`_ for further details.
 .. _heroku-buildpack-multi: https://github.com/ddollar/heroku-buildpack-multi
 .. _MongoDB installation instructions: http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
 .. _contributing guidelines: CONTRIBUTING.rst
+.._Heroku Dev Center: https://devcenter.heroku.com/articles/getting-started-with-python#deploy-the-app
