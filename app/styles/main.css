@@ -78,6 +78,10 @@
   height: 28px;
   pointer-events: none;
 }
+#statusSummary text {
+  font-size: 13;
+}
+
 
 /* Gridster */
 
@@ -164,6 +168,10 @@ li.gridster-item {
 
 .hor-bar {
     fill: #0a871f;
+}
+
+.hor-bar-label {
+  font-size: 13;
 }
 
 .d3-tip {

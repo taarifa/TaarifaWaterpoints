@@ -1,5 +1,5 @@
 //to prevent creating overcrowded plots
-var minColWidth = 25;
+var minColWidth = 20;
 //FIXME: hardcoded list of possible status fields
 var statusColor = d3.scale.ordinal()
     .domain(["functional","needs repair", "not functional"])
@@ -393,6 +393,7 @@ function leaderChart(selector, data, groupField, getter) {
     .attr("y", function(d) {
       return y(d[groupField]) + y.rangeBand(d)/2;
     })
+    .attr("dy", ".36em")
     .attr("x", function(d) {
       return x(0) + 5;
     })
