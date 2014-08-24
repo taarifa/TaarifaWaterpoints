@@ -41,6 +41,9 @@ angular.module('taarifaWaterpointsApp')
       $scope.regions = regions
     $http.get('/api/waterpoints/values/lga', cache: true).success (lgas) ->
       $scope.lgas = lgas
+    $scope.clearLGA = ->
+      $scope.where.lga = null
+      $location.search 'lga', null
     $scope.updateMap = (nozoom) ->
       $location.search($scope.where)
       where = {}
@@ -48,9 +51,6 @@ angular.module('taarifaWaterpointsApp')
         where.region = $scope.where.region
         # Filter LGAs based on selected Region
         $http.get('/api/waterpoints/values/lga', params: {region: where.region}, cache: true).success (lgas) ->
-          # FIXME: Naive implementation. The selected LGA should be cleared if different region is selected
-          if $scope.where.lga not in lgas
-            lgas.push($scope.where.lga)
           $scope.lgas = lgas
       else
         $http.get('/api/waterpoints/values/lga', cache: true).success (lgas) ->
