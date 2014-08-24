@@ -1,0 +1,22 @@
+{
+  "name": "TaarifaWaterpoints",
+  "version": "0.0.0",
+  "homepage": "https://github.com/taarifa/TaarifaWaterpoints",
+  "authors": [
+    "Taarifa contributors <taarifadev@gmail.com>"
+  ],
+  "description": "Waterpoint management system for Tanzania",
+  "main": "scripts/app.coffee",
+  "keywords": [
+    "infrastructure",
+    "water"
+  ],
+  "license": "Apache 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
