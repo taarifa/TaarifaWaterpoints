@@ -51,7 +51,11 @@ angular.module('taarifaWaterpointsApp')
             )
 
             # sort by % functional waterpoints
-            data = _.sortBy(data, (x) -> -x.percFun)
+            data.sort (a, b) ->
+              if a.percFun == b.percFun
+                b.count - a.count
+              else
+                b.percFun - a.percFun
 
             # all done, call the callback
             def.resolve(data)

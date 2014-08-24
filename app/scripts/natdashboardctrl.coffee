@@ -222,9 +222,8 @@ angular.module('taarifaWaterpointsApp')
       ward = $scope.params?.ward
       groupfield = $scope.params?.group || "region"
 
-      promise = waterpointStats.getStats(region, lga, ward, groupfield, cacheHttp)
-      promise.then (data) ->
-        plotStatusSummary("#statusSummary", data, groupfield, barDblClick, translate, status)
+      plotStatusSummary("#statusSummary", $scope.statusSumData, groupfield,
+                        barDblClick, translate, status)
 
     drawPlots = () ->
       modalSpinner.open()
@@ -239,6 +238,9 @@ angular.module('taarifaWaterpointsApp')
 
       promise = waterpointStats.getStats(region, lga, ward, groupfield, cacheHttp)
       promise.then( (data) ->
+
+        # save a reference to the data so we have it when the selected status is changed
+        $scope.statusSumData = data
 
         plotStatusSummary("#statusSummary", data, groupfield, barDblClick, translate, status)
 
