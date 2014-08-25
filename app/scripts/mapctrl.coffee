@@ -199,6 +199,10 @@ angular.module('taarifaWaterpointsApp')
               map.fitBounds(bounds)
               return
         )
+        # FIXME: find a better solution than this "magic number" for timeout
+        $timeout ->
+          map.invalidateSize()
+        , 2000
         return map
       )
 
