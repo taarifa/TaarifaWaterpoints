@@ -111,13 +111,19 @@ Change into directory and install the requirements ::
   pip install -r requirements/dev.txt
 
 Ensure you have node.js and npm installed. Then, from the
-`TaarifaWaterpoints` directory, install the dependencies: ::
+``TaarifaWaterpoints`` directory, install the npm dependencies: ::
 
   npm install
 
-Install the Grunt_ command line interface (may require Adminstrator permission)
+Install the Grunt_ and Bower_ command line interface (may require Adminstrator
+permission): ::
 
   npm install -g grunt-cli
+  npm install -g bower
+
+Finally, install the frontend dependencies using Bower_: ::
+
+  bower install
 
 Continue with the usage section.
 
@@ -339,6 +345,7 @@ guidelines`_ for further details.
 .. _virtualenv: http://virtualenv.org
 .. _Set up virtualenvwrapper: http://virtualenvwrapper.readthedocs.org/en/latest/install.html#shell-startup-file
 .. _Grunt: http://gruntjs.com
+.. _Bower: http://bower.io
 .. _Vagrant: http://vagrantup.com
 .. _Vagrantfile: Vagrantfile
 .. _VirtualBox: https://www.virtualbox.org
