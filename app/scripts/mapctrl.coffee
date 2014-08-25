@@ -188,11 +188,10 @@ angular.module('taarifaWaterpointsApp')
             if r == val.toLowerCase()
               # I don't really understand why this works, but it does...
               # FIXME if you can!
+              numToUnpack = 2
               if f.geometry.coordinates.length is 3
-                numToUnpack = 2
                 coordsToUse = f.geometry.coordinates
               else
-                numToUnpack = 2
                 coordsToUse = [f.geometry.coordinates]
               points = L.GeoJSON.coordsToLatLngs(coordsToUse, numToUnpack)
               # instantiate as multipolygon to get the bounds
