@@ -81,9 +81,7 @@ angular.module('taarifaWaterpointsApp')
         if waterpoints._items.length == 0
           flash.info = gettext('No waterpoints match your filter criteria!')
           return
-        for p in waterpoints._items
-          popup = map.makePopup(p)
-          map.addWaterpoint p, popup
+        map.addWaterpoints(waterpoints._items)
         map.zoomToMarkers() unless nozoom
     $scope.updateMap()
 
@@ -111,7 +109,7 @@ angular.module('taarifaWaterpointsApp')
       $scope.form.location = coordinates: [data.coords.longitude, data.coords.latitude]
       map = Map("editMap", {})
       map.clearMarkers()
-      map.addWaterpoint($scope.form)
+      map.addWaterpoints([$scope.form])
       map.zoomToMarkers()
     , (reason) ->
       flash.error = gettext("Geolocation failed:") + " #{reason}"
@@ -139,7 +137,7 @@ angular.module('taarifaWaterpointsApp')
 
       $scope.form = waterpoint
       map.clearMarkers()
-      map.addWaterpoint(waterpoint)
+      map.addWaterpoints([waterpoint])
       map.zoomToMarkers()
 
     $scope.formTemplate = FacilityForm 'wpf001'
@@ -153,7 +151,7 @@ angular.module('taarifaWaterpointsApp')
     Waterpoint.get where: {wpt_code: $routeParams.waterpoint_id}, (wp) ->
       map.clearMarkers()
       # FIXME: assumes wpt_code is unique!
-      map.addWaterpoint(wp._items[0])
+      map.addWaterpoints([wp._items[0]])
       map.zoomToMarkers()
 
     $scope.formTemplate = RequestForm 'wps001', $location.search()

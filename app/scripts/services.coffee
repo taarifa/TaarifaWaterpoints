@@ -237,7 +237,7 @@ angular.module('taarifaWaterpointsApp')
       # add a layer selector
       layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
 
-      @makePopup = (wp) ->
+      makePopup = (wp) ->
         cleanKey = (k) ->
           $filter('titlecase')(k.replace("_"," "))
 
@@ -300,20 +300,19 @@ angular.module('taarifaWaterpointsApp')
           m = L.marker L.latLng(lat,lng),
               icon: makeAwesomeIcon(wp.status_group)
 
+      @addWaterpoints = (wps) ->
+        wps.forEach (wp) ->
+          [lng,lat] = wp.location.coordinates
 
-      @addWaterpoint = (wp, popup) ->
-        if not popup
-          popup = @makePopup(wp)
-        [lng,lat] = wp.location.coordinates
-        if options.clustering
-          m = new PruneCluster.Marker lat, lng, popup
-          m.category = categoryMap[wp.status_group]
-          markerLayer.RegisterMarker m
-        else
-          m = makeMarker(wp)
-          if popup
+          if options.clustering
+            m = new PruneCluster.Marker lat, lng, popup
+            m.category = categoryMap[wp.status_group]
+            markerLayer.RegisterMarker m
+          else
+            m = makeMarker(wp)
+            popup = makePopup(wp)
             m.bindPopup popup
-          markerLayer.addLayer(m)
+            markerLayer.addLayer(m)
 
       @zoomToMarkers = () ->
         if options.clustering
