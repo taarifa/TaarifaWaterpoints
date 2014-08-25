@@ -85,6 +85,7 @@ angular.module('taarifaWaterpointsApp')
                     scope.hoverText = ""
                 click: onClick if doClick
           })
+          [features, geojson]
 
       makeLegend = (map) ->
         legend = L.control(
@@ -135,8 +136,8 @@ angular.module('taarifaWaterpointsApp')
         getTopoJsonLayer("data/tz_wards.topojson", "tz_wards", false)
       ]).then((data) ->
 
-        regionLayer = data[0]
-        wardLayer   = data[1]
+        [regions, regionLayer] = data[0]
+        [wards, wardLayer]     = data[1]
 
         ################
         ### MAKE MAP ###
@@ -153,7 +154,7 @@ angular.module('taarifaWaterpointsApp')
           center: mapCenter
           zoom: 5
           fullscreenControl: true
-          layers: [satLayer, regionLayer, wardLayer, clusterLayer]
+          layers: [satLayer, regionLayer, clusterLayer]
         )
         makeLegend(map)
 
@@ -181,17 +182,25 @@ angular.module('taarifaWaterpointsApp')
           return unless val
 
           # only 26 regions so a simple linear search is ok
-          for f in regions.features
+          for f in regions
             r = f.properties.REGNAME.toLowerCase()
 
             if r == val.toLowerCase()
-              # turn into lat lon arrays
-              points = L.GeoJSON.coordsToLatLngs(f.geometry.coordinates,2)
+              # I don't really understand why this works, but it does...
+              # FIXME if you can!
+              if f.geometry.coordinates.length is 3
+                numToUnpack = 2
+                coordsToUse = f.geometry.coordinates
+              else
+                numToUnpack = 2
+                coordsToUse = [f.geometry.coordinates]
+              points = L.GeoJSON.coordsToLatLngs(coordsToUse, numToUnpack)
               # instantiate as multipolygon to get the bounds
               bounds = L.multiPolygon(points).getBounds()
               map.fitBounds(bounds)
               return
         )
+        return map
       )
 
     modalSpinner.open()
@@ -212,6 +221,6 @@ angular.module('taarifaWaterpointsApp')
       addToScope(data[1], "ward")
 
       # Initialise the map
-      map = initMap([], new L.LatLng(-6.3153, 35.15625))
+      initMap([], new L.LatLng(-6.3153, 35.15625))
       modalSpinner.close()
     )
