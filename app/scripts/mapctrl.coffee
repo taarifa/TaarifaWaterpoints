@@ -72,7 +72,7 @@ angular.module('taarifaWaterpointsApp')
       ### HELPERS ###
       ###############
       getTopoJsonLayer = (url, featureName, doClick) ->
-        $http.get(url).then (response) ->
+        $http.get(url, cache: true).then (response) ->
           features = topojson.feature(response.data, response.data.objects[featureName]).features
           geojson = L.geoJson(features, {
             style
