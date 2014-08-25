@@ -83,6 +83,7 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
+          hostname: grunt.option('host') || '0.0.0.0',
           open: true,
           base: [
             '.tmp',
