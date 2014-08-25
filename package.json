@@ -28,7 +28,8 @@
     "load-grunt-tasks": "~0.4.0",
     "ng-annotate": "^0.9.11",
     "time-grunt": "~0.2.1",
-    "grunt-bower-task": "~0.4.0"
+    "grunt-bower-task": "~0.4.0",
+    "topojson": "^1.6.18"
   },
   "devDependencies": {
     "karma-ng-scenario": "~0.1.0",
