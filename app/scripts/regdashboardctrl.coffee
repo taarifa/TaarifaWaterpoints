@@ -609,14 +609,14 @@ angular.module('taarifaWaterpointsApp')
         options =
           clustering: false
           markerType: "circle"
+          coverage: true
 
         map = Map(id, options)
 
       updateMap = () ->
         alldata = dim.top(Infinity)
         map.clearMarkers()
-        alldata.forEach (wp) ->
-          map.addWaterpoint(wp)
+        map.addWaterpoints(alldata)
         map.zoomToMarkers()
 
       filterHandlers.map = updateMap
