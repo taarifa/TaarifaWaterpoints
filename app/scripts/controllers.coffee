@@ -33,7 +33,7 @@ angular.module('taarifaWaterpointsApp')
       gettextCatalog.setCurrentLanguage(lang)
 
   .controller 'MainCtrl', ($scope, $http, $location, Waterpoint, Map, flash, gettext) ->
-    map = Map "wpMap"
+    map = Map "wpMap", showScale:true
     $scope.where = $location.search()
     $scope.where.max_results = parseInt($scope.where.max_results) || 100
     $scope.where.reports_only = parseInt($scope.where.reports_only) || 0
