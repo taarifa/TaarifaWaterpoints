@@ -194,6 +194,7 @@ angular.module('taarifaWaterpointsApp')
         clustering: false
         markerType: "regular"
         coverage: false
+        showScale: false
 
       options = _.extend(defaults, opts)
 
@@ -249,6 +250,10 @@ angular.module('taarifaWaterpointsApp')
 
       # add a layer selector
       layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
+
+      # add a distance scale
+      if options.showScale
+        scale = L.control.scale().addTo(map)
 
       makePopup = (wp) ->
         cleanKey = (k) ->

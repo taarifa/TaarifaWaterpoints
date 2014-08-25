@@ -610,6 +610,7 @@ angular.module('taarifaWaterpointsApp')
           clustering: false
           markerType: "circle"
           coverage: true
+          showScale: true
 
         map = Map(id, options)
 
