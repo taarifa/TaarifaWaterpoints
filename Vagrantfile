@@ -25,6 +25,9 @@ Vagrant.configure("2") do |config|
   # Forward the grunt development server port
   config.vm.network "forwarded_port", guest: 9000, host: 9000
 
+  # Forward the livereload port
+  config.vm.network "forwarded_port", guest: 35729, host: 35729
+
   # Provision the VM
   config.vm.provision "shell", path: "install.sh", :privileged => false
   config.vm.provision "shell", path: "bootstrap.sh", :privileged => false
