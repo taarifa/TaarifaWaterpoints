@@ -5,7 +5,6 @@
     "grunt": "~0.4.1",
     "grunt-angular-gettext": "~0.2.14",
     "grunt-autoprefixer": "~0.4.0",
-    "grunt-bower-install": "~1.0.0",
     "grunt-cli": "~0.1.13",
     "grunt-concurrent": "~0.5.0",
     "grunt-contrib-clean": "~0.5.0",
@@ -28,7 +27,8 @@
     "jshint-stylish": "~0.1.3",
     "load-grunt-tasks": "~0.4.0",
     "ng-annotate": "^0.9.11",
-    "time-grunt": "~0.2.1"
+    "time-grunt": "~0.2.1",
+    "grunt-bower-task": "~0.4.0"
   },
   "devDependencies": {
     "karma-ng-scenario": "~0.1.0",

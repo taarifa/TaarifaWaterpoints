@@ -56,6 +56,14 @@ module.exports = function (grunt) {
       }
     },
 
+    bower: {
+      install: {
+        options: {
+          copy: false
+        }
+      }
+    },
+
     // The actual grunt server settings
     connect: {
       proxies: [
@@ -389,6 +397,8 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-angular-gettext');
 
+  grunt.loadNpmTasks('grunt-bower-task');
+
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
@@ -419,6 +429,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'bower',
     'nggettext_extract',
     'nggettext_compile',
     'useminPrepare',

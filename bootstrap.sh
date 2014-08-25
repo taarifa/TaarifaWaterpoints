@@ -11,5 +11,6 @@ if [[ ! -d TaarifaWaterpoints ]]; then
   git clone https://github.com/taarifa/TaarifaWaterpoints
 fi
 (cd TaarifaWaterpoints;
- pip install -r requirements.txt
- npm install)
+ pip install -r requirements/dev.txt
+ npm install
+ bower install)
