@@ -193,6 +193,7 @@ angular.module('taarifaWaterpointsApp')
       defaults =
         clustering: false
         markerType: "regular"
+        coverage: false
 
       options = _.extend(defaults, opts)
 
@@ -203,6 +204,12 @@ angular.module('taarifaWaterpointsApp')
       satLayer = L.tileLayer(
         'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         attribution: '(c) Esri')
+
+      baseMaps =
+        "Open Street Map": osmLayer
+        "Satellite": satLayer
+
+      overlayMaps = {}
 
       # FIXME: hardcoded categories
       categoryMap =
@@ -221,18 +228,24 @@ angular.module('taarifaWaterpointsApp')
       else
         markerLayer = L.featureGroup()
 
+      overlayMaps.Waterpoints = markerLayer
+
+      if options.coverage
+        coverageLayer = L.TileLayer.maskCanvas
+          radius: 1000
+          useAbsoluteRadius: true   # true: r in meters, false: r in pixels
+          color: '#000'             # the color of the layer
+          opacity: 0.5              # opacity of the not covered area
+          noMask: false             # true results in normal (filled) circled, instead masked circles
+          lineColor: '#A00'         # color of the circle outline if noMask is true
+
+        overlayMaps.Coverage = coverageLayer
+
       map = L.map id,
         center: new L.LatLng -6.3153, 35.15625
         zoom: 5
         fullscreenControl: true
         layers: [osmLayer, markerLayer]
-
-      baseMaps =
-        "Open Street Map": osmLayer
-        "Satellite": satLayer
-
-      overlayMaps =
-        "Waterpoints": markerLayer
 
       # add a layer selector
       layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
@@ -313,6 +326,10 @@ angular.module('taarifaWaterpointsApp')
             popup = makePopup(wp)
             m.bindPopup popup
             markerLayer.addLayer(m)
+
+        if options.coverage
+          coords = wps.map (x) -> [x.location.coordinates[1], x.location.coordinates[0]]
+          coverageLayer.setData coords
 
       @zoomToMarkers = () ->
         if options.clustering

@@ -24,6 +24,7 @@
     "angular-gridster": "~0.9.16",
     "PruneCluster": "~0.8.0",
     "angularjs-geolocation": "~0.1.1",
+    "leaflet-maskcanvas": "git://github.com/domoritz/leaflet-maskcanvas",
     "angular-flash": "~0.1.13"
   }
 }
