@@ -616,7 +616,6 @@ angular.module('taarifaWaterpointsApp')
         alldata = dim.top(Infinity)
         map.clearMarkers()
         map.addWaterpoints(alldata)
-        map.zoomToMarkers()
 
       filterHandlers.map = updateMap
       updateMap()

@@ -28,7 +28,7 @@ angular.module('taarifaWaterpointsApp')
       # Using the setter function ensures the gettextLanguageChanged event gets fired
       gettextCatalog.setCurrentLanguage(lang)
 
-  .controller 'MainCtrl', ($scope, $http, $location, $q, Waterpoint, Map, flash, gettext) ->
+  .controller 'MainCtrl', ($scope, $http, $location, Waterpoint, Map, flash, gettext) ->
     map = Map "wpMap", showScale:true
     $scope.where = $location.search()
     $scope.where.max_results = parseInt($scope.where.max_results) || 100
@@ -77,8 +77,7 @@ angular.module('taarifaWaterpointsApp')
         if waterpoints._items.length == 0
           flash.info = gettext('No waterpoints match your filter criteria!')
           return
-        $q.all(map.addWaterpoints(waterpoints._items)).then ->
-          map.zoomToMarkers() unless nozoom
+        map.addWaterpoints waterpoints._items, nozoom
     $scope.updateMap()
 
   .controller 'DashboardCtrl', ($scope) ->
@@ -106,7 +105,6 @@ angular.module('taarifaWaterpointsApp')
       map = Map("editMap", {})
       map.clearMarkers()
       map.addWaterpoints([$scope.form])
-      map.zoomToMarkers()
     , (reason) ->
       flash.error = gettext("Geolocation failed:") + " #{reason}"
     $scope.save = () ->
@@ -134,7 +132,6 @@ angular.module('taarifaWaterpointsApp')
       $scope.form = waterpoint
       map.clearMarkers()
       map.addWaterpoints([waterpoint])
-      map.zoomToMarkers()
 
     $scope.formTemplate = FacilityForm 'wpf001'
     $scope.save = () ->
@@ -148,7 +145,6 @@ angular.module('taarifaWaterpointsApp')
       map.clearMarkers()
       # FIXME: assumes wpt_code is unique!
       map.addWaterpoints([wp._items[0]])
-      map.zoomToMarkers()
 
     $scope.formTemplate = RequestForm 'wps001', $location.search()
     # FIXME: Should not hardcode the service code here

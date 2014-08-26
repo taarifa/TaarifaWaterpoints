@@ -233,7 +233,7 @@ angular.module('taarifaWaterpointsApp')
   .factory 'Service', (ApiResource) ->
     ApiResource 'services'
 
-  .factory 'Map', ($filter, WaterpointStatus) ->
+  .factory 'Map', ($filter, $q, WaterpointStatus) ->
     (id, opts) =>
 
       defaults =
@@ -364,7 +364,7 @@ angular.module('taarifaWaterpointsApp')
               icon: 'tint',
               markerColor: color
 
-      @addWaterpoints = (wps) ->
+      @addWaterpoints = (wps, nozoom) ->
         promises = wps.map (wp) ->
           [lng,lat] = wp.location.coordinates
 
@@ -383,7 +383,6 @@ angular.module('taarifaWaterpointsApp')
         if options.coverage
           coords = wps.map (x) -> [x.location.coordinates[1], x.location.coordinates[0]]
           coverageLayer.setData coords
-        return promises
 
         if options.heatmap
           costMap =
@@ -402,8 +401,10 @@ angular.module('taarifaWaterpointsApp')
           heatmapLayer.setData 
             data: coords
 
+        $q.all(promises).then ->
+          zoomToMarkers() unless nozoom
 
-      @zoomToMarkers = () ->
+      zoomToMarkers = () ->
         if options.clustering
           markerLayer.FitBounds()
         else
