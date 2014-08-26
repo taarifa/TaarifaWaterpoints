@@ -37,7 +37,8 @@
         </div>
       </div>
       </li>
-      <li gridster-item="item" ng-repeat="item in gridLayout.plots" class="gridster-item-chart">
+      <li gridster-item="item" ng-repeat="item in gridLayout.plots"
+        class="gridster-item-chart" repeat-done="gridster-dom">
         <div class="panel panel-primary plot">
           <div class="panel-heading">
             <h3 class="panel-title">{{plots[$index].title | translate}}</h3>
