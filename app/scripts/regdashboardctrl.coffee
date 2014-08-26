@@ -4,7 +4,7 @@ angular.module('taarifaWaterpointsApp')
                                         gettext, modalSpinner, populationData) ->
     # should http calls be cached
     # FIXME: should be application level setting
-    cacheHttp = false
+    cacheHttp = true
 
     # FIXME: create our own statusColor version to prevent weird values
     # from modifying the original one
