@@ -252,6 +252,8 @@ angular.module('taarifaWaterpointsApp')
           useLocalExtrema: true
 
         overlays["Functionality Heatmap"] = heatmapLayer
+
+        # we add the heatmap layer by default
         defaultLayers.push(heatmapLayer)
 
       map = L.map id,
@@ -259,6 +261,11 @@ angular.module('taarifaWaterpointsApp')
         zoom: 5
         fullscreenControl: true
         layers: defaultLayers
+
+      if options.heatmap
+        # FIXME: remove the heatmap layer again to workaround
+        # https://github.com/pa7/heatmap.js/issues/130
+        map.removeLayer(heatmapLayer)
 
       # add a layer selector
       layerSelector = L.control.layers(baseMaps, overlays).addTo(map)
