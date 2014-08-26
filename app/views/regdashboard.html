@@ -23,7 +23,8 @@
     <div id="regionalPlots" class="row">
       <div id="dcgridster" gridster="gridsterOpts">
         <ul>
-          <li gridster-item="item" ng-repeat="(key,item) in gridLayout" class="gridster-item-chart">
+          <li gridster-item="item" ng-repeat="(key,item) in gridLayout"
+            class="gridster-item-chart" repeat-done="gridster-dom">
           <div class="panel panel-primary plot">
             <div class="panel-heading">
               <h3 class="panel-title">{{item.title | translate}}</h3>
