@@ -59,9 +59,9 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
   var h = dims.h, w = dims.w;
 
   var margin = {
-      top: 20,
+      top: 10,
       right: 20,
-      bottom: 90,
+      bottom: 110,
       left: 70
     },
     width = w - margin.left - margin.right,

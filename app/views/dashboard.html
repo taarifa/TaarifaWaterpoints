@@ -39,55 +39,47 @@
             </div>
           </div>
           </li>
-          <li gridster-item row="gridLayout.filter.row" col="gridLayout.filter.col"
-          size-x="gridLayout.filter.sizeX" size-y="gridLayout.filter.sizeY">
-          <form class="form-inline" role="form">
-            {{"Group By"|translate}}: <div class="form-group">
-              <select ng-model="params.group" ng-options="v for v in groups"
-                ng-change="groupBy()" class="form-control">
-              </select>
-            </div>
-            Filter:
-            <div class="form-group">
-              <select ng-model="params.region" ng-options="v for v in regions"
-                ng-change="getStatus('region')" class="form-control">
-                <option value="">{{"Region"|translate}}:</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <select ng-model="params.lga" ng-options="v for v in lgas"
-                ng-change="getStatus('lga')" class="form-control">
-                <option value="">{{"LGA"|translate}}:</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <select ng-model="params.ward" ng-options="v for v in wards"
-                ng-change="getStatus('ward')" class="form-control">
-                <option value="">{{"Ward"|translate}}:</option>
-              </select>
-            </div>
-          </form>
-          </li>
           <li gridster-item="item" ng-repeat="item in gridLayout.plots" class="gridster-item-chart">
-          <div class="panel panel-primary plot">
-            <div class="panel-heading">
-              <h3 class="panel-title">{{plots[$index].title | translate}}</h3>
-            </div>
-            <div class="panel-body" id="{{plots[$index].id}}">
-
-              <div ng-if="plots[$index].id == 'statusSummary'" class="statusSelector">
-                <label ng-repeat="st in statusses">
-                  <div ng-switch on="st == 'all'">
-                    <input type="radio" name="statusSelect"
-                      value="{{st}}" ng-model="statusChoice" ng-click="selectStatusClicked($event)" />
-                      <span ng-switch-when="true" style="color:black;">{{st | translate | titlecase }}</span>
-                    <span ng-switch-default style="color:{{statusColor(st)}};">{{st | translate | titlecase}}</span>
-                  </div>
-                </label>
+            <div class="panel panel-primary plot">
+              <div class="panel-heading">
+                <h3 class="panel-title">{{plots[$index].title | translate}}</h3>
               </div>
+              <div class="panel-body" id="{{plots[$index].id}}">
 
+                <div ng-if="plots[$index].id == 'statusSummary'" class="statusSelector">
+                  <div class="row">
+
+                    <div class="col-md-7 col-sm-7 col-xs-7">
+                      <form class="form-horizontal" role="form">
+                          <div class="form-group">
+                              <label ng-repeat="st in statusses" class="radio-inline">
+                                <div ng-switch on="st == 'all'">
+                                  <input type="radio" name="statusSelect" class=""
+                                  value="{{st}}" ng-model="statusChoice" ng-click="selectStatusClicked($event)" >
+                                  <span ng-switch-when="true" style="color:black;">{{st | translate | titlecase }}</span>
+                                  <span ng-switch-default style="color:{{statusColor(st)}};">{{st | translate | titlecase}}</span>
+                                </div>
+                              </label>
+                          </div>
+                      </form>
+                    </div>
+
+                    <div class="col-md-5 col-sm-5 col-xs-5">
+                      <form class="form form-horizontal">
+                        <div class="form-group">
+                          <label for="groupselect" class="col-md-6 col-sm-6 col-xs-6 control-label">{{"Group By"|translate}}:</label>
+                          <div class="col-md-6 col-sm-6 col-xs-6">
+                            <select id="groupselect" ng-model="params.group" ng-options="v for v in groups" ng-change="groupBy()" class="form-control"></select>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
             </div>
-          </div>
           </li>
         </ul>
       </div>
