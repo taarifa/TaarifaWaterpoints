@@ -694,5 +694,6 @@ angular.module('taarifaWaterpointsApp')
         (() -> count: 0, total: 0))
       res
 
-    # kick off everything
-    initView()
+    $scope.$on 'gridster-dom', ->
+      # kick off everything
+      initView()
