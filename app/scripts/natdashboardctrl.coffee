@@ -264,4 +264,5 @@ angular.module('taarifaWaterpointsApp')
       getWard()
       getProblems()
 
-    initView()
+    $scope.$on 'gridster-dom', ->
+      initView()
