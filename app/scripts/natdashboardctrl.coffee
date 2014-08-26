@@ -35,16 +35,14 @@ angular.module('taarifaWaterpointsApp')
           { sizeX: 2, sizeY: 2, row: 0, col: 2 },
           { sizeX: 2, sizeY: 2, row: 0, col: 4 },
       ],
-      problems:
-        { sizeX: 6, sizeY: 4, row: 2, col: 0 }
       map:
         { sizeX: 6, sizeY: 6, row: 0, col: 6 }
-      filter:
-        { sizeX: 12, sizeY: 1, row: 6, col: 0 }
+      problems:
+        { sizeX: 6, sizeY: 4, row: 2, col: 0 }
       plots: [
-        { sizeX: 12, sizeY: 5, row: 7, col: 0 },
-        { sizeX: 6, sizeY: 5, row: 12, col: 0 }
-        { sizeX: 6, sizeY: 5, row: 18, col: 6 }
+        { sizeX: 12, sizeY: 5, row: 6, col: 0 },
+        { sizeX: 6, sizeY: 5, row: 11, col: 0 }
+        { sizeX: 6, sizeY: 5, row: 11, col: 6 }
       ]
     }
 

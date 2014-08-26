@@ -278,6 +278,7 @@ div.region-info {
 }
 
 .statusSelector label {
+  padding-left: 10px;
   padding-right: 15px;
 }
 
