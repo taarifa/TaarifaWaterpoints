@@ -5,10 +5,6 @@ angular.module('taarifaWaterpointsApp')
   .controller 'NavCtrl', ($scope, $location) ->
     $scope.location = $location
 
-  .controller 'MainCtrl', ($scope, Waterpoint) ->
-    Waterpoint.query (waterpoints) ->
-      $scope.waterpoints = waterpoints._items
-
   .controller 'LocaleCtrl', ($scope, $cookies, $rootScope, gettextCatalog) ->
     # get the current language from the cookie if available
     $cookies.locale = 'en' unless !!$cookies.locale
