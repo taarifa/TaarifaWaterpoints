@@ -25,6 +25,7 @@
     "PruneCluster": "~0.8.0",
     "angularjs-geolocation": "~0.1.1",
     "leaflet-maskcanvas": "git://github.com/domoritz/leaflet-maskcanvas",
+    "leaflet-heatmap": "git://github.com/pa7/heatmap.js#develop",
     "angular-flash": "~0.1.13"
   }
 }
