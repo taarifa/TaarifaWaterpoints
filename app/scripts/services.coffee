@@ -194,6 +194,7 @@ angular.module('taarifaWaterpointsApp')
         clustering: false
         markerType: "regular"
         coverage: false
+        heatmap: false
         showScale: false
 
       options = _.extend(defaults, opts)
@@ -210,7 +211,7 @@ angular.module('taarifaWaterpointsApp')
         "Open Street Map": osmLayer
         "Satellite": satLayer
 
-      overlayMaps = {}
+      overlays = {}
 
       # FIXME: hardcoded categories
       categoryMap =
@@ -229,7 +230,8 @@ angular.module('taarifaWaterpointsApp')
       else
         markerLayer = L.featureGroup()
 
-      overlayMaps.Waterpoints = markerLayer
+      overlays.Waterpoints = markerLayer
+      defaultLayers = [osmLayer, markerLayer]
 
       if options.coverage
         coverageLayer = L.TileLayer.maskCanvas
@@ -240,16 +242,26 @@ angular.module('taarifaWaterpointsApp')
           noMask: false             # true results in normal (filled) circled, instead masked circles
           lineColor: '#A00'         # color of the circle outline if noMask is true
 
-        overlayMaps.Coverage = coverageLayer
+        overlays.Coverage = coverageLayer
+
+      if options.heatmap
+        heatmapLayer = new HeatmapOverlay
+          radius: 15
+          maxOpacity: .7
+          scaleRadius: false
+          useLocalExtrema: true
+
+        overlays["Functionality Heatmap"] = heatmapLayer
+        defaultLayers.push(heatmapLayer)
 
       map = L.map id,
         center: new L.LatLng -6.3153, 35.15625
         zoom: 5
         fullscreenControl: true
-        layers: [osmLayer, markerLayer]
+        layers: defaultLayers
 
       # add a layer selector
-      layerSelector = L.control.layers(baseMaps, overlayMaps).addTo(map)
+      layerSelector = L.control.layers(baseMaps, overlays).addTo(map)
 
       # add a distance scale
       if options.showScale
@@ -335,6 +347,24 @@ angular.module('taarifaWaterpointsApp')
         if options.coverage
           coords = wps.map (x) -> [x.location.coordinates[1], x.location.coordinates[0]]
           coverageLayer.setData coords
+
+        if options.heatmap
+          costMap =
+            functional: 0
+            "needs repair": 1
+            "not functional": 2
+
+          coords = []
+          wps.forEach (x) ->
+            if x.status_group != "functional"
+              coords.push
+                lat: x.location.coordinates[1]
+                lng: x.location.coordinates[0]
+                value: costMap[x.status_group]
+
+          heatmapLayer.setData 
+            data: coords
+
 
       @zoomToMarkers = () ->
         if options.clustering
