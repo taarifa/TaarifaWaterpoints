@@ -242,7 +242,7 @@ angular.module('taarifaWaterpointsApp')
           noMask: false             # true results in normal (filled) circled, instead masked circles
           lineColor: '#A00'         # color of the circle outline if noMask is true
 
-        overlays.Coverage = coverageLayer
+        overlays["Coverage (1km)"] = coverageLayer
 
       if options.heatmap
         heatmapLayer = new HeatmapOverlay
