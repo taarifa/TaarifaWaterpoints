@@ -48,3 +48,10 @@ app = angular
     return (s) -> 
       return s.toString().toLowerCase().replace( /\b([a-z])/g, (ch) -> return ch.toUpperCase()))
 
+  .run ($rootScope, flash) ->
+    $rootScope.$on '$locationChangeSuccess', ->
+      # Clear all flash messages on route change
+      flash.info = ''
+      flash.success = ''
+      flash.warn = ''
+      flash.error = ''
