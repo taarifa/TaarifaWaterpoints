@@ -18,10 +18,7 @@ angular.module('taarifaWaterpointsApp')
             enabled: true
         },
         resizable: {
-            enabled: true,
-            stop: (event, uiWidget, $el) ->
-                isplot = jQuery($el.children()[0]).hasClass("plot")
-                if isplot then drawPlots()
+            enabled: true
         }
     }
 
@@ -266,3 +263,4 @@ angular.module('taarifaWaterpointsApp')
 
     $scope.$on 'gridster-dom', ->
       initView()
+      drawPlots()
