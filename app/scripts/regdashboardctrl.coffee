@@ -2,6 +2,16 @@ angular.module('taarifaWaterpointsApp')
 
   .controller 'RegionalDashboardCtrl', ($scope, $http, $q, $filter, Map,
                                         gettext, modalSpinner, populationData) ->
+    # should http calls be cached
+    # FIXME: should be application level setting
+    cacheHttp = false
+
+    # FIXME: create our own statusColor version to prevent weird values
+    # from modifying the original one
+    stColor = d3.scale.ordinal()
+      .domain(statusColor.domain())
+      .range(statusColor.range());
+
     $scope.gridsterOpts =
       margins: [10, 10]
       columns: 12
@@ -386,7 +396,7 @@ angular.module('taarifaWaterpointsApp')
         pieChart quantityChart, quantities, quantities.group(), all
         pieChart qualityChart, qualities, qualities.group(), all
         pieChart extractionChart, extractionTypes, extractionTypes.group(), all
-        pieChart statusChart, statuses, statusGroup, all, statusColor
+        pieChart statusChart, statuses, statusGroup, all, stColor
         pieChart paymentChart, paymentTypes, paymentGroup, all
         pieChart installerChart, installers, installersGroup, all
         pieChart funderChart, funders, fundersGroup, all
@@ -487,7 +497,7 @@ angular.module('taarifaWaterpointsApp')
         .stack(group, "Not Functional", (d) -> d.value["not functional"])
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
-        .colors(statusColor)
+        .colors(stColor)
         .elasticY(true)
         .elasticX(true)
         .gap(gap || 10)
@@ -537,7 +547,7 @@ angular.module('taarifaWaterpointsApp')
         .valueAccessor((p) -> p.value.functional)
         .stack(group, "Needs Repair", (d) -> d.value["needs repair"])
         .stack(group, "Not Functional", (d) -> d.value["not functional"])
-        .colors(statusColor)
+        .colors(stColor)
         .elasticY(true)
         .elasticX(true)
         .gap(1)
