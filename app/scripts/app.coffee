@@ -55,7 +55,9 @@ app = angular
     restrict: 'A'
     link: (scope, element, attr) ->
       if scope.$last
-        scope.$emit (attr.repeatDone || 'repeat-done')
+        $timeout ->
+          scope.$emit (attr.repeatDone || 'repeat-done')
+        , 100
 
   .run ($rootScope, flash) ->
     $rootScope.$on '$locationChangeSuccess', ->
