@@ -51,6 +51,12 @@ app = angular
     return (s) -> 
       return s.toString().toLowerCase().replace( /\b([a-z])/g, (ch) -> return ch.toUpperCase()))
 
+  .directive 'repeatDone', ($timeout) ->
+    restrict: 'A'
+    link: (scope, element, attr) ->
+      if scope.$last
+        scope.$emit (attr.repeatDone || 'repeat-done')
+
   .run ($rootScope, flash) ->
     $rootScope.$on '$locationChangeSuccess', ->
       # Clear all flash messages on route change
