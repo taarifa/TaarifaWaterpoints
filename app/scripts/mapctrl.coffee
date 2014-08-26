@@ -203,6 +203,9 @@ angular.module('taarifaWaterpointsApp')
         $timeout ->
           map.invalidateSize()
         , 2000
+
+        modalSpinner.close()
+
         return map
       )
 
@@ -225,5 +228,4 @@ angular.module('taarifaWaterpointsApp')
 
       # Initialise the map
       initMap([], new L.LatLng(-6.3153, 35.15625))
-      modalSpinner.close()
     )
