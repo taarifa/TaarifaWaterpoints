@@ -1,4 +1,5 @@
 import json
+import mimetypes
 from eve.render import send_response
 from flask import request, send_from_directory
 from werkzeug.contrib.cache import SimpleCache
@@ -128,14 +129,13 @@ def images(filename):
 
 @app.route('/data/<path:filename>.topojson')
 def geojson(filename):
-    return send_from_directory(app.root_path + '/app/data/', filename + '.topojson', mimetype="application/json")
+    return send_from_directory(app.root_path + '/app/data/', filename + '.topojson', mimetype=mimetypes.types_map['.json'])
 
 
 @app.route('/data/<path:filename>')
 def data(filename):
-    # FIXME: if we ever want to send non-JSON data this needs fixing
-    return send_from_directory(app.root_path + '/dist/data/', filename,
-                               mimetype="application/json")
+    mimetype, _ = mimetypes.guess_type(filename)
+    return send_from_directory(app.root_path + '/dist/data/', filename, mimetype=mimetype)
 
 
 @app.route('/views/<path:filename>')
