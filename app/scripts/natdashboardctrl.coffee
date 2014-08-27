@@ -109,8 +109,7 @@ angular.module('taarifaWaterpointsApp')
         $scope.params.lga
         $scope.params.ward)
 
-    $scope.getStatus = (changed) ->
-      # the filtering has changed, reset the selected status
+    $scope.getStatus = () ->
       $scope.statusChoice = "all"
 
       modalSpinner.open()
@@ -146,12 +145,6 @@ angular.module('taarifaWaterpointsApp')
           $scope.tiles = _.pairs(_.pick(statusMap,'functional','needs repair'))
           $scope.tiles.push([gettext('population cover'), popCover])
           modalSpinner.close()
-
-      if changed == 'region'
-        getLGA()
-        getWard()
-      if changed == 'lga'
-        getWard()
 
       getProblems()
       drawPlots()
@@ -189,10 +182,10 @@ angular.module('taarifaWaterpointsApp')
           $scope.params.ward = null
 
         if newgf == "region"
-          $scope.getStatus("region")
+          $scope.getStatus()
         else
           $scope.params[groupField] = fieldVal
-          $scope.getStatus(groupField)
+          $scope.getStatus()
       ,0)
 
     barDblClick = (d) ->
@@ -275,9 +268,6 @@ angular.module('taarifaWaterpointsApp')
         popData = data
         $scope.getStatus())
 
-      getRegion()
-      getLGA()
-      getWard()
       getProblems()
 
     initView()
