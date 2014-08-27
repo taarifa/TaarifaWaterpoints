@@ -35,9 +35,12 @@ app = angular
       .when '/requests/:id',
         templateUrl: 'views/triage.html'
         controller: 'RequestTriageCtrl'
-      .when '/dashboard',
-        templateUrl: 'views/dashboard.html'
-        controller: 'DashboardCtrl'
+      .when '/dashboard/national',
+        templateUrl: 'views/natdashboard.html'
+        controller: 'NationalDashboardCtrl'
+      .when '/dashboard/regional',
+        templateUrl: 'views/regdashboard.html'
+        controller: 'RegionalDashboardCtrl'
       .otherwise
         redirectTo: '/'
     $httpProvider.defaults.headers.patch =
@@ -47,6 +50,14 @@ app = angular
   .filter('titlecase', () -> 
     return (s) -> 
       return s.toString().toLowerCase().replace( /\b([a-z])/g, (ch) -> return ch.toUpperCase()))
+
+  .directive 'repeatDone', ($timeout) ->
+    restrict: 'A'
+    link: (scope, element, attr) ->
+      if scope.$last
+        $timeout ->
+          scope.$emit (attr.repeatDone || 'repeat-done')
+        , 100
 
   .run ($rootScope, flash) ->
     $rootScope.$on '$locationChangeSuccess', ->

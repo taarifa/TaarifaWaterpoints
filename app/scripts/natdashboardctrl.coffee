@@ -7,11 +7,7 @@ angular.module('taarifaWaterpointsApp')
 
     # should http calls be cached
     # FIXME: should be application level setting
-    cacheHttp = false
-
-    # a flag to keep track if the plots should be redrawn
-    # next time the tab is made visible
-    plotsDirty = false
+    cacheHttp = true
 
     $scope.gridsterOpts = {
         margins: [10, 10],
@@ -22,10 +18,7 @@ angular.module('taarifaWaterpointsApp')
             enabled: true
         },
         resizable: {
-            enabled: true,
-            stop: (event, uiWidget, $el) ->
-                isplot = jQuery($el.children()[0]).hasClass("plot")
-                if isplot then drawPlots()
+            enabled: true
         }
     }
 
@@ -127,8 +120,8 @@ angular.module('taarifaWaterpointsApp')
 
           # ensure all three statusses are always represented
           empty = {count: 0, percent: 0}
-          statusses = [gettext("functional"), gettext("not functional"), gettext("needs repair")]
-          statusses.forEach((x) -> statusMap[x] = statusMap[x] || empty)
+          stati = [gettext("functional"), gettext("not functional"), gettext("needs repair")]
+          stati.forEach((x) -> statusMap[x] = statusMap[x] || empty)
 
           # the population covered
           if statusMap.functional.waterpoints
@@ -241,23 +234,11 @@ angular.module('taarifaWaterpointsApp')
           data = _.sortBy(data, (x) -> -x.popReach)
           leaderChart("#popReach", data, groupfield, (x) -> x.popReach)
 
-        plotsDirty = false
         modalSpinner.close())
 
     $scope.$on "gettextLanguageChanged", (e) ->
       # redraw the plots so axis labels, etc are translated
-
-      # will only work if the tab is visible (else d3 fails)
-      if $scope.dashTabs.national.active
-        drawPlots()
-      else
-        # we have to remember to redraw the plots when the tab
-        # finally does become active
-        plotsDirty = true
-
-    $scope.$watch "dashTabs.national.active", (val) ->
-      if val and plotsDirty
-        drawPlots()
+      drawPlots()
 
     # access object to the population data
     # FIXME: better handled by a $resource perhaps?
@@ -270,4 +251,6 @@ angular.module('taarifaWaterpointsApp')
 
       getProblems()
 
-    initView()
+    $scope.$on 'gridster-dom', ->
+      initView()
+      drawPlots()

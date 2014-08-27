@@ -83,6 +83,13 @@
 }
 
 
+/* dc */
+
+.dc-data-count {
+  margin-top: 0;
+  line-height: 34px;
+}
+
 /* Gridster */
 
 .gridster .gridster-item {

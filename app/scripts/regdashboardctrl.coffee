@@ -2,6 +2,16 @@ angular.module('taarifaWaterpointsApp')
 
   .controller 'RegionalDashboardCtrl', ($scope, $http, $q, $filter, Map,
                                         gettext, modalSpinner, populationData) ->
+    # should http calls be cached
+    # FIXME: should be application level setting
+    cacheHttp = true
+
+    # FIXME: create our own statusColor version to prevent weird values
+    # from modifying the original one
+    stColor = d3.scale.ordinal()
+      .domain(statusColor.domain())
+      .range(statusColor.range());
+
     $scope.gridsterOpts =
       margins: [10, 10]
       columns: 12
@@ -65,7 +75,7 @@ angular.module('taarifaWaterpointsApp')
     # Called when the tab is activated for the first time
     # Has to be done on tab activation for else the charts can not pickup
     # the correct dimensions from their containing elements.
-    $scope.initView = () ->
+    initView = () ->
       # only do once
       if dc.chartRegistry.list().length then return
 
@@ -73,9 +83,9 @@ angular.module('taarifaWaterpointsApp')
 
       # get all regions
       $q.all([
-        $http.get('/api/waterpoints/values/region', cache: true)
+        $http.get('/api/waterpoints/values/region', cache: cacheHttp)
         populationData
-        #$http.get('data/tz_wards.geojson', cache: true)
+        #$http.get('data/tz_wards.geojson', cache: cacheHttp)
       ]).then((results) ->
         regs = results[0].data
         popData = results[1]
@@ -112,7 +122,7 @@ angular.module('taarifaWaterpointsApp')
               "&max_results=10000&strip=1"
 
       $q.all([
-        $http.get(url, cache: true)
+        $http.get(url, cache: cacheHttp)
       ]).then((results) ->
         waterpoints = results[0].data._items
 
@@ -386,7 +396,7 @@ angular.module('taarifaWaterpointsApp')
         pieChart quantityChart, quantities, quantities.group(), all
         pieChart qualityChart, qualities, qualities.group(), all
         pieChart extractionChart, extractionTypes, extractionTypes.group(), all
-        pieChart statusChart, statuses, statusGroup, all, statusColor
+        pieChart statusChart, statuses, statusGroup, all, stColor
         pieChart paymentChart, paymentTypes, paymentGroup, all
         pieChart installerChart, installers, installersGroup, all
         pieChart funderChart, funders, fundersGroup, all
@@ -487,7 +497,7 @@ angular.module('taarifaWaterpointsApp')
         .stack(group, "Not Functional", (d) -> d.value["not functional"])
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
-        .colors(statusColor)
+        .colors(stColor)
         .elasticY(true)
         .elasticX(true)
         .gap(gap || 10)
@@ -537,7 +547,7 @@ angular.module('taarifaWaterpointsApp')
         .valueAccessor((p) -> p.value.functional)
         .stack(group, "Needs Repair", (d) -> d.value["needs repair"])
         .stack(group, "Not Functional", (d) -> d.value["not functional"])
-        .colors(statusColor)
+        .colors(stColor)
         .elasticY(true)
         .elasticX(true)
         .gap(1)
@@ -684,5 +694,6 @@ angular.module('taarifaWaterpointsApp')
         (() -> count: 0, total: 0))
       res
 
-String.prototype.endsWith = (suffix) ->
-  this.indexOf(suffix, this.length - suffix.length) != -1
+    $scope.$on 'gridster-dom', ->
+      # kick off everything
+      initView()
