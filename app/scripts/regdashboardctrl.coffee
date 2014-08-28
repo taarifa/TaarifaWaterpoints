@@ -77,7 +77,8 @@ angular.module('taarifaWaterpointsApp')
     # the correct dimensions from their containing elements.
     initView = () ->
       # only do once
-      if dc.chartRegistry.list().length then return
+      if dc.chartRegistry.list().length
+        dc.deregisterAllCharts()
 
       modalSpinner.open()
 

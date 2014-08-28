@@ -2,9 +2,6 @@
 
 angular.module('taarifaWaterpointsApp')
 
-  .controller 'NavCtrl', ($scope, $location) ->
-    $scope.location = $location
-
   .controller 'LocaleCtrl', ($scope, $cookies, $rootScope, gettextCatalog) ->
     # get the current language from the cookie if available
     $cookies.locale = 'en' unless !!$cookies.locale
@@ -28,8 +25,8 @@ angular.module('taarifaWaterpointsApp')
       # Using the setter function ensures the gettextLanguageChanged event gets fired
       gettextCatalog.setCurrentLanguage(lang)
 
-  .controller 'MainCtrl', ($scope, $http, $location, Waterpoint, Map, flash, gettext) ->
-    map = Map "wpMap", showScale:true
+  .controller 'HomeCtrl', ($scope, $location, $http, gettext, flash, Map, Waterpoint) ->
+    map = Map "wpMap", showScale: yes
     $scope.where = $location.search()
     $scope.where.max_results = parseInt($scope.where.max_results) || 100
     $scope.where.reports_only = parseInt($scope.where.reports_only) || 0
@@ -81,13 +78,6 @@ angular.module('taarifaWaterpointsApp')
         map.zoomToMarkers() unless nozoom
     $scope.updateMap()
 
-  .controller 'DashboardCtrl', ($scope) ->
-    $scope.dashTabs =
-      national:
-        active: true
-      regional:
-        active: false
-
   .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, FacilityForm,
                                         Map, flash, gettext, geolocation) ->
     $scope.formTemplate = FacilityForm 'wpf001'
@@ -119,13 +109,13 @@ angular.module('taarifaWaterpointsApp')
           for field, message of waterpoint._issues
             flash.error = "#{field}: #{message}"
 
-  .controller 'WaterpointEditCtrl', ($scope, $routeParams,
+  .controller 'WaterpointEditCtrl', ($scope, $stateParams,
                                     Map, Waterpoint, FacilityForm) ->
     $scope.wp = Waterpoint
 
     map = Map("editMap", {})
 
-    Waterpoint.get id: $routeParams.id, (waterpoint) ->
+    Waterpoint.get id: $stateParams.id, (waterpoint) ->
       # We are editing a waterpoint so set the date_recorded
       # field to today, should it be saved.
       d = new Date()
@@ -138,13 +128,13 @@ angular.module('taarifaWaterpointsApp')
 
     $scope.formTemplate = FacilityForm 'wpf001'
     $scope.save = () ->
-      Waterpoint.update($routeParams.id, $scope.form)
+      Waterpoint.update($stateParams.id, $scope.form)
 
-  .controller 'RequestCreateCtrl', ($scope, $location, $routeParams, Request, gettext,
+  .controller 'RequestCreateCtrl', ($scope, $location, $stateParams, Request, gettext,
                                     $timeout, Waterpoint, Map, RequestForm, flash) ->
     map = Map("editMap")
 
-    Waterpoint.get where: {wpt_code: $routeParams.waterpoint_id}, (wp) ->
+    Waterpoint.get where: {wpt_code: $stateParams.waterpoint_id}, (wp) ->
       map.clearMarkers()
       # FIXME: assumes wpt_code is unique!
       map.addWaterpoints([wp._items[0]])
@@ -181,14 +171,14 @@ angular.module('taarifaWaterpointsApp')
         $scope.requests = requests._items
     $scope.filterStatus()
 
-  .controller 'RequestTriageCtrl', ($scope, $routeParams, $filter,
+  .controller 'RequestTriageCtrl', ($scope, $stateParams,$filter,
                                     Request, Waterpoint, flash, gettext) ->
     $scope.apply = {}
-    Request.get id: $routeParams.id, (request) ->
+    Request.get id: $stateParams.id, (request) ->
       if request.expected_datetime
         $scope.expected_datetime = new Date(request.expected_datetime)
       $scope.request = request
-      Waterpoint.get where: {wpt_code: request.attribute.waterpoint_id}, (waterpoint) ->
+      Waterpoint.get where: {wpt_code: $stateParams.waterpoint_id}, (waterpoint) ->
         $scope.waterpoint = waterpoint._items[0]
         if not request.agency_responsible
           request.agency_responsible = $scope.waterpoint.management
@@ -206,7 +196,7 @@ angular.module('taarifaWaterpointsApp')
           $scope.apply = {}
           if $scope.expected_datetime
             $scope.request.expected_datetime = $filter('date') $scope.expected_datetime, "EEE, dd MMM yyyy hh:mm:ss 'GMT'"
-          Request.update($routeParams.id, $scope.request)
+          Request.update($stateParams.id, $scope.request)
         if status == 200 and data._status == 'ERR'
           for field, message of data._issues
             flash.error = "#{field}: #{message}"
