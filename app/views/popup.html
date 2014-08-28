@@ -1,0 +1,11 @@
+<div class="popup">
+  <h5>{{ wp.wpt_code }} (<a ui-sref="waterpointsEdit({ id: wp._id })">Edit</a>)</h5>
+  <span class="popup-key">Status</span>: {{ wp.status_group }} <br/>
+  <a ui-sref="requests({ waterpoint_id: wp.wpt_code })">Show reports</a>
+  <a ui-sref="requestsNew({ waterpoint_id: wp.wpt_code })">Submit report</a>
+  <hr style="margin-top:10px; margin-bottom: 10px;" />
+
+  <span class="popup-key" ng-repeat-start="key in sortedKeys">{{ cleanKey(key) }}</span>
+  <span class="popup-value">{{ cleanValue(key, wp[key]) }}</span>
+  <br ng-repeat-end/>
+</div>

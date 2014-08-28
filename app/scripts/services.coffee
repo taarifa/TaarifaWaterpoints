@@ -2,6 +2,23 @@
 
 angular.module('taarifaWaterpointsApp')
 
+  # Allows <map-popup> as a directive.
+  .directive('mapPopup', ($compile, $filter) ->
+    return {
+      templateUrl: "views/popup.html"
+      link: (scope, element, attrs) ->
+        scope.cleanKey = (k) ->
+          $filter('titlecase')(k.replace("_"," "))
+        scope.cleanValue = (k,v) ->
+          if v instanceof Date
+            v.getFullYear()
+          else if k == "location"
+            v.coordinates.toString()
+          else
+            v
+    }
+  )
+
   .factory 'waterpointStats', ($http, $q, populationData) ->
     result = {}
 
@@ -187,7 +204,7 @@ angular.module('taarifaWaterpointsApp')
   .factory 'Service', (ApiResource) ->
     ApiResource 'services'
 
-  .factory 'Map', ($filter) ->
+  .factory 'Map', ($filter, $rootScope, $compile) ->
     (id, opts) =>
 
       defaults =
@@ -274,33 +291,6 @@ angular.module('taarifaWaterpointsApp')
       if options.showScale
         scale = L.control.scale().addTo(map)
 
-      makePopup = (wp) ->
-        cleanKey = (k) ->
-          $filter('titlecase')(k.replace("_"," "))
-
-        cleanValue = (k,v) ->
-          if v instanceof Date
-            v.getFullYear()
-          else if k == "location"
-            v.coordinates.toString()
-          else
-            v
-
-        header = '<h5>' + wp.wpt_code + ' (<a href="#/waterpoints/edit/' + wp._id + '">Edit</a>)</h5>' +
-                 '<span class="popup-key">Status</span>: ' + wp.status_group + '<br />' +
-                 '<a href="#/requests/?waterpoint_id=' + wp.wpt_code + '">Show reports</a> | ' +
-                 '<a href="#/requests/new?waterpoint_id=' + wp.wpt_code + '">Submit report</a>' +
-                 '<hr style="margin-top:10px; margin-bottom: 10px;" />'
-
-        # FIXME: can't this be offloaded to angular somehow?
-        fields = _.keys(wp).sort().map((k) ->
-            #cleanKey(k) + String(cleanValue(k, wp[k]))
-            '<span class="popup-key">' + cleanKey(k) + '</span>: ' +
-            '<span class="popup-value">' + String(cleanValue(k,wp[k])) + '</span>'
-          ).join('<br />')
-
-        html = '<div class="popup">' + header + fields + '</div>'
-
       @clearMarkers = () ->
         if options.clustering
           markerLayer.RemoveMarkers()
@@ -337,6 +327,12 @@ angular.module('taarifaWaterpointsApp')
           m = L.marker L.latLng(lat,lng),
               icon: makeAwesomeIcon(wp.status_group)
 
+      makePopup = (wp) ->
+        newScope = $rootScope.$new()
+        newScope.wp = wp
+        newScope.sortedKeys = _.keys(wp).sort()
+        return ($compile "<map-popup>")(newScope)[0]
+
       @addWaterpoints = (wps) ->
         wps.forEach (wp) ->
           [lng,lat] = wp.location.coordinates
@@ -347,8 +343,7 @@ angular.module('taarifaWaterpointsApp')
             markerLayer.RegisterMarker m
           else
             m = makeMarker(wp)
-            popup = makePopup(wp)
-            m.bindPopup popup
+            m.bindPopup makePopup(wp)
             markerLayer.addLayer(m)
 
         if options.coverage
