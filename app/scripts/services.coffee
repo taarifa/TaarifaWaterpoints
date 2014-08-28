@@ -114,11 +114,10 @@ angular.module('taarifaWaterpointsApp')
         close: closeSpinner
 
   .factory 'populationData', ($http, $q) ->
-    def = $q.defer()
     url = '/data/population_novillages.json'
     result = {}
 
-    $http.get(url).then((data) ->
+    return $http.get(url).then((data) ->
       #allGrouped = _.groupBy(data.data,"Region")
       #_.keys(grouped).forEach((r) ->
       #  grouped[r] = _.groupBy(grouped[r],"District")
@@ -154,10 +153,8 @@ angular.module('taarifaWaterpointsApp')
           return -1
 
       result.lookup = lookup
-
-      def.resolve(result))
-
-    return def.promise
+      return result
+    )
 
   .factory 'ApiResource', ($resource, $http, flash) ->
     (resource, args) ->
