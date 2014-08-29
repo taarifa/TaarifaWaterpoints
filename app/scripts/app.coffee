@@ -39,13 +39,13 @@ app = angular
         templateUrl: "views/requests.html"
         controller: "RequestListCtrl"
       })
-      .state("requestsEdit", {
-        url: "/requests/:id"
-        templateUrl: "views/triage.html"
-        controller: "RequestTriageCtrl"
-      })
       .state("requestsNew", {
         url: "/requests/new?waterpoint_id"
+        templateUrl: "views/edit.html"
+        controller: "RequestCreateCtrl"
+      })
+      .state("requestsEdit", {
+        url: "/requests/:id"
         templateUrl: "views/triage.html"
         controller: "RequestTriageCtrl"
       })
