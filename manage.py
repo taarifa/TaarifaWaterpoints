@@ -146,6 +146,7 @@ def upload_waterpoints(filename, skip=0, limit=None):
 
 @manager.command
 def ensure_indexes():
+    """Make sure all important database indexes are created."""
     print "Ensuring resources:location 2dsphere index is created ..."
     app.data.driver.db['resources'].ensure_index([('location', '2dsphere')])
     print "Done!"
