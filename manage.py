@@ -140,9 +140,17 @@ def upload_waterpoints(filename, skip=0, limit=None):
             if limit and i >= limit:
                 break
     # Create a 2dsphere index on the location field for geospatial queries
-    app.data.driver.db['facilities'].create_index([('location', '2dsphere')])
+    app.data.driver.db['resources'].ensure_index([('location', '2dsphere')])
     print "Waterpoints uploaded!"
 
+
+@manager.command
+def ensure_indexes():
+    """Make sure all important database indexes are created."""
+    print "Ensuring resources:location 2dsphere index is created ..."
+    app.data.driver.db['resources'].ensure_index([('location', '2dsphere')])
+    print "Done!"
+    
 
 @manager.option("status", help="Status (functional or non functional)")
 @manager.option("wp", help="Waterpoint id")
