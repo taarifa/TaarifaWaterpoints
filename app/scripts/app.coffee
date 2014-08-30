@@ -49,13 +49,18 @@ app = angular
         templateUrl: "views/triage.html"
         controller: "RequestTriageCtrl"
       })
-      .state("dashboardNational", {
-        url: "/dashboard/national"
+      .state("dashboard", {
+        abstract: true
+        url: "/dashboard"
+        template: "<ui-view/>"
+      })
+      .state("dashboard.national", {
+        url: "/national"
         templateUrl: "views/natdashboard.html"
         controller: "NationalDashboardCtrl"
       })
-      .state("dashboardRegional", {
-        url: "/dashboard/regional"
+      .state("dashboard.regional", {
+        url: "/regional"
         templateUrl: "views/regdashboard.html"
         controller: "RegionalDashboardCtrl"
       })
