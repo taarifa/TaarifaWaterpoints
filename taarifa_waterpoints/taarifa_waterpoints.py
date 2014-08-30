@@ -11,11 +11,12 @@ from taarifa_api import api as app, main
 def pre_get_waterpoints(request, lookup):
     """
     Generate spatial query against waterpoint location from lat, lon,
-    minDistance and maxDistance request arguments.
+    minDistance and maxDistance request arguments. The default value
+    of maxDistance is 500m.
     """
     lat = request.args.get('lat', None, type=float)
     lon = request.args.get('lon', None, type=float)
-    max_distance = request.args.get('maxDistance', None, type=int)
+    max_distance = request.args.get('maxDistance', 500, type=int)
     min_distance = request.args.get('minDistance', None, type=int)
     
     if lat and lon:
