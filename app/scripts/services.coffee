@@ -113,7 +113,7 @@ angular.module('taarifaWaterpointsApp')
         open: openSpinner
         close: closeSpinner
 
-  .factory 'populationData', ($http, $q) ->
+  .factory 'populationData', ($http) ->
     url = '/data/population_novillages.json'
     result = {}
 
