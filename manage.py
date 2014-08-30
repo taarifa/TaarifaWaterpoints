@@ -144,6 +144,13 @@ def upload_waterpoints(filename, skip=0, limit=None):
     print "Waterpoints uploaded!"
 
 
+@manager.command
+def ensure_indexes():
+    print "Ensuring resources:location 2dsphere index is created ..."
+    app.data.driver.db['resources'].ensure_index([('location', '2dsphere')])
+    print "Done!"
+    
+
 @manager.option("status", help="Status (functional or non functional)")
 @manager.option("wp", help="Waterpoint id")
 def create_request(wp, status):
