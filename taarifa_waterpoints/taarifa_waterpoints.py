@@ -8,6 +8,39 @@ cache = SimpleCache()
 from taarifa_api import api as app, main
 
 
+def pre_get_waterpoints(request, lookup):
+    """
+    Generate spatial query against waterpoint location from lat, lon,
+    minDistance and maxDistance request arguments.
+    """
+    lat = request.args.get('lat', None, type=float)
+    lon = request.args.get('lon', None, type=float)
+    max_distance = request.args.get('maxDistance', None, type=int)
+    min_distance = request.args.get('minDistance', None, type=int)
+    
+    if lat and lon:
+        lat = lat if -90 <= lat <= 90 else None
+        lon = lon if -180 <= lon <= 180 else None
+    if max_distance:
+        max_distance = max_distance if max_distance >= 0 else None
+    if min_distance:
+        min_distance = min_distance if min_distance >= 0 else None
+
+    if lat and lon:
+        lookup['location'] = {
+            '$near': {
+                "$geometry": {
+                    "type": "Point",
+                    "coordinates": [lat, lon]
+                },
+            }
+        }
+        if max_distance:
+            lookup['location']['$near']['$maxDistance'] = max_distance
+        if min_distance:
+            lookup['location']['$near']['$minDistance'] = min_distance
+
+
 def post_waterpoints_get_callback(request, payload):
     """Strip all meta data but id from waterpoint payload if 'strip' is set to
     a non-zero value in the query string."""
@@ -24,6 +57,7 @@ def post_waterpoints_get_callback(request, payload):
 
 app.name = 'TaarifaWaterpoints'
 app.on_post_GET_waterpoints += post_waterpoints_get_callback
+app.on_pre_GET_waterpoints += pre_get_waterpoints
 
 # Override the maximum number of results on a single page
 # This is needed by the dashboard
