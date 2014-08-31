@@ -191,7 +191,7 @@ angular.module('taarifaWaterpointsApp')
     (id, opts) =>
 
       defaults =
-        clustering: false
+        clustering: true
         markerType: "regular"
         coverage: false
         heatmap: false

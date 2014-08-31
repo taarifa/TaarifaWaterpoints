@@ -31,12 +31,17 @@ angular.module('taarifaWaterpointsApp')
   .controller 'MainCtrl', ($scope, $http, $location, Waterpoint, Map, flash, gettext) ->
     map = Map "wpMap", showScale:true
     $scope.where = $location.search()
-    $scope.where.max_results = parseInt($scope.where.max_results) || 100
+    $scope.where.max_results = parseInt($scope.where.max_results) || 70000
     $scope.where.reports_only = parseInt($scope.where.reports_only) || 0
+    $scope.where.region = $scope.where.region || 'Iringa'
     $http.get('/api/waterpoints/values/region', cache: true).success (regions) ->
       $scope.regions = regions
-    $http.get('/api/waterpoints/values/lga', cache: true).success (lgas) ->
-      $scope.lgas = lgas
+    if $scope.where.region
+      $http.get('/api/waterpoints/values/lga', params: {region: $scope.where.region}, cache: true).success (lgas) ->
+        $scope.lgas = lgas
+    else
+      $http.get('/api/waterpoints/values/lga', cache: true).success (lgas) ->
+        $scope.lgas = lgas
     $scope.clearLGA = ->
       $scope.where.lga = null
       $location.search 'lga', null
