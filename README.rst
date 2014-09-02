@@ -42,8 +42,11 @@ the system.
 .. note::
   pip_ >= 1.5 is required. if you have an older version you can upgrade (may
   require ``sudo``) with ::
+On Linux or OSX
+---------------
+  pip install -U pip
 
-    pip install -U pip
+pip installation in windows  use this link pip_
 
 Linux
 -----
