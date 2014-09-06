@@ -169,8 +169,56 @@ mounted from the host i.e. changes made on the host are immediately reflected in
 the VM and vice versa. This allows you to work on the code either on the host or
 in the VM according to your preference.
 
-Usage
-_____
+
+Usage for VM
+____________
+
+.. note::
+  When using a virtual machine, run the following commands in the VM.
+
+Make sure the virtualenv is active: ::
+
+  workon TaarifaAPI
+
+From the TaarifaWaterpoints directory run the following commands to
+create the waterpoint schemas: ::
+
+  python manage.py create_facility
+  python manage.py create_service
+  
+Then upload the `waterpoint data`_: ::
+
+  python manage.py upload_waterpoints <path/to/waterpoints/file.csv>
+
+By default the API server is only accessible from the local machine. If access
+from the outside is required (e.g. when running from inside a VM), run: ::
+
+  python manage.py runserver -h 0.0.0.0 -r -d
+
+
+The flags ``-r`` and ``-d`` cause the server to run in debug mode and reload
+automatically when files are changed.
+
+To verify things are working, open a browser (on the host and when using the VM)
+and navigate to: ::
+
+  http://localhost:5000/api/waterpoints
+
+This should show a list of all the waterpoint resources currently in the
+database.
+
+To work on the frontend web application start the `grunt` server (with the API
+server running on port 5000) using: ::
+
+  grunt serve --watch
+
+Then navigate to (on the host and when using the VM): ::
+
+  http://localhost:9000
+  
+  
+Usage for windows and Linux
+___________________________
 
 .. note::
   When using a virtual machine, run the following commands in the VM.
@@ -193,15 +241,10 @@ Start the application from the TaarifaWaterpoints directory by running: ::
 
   python manage.py runserver -r -d
 
-By default the API server is only accessible from the local machine. If access
-from the outside is required (e.g. when running from inside a VM), run: ::
-
-  python manage.py runserver -h 0.0.0.0 -r -d
-
 The flags ``-r`` and ``-d`` cause the server to run in debug mode and reload
 automatically when files are changed.
 
-To verify things are working, open a browser (on the host when using the VM)
+To verify things are working, open a browser (on the host and when using the VM)
 and navigate to: ::
 
   http://localhost:5000/api/waterpoints
@@ -214,7 +257,7 @@ server running on port 5000) using: ::
 
   grunt serve --watch
 
-Then navigate to (on the host when using the VM): ::
+Then navigate to (on the host  and when using the VM): ::
 
   http://localhost:9000
 
