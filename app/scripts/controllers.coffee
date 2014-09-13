@@ -37,6 +37,16 @@ angular.module('taarifaWaterpointsApp')
       $scope.regions = regions
     $http.get('/api/waterpoints/values/lga', cache: true).success (lgas) ->
       $scope.lgas = lgas
+
+    $scope.resetParameters = ->
+      $scope.where = 
+        max_results: 100
+        reports_only: 0
+      $http.get('/api/waterpoints/values/region', cache: true).success (regions) ->
+        $scope.regions = regions
+      $http.get('/api/waterpoints/values/lga', cache: true).success (lgas) ->
+        $scope.lgas = lgas
+
     $scope.clearLGA = ->
       $scope.where.lga = null
       $location.search 'lga', null
@@ -61,6 +71,11 @@ angular.module('taarifaWaterpointsApp')
           query where, $scope.where.max_results, nozoom
       else
         query where, $scope.where.max_results, nozoom
+
+    $scope.reset = ->
+      $scope.resetParameters()
+      $scope.updateMap()
+
     query = (where, max_results, nozoom) ->
       map.clearMarkers()
       Waterpoint.query
