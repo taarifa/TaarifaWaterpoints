@@ -67,10 +67,13 @@
                     <div class="col-md-5 col-sm-5 col-xs-5">
                       <form class="form form-horizontal">
                         <div class="form-group">
-                          <label for="groupselect" class="col-md-6 col-sm-6 col-xs-6 control-label">{{"Group By"|translate}}:</label>
-                          <div class="col-md-6 col-sm-6 col-xs-6">
+                          <label for="groupselect" class="col-md-4 col-sm-4 col-xs-4 control-label">{{"Group By"|translate}}:</label>
+                          <div class="col-md-4 col-sm-4 col-xs-4">
                             <select id="groupselect" ng-model="params.group" ng-options="v for v in groups" ng-change="groupBy()" class="form-control"></select>
                           </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                          <button class="btn btn-warning" ng-click="reset()" translate>Reset</button>
+                        </div>
                         </div>
                       </form>
                     </div>
