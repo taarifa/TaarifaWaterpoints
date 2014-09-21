@@ -66,6 +66,12 @@ Windows can be used as the platform to run Taarifa - the main caveat here
 however is that as you install the dependencies, these are not added to the
 `$PATH` variable - this needs to be added manually.
 
+Windows prerequsites.):
+
+1.  Install `Microsoft visual studio 2005 or 3`_
+2.  Install the `.NET Framework 2.0 SDK, 2`_
+
+
 Details for the following steps are the same as for MacOS/Linux (except for
 the actual package installation): 
 
@@ -77,6 +83,8 @@ the actual package installation):
 
     "c:\Program Files\MongoDB 2.6 Standard\bin\mongod.exe" --dbpath c:\mongo_databases\taarifa\
 
+
+Remember to add the location of component to the sytem path if is installed elsewhere.
 
 Installation
 ____________
@@ -355,3 +363,5 @@ guidelines`_ for further details.
 .. _heroku-buildpack-multi: https://github.com/ddollar/heroku-buildpack-multi
 .. _MongoDB installation instructions: http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
 .. _contributing guidelines: CONTRIBUTING.rst
+.._Microsoftr visual studio 2005 or 3: http://www.microsoft.com/en-us/search/DownloadResults.aspx?q=visual%20c%2B%2B%202005
+.._.NET Framework 2.0 SDK, 2: http://www.microsoft.com/en-us/search/DownloadResults.aspx?q=.net%202.0%20download
