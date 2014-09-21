@@ -285,3 +285,9 @@ div.region-info {
 .leaflet-control-layers-expanded {
   text-align: left;
 }
+.min-padding{
+  padding: 2px !important;
+}
+.control-label.min-padding{
+  padding: 10px 2px !important;
+}
