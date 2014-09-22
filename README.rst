@@ -89,7 +89,7 @@ Requires Python, pip and the `Taarifa API`_ to be installed and MongoDB to
 be running.
 
 To ease development and debugging we suggest you use virtualenv_. 
-Install virtualenv_ and virtualenvwrapper (you might need admin rights for this): ::
+Install virtualenv_ and virtualenvwrapper You might need admin rights to do this. On Windows this means running CMD as Administrator. ::
 
   pip install virtualenv virtualenvwrapper
 
