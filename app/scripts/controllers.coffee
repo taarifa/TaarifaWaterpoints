@@ -181,7 +181,7 @@ angular.module('taarifaWaterpointsApp')
           for field, message of request._issues.attribute
             flash.error = "#{field}: #{message}"
 
-  .controller 'RequestListCtrl', ($scope, $location, Request) ->
+  .controller 'RequestListCtrl', ($scope, $location, Request, flash, gettext) ->
     $scope.where = $location.search()
     $scope.filterStatus = () ->
       $location.search($scope.where)
@@ -194,6 +194,8 @@ angular.module('taarifaWaterpointsApp')
         query.where['attribute.waterpoint_id'] = $scope.where.waterpoint_id
       Request.query query, (requests) ->
         $scope.requests = requests._items
+        if $scope.requests.length == 0
+          flash.info = gettext("No request matching the criteria!")
     $scope.filterStatus()
 
   .controller 'RequestTriageCtrl', ($scope, $routeParams, $filter,
