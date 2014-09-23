@@ -33,7 +33,7 @@ angular.module('taarifaWaterpointsApp')
     $scope.where = $location.search()
     $scope.where.max_results = parseInt($scope.where.max_results) || 100
     $scope.where.reports_only = parseInt($scope.where.reports_only) || 0
-    $http.get('/api/waterpoints/values/region', cache: true).success (regions) ->
+    $http.get('/api/waterpoints/values/region_name', cache: true).success (regions) ->
       $scope.regions = regions
     $http.get('/api/waterpoints/values/lga', cache: true).success (lgas) ->
       $scope.lgas = lgas
@@ -42,7 +42,7 @@ angular.module('taarifaWaterpointsApp')
       $scope.where = 
         max_results: 100
         reports_only: 0
-      $http.get('/api/waterpoints/values/region', cache: true).success (regions) ->
+      $http.get('/api/waterpoints/values/region_name', cache: true).success (regions) ->
         $scope.regions = regions
       $http.get('/api/waterpoints/values/lga', cache: true).success (lgas) ->
         $scope.lgas = lgas

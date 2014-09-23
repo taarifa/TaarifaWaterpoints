@@ -577,7 +577,7 @@ function plotSpendImpact(selector, wpdata, groupField) {
     var functional = _.find(x.waterpoints, isFunctional);
     var d = {
       functional: functional.count / x.count * 100,
-      population: d3.sum(_.pluck(x.waterpoints, "population")),
+      pop_served: d3.sum(_.pluck(x.waterpoints, "pop_served")),
       spend: 10 + (Math.random() * 10000 / x.count)
     };
     d[groupField] = x[groupField];
@@ -606,7 +606,7 @@ function plotSpendImpact(selector, wpdata, groupField) {
 
   var popScale = d3.scale.sqrt()
     .range([5, 15])
-    .domain(d3.extent(_.pluck(data, "population")));
+    .domain(d3.extent(_.pluck(data, "pop_served")));
 
   var xAxis = d3.svg.axis()
     .scale(x)
@@ -679,7 +679,7 @@ function plotSpendImpact(selector, wpdata, groupField) {
       return y(d.functional);
     })
     .attr("r", function(d) {
-      return popScale(d.population);
+      return popScale(d.pop_served);
     });
 
 
@@ -701,7 +701,7 @@ function plotSpendImpact(selector, wpdata, groupField) {
     .transition()
     .duration(1000)
     .attr("r", function(d) {
-      return popScale(d.population);
+      return popScale(d.pop_served);
     });
 
   dots.exit()
@@ -721,7 +721,7 @@ function plotSpendImpact(selector, wpdata, groupField) {
     tooltip.transition()
       .duration(100)
       .style("opacity", .9);
-    tooltip.html("<b>" + d[groupField] + "</b>" + "<br/><em>Spend:</em> " + d.spend.toPrecision(3) + "<br/><em>Functional:</em> " + d.functional.toPrecision(3) + " %" + "<br/><em>Population served:</em> " + d.population)
+    tooltip.html("<b>" + d[groupField] + "</b>" + "<br/><em>Spend:</em> " + d.spend.toPrecision(3) + "<br/><em>Functional:</em> " + d.functional.toPrecision(3) + " %" + "<br/><em>Population:</em> " + d.pop_served)
       .style("left", (d3.event.pageX + 15) + "px")
       .style("top", (d3.event.pageY - 28) + "px");
   })

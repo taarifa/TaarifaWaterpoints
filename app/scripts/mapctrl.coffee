@@ -31,7 +31,7 @@ angular.module('taarifaWaterpointsApp')
         [name, item, itemType] = getFeaturedItem(e.target.feature)
 
         if item
-          hoverText = item[itemType] + ": " + item[$scope.choroChoice].toPrecision(3) + "%"
+          hoverText = item[itemType + "_name"] + ": " + item[$scope.choroChoice].toPrecision(3) + "%"
         else
           hoverText = name + ": unknown"
 
@@ -47,7 +47,7 @@ angular.module('taarifaWaterpointsApp')
       onClick = (e) ->
         [name, item, itemType] = getFeaturedItem(e.target.feature)
         if item
-          $scope.drillDown(item.region, itemType, true)
+          $scope.drillDown(item[itemType + "_name"], itemType + "_name", true)
 
       ##############
       ### STYLES ###
@@ -210,13 +210,13 @@ angular.module('taarifaWaterpointsApp')
 
     # Get the boundaries and layers
     $q.all([
-      waterpointStats.getStats(null, null, null, "region", true)
+      waterpointStats.getStats(null, null, null, "region_name", true)
       # FIXME: relies on the fact that wards are uniquely named
-      waterpointStats.getStats(null, null, null, "ward", true)
+      waterpointStats.getStats(null, null, null, "ward_name", true)
     ]).then((data) ->
       # Add the regions and wards to the template scope
       addToScope = (stats, name) ->
-        tmp = _.pluck(stats, name).map((x) -> x.toLowerCase())
+        tmp = _.pluck(stats, name + "_name").map((x) -> x.toLowerCase())
         $scope[name + "Map"] = _.object(tmp, stats)
 
       # data contains stats for region and ward

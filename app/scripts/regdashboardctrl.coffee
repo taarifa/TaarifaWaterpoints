@@ -42,11 +42,11 @@ angular.module('taarifaWaterpointsApp')
       statusPerManagement: { sizeX: 6, sizeY: 4, row: 27, col: 0, title: gettext("Functionality by Management") }
       statusPerExtraction: { sizeX: 6, sizeY: 4, row: 27, col: 6, title: gettext("Functionality by Extraction") }
 
-    $scope.fields = ["status_group", "lga", "ward", "location",
-                 "source_type", "amount_tsh", "population"
-                 "construction_year", "quantity_group", "wpt_code",
-                 "quality_group", "extraction_type_group",
-                 "breakdown_year", "payment_type", "funder",
+    $scope.fields = ["status_group", "lga", "ward_name", "location",
+                 "source_group", "amount_tsh", "pop_served"
+                 "construction_year", "quantity_group", "wptcode",
+                 "quality_group", "extraction_group",
+                 "breakdown_year", "payment_group", "funder",
                  "installer", "management", "hardware_problem"]
 
     dimensions = []
@@ -73,7 +73,7 @@ angular.module('taarifaWaterpointsApp')
 
       # get all regions
       $q.all([
-        $http.get('/api/waterpoints/values/region', cache: true)
+        $http.get('/api/waterpoints/values/region_name', cache: true)
         populationData
         #$http.get('data/tz_wards.geojson', cache: true)
       ]).then((results) ->
@@ -98,7 +98,7 @@ angular.module('taarifaWaterpointsApp')
       )
 
     getData = (region, callback) ->
-      filter =  region: region
+      filter =  region_name: region
 
       ones = Array
         .apply(null, new Array($scope.fields.length))
@@ -273,7 +273,7 @@ angular.module('taarifaWaterpointsApp')
         lgas = createDim (d) -> d.lga
         statusPerLga = reduceStatus lgas.group()
 
-        wards = createDim (d) -> d.ward
+        wards = createDim (d) -> d.ward_name
         statusPerWard = reduceStatus wards.group()
 
         constrYears = createDim (d) -> d.construction_year
@@ -296,7 +296,7 @@ angular.module('taarifaWaterpointsApp')
         qualities = createDim (d) -> d.quality_group
         qualitiesStatusGroup = reduceStatus qualities.group()
 
-        extractionTypes = createDim (d) -> d.extraction_type_group
+        extractionTypes = createDim (d) -> d.extraction_group
         extractionStatusGroup = reduceStatus extractionTypes.group()
 
         statuses = createDim (d) -> d.status_group
@@ -309,7 +309,7 @@ angular.module('taarifaWaterpointsApp')
         statuses = createDim (d) -> d.status_group
         statusGroup = statuses.group()
 
-        paymentTypes = createDim (d) -> d.payment_type
+        paymentTypes = createDim (d) -> d.payment_group
         paymentGroup = paymentTypes.group()
 
         problems = createDim((d) -> d.hardware_problem)
@@ -644,7 +644,7 @@ angular.module('taarifaWaterpointsApp')
         ((p, v) ->
           ++p.count
           p.total += v.amount_tsh
-          p.pop_served_fun += if isFunc(v) then v.population else 0
+          p.pop_served_fun += if isFunc(v) then v.pop_served else 0
           p.numFun += if isFunc(v) then 1 else 0
           p.avgCost = p.total / p.count
           p.percFun = p.numFun / p.count * 100
@@ -652,7 +652,7 @@ angular.module('taarifaWaterpointsApp')
         ((p, v) ->
           --p.count
           p.total -= v.amount_tsh
-          p.pop_served_fun -= if isFunc(v) then v.population else 0
+          p.pop_served_fun -= if isFunc(v) then v.pop_served else 0
           p.numFun -= if isFunc(v) then 1 else 0
           p.avgCost = if p.count then p.total / p.count * 1 else 0
           p.percFun = if p.count then p.numFun / p.count * 100 else 0
