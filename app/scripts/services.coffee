@@ -8,7 +8,7 @@ angular.module('taarifaWaterpointsApp')
     getStats = (region, lga, ward, groupfield, cache) ->
       def = $q.defer()
       url = "/api/waterpoints/stats_by/" + groupfield
-      filterFields = {"region":region, "lga":lga, "ward":ward}
+      filterFields = {"region_name":region, "lga":lga, "ward_name":ward}
       filters = []
 
       _.keys(filterFields).forEach((x) ->
@@ -22,7 +22,7 @@ angular.module('taarifaWaterpointsApp')
       $http.get(url, cache: cache)
         .success (data, status, headers, config) ->
           populationData.then( (popData) ->
-            geoField = _.contains(['region','lga','ward'], groupfield)
+            geoField = _.contains(['region_name','lga','ward_name'], groupfield)
 
             data.forEach((x) ->
               f = _.find(x.waterpoints, isFunctional)
@@ -42,9 +42,9 @@ angular.module('taarifaWaterpointsApp')
 
               if geoField
                 pop = popData.lookup(
-                  if groupfield == "region" then x[groupfield] else null,
+                  if groupfield == "region_name" then x[groupfield] else null,
                   if groupfield == "lga" then x[groupfield] else null,
-                  if groupfield == "ward" then x[groupfield] else null
+                  if groupfield == "ward_name" then x[groupfield] else null
                 )
                 if pop > 0
                   x.popReach = f.population / pop * 100
@@ -286,10 +286,10 @@ angular.module('taarifaWaterpointsApp')
           else
             v
 
-        header = '<h5>' + wp.wpt_code + ' (<a href="#/waterpoints/edit/' + wp._id + '">Edit</a>)</h5>' +
+        header = '<h5>' + wp.wptcode + ' (<a href="#/waterpoints/edit/' + wp._id + '">Edit</a>)</h5>' +
                  '<span class="popup-key">Status</span>: ' + wp.status_group + '<br />' +
-                 '<a href="#/requests/?waterpoint_id=' + wp.wpt_code + '">Show reports</a> | ' +
-                 '<a href="#/requests/new?waterpoint_id=' + wp.wpt_code + '">Submit report</a>' +
+                 '<a href="#/requests/?waterpoint_id=' + wp.wptcode + '">Show reports</a> | ' +
+                 '<a href="#/requests/new?waterpoint_id=' + wp.wptcode + '">Submit report</a>' +
                  '<hr style="margin-top:10px; margin-bottom: 10px;" />'
 
         # FIXME: can't this be offloaded to angular somehow?
