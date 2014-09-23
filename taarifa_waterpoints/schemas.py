@@ -60,7 +60,7 @@ waterpoint_schema = {
     },
     'num_privcon': {
         'type': 'integer',
-        'label': 'Number of private Connections',
+        'label': 'Number of private connections',
     },
     'basin': {
         'type': 'string',
