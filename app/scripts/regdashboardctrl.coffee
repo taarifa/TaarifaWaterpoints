@@ -29,7 +29,7 @@ angular.module('taarifaWaterpointsApp')
 
       wpLocations: { sizeX: 12, sizeY: 5, row: 0, col: 0, title: gettext("Waterpoint Locations") }
 
-      statusPerLga: { sizeX: 6, sizeY: 4, row: 5, col: 0, title: gettext("Functionality by LGA") }
+      statusPerDistrict: { sizeX: 6, sizeY: 4, row: 5, col: 0, title: gettext("Functionality by District") }
       topProblems: { sizeX: 6, sizeY: 4, row: 5, col: 6, title: gettext("Top Problems")}
 
       constrYear: { sizeX: 6, sizeY: 3, row: 9, col: 0, title: gettext("Construction Year") }
@@ -52,7 +52,7 @@ angular.module('taarifaWaterpointsApp')
       statusPerManagement: { sizeX: 6, sizeY: 4, row: 27, col: 0, title: gettext("Functionality by Management") }
       statusPerExtraction: { sizeX: 6, sizeY: 4, row: 27, col: 6, title: gettext("Functionality by Extraction") }
 
-    $scope.fields = ["status_group", "lga", "ward_name", "location",
+    $scope.fields = ["status_group", "district_name", "ward_name", "location",
                  "source_group", "amount_tsh", "pop_served"
                  "construction_year", "quantity_group", "wptcode",
                  "quality_group", "extraction_group",
@@ -256,7 +256,7 @@ angular.module('taarifaWaterpointsApp')
 
     setupCharts = (region) ->
       getData region, (data) ->
-        statusPerLgaChart = dc.barChart("#statusPerLga")
+        statusPerDistrictChart = dc.barChart("#statusPerDistrict")
         statusPerWardChart = dc.barChart("#statusPerWard")
         constrYearChart = dc.barChart("#constrYear")
         breakYearChart = dc.barChart("#breakYear")
@@ -280,8 +280,8 @@ angular.module('taarifaWaterpointsApp')
         xfilter = crossfilter data
         all = xfilter.groupAll()
 
-        lgas = createDim (d) -> d.lga
-        statusPerLga = reduceStatus lgas.group()
+        districts = createDim (d) -> d.district_name
+        statusPerDistrict = reduceStatus districts.group()
 
         wards = createDim (d) -> d.ward_name
         statusPerWard = reduceStatus wards.group()
@@ -375,7 +375,7 @@ angular.module('taarifaWaterpointsApp')
           )
         ###
 
-        statusBarChart statusPerLgaChart, lgas, statusPerLga, 15
+        statusBarChart statusPerDistrictChart, districts, statusPerDistrict, 15
         statusBarChart statusPerExtraction, extractionTypes, extractionStatusGroup
         statusBarChart statusPerManagement, managements, managementsStatusGroup
         statusBarChart statusPerWardChart, wards, statusPerWard, 1
