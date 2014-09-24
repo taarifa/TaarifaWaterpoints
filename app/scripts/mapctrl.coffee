@@ -199,18 +199,14 @@ angular.module('taarifaWaterpointsApp')
             it = getFeaturedItem(f)
 
             if it.name.toLowerCase() == val.toLowerCase()
-              # I don't really understand why this works, but it does...
-              # FIXME if you can!
-              numToUnpack = 2
-              if f.geometry.coordinates.length is 3
-                coordsToUse = f.geometry.coordinates
+              # Note: only assumes two different nesting levels
+              if f.geometry.coordinates[0][0].length == 2
+                numToUnpack = 1
               else
-                coordsToUse = [f.geometry.coordinates]
-              console.log coordsToUse
-              points = L.GeoJSON.coordsToLatLngs(coordsToUse, numToUnpack)
+                numToUnpack = 2
+              points = L.GeoJSON.coordsToLatLngs(f.geometry.coordinates, numToUnpack)
               # instantiate as multipolygon to get the bounds
               bounds = L.multiPolygon(points).getBounds()
-              console.log bounds
               map.fitBounds(bounds)
               return
         )
