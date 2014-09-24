@@ -117,7 +117,7 @@ angular.module('taarifaWaterpointsApp')
       date_recorded: today
 
     geolocation.getLocation().then (data) ->
-      flash.success = gettext("Geolocation succeeded: got coordinates") + " #{data.coords.longitude}, #{data.coords.latitude}"
+      flash.success = gettext("Geolocation succeeded: got coordinates") + " #{data.coords.longitude.toPrecision(4)}, #{data.coords.latitude.toPrecision(4)}"
       $scope.form.location = coordinates: [data.coords.longitude, data.coords.latitude]
       map = Map("editMap", {})
       map.clearMarkers()
