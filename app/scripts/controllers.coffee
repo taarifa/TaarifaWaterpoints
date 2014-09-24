@@ -54,10 +54,10 @@ angular.module('taarifaWaterpointsApp')
     $scope.updateMap = (nozoom) ->
       $location.search($scope.where)
       where = {}
-      if $scope.where.region
-        where.region = $scope.where.region
+      if $scope.where.region_name
+        where.region_name = $scope.where.region_name
         # Filter districts based on selected Region
-        $http.get('/api/waterpoints/values/district_name', params: {region: where.region}, cache: true).success (districts) ->
+        $http.get('/api/waterpoints/values/district_name', params: {region_name: where.region_name}, cache: true).success (districts) ->
           $scope.districts = districts
       else
         $http.get('/api/waterpoints/values/district_name', cache: true).success (districts) ->
