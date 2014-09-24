@@ -52,7 +52,8 @@ angular.module('taarifaWaterpointsApp')
       {id:"percFunLeaders", title: gettext("Performance Table: % Functional")},
       {id:"popReach", title: gettext("Performance Table: % Served")}]
 
-    $scope.groups = ['region_name', 'lga', 'ward_name', 'source_group',
+    $scope.groups = ['region_name', 'district_name',
+                     'ward_name', 'source_group',
                      'construction_year', 'quantity_group',
                      'quality_group', 'extraction_group',
                      'breakdown_year', 'payment_group', 'funder',
@@ -67,20 +68,13 @@ angular.module('taarifaWaterpointsApp')
         .success (data, status, headers, config) ->
           $scope.regions = data.sort()
 
-    getLGA = () ->
-      $http.get('/api/waterpoints/values/lga',
-                params: {region_name: $scope.params?.region}
-                cache: cacheHttp)
-        .success (data, status, headers, config) ->
-          $scope.lgas = data.sort()
-
     getWard = () ->
       modalSpinner.open()
       $http.get('/api/waterpoints/values/ward_name',
                 cache: cacheHttp
                 params:
                   region_name: $scope.params?.region
-                  lga: $scope.params?.lga)
+                  district_name: $scope.params?.district)
         .success (data, status, headers, config) ->
           $scope.wards = data.sort()
           modalSpinner.close()
@@ -92,7 +86,7 @@ angular.module('taarifaWaterpointsApp')
                 cache: cacheHttp
                 params:
                   region_name: $scope.params?.region
-                  lga: $scope.params?.lga
+                  district_name: $scope.params?.district
                   ward_name: $scope.params?.ward)
         .success (data, status, headers, config) ->
           $scope.problems = data.sort((a,b) ->
@@ -103,10 +97,9 @@ angular.module('taarifaWaterpointsApp')
           modalSpinner.close()
 
     lookupSelectedPop = () ->
-      # FIXME: we do not have pop data for LGAs!
       popData.lookup(
         $scope.params.region
-        $scope.params.lga
+        $scope.params.district
         $scope.params.ward)
 
     $scope.getStatus = () ->
@@ -118,7 +111,7 @@ angular.module('taarifaWaterpointsApp')
         cache: cacheHttp
         params:
           region_name: $scope.params.region
-          lga: $scope.params.lga
+          district_name: $scope.params.district
           ward_name: $scope.params.ward)
         .success (data, status, headers, config) ->
           total = d3.sum(data, (x) -> x.count)
@@ -159,14 +152,14 @@ angular.module('taarifaWaterpointsApp')
 
     $scope.drillDown = (fieldVal, fieldType, clearFilters) ->
       groupField = fieldType || $scope.params.group
-      geoField = _.contains(['region_name','lga','ward_name'], groupField)
+      geoField = _.contains(['region_name','district_name','ward_name'], groupField)
 
       if !geoField then return
 
       gforder =
-        "region_name": "lga"
-        "lga": "ward_name"
-        "ward_name": "region_name"
+        region_name: "district_name"
+        district_name: "ward_name"
+        ward_name: "region_name"
 
       # Using timeout of zero instead of $scope.apply() in order to avoid
       # this error: https://docs.angularjs.org/error/$rootScope/inprog?p0=$apply
@@ -181,7 +174,7 @@ angular.module('taarifaWaterpointsApp')
 
         if clearFilters || newgf == "region_name"
           $scope.params.region = null
-          $scope.params.lga = null
+          $scope.params.district = null
           $scope.params.ward = null
 
         if newgf == "region_name"
@@ -214,7 +207,7 @@ angular.module('taarifaWaterpointsApp')
 
       translate = (x) -> gettextCatalog.getString(x)
       region = $scope.params?.region
-      lga = $scope.params?.lga
+      district = $scope.params?.district
       ward = $scope.params?.ward
       groupfield = $scope.params?.group || "region_name"
 
@@ -227,12 +220,12 @@ angular.module('taarifaWaterpointsApp')
       translate = (s) -> gettextCatalog.getString(s)
 
       region = $scope.params?.region
-      lga = $scope.params?.lga
+      district = $scope.params?.district
       ward = $scope.params?.ward
       groupfield = $scope.params?.group || "region_name"
       status = $scope.statusChoice
 
-      promise = waterpointStats.getStats(region, lga, ward, groupfield, cacheHttp)
+      promise = waterpointStats.getStats(region, district, ward, groupfield, cacheHttp)
       promise.then( (data) ->
 
         # save a reference to the data so we have it when the selected status is changed
@@ -240,7 +233,7 @@ angular.module('taarifaWaterpointsApp')
 
         plotStatusSummary("#statusSummary", data, groupfield, barDblClick, translate, status)
 
-        if _.contains(['region_name','lga','ward_name'], groupfield)
+        if _.contains(['region_name','district_name','ward_name'], groupfield)
           leaderChart("#percFunLeaders", data, groupfield, (x) -> x.percFun)
 
           data = _.sortBy(data, (x) -> -x.popReach)
