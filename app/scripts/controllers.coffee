@@ -35,8 +35,8 @@ angular.module('taarifaWaterpointsApp')
     $scope.where.reports_only = parseInt($scope.where.reports_only) || 0
     $http.get('/api/waterpoints/values/region_name', cache: true).success (regions) ->
       $scope.regions = regions
-    $http.get('/api/waterpoints/values/lga', cache: true).success (lgas) ->
-      $scope.lgas = lgas
+    $http.get('/api/waterpoints/values/district_name', cache: true).success (districts) ->
+      $scope.districts = districts
 
     $scope.resetParameters = ->
       $scope.where = 
@@ -44,25 +44,26 @@ angular.module('taarifaWaterpointsApp')
         reports_only: 0
       $http.get('/api/waterpoints/values/region_name', cache: true).success (regions) ->
         $scope.regions = regions
-      $http.get('/api/waterpoints/values/lga', cache: true).success (lgas) ->
-        $scope.lgas = lgas
+      $http.get('/api/waterpoints/values/district_name', cache: true).success (districts) ->
+        $scope.districts = districts
 
-    $scope.clearLGA = ->
-      $scope.where.lga = null
-      $location.search 'lga', null
+    $scope.clearDistrict = ->
+      $scope.where.district_name = null
+      $location.search 'district_name', null
+
     $scope.updateMap = (nozoom) ->
       $location.search($scope.where)
       where = {}
       if $scope.where.region_name
         where.region_name = $scope.where.region_name
-        # Filter LGAs based on selected Region
-        $http.get('/api/waterpoints/values/lga', params: {region_name: where.region_name}, cache: true).success (lgas) ->
-          $scope.lgas = lgas
+        # Filter districts based on selected Region
+        $http.get('/api/waterpoints/values/district_name', params: {region_name: where.region_name}, cache: true).success (districts) ->
+          $scope.districts = districts
       else
-        $http.get('/api/waterpoints/values/lga', cache: true).success (lgas) ->
-            $scope.lgas = lgas
-      if $scope.where.lga
-        where.lga = $scope.where.lga
+        $http.get('/api/waterpoints/values/district_name', cache: true).success (districts) ->
+            $scope.districts = districts
+      if $scope.where.district_name
+        where.district_name = $scope.where.district_name
       if $scope.where.status_group
         where.status_group = $scope.where.status_group
       if $scope.where.reports_only

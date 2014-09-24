@@ -5,10 +5,10 @@ angular.module('taarifaWaterpointsApp')
   .factory 'waterpointStats', ($http, $q, populationData) ->
     result = {}
 
-    getStats = (region, lga, ward, groupfield, cache) ->
+    getStats = (region, district, ward, groupfield, cache) ->
       def = $q.defer()
       url = "/api/waterpoints/stats_by/" + groupfield
-      filterFields = {"region_name":region, "lga":lga, "ward_name":ward}
+      filterFields = {"region_name":region, "district_name":district, "ward_name":ward}
       filters = []
 
       _.keys(filterFields).forEach((x) ->
@@ -22,7 +22,7 @@ angular.module('taarifaWaterpointsApp')
       $http.get(url, cache: cache)
         .success (data, status, headers, config) ->
           populationData.then( (popData) ->
-            geoField = _.contains(['region_name','lga','ward_name'], groupfield)
+            geoField = _.contains(['region_name','district_name','ward_name'], groupfield)
 
             data.forEach((x) ->
               f = _.find(x.waterpoints, isFunctional)
@@ -43,7 +43,7 @@ angular.module('taarifaWaterpointsApp')
               if geoField
                 pop = popData.lookup(
                   if groupfield == "region_name" then x[groupfield] else null,
-                  if groupfield == "lga" then x[groupfield] else null,
+                  if groupfield == "district_name" then x[groupfield] else null,
                   if groupfield == "ward_name" then x[groupfield] else null
                 )
                 if pop > 0
