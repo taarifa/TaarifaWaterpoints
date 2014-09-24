@@ -164,7 +164,7 @@ angular.module('taarifaWaterpointsApp')
       # Using timeout of zero instead of $scope.apply() in order to avoid
       # this error: https://docs.angularjs.org/error/$rootScope/inprog?p0=$apply
       # This happens, for example, when drillDown is called from the geojson feature
-      # click handler (by the leaflet directive)
+      # click handler
       # FIXME: a workaround, better solution?
       $timeout(() ->
         if !$scope.params then $scope.params = {}
