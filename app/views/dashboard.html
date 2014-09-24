@@ -42,7 +42,8 @@
           <li gridster-item="item" ng-repeat="item in gridLayout.plots" class="gridster-item-chart">
             <div class="panel panel-primary plot">
               <div class="panel-heading">
-                <h3 class="panel-title">{{plots[$index].title | translate}}</h3>
+                <h3 class="panel-title">{{plots[$index].title | translate}}<span class="pull-right" ng-show="params.region">{{params.region}}
+                    <span ng-show="params.district"> &gt; {{params.district}}</span></span></h3>
               </div>
               <div class="panel-body" id="{{plots[$index].id}}">
 
