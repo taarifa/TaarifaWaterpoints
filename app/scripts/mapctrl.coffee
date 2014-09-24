@@ -6,21 +6,30 @@ angular.module('taarifaWaterpointsApp')
     $scope.choroChoice = "percFun"
 
     # FIXME: "ward" and "region" should be defined elsewhere I think
-    # NOTE: Rewritten to avoid too much "ward" / "region" lookup
-    getFeatureType = (feature) ->
-      return if feature.properties.hasOwnProperty "REGNAME" then "region" else "ward"
-
     getFeaturedItem = (feature) ->
-      itemType = getFeatureType(feature)
-      nameProperty = if itemType == "region" then "REGNAME" else "Ward_Name"
-      name = feature.properties[nameProperty].toLowerCase()
-      item = $scope[itemType + "Map"][name]
-      [name, item, itemType]
+      res = {}
+      props = feature.properties
 
-    getItem = (feature) ->
-      featureType = getFeatureType(feature)
-      return [featureType, getFeaturedItem(feature)[1]]
+      if props.hasOwnProperty "Region_Nam"
+        res.type = "region"
+        res.name = props.Region_Nam
+        res.code = +props.Region_Cod
+      else if props.hasOwnProperty "Ward_Name"
+        res.type = "ward"
+        res.name = props.Ward_Name
+        res.code = +props.Ward_Code
+      else if props.hasOwnProperty "District_N"
+        res.type = "district"
+        res.name = props.District_N
+        res.code = +props.District_C
+      else
+        throw new Error("Unknown geo layer")
 
+      # FIXME: looking up by name which not correct. Should really be by 
+      # code by this causes issues down the line as the population data
+      # does not contain any codes
+      res.item = $scope[res.type + "Map"][res.name.toLowerCase()]
+      res
 
     initMap = (waterpoints, mapCenter) ->
 
@@ -28,12 +37,12 @@ angular.module('taarifaWaterpointsApp')
       ### EVENT HANDLERS ###
       ######################
       mouseOver = (e) ->
-        [name, item, itemType] = getFeaturedItem(e.target.feature)
+        it = getFeaturedItem(e.target.feature)
 
-        if item
-          hoverText = item[itemType + "_name"] + ": " + item[$scope.choroChoice].toPrecision(3) + "%"
+        if it.item
+          hoverText = it.name + ": " + it.item[$scope.choroChoice].toPrecision(3) + "%"
         else
-          hoverText = name + ": unknown"
+          hoverText = it.name + ": unknown"
 
         $scope.$apply (scope) ->
           scope.hoverText = hoverText
@@ -45,9 +54,9 @@ angular.module('taarifaWaterpointsApp')
           fillOpacity: 0.8
 
       onClick = (e) ->
-        [name, item, itemType] = getFeaturedItem(e.target.feature)
-        if item
-          $scope.drillDown(item[itemType + "_name"], itemType + "_name", true)
+        it = getFeaturedItem(e.target.feature)
+        if it.item
+          $scope.drillDown(it.item[it.type + "_name"], it.type + "_name", true)
 
       ##############
       ### STYLES ###
@@ -57,8 +66,8 @@ angular.module('taarifaWaterpointsApp')
                     .range(["red","orange","green"])
 
       style = (feature) ->
-        [type, item] = getItem(feature)
-        color = unless item then "gray" else colScale(item[$scope.choroChoice])
+        it = getFeaturedItem(feature)
+        color = unless it.item then "gray" else colScale(it.item[$scope.choroChoice])
 
         s =
           fillColor: color
@@ -133,11 +142,13 @@ angular.module('taarifaWaterpointsApp')
       ################
       $q.all([
         getTopoJsonLayer("data/tz_regions.topojson", "tz_regions", true)
+        getTopoJsonLayer("data/tz_districts.topojson", "tz_districts", false)
         getTopoJsonLayer("data/tz_wards.topojson", "tz_wards", false)
       ]).then((data) ->
 
-        [regions, regionLayer] = data[0]
-        [wards, wardLayer]     = data[1]
+        [regions, regionLayer]    = data[0]
+        [districts, districtLayer]= data[1]
+        [wards, wardLayer]        = data[2]
 
         ################
         ### MAKE MAP ###
@@ -148,6 +159,7 @@ angular.module('taarifaWaterpointsApp')
 
         overlayControls =
           "Regions": regionLayer
+          "Districts": districtLayer
           "Wards": wardLayer
 
         map = L.map('nationalDashMap',
@@ -165,16 +177,17 @@ angular.module('taarifaWaterpointsApp')
         $scope.$watch('choroChoice', (val) ->
           return unless val
 
+          layers = [regionLayer, districtLayer, wardLayer]
+
+          layers.forEach (l) ->
+            l.setStyle(style)
+            if map.hasLayer(l)
+              map.removeLayer(l)
+              map.addLayer(l)
+
           regionLayer.setStyle(style)
+          districtLayer.setStyle(style)
           wardLayer.setStyle(style)
-
-          if map.hasLayer(regionLayer)
-            map.removeLayer(regionLayer)
-            map.addLayer(regionLayer)
-
-          if map.hasLayer(wardLayer)
-            map.removeLayer(wardLayer)
-            map.addLayer(wardLayer)
         )
 
         $scope.$watch('params.region', (val) ->
@@ -183,9 +196,9 @@ angular.module('taarifaWaterpointsApp')
 
           # only 26 regions so a simple linear search is ok
           for f in regions
-            r = f.properties.REGNAME.toLowerCase()
+            it = getFeaturedItem(f)
 
-            if r == val.toLowerCase()
+            if it.name.toLowerCase() == val.toLowerCase()
               # I don't really understand why this works, but it does...
               # FIXME if you can!
               numToUnpack = 2
@@ -193,9 +206,11 @@ angular.module('taarifaWaterpointsApp')
                 coordsToUse = f.geometry.coordinates
               else
                 coordsToUse = [f.geometry.coordinates]
+              console.log coordsToUse
               points = L.GeoJSON.coordsToLatLngs(coordsToUse, numToUnpack)
               # instantiate as multipolygon to get the bounds
               bounds = L.multiPolygon(points).getBounds()
+              console.log bounds
               map.fitBounds(bounds)
               return
         )
@@ -210,8 +225,9 @@ angular.module('taarifaWaterpointsApp')
 
     # Get the boundaries and layers
     $q.all([
+      # FIXME: assumes unique names which is not the case
       waterpointStats.getStats(null, null, null, "region_name", true)
-      # FIXME: relies on the fact that wards are uniquely named
+      waterpointStats.getStats(null, null, null, "district_name", true)
       waterpointStats.getStats(null, null, null, "ward_name", true)
     ]).then((data) ->
       # Add the regions and wards to the template scope
@@ -221,7 +237,8 @@ angular.module('taarifaWaterpointsApp')
 
       # data contains stats for region and ward
       addToScope(data[0], "region")
-      addToScope(data[1], "ward")
+      addToScope(data[1], "district")
+      addToScope(data[2], "ward")
 
       # Initialise the map
       initMap([], new L.LatLng(-6.3153, 35.15625))
