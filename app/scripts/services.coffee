@@ -96,6 +96,9 @@ angular.module('taarifaWaterpointsApp')
         open: openSpinner
         close: closeSpinner
 
+  # FIXME: this is fundamentally flawed as lookups by name
+  # cause collision problems. Really need new data that includes
+  # codes.
   .factory 'populationData', ($http, $q) ->
     def = $q.defer()
     url = '/data/population_novillages.json'
