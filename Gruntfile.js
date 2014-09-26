@@ -306,7 +306,7 @@ module.exports = function (grunt) {
             'views/{,*/}*.html',
             'images/{,*/}*.{png,jpg,jpeg,gif,webp}',
             'fonts/*',
-            'data/{,*/}*.{csv,json,geojson}'
+            'data/{,*/}*.{csv,json,topojson}'
           ]
         }, {
           expand: true,
