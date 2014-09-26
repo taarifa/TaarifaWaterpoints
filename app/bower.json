@@ -20,7 +20,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular-gettext": "~1.1.0",
+    "angular-gettext": "~1.1.2",
     "angular-gridster": "~0.9.19",
     "PruneCluster": "~0.8.0",
     "angularjs-geolocation": "~0.1.1",
