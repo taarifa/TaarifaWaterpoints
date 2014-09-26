@@ -35,22 +35,23 @@ angular.module('taarifaWaterpointsApp')
       constrYear: { sizeX: 6, sizeY: 3, row: 9, col: 0, title: gettext("Construction Year") }
       breakYear: { sizeX: 6, sizeY: 3, row: 9, col: 6, title: gettext("Breakdown Year") }
 
-      statusPerWard: { sizeX: 12, sizeY: 5, row: 12, col: 0, title: gettext("Functionality by Ward") }
+      statusPie: { sizeX: 3, sizeY: 3, row: 12, col: 0, title: gettext("Functionality") }
+      qualityPie: { sizeX: 3, sizeY: 3, row: 12, col: 3, title: gettext("Water Quality") }
+      quantityPie: { sizeX: 3, sizeY: 3, row: 12, col: 6, title: gettext("Water Quantity") }
+      extractionPie: { sizeX: 3, sizeY: 3, row: 12, col: 9, title: gettext("Extraction Type") }
 
-      statusPie: { sizeX: 3, sizeY: 3, row: 17, col: 0, title: gettext("Functionality") }
-      qualityPie: { sizeX: 3, sizeY: 3, row: 17, col: 3, title: gettext("Water Quality") }
-      quantityPie: { sizeX: 3, sizeY: 3, row: 17, col: 6, title: gettext("Water Quantity") }
-      extractionPie: { sizeX: 3, sizeY: 3, row: 17, col: 9, title: gettext("Extraction Type") }
+      statusPerWard: { sizeX: 12, sizeY: 5, row: 15, col: 0, title: gettext("Functionality by Ward") }
 
-      costImpactBubble: { sizeX: 12, sizeY: 4, row: 20, col: 0, title: gettext("Functionality vs Cost") }
+      paymentPie: { sizeX: 3, sizeY: 3, row: 20, col: 0, title: gettext("Payment Method") }
+      managementPie: { sizeX: 3, sizeY: 3, row: 20, col: 3, title: gettext("Management") }
+      funderPie: { sizeX: 3, sizeY: 3, row: 20, col: 6, title: gettext("Funder") }
+      installerPie: { sizeX: 3, sizeY: 3, row: 20, col: 9, title: gettext("Installer") }
 
-      paymentPie: { sizeX: 3, sizeY: 3, row: 24, col: 0, title: gettext("Payment Method") }
-      managementPie: { sizeX: 3, sizeY: 3, row: 24, col: 3, title: gettext("Management") }
-      funderPie: { sizeX: 3, sizeY: 3, row: 24, col: 6, title: gettext("Funder") }
-      installerPie: { sizeX: 3, sizeY: 3, row: 24, col: 9, title: gettext("Installer") }
+      paymentPerWard: { sizeX: 12, sizeY: 5, row: 23, col: 0, title: gettext("Average Payment Per Ward") }
+      costImpactBubble: { sizeX: 12, sizeY: 5, row: 28, col: 0, title: gettext("Functionality vs Cost") }
 
-      statusPerManagement: { sizeX: 6, sizeY: 4, row: 27, col: 0, title: gettext("Functionality by Management") }
-      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 27, col: 6, title: gettext("Functionality by Extraction") }
+      statusPerManagement: { sizeX: 6, sizeY: 4, row: 33, col: 0, title: gettext("Functionality by Management") }
+      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 33, col: 6, title: gettext("Functionality by Extraction") }
 
     $scope.fields = ["status_group", "district_name", "ward_name", "location",
                  "source_group", "amount_tsh", "pop_served"
@@ -272,6 +273,7 @@ angular.module('taarifaWaterpointsApp')
         statusPerManagement = dc.barChart("#statusPerManagement")
         costImpactBubbleChart = dc.bubbleChart("#costImpactBubble")
         problemsChart = dc.rowChart("#topProblems")
+        paymentPerWardChart = dc.barChart("#paymentPerWard")
         #markerMap = dc.leafletMarkerChart("#markerMap")
         #wardChoropleth = dc.geoChoroplethChart("#wardChoropleth")
         #wardChoropleth = dc.leafletMarkerChart("#wardChoropleth")
@@ -380,6 +382,8 @@ angular.module('taarifaWaterpointsApp')
         statusBarChart statusPerManagement, managements, managementsStatusGroup
         statusBarChart statusPerWardChart, wards, statusPerWard, 1
 
+        barChart paymentPerWardChart, wards, costStatusGroup, 1
+
         rowChart problemsChart, problems, problemsGroup
 
         bubbleChart costImpactBubbleChart, wards, costStatusGroup,
@@ -483,6 +487,37 @@ angular.module('taarifaWaterpointsApp')
       group2 =
         all: () ->
           group.all().filter((d) -> d.value.count > 0)
+
+    barChart = (chart, dim, group, gap) ->
+      chart
+        .width(null)
+        .height(null)
+        .margins({top: 20, left: 40, right: 20, bottom: 55})
+        .group(group,"Payment")
+        .dimension(dim)
+        .valueAccessor((p) -> p.value.avgCost)
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        # FIXME: has no effect for some reason, never called
+        .ordering((d) -> -d.value.avgCost)
+        .colors(stColor)
+        .elasticY(true)
+        .elasticX(true)
+        .gap(gap || 10)
+        .renderlet((chart) ->
+          chart.selectAll("g.x text")
+          .attr('dx', '-30')
+          .attr('transform', "rotate(-65)"))
+        .label((d) -> d.key)
+        .title((d) ->
+          d.key +
+            "\n% Functional: " + d.value.percFun.toPrecision(4) +
+            "\nAverage Payment: " + d.value.avgCost.toPrecision(4) +
+            "\nFunctional Population Served: " + d.value.pop_served_fun.toPrecision(4))
+        .on("preRender", (chart) ->
+          chart.rescale())
+        .on("preRedraw", (chart) ->
+          chart.rescale())
 
     statusBarChart = (chart, dim, group, gap) ->
       chart
