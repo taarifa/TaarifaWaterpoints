@@ -167,6 +167,17 @@ li.gridster-item {
     font-weight: bold;
 }
 
+#statusPerWard .axis.x .tick text {
+  font-size: 8px;
+}
+
+@media (min-width: 1024px) {
+  #statusPerWard .axis.x .tick text {
+    font-size: 9px;
+  }
+}
+
+
 .hor-bar {
     fill: #0a871f;
 }
