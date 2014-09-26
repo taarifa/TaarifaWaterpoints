@@ -25,8 +25,8 @@ angular.module('taarifaWaterpointsApp')
       else
         throw new Error("Unknown geo layer")
 
-      # FIXME: looking up by name which not correct. Should really be by 
-      # code by this causes issues down the line as the population data
+      # FIXME: looking up by name which is not correct. Should really be by 
+      # code but this causes issues down the line as the population data
       # does not contain any codes
       res.item = $scope[res.type + "Map"][res.name.toLowerCase()]
       res
