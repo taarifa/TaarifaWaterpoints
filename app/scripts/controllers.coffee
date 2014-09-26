@@ -68,7 +68,7 @@ angular.module('taarifaWaterpointsApp')
         where.status_group = $scope.where.status_group
       if $scope.where.reports_only
         $http.get('/api/waterpoints/requests').success (requests) ->
-          where.wpt_code = "$in": requests
+          where.wptcode = "$in": requests
           query where, $scope.where.max_results, nozoom
       else
         query where, $scope.where.max_results, nozoom
@@ -84,9 +84,9 @@ angular.module('taarifaWaterpointsApp')
         where: where
         projection:
           _id: 1
-          district: 1
+          district_name: 1
           location: 1
-          wpt_code: 1
+          wptcode: 1
           status_group: 1
         strip: 1
       , (waterpoints) ->
@@ -160,9 +160,9 @@ angular.module('taarifaWaterpointsApp')
                                     $timeout, Waterpoint, Map, RequestForm, flash) ->
     map = Map("editMap")
 
-    Waterpoint.get where: {wpt_code: $routeParams.waterpoint_id}, (wp) ->
+    Waterpoint.get where: {wptcode: $routeParams.waterpoint_id}, (wp) ->
       map.clearMarkers()
-      # FIXME: assumes wpt_code is unique!
+      # FIXME: assumes wptcode is unique!
       map.addWaterpoints([wp._items[0]])
       map.zoomToMarkers()
 
@@ -206,7 +206,7 @@ angular.module('taarifaWaterpointsApp')
       if request.expected_datetime
         $scope.expected_datetime = new Date(request.expected_datetime)
       $scope.request = request
-      Waterpoint.get where: {wpt_code: request.attribute.waterpoint_id}, (waterpoint) ->
+      Waterpoint.get where: {wptcode: request.attribute.waterpoint_id}, (waterpoint) ->
         $scope.waterpoint = waterpoint._items[0]
         if not request.agency_responsible
           request.agency_responsible = $scope.waterpoint.management
