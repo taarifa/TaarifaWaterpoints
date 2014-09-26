@@ -29,6 +29,10 @@ msgid "Attribute"
 msgstr "Sifa"
 
 #: .tmp/scripts/regdashboardctrl.js
+msgid "Average Payment Per Ward"
+msgstr ""
+
+#: .tmp/scripts/regdashboardctrl.js
 msgid "Breakdown Year"
 msgstr "Mwaka wa kuharibika"
 
@@ -60,6 +64,10 @@ msgstr "Kwa Ujumla"
 msgid "Data Table"
 msgstr "Jedwali la Data"
 
+#: app/views/main.html
+msgid "District"
+msgstr "Wilaya"
+
 #: app/views/triage.html
 #, fuzzy
 msgid "Expected completion date"
@@ -68,6 +76,10 @@ msgstr "Tarehe tarajiwa"
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Extraction Type"
 msgstr "Njia ya uzalishaji"
+
+#: .tmp/scripts/controllers.js
+msgid "Failed to create waterpoint"
+msgstr ""
 
 #: app/views/main.html
 msgid "Filter map view"
@@ -86,12 +98,13 @@ msgid "Functionality"
 msgstr "Ufanyaji kazi"
 
 #: .tmp/scripts/regdashboardctrl.js
-msgid "Functionality by Extraction"
+#, fuzzy
+msgid "Functionality by District"
 msgstr "Ufanyaji kazi na Njia ya uzalishaji"
 
 #: .tmp/scripts/regdashboardctrl.js
-msgid "Functionality by LGA"
-msgstr "Ufanyaji Kazi kwa Halmashauri"
+msgid "Functionality by Extraction"
+msgstr "Ufanyaji kazi na Njia ya uzalishaji"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality by Management"
@@ -113,6 +126,14 @@ msgstr "Mfadhili"
 msgid "Further information or comments about the problem"
 msgstr ""
 
+#: .tmp/scripts/controllers.js
+msgid "Geolocation failed:"
+msgstr ""
+
+#: .tmp/scripts/controllers.js
+msgid "Geolocation succeeded: got coordinates"
+msgstr ""
+
 #: app/views/dashboard.html
 msgid "Group By"
 msgstr "Kundi Kwa"
@@ -124,10 +145,6 @@ msgstr "Nymbani"
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Installer"
 msgstr "Mkandarasi"
-
-#: app/views/dashboard.html
-msgid "LGA"
-msgstr "Halmashauri"
 
 #: app/views/spinnerdlg.html
 msgid "Loading Data..."
@@ -146,7 +163,8 @@ msgid "Management"
 msgstr "Usimamizi"
 
 #: app/views/main.html
-msgid "Max no. results"
+#, fuzzy
+msgid "Max no."
 msgstr "Idadi"
 
 #: app/views/requests.html
@@ -156,6 +174,14 @@ msgstr ""
 #: app/views/dashboard.html
 msgid "National"
 msgstr "Kitaifa"
+
+#: .tmp/scripts/controllers.js
+msgid "No request matching the criteria!"
+msgstr ""
+
+#: .tmp/scripts/controllers.js
+msgid "No waterpoints match your filter criteria!"
+msgstr ""
 
 #: app/scripts/plots.js
 msgid "Number of Waterpoints"
@@ -205,6 +231,14 @@ msgstr "Thamani/Hali iliyoripotiwa"
 #: app/views/requests.html
 msgid "Request status"
 msgstr "Hali ya suala"
+
+#: .tmp/scripts/controllers.js
+msgid "Request successfully created!"
+msgstr ""
+
+#: app/views/main.html
+msgid "Reset"
+msgstr ""
 
 #: app/views/dashboard.html
 msgid "Reset all filters"
@@ -258,10 +292,6 @@ msgstr "Hali ya kituo cha maji"
 msgid "WPs with reports"
 msgstr "Vituo vyenye ripoti"
 
-#: app/views/dashboard.html
-msgid "Ward"
-msgstr "Kata"
-
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Water Quality"
 msgstr "Ubora wa Maji"
@@ -281,6 +311,14 @@ msgstr "Maeneo vilipo vituo vya Maji"
 #: .tmp/scripts/natdashboardctrl.js
 msgid "Waterpoint status (ordered by % Functional)"
 msgstr "Hali ya vituo vya maji (Kufuatana na % ya vinavyofanya kazi)"
+
+#: .tmp/scripts/controllers.js
+msgid "Waterpoint successfully created!"
+msgstr ""
+
+#: .tmp/scripts/controllers.js
+msgid "Waterpoint successfully updated!"
+msgstr ""
 
 #: .tmp/scripts/natdashboardctrl.js
 msgid "functional"
@@ -309,6 +347,15 @@ msgstr "Tarehe ya uwasilishwaji"
 #: app/views/dashboard.html
 msgid "waterpoints"
 msgstr "Vituo vya Maji"
+
+#~ msgid "Functionality by LGA"
+#~ msgstr "Ufanyaji Kazi kwa Halmashauri"
+
+#~ msgid "LGA"
+#~ msgstr "Halmashauri"
+
+#~ msgid "Ward"
+#~ msgstr "Kata"
 
 #~ msgid "Apply"
 #~ msgstr "Tuma"
@@ -342,9 +389,6 @@ msgstr "Vituo vya Maji"
 
 #~ msgid "Barrel leaks"
 #~ msgstr "Tenki Linavuja"
-
-#~ msgid "District"
-#~ msgstr "Wilaya"
 
 #~ msgid "Filter"
 #~ msgstr "Chujio"
