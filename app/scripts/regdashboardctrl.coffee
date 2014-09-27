@@ -509,6 +509,7 @@ angular.module('taarifaWaterpointsApp')
           .attr('dx', '-30')
           .attr('transform', "rotate(-65)"))
         .label((d) -> d.key)
+        .yAxisLabel(gettext("Average Payment"))
         .title((d) ->
           d.key +
             "\n% Functional: " + d.value.percFun.toPrecision(4) +
