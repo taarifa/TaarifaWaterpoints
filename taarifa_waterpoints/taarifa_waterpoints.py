@@ -163,8 +163,9 @@ def images(filename):
 
 
 @app.route('/data/<path:filename>.topojson')
-def geojson(filename):
-    return send_from_directory(app.root_path + '/dist/data/', filename + '.topojson', mimetype=mimetypes.types_map['.json'])
+def topojson(filename):
+    return send_from_directory(app.root_path + '/dist/data/', filename + '.topojson',
+                               mimetype='application/json')
 
 
 @app.route('/data/<path:filename>')
