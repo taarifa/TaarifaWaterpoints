@@ -382,7 +382,7 @@ angular.module('taarifaWaterpointsApp')
         statusBarChart statusPerManagement, managements, managementsStatusGroup
         statusBarChart statusPerWardChart, wards, statusPerWard, 1
 
-        barChart paymentPerWardChart, wards, costStatusGroup, 1
+        costBarChart paymentPerWardChart, wards, costStatusGroup, 1
 
         rowChart problemsChart, problems, problemsGroup
 
@@ -391,8 +391,8 @@ angular.module('taarifaWaterpointsApp')
                     (d) -> d.value.percFun,   # key (x)
                     (d) -> d.value.avgCost,   # value (y)
                     (d) -> d.value.pop,       # radius
-                    "% Functional",           # x label
-                    "Average Payment"         # y label
+                    gettext("% Functional"),           # x label
+                    gettext("Average Payment")         # y label
 
         yearChart constrYearChart, constrYears, constrYearsGroup, "Construction Year"
         yearChart breakYearChart, breakYears, breakYearsGroup, "Breakdown Year"
@@ -474,9 +474,9 @@ angular.module('taarifaWaterpointsApp')
         .label((p) -> p.key)
         .title((d) ->
           d.key +
-            "\nAverage payment: " + valueAcc(d).toPrecision(4) +
-            "\n% Functional: " + keyAcc(d).toPrecision(4) +
-            "\nPopulation: " + radiusAcc(d))
+            "\n" + gettext("Average payment") + ": " + valueAcc(d).toPrecision(4) +
+            "\n" + gettext("% Functional") + ": " + keyAcc(d).toPrecision(4) +
+            "\n" + gettext("Population") + ": " + radiusAcc(d))
         .renderTitle(true)
         .on("preRender", (chart) ->
           chart.rescale())
@@ -488,7 +488,7 @@ angular.module('taarifaWaterpointsApp')
         all: () ->
           group.all().filter((d) -> d.value.count > 0)
 
-    barChart = (chart, dim, group, gap) ->
+    costBarChart = (chart, dim, group, gap) ->
       chart
         .width(null)
         .height(null)
@@ -512,9 +512,9 @@ angular.module('taarifaWaterpointsApp')
         .yAxisLabel(gettext("Average Payment"))
         .title((d) ->
           d.key +
-            "\n% Functional: " + d.value.percFun.toPrecision(4) +
-            "\nAverage Payment: " + d.value.avgCost.toPrecision(4) +
-            "\nFunctional Population Served: " + d.value.pop_served_fun.toPrecision(4))
+            "\n" + gettext("% Functional") + ": " + d.value.percFun.toPrecision(4) +
+            "\n" + gettext("Average payment") + ": " + d.value.avgCost.toPrecision(4) +
+            "\n" + gettext("Functional Population Served") + ": " + d.value.pop_served_fun.toPrecision(4))
         .on("preRender", (chart) ->
           chart.rescale())
         .on("preRedraw", (chart) ->
@@ -544,9 +544,9 @@ angular.module('taarifaWaterpointsApp')
         .label((d) -> d.key)
         .title((d) ->
           d.key +
-            "\nFunctional: " + d.value.functional +
-            "\nNeeds repair: " + d.value["needs repair"] +
-            "\nNot functional: " + d.value["not functional"])
+            "\n" + gettext("Functional") + ": " + d.value.functional +
+            "\n" + gettext("Needs repair") + ": " + d.value["needs repair"] +
+            "\n" + gettext("Not functional") + ": " + d.value["not functional"])
         .legend(dc.legend().horizontal(true).itemWidth(85).x(50).y(0))
         .on("preRender", (chart) ->
           chart.rescale())
