@@ -12,6 +12,11 @@ msgstr ""
 "X-Generator: Poedit 1.6.8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: .tmp/scripts/regdashboardctrl.js
+#, fuzzy
+msgid "% Functional"
+msgstr "Vinavyofanya kazi"
+
 #: app/views/triage.html
 msgid "Accept change"
 msgstr "Kubali mabadiliko"
@@ -27,6 +32,18 @@ msgstr "Wakala husika"
 #: app/views/triage.html
 msgid "Attribute"
 msgstr "Sifa"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Average Payment"
+msgstr ""
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Average Payment Per Ward"
+msgstr ""
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Average payment"
+msgstr ""
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Breakdown Year"
@@ -84,21 +101,26 @@ msgstr "Chuja muonekano wa ramani"
 msgid "Filter requests"
 msgstr "Chuja ripoti"
 
-#: app/views/dashboard.html
+#: app/views/dashboard.html .tmp/scripts/regdashboardctrl.js
 msgid "Functional"
 msgstr "Vinavyofanya kazi"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Functional Population Served"
+msgstr ""
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality"
 msgstr "Ufanyaji kazi"
 
 #: .tmp/scripts/regdashboardctrl.js
-msgid "Functionality by Extraction"
+#, fuzzy
+msgid "Functionality by District"
 msgstr "Ufanyaji kazi kwa aina ya uzalishaji"
 
 #: .tmp/scripts/regdashboardctrl.js
-msgid "Functionality by LGA"
-msgstr "Ufanyaji kazi kwa Halmashauri"
+msgid "Functionality by Extraction"
+msgstr "Ufanyaji kazi kwa aina ya uzalishaji"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality by Management"
@@ -168,6 +190,11 @@ msgstr ""
 msgid "National"
 msgstr "Kitaifa"
 
+#: .tmp/scripts/regdashboardctrl.js
+#, fuzzy
+msgid "Needs repair"
+msgstr "vinavyohitaji matengenezo"
+
 #: .tmp/scripts/controllers.js
 msgid "No request matching the criteria!"
 msgstr "Idadi ya maombi yanayokidhi vigezo!"
@@ -175,6 +202,11 @@ msgstr "Idadi ya maombi yanayokidhi vigezo!"
 #: .tmp/scripts/controllers.js
 msgid "No waterpoints match your filter criteria!"
 msgstr "Hakuna kituo cha maji kilichokidhi vigezo ulivyochagua!"
+
+#: .tmp/scripts/regdashboardctrl.js
+#, fuzzy
+msgid "Not functional"
+msgstr "visivyofanya kazi"
 
 #: app/scripts/plots.js
 msgid "Number of Waterpoints"
@@ -196,6 +228,11 @@ msgstr "Utendaji: % ya wanaohudumiwa"
 msgid "Planned actions"
 msgstr "Hatua zilizopangwa"
 
+#: .tmp/scripts/regdashboardctrl.js
+#, fuzzy
+msgid "Population"
+msgstr "kiasi cha wanaohudumiwa"
+
 #: app/views/dashboard.html
 msgid "Print"
 msgstr "Chapicha"
@@ -204,8 +241,7 @@ msgstr "Chapicha"
 msgid "Publish"
 msgstr "Sambaza"
 
-#: app/views/dashboard.html
-#: app/views/main.html
+#: app/views/dashboard.html app/views/main.html
 msgid "Region"
 msgstr "Mkoa"
 
@@ -257,8 +293,7 @@ msgstr "Vitup vya maji Tanzania"
 msgid "This may take a while depending on your connection"
 msgstr "Hii inaweza kuchukua muda kutegemeana na hali ya mtandao wako"
 
-#: app/views/dashboard.html
-#: .tmp/scripts/regdashboardctrl.js
+#: app/views/dashboard.html .tmp/scripts/regdashboardctrl.js
 msgid "Top Problems"
 msgstr "Matatizo Makuu"
 
@@ -294,8 +329,7 @@ msgstr "Ubora wa Maji"
 msgid "Water Quantity"
 msgstr "kiasi cha Maji"
 
-#: app/views/requests.html
-#: app/views/triage.html
+#: app/views/requests.html app/views/triage.html
 msgid "Waterpoint"
 msgstr "Kituo cha maji"
 
@@ -335,11 +369,13 @@ msgstr "kati ya"
 msgid "population cover"
 msgstr "kiasi cha wanaohudumiwa"
 
-#: app/views/requests.html
-#: app/views/triage.html
+#: app/views/requests.html app/views/triage.html
 msgid "submitted on"
 msgstr "Ilitumwa"
 
 #: app/views/dashboard.html
 msgid "waterpoints"
 msgstr "vituo vya maji"
+
+#~ msgid "Functionality by LGA"
+#~ msgstr "Ufanyaji kazi kwa Halmashauri"
