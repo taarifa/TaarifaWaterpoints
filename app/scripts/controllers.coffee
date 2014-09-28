@@ -33,41 +33,42 @@ angular.module('taarifaWaterpointsApp')
     $scope.where = $location.search()
     $scope.where.max_results = parseInt($scope.where.max_results) || 100
     $scope.where.reports_only = parseInt($scope.where.reports_only) || 0
-    $http.get('/api/waterpoints/values/region', cache: true).success (regions) ->
+    $http.get('/api/waterpoints/values/region_name', cache: true).success (regions) ->
       $scope.regions = regions
-    $http.get('/api/waterpoints/values/lga', cache: true).success (lgas) ->
-      $scope.lgas = lgas
+    $http.get('/api/waterpoints/values/district_name', cache: true).success (districts) ->
+      $scope.districts = districts
 
     $scope.resetParameters = ->
       $scope.where = 
         max_results: 100
         reports_only: 0
-      $http.get('/api/waterpoints/values/region', cache: true).success (regions) ->
+      $http.get('/api/waterpoints/values/region_name', cache: true).success (regions) ->
         $scope.regions = regions
-      $http.get('/api/waterpoints/values/lga', cache: true).success (lgas) ->
-        $scope.lgas = lgas
+      $http.get('/api/waterpoints/values/district_name', cache: true).success (districts) ->
+        $scope.districts = districts
 
-    $scope.clearLGA = ->
-      $scope.where.lga = null
-      $location.search 'lga', null
+    $scope.clearDistrict = ->
+      $scope.where.district_name = null
+      $location.search 'district_name', null
+
     $scope.updateMap = (nozoom) ->
       $location.search($scope.where)
       where = {}
-      if $scope.where.region
-        where.region = $scope.where.region
-        # Filter LGAs based on selected Region
-        $http.get('/api/waterpoints/values/lga', params: {region: where.region}, cache: true).success (lgas) ->
-          $scope.lgas = lgas
+      if $scope.where.region_name
+        where.region_name = $scope.where.region_name
+        # Filter districts based on selected Region
+        $http.get('/api/waterpoints/values/district_name', params: {region_name: where.region_name}, cache: true).success (districts) ->
+          $scope.districts = districts
       else
-        $http.get('/api/waterpoints/values/lga', cache: true).success (lgas) ->
-            $scope.lgas = lgas
-      if $scope.where.lga
-        where.lga = $scope.where.lga
+        $http.get('/api/waterpoints/values/district_name', cache: true).success (districts) ->
+            $scope.districts = districts
+      if $scope.where.district_name
+        where.district_name = $scope.where.district_name
       if $scope.where.status_group
         where.status_group = $scope.where.status_group
       if $scope.where.reports_only
         $http.get('/api/waterpoints/requests').success (requests) ->
-          where.wpt_code = "$in": requests
+          where.wptcode = "$in": requests
           query where, $scope.where.max_results, nozoom
       else
         query where, $scope.where.max_results, nozoom
@@ -83,9 +84,9 @@ angular.module('taarifaWaterpointsApp')
         where: where
         projection:
           _id: 1
-          district: 1
+          district_name: 1
           location: 1
-          wpt_code: 1
+          wptcode: 1
           status_group: 1
         strip: 1
       , (waterpoints) ->
@@ -116,7 +117,7 @@ angular.module('taarifaWaterpointsApp')
       date_recorded: today
 
     geolocation.getLocation().then (data) ->
-      flash.success = gettext("Geolocation succeeded: got coordinates") + " #{data.coords.longitude}, #{data.coords.latitude}"
+      flash.success = gettext("Geolocation succeeded: got coordinates") + " #{data.coords.longitude.toPrecision(4)}, #{data.coords.latitude.toPrecision(4)}"
       $scope.form.location = coordinates: [data.coords.longitude, data.coords.latitude]
       map = Map("editMap", {})
       map.clearMarkers()
@@ -159,9 +160,9 @@ angular.module('taarifaWaterpointsApp')
                                     $timeout, Waterpoint, Map, RequestForm, flash) ->
     map = Map("editMap")
 
-    Waterpoint.get where: {wpt_code: $routeParams.waterpoint_id}, (wp) ->
+    Waterpoint.get where: {wptcode: $routeParams.waterpoint_id}, (wp) ->
       map.clearMarkers()
-      # FIXME: assumes wpt_code is unique!
+      # FIXME: assumes wptcode is unique!
       map.addWaterpoints([wp._items[0]])
       map.zoomToMarkers()
 
@@ -205,7 +206,7 @@ angular.module('taarifaWaterpointsApp')
       if request.expected_datetime
         $scope.expected_datetime = new Date(request.expected_datetime)
       $scope.request = request
-      Waterpoint.get where: {wpt_code: request.attribute.waterpoint_id}, (waterpoint) ->
+      Waterpoint.get where: {wptcode: request.attribute.waterpoint_id}, (waterpoint) ->
         $scope.waterpoint = waterpoint._items[0]
         if not request.agency_responsible
           request.agency_responsible = $scope.waterpoint.management

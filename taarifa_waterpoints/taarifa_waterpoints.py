@@ -18,7 +18,7 @@ def pre_get_waterpoints(request, lookup):
     lon = request.args.get('lon', None, type=float)
     max_distance = request.args.get('maxDistance', 500, type=int)
     min_distance = request.args.get('minDistance', None, type=int)
-    
+
     if lat and lon:
         lat = lat if -90 <= lat <= 90 else None
         lon = lon if -180 <= lon <= 180 else None
@@ -129,7 +129,7 @@ def waterpoint_stats_by(field):
         {"$group": {"_id": {field: "$" + field,
                             "status": "$status_group"},
                     "statusCount": {"$sum": 1},
-                    "populationCount": {"$sum": "$population"}}},
+                    "populationCount": {"$sum": "$pop_served"}}},
         {"$group": {"_id": "$_id." + field,
                     "waterpoints": {
                         "$push": {
@@ -163,8 +163,9 @@ def images(filename):
 
 
 @app.route('/data/<path:filename>.topojson')
-def geojson(filename):
-    return send_from_directory(app.root_path + '/app/data/', filename + '.topojson', mimetype=mimetypes.types_map['.json'])
+def topojson(filename):
+    return send_from_directory(app.root_path + '/dist/data/', filename + '.topojson',
+                               mimetype='application/json')
 
 
 @app.route('/data/<path:filename>')

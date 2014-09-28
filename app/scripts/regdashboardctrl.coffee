@@ -2,6 +2,16 @@ angular.module('taarifaWaterpointsApp')
 
   .controller 'RegionalDashboardCtrl', ($scope, $http, $q, $filter, Map,
                                         gettext, modalSpinner, populationData) ->
+    # should http calls be cached
+    # FIXME: should be application level setting
+    cacheHttp = false
+
+    # FIXME: create our own statusColor version to prevent weird values
+    # from modifying the original one
+    stColor = d3.scale.ordinal()
+      .domain(statusColor.domain())
+      .range(statusColor.range());
+
     $scope.gridsterOpts =
       margins: [10, 10]
       columns: 12
@@ -19,34 +29,35 @@ angular.module('taarifaWaterpointsApp')
 
       wpLocations: { sizeX: 12, sizeY: 5, row: 0, col: 0, title: gettext("Waterpoint Locations") }
 
-      statusPerLga: { sizeX: 6, sizeY: 4, row: 5, col: 0, title: gettext("Functionality by LGA") }
+      statusPerDistrict: { sizeX: 6, sizeY: 4, row: 5, col: 0, title: gettext("Functionality by District") }
       topProblems: { sizeX: 6, sizeY: 4, row: 5, col: 6, title: gettext("Top Problems")}
 
       constrYear: { sizeX: 6, sizeY: 3, row: 9, col: 0, title: gettext("Construction Year") }
       breakYear: { sizeX: 6, sizeY: 3, row: 9, col: 6, title: gettext("Breakdown Year") }
 
-      statusPerWard: { sizeX: 12, sizeY: 5, row: 12, col: 0, title: gettext("Functionality by Ward") }
+      statusPie: { sizeX: 3, sizeY: 3, row: 12, col: 0, title: gettext("Functionality") }
+      qualityPie: { sizeX: 3, sizeY: 3, row: 12, col: 3, title: gettext("Water Quality") }
+      quantityPie: { sizeX: 3, sizeY: 3, row: 12, col: 6, title: gettext("Water Quantity") }
+      extractionPie: { sizeX: 3, sizeY: 3, row: 12, col: 9, title: gettext("Extraction Type") }
 
-      statusPie: { sizeX: 3, sizeY: 3, row: 17, col: 0, title: gettext("Functionality") }
-      qualityPie: { sizeX: 3, sizeY: 3, row: 17, col: 3, title: gettext("Water Quality") }
-      quantityPie: { sizeX: 3, sizeY: 3, row: 17, col: 6, title: gettext("Water Quantity") }
-      extractionPie: { sizeX: 3, sizeY: 3, row: 17, col: 9, title: gettext("Extraction Type") }
+      statusPerWard: { sizeX: 12, sizeY: 5, row: 15, col: 0, title: gettext("Functionality by Ward") }
 
-      costImpactBubble: { sizeX: 12, sizeY: 4, row: 20, col: 0, title: gettext("Functionality vs Cost") }
+      paymentPie: { sizeX: 3, sizeY: 3, row: 20, col: 0, title: gettext("Payment Method") }
+      managementPie: { sizeX: 3, sizeY: 3, row: 20, col: 3, title: gettext("Management") }
+      funderPie: { sizeX: 3, sizeY: 3, row: 20, col: 6, title: gettext("Funder") }
+      installerPie: { sizeX: 3, sizeY: 3, row: 20, col: 9, title: gettext("Installer") }
 
-      paymentPie: { sizeX: 3, sizeY: 3, row: 24, col: 0, title: gettext("Payment Method") }
-      managementPie: { sizeX: 3, sizeY: 3, row: 24, col: 3, title: gettext("Management") }
-      funderPie: { sizeX: 3, sizeY: 3, row: 24, col: 6, title: gettext("Funder") }
-      installerPie: { sizeX: 3, sizeY: 3, row: 24, col: 9, title: gettext("Installer") }
+      paymentPerWard: { sizeX: 12, sizeY: 5, row: 23, col: 0, title: gettext("Average Payment Per Ward") }
+      costImpactBubble: { sizeX: 12, sizeY: 5, row: 28, col: 0, title: gettext("Functionality vs Cost") }
 
-      statusPerManagement: { sizeX: 6, sizeY: 4, row: 27, col: 0, title: gettext("Functionality by Management") }
-      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 27, col: 6, title: gettext("Functionality by Extraction") }
+      statusPerManagement: { sizeX: 6, sizeY: 4, row: 33, col: 0, title: gettext("Functionality by Management") }
+      statusPerExtraction: { sizeX: 6, sizeY: 4, row: 33, col: 6, title: gettext("Functionality by Extraction") }
 
-    $scope.fields = ["status_group", "lga", "ward", "location",
-                 "source_type", "amount_tsh", "population"
-                 "construction_year", "quantity_group", "wpt_code",
-                 "quality_group", "extraction_type_group",
-                 "breakdown_year", "payment_type", "funder",
+    $scope.fields = ["status_group", "district_name", "ward_name", "location",
+                 "source_group", "amount_tsh", "pop_served"
+                 "construction_year", "quantity_group", "wptcode",
+                 "quality_group", "extraction_group",
+                 "breakdown_year", "payment_group", "funder",
                  "installer", "management", "hardware_problem"]
 
     dimensions = []
@@ -73,7 +84,7 @@ angular.module('taarifaWaterpointsApp')
 
       # get all regions
       $q.all([
-        $http.get('/api/waterpoints/values/region', cache: true)
+        $http.get('/api/waterpoints/values/region_name', cache: true)
         populationData
         #$http.get('data/tz_wards.geojson', cache: true)
       ]).then((results) ->
@@ -82,7 +93,7 @@ angular.module('taarifaWaterpointsApp')
         #$scope.geojson = results[2]
 
         $scope.regions = regs.sort()
-        $scope.region = $scope.regions[7]
+        $scope.region = $scope.regions[9]
 
         # FIXME:
         # unfortunately, for some reason, not all dc charts manage to pickup the
@@ -98,7 +109,7 @@ angular.module('taarifaWaterpointsApp')
       )
 
     getData = (region, callback) ->
-      filter =  region: region
+      filter =  region_name: region
 
       ones = Array
         .apply(null, new Array($scope.fields.length))
@@ -246,7 +257,7 @@ angular.module('taarifaWaterpointsApp')
 
     setupCharts = (region) ->
       getData region, (data) ->
-        statusPerLgaChart = dc.barChart("#statusPerLga")
+        statusPerDistrictChart = dc.barChart("#statusPerDistrict")
         statusPerWardChart = dc.barChart("#statusPerWard")
         constrYearChart = dc.barChart("#constrYear")
         breakYearChart = dc.barChart("#breakYear")
@@ -262,6 +273,7 @@ angular.module('taarifaWaterpointsApp')
         statusPerManagement = dc.barChart("#statusPerManagement")
         costImpactBubbleChart = dc.bubbleChart("#costImpactBubble")
         problemsChart = dc.rowChart("#topProblems")
+        paymentPerWardChart = dc.barChart("#paymentPerWard")
         #markerMap = dc.leafletMarkerChart("#markerMap")
         #wardChoropleth = dc.geoChoroplethChart("#wardChoropleth")
         #wardChoropleth = dc.leafletMarkerChart("#wardChoropleth")
@@ -270,10 +282,10 @@ angular.module('taarifaWaterpointsApp')
         xfilter = crossfilter data
         all = xfilter.groupAll()
 
-        lgas = createDim (d) -> d.lga
-        statusPerLga = reduceStatus lgas.group()
+        districts = createDim (d) -> d.district_name
+        statusPerDistrict = reduceStatus districts.group()
 
-        wards = createDim (d) -> d.ward
+        wards = createDim (d) -> d.ward_name
         statusPerWard = reduceStatus wards.group()
 
         constrYears = createDim (d) -> d.construction_year
@@ -296,7 +308,7 @@ angular.module('taarifaWaterpointsApp')
         qualities = createDim (d) -> d.quality_group
         qualitiesStatusGroup = reduceStatus qualities.group()
 
-        extractionTypes = createDim (d) -> d.extraction_type_group
+        extractionTypes = createDim (d) -> d.extraction_group
         extractionStatusGroup = reduceStatus extractionTypes.group()
 
         statuses = createDim (d) -> d.status_group
@@ -309,7 +321,7 @@ angular.module('taarifaWaterpointsApp')
         statuses = createDim (d) -> d.status_group
         statusGroup = statuses.group()
 
-        paymentTypes = createDim (d) -> d.payment_type
+        paymentTypes = createDim (d) -> d.payment_group
         paymentGroup = paymentTypes.group()
 
         problems = createDim((d) -> d.hardware_problem)
@@ -365,10 +377,12 @@ angular.module('taarifaWaterpointsApp')
           )
         ###
 
-        statusBarChart statusPerLgaChart, lgas, statusPerLga, 15
+        statusBarChart statusPerDistrictChart, districts, statusPerDistrict, 15
         statusBarChart statusPerExtraction, extractionTypes, extractionStatusGroup
         statusBarChart statusPerManagement, managements, managementsStatusGroup
         statusBarChart statusPerWardChart, wards, statusPerWard, 1
+
+        costBarChart paymentPerWardChart, wards, costStatusGroup, 1
 
         rowChart problemsChart, problems, problemsGroup
 
@@ -377,8 +391,8 @@ angular.module('taarifaWaterpointsApp')
                     (d) -> d.value.percFun,   # key (x)
                     (d) -> d.value.avgCost,   # value (y)
                     (d) -> d.value.pop,       # radius
-                    "% Functional",           # x label
-                    "Average Payment"         # y label
+                    gettext("% Functional"),           # x label
+                    gettext("Average Payment")         # y label
 
         yearChart constrYearChart, constrYears, constrYearsGroup, "Construction Year"
         yearChart breakYearChart, breakYears, breakYearsGroup, "Breakdown Year"
@@ -386,7 +400,7 @@ angular.module('taarifaWaterpointsApp')
         pieChart quantityChart, quantities, quantities.group(), all
         pieChart qualityChart, qualities, qualities.group(), all
         pieChart extractionChart, extractionTypes, extractionTypes.group(), all
-        pieChart statusChart, statuses, statusGroup, all, statusColor
+        pieChart statusChart, statuses, statusGroup, all, stColor
         pieChart paymentChart, paymentTypes, paymentGroup, all
         pieChart installerChart, installers, installersGroup, all
         pieChart funderChart, funders, fundersGroup, all
@@ -460,9 +474,9 @@ angular.module('taarifaWaterpointsApp')
         .label((p) -> p.key)
         .title((d) ->
           d.key +
-            "\nAverage payment: " + valueAcc(d).toPrecision(4) +
-            "\n% Functional: " + keyAcc(d).toPrecision(4) +
-            "\nPopulation: " + radiusAcc(d))
+            "\n" + gettext("Average payment") + ": " + valueAcc(d).toPrecision(4) +
+            "\n" + gettext("% Functional") + ": " + keyAcc(d).toPrecision(4) +
+            "\n" + gettext("Population") + ": " + radiusAcc(d))
         .renderTitle(true)
         .on("preRender", (chart) ->
           chart.rescale())
@@ -473,6 +487,38 @@ angular.module('taarifaWaterpointsApp')
       group2 =
         all: () ->
           group.all().filter((d) -> d.value.count > 0)
+
+    costBarChart = (chart, dim, group, gap) ->
+      chart
+        .width(null)
+        .height(null)
+        .margins({top: 20, left: 40, right: 20, bottom: 55})
+        .group(group,"Payment")
+        .dimension(dim)
+        .valueAccessor((p) -> p.value.avgCost)
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        # FIXME: has no effect for some reason, never called
+        .ordering((d) -> -d.value.avgCost)
+        .colors(stColor)
+        .elasticY(true)
+        .elasticX(true)
+        .gap(gap || 10)
+        .renderlet((chart) ->
+          chart.selectAll("g.x text")
+          .attr('dx', '-30')
+          .attr('transform', "rotate(-65)"))
+        .label((d) -> d.key)
+        .yAxisLabel(gettext("Average Payment"))
+        .title((d) ->
+          d.key +
+            "\n" + gettext("% Functional") + ": " + d.value.percFun.toPrecision(4) +
+            "\n" + gettext("Average payment") + ": " + d.value.avgCost.toPrecision(4) +
+            "\n" + gettext("Functional Population Served") + ": " + d.value.pop_served_fun.toPrecision(4))
+        .on("preRender", (chart) ->
+          chart.rescale())
+        .on("preRedraw", (chart) ->
+          chart.rescale())
 
     statusBarChart = (chart, dim, group, gap) ->
       chart
@@ -487,7 +533,7 @@ angular.module('taarifaWaterpointsApp')
         .stack(group, "Not Functional", (d) -> d.value["not functional"])
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
-        .colors(statusColor)
+        .colors(stColor)
         .elasticY(true)
         .elasticX(true)
         .gap(gap || 10)
@@ -498,9 +544,9 @@ angular.module('taarifaWaterpointsApp')
         .label((d) -> d.key)
         .title((d) ->
           d.key +
-            "\nFunctional: " + d.value.functional +
-            "\nNeeds repair: " + d.value["needs repair"] +
-            "\nNot functional: " + d.value["not functional"])
+            "\n" + gettext("Functional") + ": " + d.value.functional +
+            "\n" + gettext("Needs repair") + ": " + d.value["needs repair"] +
+            "\n" + gettext("Not functional") + ": " + d.value["not functional"])
         .legend(dc.legend().horizontal(true).itemWidth(85).x(50).y(0))
         .on("preRender", (chart) ->
           chart.rescale())
@@ -537,7 +583,7 @@ angular.module('taarifaWaterpointsApp')
         .valueAccessor((p) -> p.value.functional)
         .stack(group, "Needs Repair", (d) -> d.value["needs repair"])
         .stack(group, "Not Functional", (d) -> d.value["not functional"])
-        .colors(statusColor)
+        .colors(stColor)
         .elasticY(true)
         .elasticX(true)
         .gap(1)
@@ -644,7 +690,7 @@ angular.module('taarifaWaterpointsApp')
         ((p, v) ->
           ++p.count
           p.total += v.amount_tsh
-          p.pop_served_fun += if isFunc(v) then v.population else 0
+          p.pop_served_fun += if isFunc(v) then v.pop_served else 0
           p.numFun += if isFunc(v) then 1 else 0
           p.avgCost = p.total / p.count
           p.percFun = p.numFun / p.count * 100
@@ -652,7 +698,7 @@ angular.module('taarifaWaterpointsApp')
         ((p, v) ->
           --p.count
           p.total -= v.amount_tsh
-          p.pop_served_fun -= if isFunc(v) then v.population else 0
+          p.pop_served_fun -= if isFunc(v) then v.pop_served else 0
           p.numFun -= if isFunc(v) then 1 else 0
           p.avgCost = if p.count then p.total / p.count * 1 else 0
           p.percFun = if p.count then p.numFun / p.count * 100 else 0

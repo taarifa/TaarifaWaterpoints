@@ -77,8 +77,8 @@ def upload_waterpoints(filename, skip=0, limit=None):
     # Use sys.stdout.write so waterpoints can be printed nicely and succinctly
     import sys
 
-    date_converter = lambda s: datetime.strptime(s, '%Y-%m-%d')
-    bool_converter = lambda s: s == "true"
+    date_converter = lambda s: datetime.strptime(s, "%Y-%m-%dT%H:%M:%S")
+    bool_converter = lambda s: s == "T"
 
     status_map = {
         "non functional": "not functional",
@@ -88,23 +88,26 @@ def upload_waterpoints(filename, skip=0, limit=None):
     status_converter = lambda s: status_map.get(s.lower(), s.lower())
 
     convert = {
+        'latitude': float,
+        'longitude': float,
         'gid': int,
-        'object_id': int,
+        'objectid': int,
         'valid_from': date_converter,
         'valid_to': date_converter,
         'amount_tsh': float,
         'breakdown_year': int,
         'date_recorded': date_converter,
         'gps_height': float,
-        'latitude': float,
-        'longitude': float,
-        'num_private': int,
-        'region_code': int,
-        'district_code': int,
-        'population': int,
+        'x_wgs84': float,
+        'y_wgs84': float,
+        'num_privcon': int,
+        'pop_served': int,
         'public_meeting': bool_converter,
         'construction_year': int,
-        'status_group': status_converter
+        'status_group': status_converter,
+        'region_code': int,
+        'district_code': int,
+        'ward_code': int
     }
 
     def print_flush(msg):
@@ -150,7 +153,7 @@ def ensure_indexes():
     print "Ensuring resources:location 2dsphere index is created ..."
     app.data.driver.db['resources'].ensure_index([('location', '2dsphere')])
     print "Done!"
-    
+
 
 @manager.option("status", help="Status (functional or non functional)")
 @manager.option("wp", help="Waterpoint id")

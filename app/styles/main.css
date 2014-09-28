@@ -92,6 +92,7 @@
     color: #004756;
     background: #ffffff;
     padding: 10px;
+    text-align: center;
 }
 
 .gridster .gridster-item.gridster-item-chart {
@@ -165,6 +166,19 @@ li.gridster-item {
     color: #3182bd;
     font-weight: bold;
 }
+
+#paymentPerWard .axis.x .tick text ,
+#statusPerWard .axis.x .tick text {
+  font-size: 8px;
+}
+
+@media (min-width: 1024px) {
+  #paymentPerWard .axis.x .tick text ,
+  #statusPerWard .axis.x .tick text {
+    font-size: 9px;
+  }
+}
+
 
 .hor-bar {
     fill: #0a871f;

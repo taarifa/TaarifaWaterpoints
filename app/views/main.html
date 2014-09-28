@@ -4,15 +4,15 @@
     <form class="form-inline" role="form">
       <div class="form-group">
         <label for="region" translate>Region</label>
-        <select class="form-control" id="region" ng-model="where.region" ng-change="clearLGA();updateMap()"
+        <select class="form-control" id="region" ng-model="where.region_name" ng-change="clearDistrict();updateMap()"
           ng-options="r for r in regions">
           <option value="">all</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="lga" translate>LGA</label>
-        <select class="form-control" id="lga" ng-model="where.lga" ng-change="updateMap()"
-          ng-options="l for l in lgas">
+        <label for="district" translate>District</label>
+        <select class="form-control" id="district" ng-model="where.district_name" ng-change="updateMap()"
+          ng-options="l for l in districts">
           <option value="">all</option>
         </select>
       </div>
@@ -23,9 +23,11 @@
           <option value="">all</option>
         </select>
       </div>
-      <div style="margin-left:20px" class="form-group">
-        <input type="checkbox" class="form-control" id="reportsOnly" ng-model="where.reports_only" ng-true-value="1" ng-false-value="0" ng-change="updateMap(true)">
-        <label for="reportsOnly" translate>WPs with reports</label>
+      <div style="margin-left:15px" class="checkbox">
+        <label for="reportsOnly">
+          <input type="checkbox" id="reportsOnly" ng-model="where.reports_only" ng-true-value="1" ng-false-value="0" ng-change="updateMap(true)">
+          {{"WPs with reports" | translate}}
+        </label>
       </div>
       <div style="margin-left:20px" class="form-group">
         <label for="maxResults" translate>Max no.</label>

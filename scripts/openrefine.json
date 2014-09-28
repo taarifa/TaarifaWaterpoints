@@ -1,0 +1,533 @@
+[
+  {
+    "op": "core/column-rename",
+    "description": "Rename column BREAKDOWN to BREAKDOWN_YEAR",
+    "oldColumnName": "BREAKDOWN",
+    "newColumnName": "BREAKDOWN_YEAR"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column DATE_OF_RE to DATE_RECORDED",
+    "oldColumnName": "DATE_OF_RE",
+    "newColumnName": "DATE_RECORDED"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column NO_PRIVCON to NUM_PRIVCON",
+    "oldColumnName": "NO_PRIVCON",
+    "newColumnName": "NUM_PRIVCON"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column PUBLIC_MEE to PUBLIC_MEETING",
+    "oldColumnName": "PUBLIC_MEE",
+    "newColumnName": "PUBLIC_MEETING"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column RECORDING to RECORDED_BY",
+    "oldColumnName": "RECORDING",
+    "newColumnName": "RECORDED_BY"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column YEAR_OF_CO to CONSTRUCTION_YEAR",
+    "oldColumnName": "YEAR_OF_CO",
+    "newColumnName": "CONSTRUCTION_YEAR"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column EXTRACT to EXTRACTION",
+    "oldColumnName": "EXTRACT",
+    "newColumnName": "EXTRACTION"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column EXTRACT_g to EXTRACTION_GROUP",
+    "oldColumnName": "EXTRACT_g",
+    "newColumnName": "EXTRACTION_GROUP"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column EXTRACT_c to EXTRACTION_CLASS",
+    "oldColumnName": "EXTRACT_c",
+    "newColumnName": "EXTRACTION_CLASS"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column HARDWARE to HARDWARE_PROBLEM",
+    "oldColumnName": "HARDWARE",
+    "newColumnName": "HARDWARE_PROBLEM"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column HARDWARE_g to HARDWARE_PROBLEM_GROUP",
+    "oldColumnName": "HARDWARE_g",
+    "newColumnName": "HARDWARE_PROBLEM_GROUP"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column MANAGE to MANAGEMENT",
+    "oldColumnName": "MANAGE",
+    "newColumnName": "MANAGEMENT"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column MANAGE_g to MANAGEMENT_GROUP",
+    "oldColumnName": "MANAGE_g",
+    "newColumnName": "MANAGEMENT_GROUP"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column PAYMENT_g to PAYMENT_GROUP",
+    "oldColumnName": "PAYMENT_g",
+    "newColumnName": "PAYMENT_GROUP"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column QUALITY_g to QUALITY_GROUP",
+    "oldColumnName": "QUALITY_g",
+    "newColumnName": "QUALITY_GROUP"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column QUANTITY_g to QUANTITY_GROUP",
+    "oldColumnName": "QUANTITY_g",
+    "newColumnName": "QUANTITY_GROUP"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column SOURCE_g to SOURCE_GROUP",
+    "oldColumnName": "SOURCE_g",
+    "newColumnName": "SOURCE_GROUP"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column SOURCE_c to SOURCE_CLASS",
+    "oldColumnName": "SOURCE_c",
+    "newColumnName": "SOURCE_CLASS"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column STATUS_g to STATUS_GROUP",
+    "oldColumnName": "STATUS_g",
+    "newColumnName": "STATUS_GROUP"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column WP to WP_TYPE",
+    "oldColumnName": "WP",
+    "newColumnName": "WP_TYPE"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column WP_g to WP_TYPE_GROUP",
+    "oldColumnName": "WP_g",
+    "newColumnName": "WP_TYPE_GROUP"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column Region_Cod to Region_Code",
+    "oldColumnName": "Region_Cod",
+    "newColumnName": "Region_Code"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column Region_Nam to Region_Name",
+    "oldColumnName": "Region_Nam",
+    "newColumnName": "Region_Name"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column District_C to District_Code",
+    "oldColumnName": "District_C",
+    "newColumnName": "District_Code"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column District_N to District_Name",
+    "oldColumnName": "District_N",
+    "newColumnName": "District_Name"
+  },
+  {
+    "op": "core/text-transform",
+    "description": "Text transform on cells in column the_geom using expression grel:value.substring(7,value.length()-1)",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "the_geom",
+    "expression": "grel:value.substring(7,value.length()-1)",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10
+  },
+  {
+    "op": "core/column-split",
+    "description": "Split column the_geom by separator",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "the_geom",
+    "guessCellType": true,
+    "removeOriginalColumn": true,
+    "mode": "separator",
+    "separator": " ",
+    "regex": false,
+    "maxColumns": 2
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column the_geom 1 to Longitude",
+    "oldColumnName": "the_geom 1",
+    "newColumnName": "Longitude"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column the_geom 2 to Latitude",
+    "oldColumnName": "the_geom 2",
+    "newColumnName": "Latitude"
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column FID",
+    "columnName": "FID"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column Longitude to longitude",
+    "oldColumnName": "Longitude",
+    "newColumnName": "longitude"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column Latitude to latitude",
+    "oldColumnName": "Latitude",
+    "newColumnName": "latitude"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column GID to gid",
+    "oldColumnName": "GID",
+    "newColumnName": "gid"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column OBJECTID to objectid",
+    "oldColumnName": "OBJECTID",
+    "newColumnName": "objectid"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column VALID_FROM to valid_from",
+    "oldColumnName": "VALID_FROM",
+    "newColumnName": "valid_from"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column VALID_TO to valid_to",
+    "oldColumnName": "VALID_TO",
+    "newColumnName": "valid_to"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column AMOUNT_TSH to amount_tsh",
+    "oldColumnName": "AMOUNT_TSH",
+    "newColumnName": "amount_tsh"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column BREAKDOWN_YEAR to breakdown_year",
+    "oldColumnName": "BREAKDOWN_YEAR",
+    "newColumnName": "breakdown_year"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column DATE_RECORDED to date_recorded",
+    "oldColumnName": "DATE_RECORDED",
+    "newColumnName": "date_recorded"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column FUNDER to funder",
+    "oldColumnName": "FUNDER",
+    "newColumnName": "funder"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column GPS_HEIGHT to gps_height",
+    "oldColumnName": "GPS_HEIGHT",
+    "newColumnName": "gps_height"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column INSTALLER to installer",
+    "oldColumnName": "INSTALLER",
+    "newColumnName": "installer"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column X_WGS84 to x_wgs84",
+    "oldColumnName": "X_WGS84",
+    "newColumnName": "x_wgs84"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column Y_WGS84 to y_wgs84",
+    "oldColumnName": "Y_WGS84",
+    "newColumnName": "y_wgs84"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column WPTNAME to wptname",
+    "oldColumnName": "WPTNAME",
+    "newColumnName": "wptname"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column NUM_PRIVCON to num_privcon",
+    "oldColumnName": "NUM_PRIVCON",
+    "newColumnName": "num_privcon"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column BASIN to basin",
+    "oldColumnName": "BASIN",
+    "newColumnName": "basin"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column SUBVILLAGE to subvillage",
+    "oldColumnName": "SUBVILLAGE",
+    "newColumnName": "subvillage"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column LGA to lga",
+    "oldColumnName": "LGA",
+    "newColumnName": "lga"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column POP_SERVED to pop_served",
+    "oldColumnName": "POP_SERVED",
+    "newColumnName": "pop_served"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column PUBLIC_MEETING to public_meeting",
+    "oldColumnName": "PUBLIC_MEETING",
+    "newColumnName": "public_meeting"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column REASON_WPT to reason_wpt",
+    "oldColumnName": "REASON_WPT",
+    "newColumnName": "reason_wpt"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column RECORDED_BY to recorded_by",
+    "oldColumnName": "RECORDED_BY",
+    "newColumnName": "recorded_by"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column SCHEME_MAN to scheme_man",
+    "oldColumnName": "SCHEME_MAN",
+    "newColumnName": "scheme_man"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column SCHEMENAME to schemename",
+    "oldColumnName": "SCHEMENAME",
+    "newColumnName": "schemename"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column PERMIT to permit",
+    "oldColumnName": "PERMIT",
+    "newColumnName": "permit"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column WPTCODE to wptcode",
+    "oldColumnName": "WPTCODE",
+    "newColumnName": "wptcode"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column WPTPHOTOID to wptphotoid",
+    "oldColumnName": "WPTPHOTOID",
+    "newColumnName": "wptphotoid"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column CONSTRUCTION_YEAR to construction_year",
+    "oldColumnName": "CONSTRUCTION_YEAR",
+    "newColumnName": "construction_year"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column EXTRACTION to extraction",
+    "oldColumnName": "EXTRACTION",
+    "newColumnName": "extraction"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column EXTRACTION_GROUP to extraction_group",
+    "oldColumnName": "EXTRACTION_GROUP",
+    "newColumnName": "extraction_group"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column EXTRACTION_CLASS to extraction_class",
+    "oldColumnName": "EXTRACTION_CLASS",
+    "newColumnName": "extraction_class"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column HARDWARE_PROBLEM to hardware_problem",
+    "oldColumnName": "HARDWARE_PROBLEM",
+    "newColumnName": "hardware_problem"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column HARDWARE_PROBLEM_GROUP to hardware_problem_group",
+    "oldColumnName": "HARDWARE_PROBLEM_GROUP",
+    "newColumnName": "hardware_problem_group"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column MANAGEMENT to management",
+    "oldColumnName": "MANAGEMENT",
+    "newColumnName": "management"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column MANAGEMENT_GROUP to management_group",
+    "oldColumnName": "MANAGEMENT_GROUP",
+    "newColumnName": "management_group"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column PAYMENT to payment",
+    "oldColumnName": "PAYMENT",
+    "newColumnName": "payment"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column PAYMENT_GROUP to payment_group",
+    "oldColumnName": "PAYMENT_GROUP",
+    "newColumnName": "payment_group"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column QUALITY to quality",
+    "oldColumnName": "QUALITY",
+    "newColumnName": "quality"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column QUALITY_GROUP to quality_group",
+    "oldColumnName": "QUALITY_GROUP",
+    "newColumnName": "quality_group"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column QUANTITY to quantity",
+    "oldColumnName": "QUANTITY",
+    "newColumnName": "quantity"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column QUANTITY_GROUP to quantity_group",
+    "oldColumnName": "QUANTITY_GROUP",
+    "newColumnName": "quantity_group"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column SOURCE to source",
+    "oldColumnName": "SOURCE",
+    "newColumnName": "source"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column SOURCE_GROUP to source_group",
+    "oldColumnName": "SOURCE_GROUP",
+    "newColumnName": "source_group"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column SOURCE_CLASS to source_class",
+    "oldColumnName": "SOURCE_CLASS",
+    "newColumnName": "source_class"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column STATUS to status",
+    "oldColumnName": "STATUS",
+    "newColumnName": "status"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column STATUS_GROUP to status_group",
+    "oldColumnName": "STATUS_GROUP",
+    "newColumnName": "status_group"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column WP_TYPE to wp_type",
+    "oldColumnName": "WP_TYPE",
+    "newColumnName": "wp_type"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column WP_TYPE_GROUP to wp_type_group",
+    "oldColumnName": "WP_TYPE_GROUP",
+    "newColumnName": "wp_type_group"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column Region_Code to region_code",
+    "oldColumnName": "Region_Code",
+    "newColumnName": "region_code"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column Region_Name to region_name",
+    "oldColumnName": "Region_Name",
+    "newColumnName": "region_name"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column District_Code to district_code",
+    "oldColumnName": "District_Code",
+    "newColumnName": "district_code"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column District_Name to district_name",
+    "oldColumnName": "District_Name",
+    "newColumnName": "district_name"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column Ward_Code to ward_code",
+    "oldColumnName": "Ward_Code",
+    "newColumnName": "ward_code"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column Ward_Name to ward_name",
+    "oldColumnName": "Ward_Name",
+    "newColumnName": "ward_name"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column Division to division",
+    "oldColumnName": "Division",
+    "newColumnName": "division"
+  }
+]

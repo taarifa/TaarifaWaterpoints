@@ -5,11 +5,19 @@ waterpoint_schema = {
         # FIXME: not really unique...
         # 'unique': True
     },
-    'object_id': {
+    'objectid': {
         'type': 'integer',
         'label': 'Object ID',
         # FIXME: not really unique...
         # 'unique': True
+    },
+    'x_wgs84': {
+        'type': 'number',
+        'label': 'X_WGS84'
+    },
+    'y_wgs84': {
+        'type': 'number',
+        'label': 'Y_WGS84'
     },
     'valid_from': {
         'type': 'datetime',
@@ -46,13 +54,13 @@ waterpoint_schema = {
     'location': {
         'type': 'point',
     },
-    'wpt_name': {
+    'wptname': {
         'type': 'string',
         'label': 'Waterpoint Name',
     },
-    'num_private': {
+    'num_privcon': {
         'type': 'integer',
-        'label': 'Number of private Connections',
+        'label': 'Number of private connections',
     },
     'basin': {
         'type': 'string',
@@ -62,13 +70,17 @@ waterpoint_schema = {
         'type': 'string',
         'label': 'Subvillage',
     },
-    'region': {
+    'region_name': {
         'type': 'string',
         'label': 'Region',
     },
     'region_code': {
         'type': 'integer',
         'label': 'Region Code',
+    },
+    'district_name': {
+        'type': 'string',
+        'label': 'District Name',
     },
     'district_code': {
         'type': 'integer',
@@ -78,23 +90,15 @@ waterpoint_schema = {
         'type': 'string',
         'label': 'LGA',
     },
-    'ward': {
+    'ward_name': {
         'type': 'string',
         'label': 'Ward',
     },
-    'district': {
-        'type': 'string',
-        'label': 'District',
+    'ward_code': {
+        'type': 'integer',
+        'label': 'Ward Code',
     },
-    'lga_name': {
-        'type': 'string',
-        'label': 'LGA Name',
-    },
-    'ward': {
-        'type': 'string',
-        'label': 'Ward',
-    },
-    'population': {
+    'pop_served': {
         'type': 'integer',
         'label': 'Population',
     },
@@ -110,11 +114,11 @@ waterpoint_schema = {
         'type': 'string',
         'label': 'Recorded by',
     },
-    'scheme_management': {
+    'scheme_man': {
         'type': 'string',
         'label': 'Scheme Management',
     },
-    'scheme_name': {
+    'schemename': {
         'type': 'string',
         'label': 'Scheme Name',
     },
@@ -122,13 +126,13 @@ waterpoint_schema = {
         'type': 'string',
         'label': 'Permit',
     },
-    'wpt_code': {
+    'wptcode': {
         'type': 'string',
         'label': 'Waterpoint Code',
         # FIXME: waterpoint codes should be unique, but are not in the dataset
         # 'unique': True,
     },
-    'wpt_photoid': {
+    'wptphotoid': {
         'type': 'string',
         'label': 'Photo ID',
     },
@@ -136,15 +140,15 @@ waterpoint_schema = {
         'type': 'integer',
         'label': 'Construction Year',
     },
-    'extraction_type': {
+    'extraction': {
         'type': 'string',
         'label': 'Extraction type',
     },
-    'extraction_type_group': {
+    'extraction_group': {
         'type': 'string',
         'label': 'Extraction type group',
     },
-    'extraction_type_class': {
+    'extraction_class': {
         'type': 'string',
         'label': 'Extraction type class',
     },
@@ -168,11 +172,11 @@ waterpoint_schema = {
         'type': 'string',
         'label': 'Form of Payment',
     },
-    'payment_type': {
+    'payment_group': {
         'type': 'string',
         'label': 'Type of Payment',
     },
-    'water_quality': {
+    'quality': {
         'type': 'string',
         'label': 'Water quality',
     },
@@ -192,15 +196,15 @@ waterpoint_schema = {
         'type': 'string',
         'label': 'Source',
     },
-    'source_type': {
+    'source_group': {
         'type': 'string',
-        'label': 'Source Type',
+        'label': 'Source Group',
     },
     'source_class': {
         'type': 'string',
         'label': 'Source Class',
     },
-    'status_detail': {
+    'status': {
         'type': 'string',
         'label': 'Status detail',
     },
@@ -209,13 +213,17 @@ waterpoint_schema = {
         'label': 'Status group',
         'allowed': ['functional', 'not functional', 'needs repair'],
     },
-    'waterpoint_type': {
+    'wp_type': {
         'type': 'string',
         'label': 'Waterpoint type',
     },
-    'waterpoint_type_group': {
+    'wp_type_group': {
         'type': 'string',
         'label': 'Waterpoint type group',
+    },
+    'division': {
+        'type': 'string',
+        'label': 'Division',
     },
 }
 
