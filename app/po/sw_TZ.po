@@ -13,7 +13,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: .tmp/scripts/regdashboardctrl.js
-#, fuzzy
 msgid "% Functional"
 msgstr "Vinavyofanya kazi"
 
@@ -35,15 +34,15 @@ msgstr "Sifa"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Average Payment"
-msgstr ""
+msgstr "Wastani wa Malipo"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Average Payment Per Ward"
-msgstr ""
+msgstr "wastani wa malipo kwa Kata"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Average payment"
-msgstr ""
+msgstr "Wastani wa malipo"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Breakdown Year"
@@ -59,7 +58,7 @@ msgstr "Maoni"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Construction Year"
-msgstr "vilivyojengwa kwa mwaka"
+msgstr "Vilivyojengwa kwa mwaka"
 
 #: app/views/dashboard.html
 msgid "Coverage"
@@ -107,14 +106,13 @@ msgstr "Vinavyofanya kazi"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Functional Population Served"
-msgstr ""
+msgstr "Wanaohudumiwa na Vinavyofanya kazi"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality"
 msgstr "Ufanyaji kazi"
 
 #: .tmp/scripts/regdashboardctrl.js
-#, fuzzy
 msgid "Functionality by District"
 msgstr "Ufanyaji kazi kwa aina ya uzalishaji"
 
@@ -191,7 +189,6 @@ msgid "National"
 msgstr "Kitaifa"
 
 #: .tmp/scripts/regdashboardctrl.js
-#, fuzzy
 msgid "Needs repair"
 msgstr "vinavyohitaji matengenezo"
 
@@ -204,9 +201,8 @@ msgid "No waterpoints match your filter criteria!"
 msgstr "Hakuna kituo cha maji kilichokidhi vigezo ulivyochagua!"
 
 #: .tmp/scripts/regdashboardctrl.js
-#, fuzzy
 msgid "Not functional"
-msgstr "visivyofanya kazi"
+msgstr "Visivyofanya kazi"
 
 #: app/scripts/plots.js
 msgid "Number of Waterpoints"
@@ -229,9 +225,8 @@ msgid "Planned actions"
 msgstr "Hatua zilizopangwa"
 
 #: .tmp/scripts/regdashboardctrl.js
-#, fuzzy
 msgid "Population"
-msgstr "kiasi cha wanaohudumiwa"
+msgstr "Kiasi cha wanaohudumiwa"
 
 #: app/views/dashboard.html
 msgid "Print"
