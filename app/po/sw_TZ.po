@@ -114,7 +114,7 @@ msgstr "Ufanyaji kazi"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality by District"
-msgstr "Ufanyaji kazi kwa aina ya uzalishaji"
+msgstr "Ufanyaji kazi kwa Wilaya"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality by Extraction"
@@ -126,11 +126,11 @@ msgstr "Ufanyaji kazi kwa wakala"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality by Ward"
-msgstr "ufanyaji kazi kwa Kata"
+msgstr "Ufanyaji kazi kwa Kata"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality vs Cost"
-msgstr "ufanyaji kazi vs Gharama"
+msgstr "Ufanyaji kazi dhidi ya Gharama"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Funder"
@@ -138,7 +138,7 @@ msgstr "Mfadhili"
 
 #: app/views/triage.html
 msgid "Further information or comments about the problem"
-msgstr "maelezo zaidi au maoni kuhusu tatizo"
+msgstr "Maelezo zaidi au maoni kuhusu tatizo"
 
 #: .tmp/scripts/controllers.js
 msgid "Geolocation failed:"
@@ -150,7 +150,7 @@ msgstr "Eneo la kijiografia limepatikana"
 
 #: app/views/dashboard.html
 msgid "Group By"
-msgstr "kundi kwa"
+msgstr "Kundi kwa"
 
 #: app/index.html
 msgid "Home"
@@ -322,7 +322,7 @@ msgstr "Ubora wa Maji"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Water Quantity"
-msgstr "kiasi cha Maji"
+msgstr "Kiasi cha Maji"
 
 #: app/views/requests.html app/views/triage.html
 msgid "Waterpoint"
@@ -334,11 +334,11 @@ msgstr "Maeneo vilipo vituo vya maji"
 
 #: .tmp/scripts/natdashboardctrl.js
 msgid "Waterpoint status (ordered by % Functional)"
-msgstr "hali vya vituo vya maji"
+msgstr "Hali vya vituo vya maji"
 
 #: .tmp/scripts/controllers.js
 msgid "Waterpoint successfully created!"
-msgstr "kituo cha maji kimeingizwa kwa mafanikio!"
+msgstr "Kituo cha maji kimeingizwa kwa mafanikio!"
 
 #: .tmp/scripts/controllers.js
 msgid "Waterpoint successfully updated!"
@@ -366,7 +366,7 @@ msgstr "kiasi cha wanaohudumiwa"
 
 #: app/views/requests.html app/views/triage.html
 msgid "submitted on"
-msgstr "Ilitumwa"
+msgstr "ilitumwa"
 
 #: app/views/dashboard.html
 msgid "waterpoints"
