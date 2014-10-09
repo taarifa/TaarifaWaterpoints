@@ -1,4 +1,9 @@
 /* http://angular-ui.github.io/bootstrap/#/getting_started */
+.flag{
+  border-radius: 50%;
+  width: 50px;
+}
+
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 .form-control {
@@ -299,3 +304,4 @@ div.region-info {
 .leaflet-control-layers-expanded {
   text-align: left;
 }
+

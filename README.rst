@@ -1,8 +1,23 @@
 Taarifa Waterpoints
 ===================
 
+.. contents:: Table of Contents
 Background
-__________
+Waterpoints
+Prequisites
+Linux
+Windows
+Installation
+Installation using a virtual machine
+Usage
+Deployment to Heroku
+Contribute
+
+
+
+
+Background
+==========
 
 Taarifa_ is an open source platform for the crowd sourced reporting and
 triaging of infrastructure related issues. Think of it as a bug tracker
@@ -18,7 +33,7 @@ For information on how to get inovoled, scroll to the Contributing section
 at the bottom of the page.
 
 Waterpoints
-___________
+===========
 
 This repository contains an example application around Waterpoint
 Management built on top of the core API.  It contains scripts to import
@@ -31,7 +46,7 @@ can interact with the API and data through a browser.
 
 
 Prerequisites
-_____________
+=============
 
 .. note::
   You may choose to install into a virtual machine as described further down.
@@ -79,7 +94,7 @@ the actual package installation):
 
 
 Installation
-____________
+============
 
 .. note::
   The following steps are part of the `bootstrap.sh` script, so you may choose
@@ -128,7 +143,7 @@ Finally, install the frontend dependencies using Bower_: ::
 Continue with the usage section.
 
 Installation using a virtual machine
-____________________________________
+------------------------------------
 
 Instead of following the installation instructions above you may choose to
 set up a virtual machine with all dependencies installed. This process is fully
@@ -170,7 +185,7 @@ the VM and vice versa. This allows you to work on the code either on the host or
 in the VM according to your preference.
 
 Usage
-_____
+=====
 
 .. note::
   When using a virtual machine, run the following commands in the VM.
@@ -245,7 +260,7 @@ from there. Therefore a `requirements` folder is used as following:
 
 
 Deployment to Heroku
-____________________
+====================
 
 To deploy to Heroku_, make sure the `Heroku tool belt`_ is installed. From the
 TaarifaWaterpoints root folder, create a new app: ::
@@ -316,7 +331,7 @@ and add a DNS record for it: ::
   <domain>.     10800   IN      CNAME   <appname>.herokuapp.com.
 
 Contribute
-__________
+==========
 
 There is still much left do do and Taarifa is currently undergoing rapid
 development. We aspire to be a very friendly and welcoming community to 
