@@ -3,21 +3,21 @@
   <div class="panel-body">
     <form class="form-inline" role="form">
       <div class="form-group">
-        <label for="region" translate>Region</label>
+        <label for="region" translate>Region</label><br>
         <select class="form-control" id="region" ng-model="where.region_name" ng-change="clearDistrict();updateMap()"
           ng-options="r for r in regions">
           <option value="">all</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="district" translate>District</label>
+        <label for="district" translate>District</label><br>
         <select class="form-control" id="district" ng-model="where.district_name" ng-change="updateMap()"
           ng-options="l for l in districts">
           <option value="">all</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="waterpointStatus" translate>Status</label>
+        <label for="waterpointStatus" translate>Status</label><br>
         <select class="form-control" id="waterpointStatus" ng-model="where.status_group" ng-change="updateMap()"
           ng-options="k for k in ['functional', 'not functional', 'needs repair']">
           <option value="">all</option>
@@ -30,13 +30,13 @@
         </label>
       </div>
       <div style="margin-left:20px" class="form-group">
-        <label for="maxResults" translate>Max no.</label>
+        <label for="maxResults" translate>Max no.</label><br>
         <select class="form-control" id="maxResults" ng-model="where.max_results" ng-change="updateMap()"
           ng-options="k for k in [25, 50, 100, 200, 500, 1000]">
         </select>
       </div>
-      <div class="form-group">
-        <button class="btn btn-warning" ng-click="reset()" translate>Reset</button>
+      <div class="form-group pull-right"><br>
+        <button class="btn btn-warning " ng-click="reset()" translate>Reset</button>
       </div>
     </form>
   </div>
