@@ -130,8 +130,8 @@ Ensure you have node.js and npm installed. Then, from the
 
   npm install
 
-Install the Grunt_ and Bower_ command line interface (may require Adminstrator
-permission): ::
+Install the Grunt_ and Bower_ command line interface
+you might need admin rights to do this. On Windows this means running CMD as Administrator.: ::
 
   npm install -g grunt-cli
   npm install -g bower
