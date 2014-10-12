@@ -266,6 +266,7 @@ angular.module('taarifaWaterpointsApp')
       $scope.params =
         group: $scope.groups[0]
       $scope.getStatus()
+      $scope.$broadcast("dashMapReset")
       drawPlots()
 
     initView = () ->
