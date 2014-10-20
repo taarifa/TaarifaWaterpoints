@@ -96,6 +96,13 @@
        ga('create', 'UA-40266266-1', 'taarifa.org');
        ga('send', 'pageview');
     </script>
+    <!-- loading-bar  -->
+    <script >
+    angular.module('taarifaWaterpointsApp', ['angular-loading-bar'])
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = true;
+  }])
+    </script>
 
     <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.3.0/es5-shim.min.js"></script>
@@ -146,14 +153,6 @@
     <script src="scripts/translations.js"></script>
     <!-- loading-bar -->
      <script type="text/javascript" src="bower_components/angular-loading-bar/src/loading-bar.js"></script>
-
-       <!-- loading-bar  -->
-    <script >
-    angular.module('taarifaWaterpointsApp', ['angular-loading-bar'])
-  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
-    cfpLoadingBarProvider.includeSpinner = true;
-  }])
-    </script>
     <!-- endbuild -->
 </body>
 </html>
