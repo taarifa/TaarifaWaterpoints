@@ -30,6 +30,10 @@
     <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css" />
     <link rel="stylesheet" href="styles/prunecluster.css">
     <link rel="stylesheet" href="styles/main.css">
+
+    <!-- loading-bar -->
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-loading-bar/src/loading-bar.css">
+
     <!-- endbuild -->
   </head>
   <body ng-app="taarifaWaterpointsApp">
@@ -57,7 +61,7 @@
             </select>
           </li>
         </ul>
-        <h3 class="text-muted" translate>Tanzania Waterpoints</h3>
+        <h3 class="text-muted" translate><img src="images/flag.jpg" class="fl">Tanzania Waterpoints</h3>
       </div>
       <hr>
 
@@ -91,6 +95,13 @@
 
        ga('create', 'UA-40266266-1', 'taarifa.org');
        ga('send', 'pageview');
+    </script>
+    <!-- loading-bar  -->
+    <script >
+    angular.module('taarifaWaterpointsApp', ['angular-loading-bar'])
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = true;
+  }])
     </script>
 
     <!--[if lt IE 9]>
@@ -140,6 +151,8 @@
     <script src="scripts/natdashboardctrl.js"></script>
     <script src="scripts/regdashboardctrl.js"></script>
     <script src="scripts/translations.js"></script>
+    <!-- loading-bar -->
+     <script type="text/javascript" src="bower_components/angular-loading-bar/src/loading-bar.js"></script>
     <!-- endbuild -->
 </body>
 </html>

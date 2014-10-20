@@ -299,3 +299,10 @@ div.region-info {
 .leaflet-control-layers-expanded {
   text-align: left;
 }
+.fl{
+  width: 5%;
+  height: 2.5%;
+  border-radius: 50%;
+  position: relative;
+
+}
