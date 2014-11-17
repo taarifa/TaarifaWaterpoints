@@ -302,10 +302,9 @@ div.region-info {
 .brand{
   width: 60px;
   height: 40px;
-  /*border-radius: 10%;*/
-background: url('../images/Tanzania.png') no-repeat left center;
-margin-left: 10px;
-padding-left: 80px;
+  background: url('../images/Tanzania.png') no-repeat left center;
+  margin-left: 10px;
+  padding-left: 80px;
 }
 .btn{
   float: right;
