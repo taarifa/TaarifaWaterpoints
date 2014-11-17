@@ -1,5 +1,7 @@
 <div class="panel panel-default">
-  <div class="panel-heading"><h3 class="panel-title" translate>Filter map view</h3></div>
+  <div class="panel-heading"><h3 class="panel-title" translate>Filter map view</h3> <div class="form-group">
+        <button class="btn btn-warning" ng-click="reset()" translate>Reset</button>
+      </div> </div>
   <div class="panel-body">
     <form class="form-inline" role="form">
       <div class="form-group">
@@ -35,9 +37,9 @@
           ng-options="k for k in [25, 50, 100, 200, 500, 1000]">
         </select>
       </div>
-      <div class="form-group">
+      <!-- <div class="form-group">
         <button class="btn btn-warning" ng-click="reset()" translate>Reset</button>
-      </div>
+      </div> -->
     </form>
   </div>
 </div>
