@@ -299,3 +299,16 @@ div.region-info {
 .leaflet-control-layers-expanded {
   text-align: left;
 }
+.brand{
+  width: 60px;
+  height: 40px;
+  /*border-radius: 10%;*/
+background: url('../images/Tanzania.png') no-repeat left center;
+margin-left: 10px;
+padding-left: 80px;
+}
+.btn{
+  float: right;
+  position: relative;
+  margin-top: -20px;
+}
