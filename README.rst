@@ -107,6 +107,10 @@ To ease development and debugging we suggest you use virtualenv_.
 Install virtualenv_ and virtualenvwrapper (you might need admin rights for this): ::
 
   pip install virtualenv virtualenvwrapper
+  
+For windows only, install virtualenvwrapper-win_ using pip: ::
+
+  pip install virtualenvwrapper-win
 
 `Set up virtualenvwrapper`_ according to your shell and create a virtualenv: ::
 
@@ -370,3 +374,4 @@ guidelines`_ for further details.
 .. _heroku-buildpack-multi: https://github.com/ddollar/heroku-buildpack-multi
 .. _MongoDB installation instructions: http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
 .. _contributing guidelines: CONTRIBUTING.rst
+.. _virtualenvwrapper-win: https://pypi.python.org/pypi/virtualenvwrapper-win
