@@ -67,34 +67,37 @@ angular.module('taarifaWaterpointsApp')
 
     return result
 
-  .factory 'modalSpinner', ($modal, $timeout) ->
-    modalDlg = null
+  .factory 'modalSpinner', ($modal, $timeout, $q) ->
+    modalInstance = null
 
     # shared counter to allow multiple invocations of
     # open/close
     ctr = {val: 0}
 
-    openSpinner = () ->
-      ++ctr.val
-      if ctr.val > 1 then return
-      modalDlg = $modal.open
-        templateUrl: '/views/spinnerdlg.html'
-        backdrop: "static"
-        size: "sm"
+    return {
+      open: (msg, status) ->
+        ++ctr.val
+        if ctr.val > 1 then return
+        modalInstance = $modal.open
+          controller: 'ModalSpinnerCtrl'
+          templateUrl: '/views/spinnerdlg.html'
+          backdrop: 'static'
+          size: 'sm'
+          resolve:
+            msg: ->
+              #FIXME this default shouldn't really be here but it's to prevent
+              # regression bugs until it's sorted
+              return msg or 'Loading waterpoint data.'
+            status: ->
+              return status or 'Loading data...'
 
-    closeSpinner = () ->
-      --ctr.val
-      if ctr.val < 1
-        # If the close event comes really quickly after the
-        # open event the close will fail if the open is not
-        # yet completed. Hence add a timeout.
-        # FIXME: better solution?
-        $timeout(modalDlg.close, 300)
-        ctr.val = 0
-
-    res =
-        open: openSpinner
-        close: closeSpinner
+      close: ->
+        --ctr.val
+        if ctr.val < 1
+          modalInstance.opened.then ->
+            modalInstance.close()
+          ctr.val = 0
+    }
 
   # FIXME: this is fundamentally flawed as lookups by name
   # cause collision problems. Really need new data that includes

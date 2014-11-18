@@ -104,8 +104,12 @@ angular.module('taarifaWaterpointsApp')
       regional:
         active: false
 
+  .controller 'ModalSpinnerCtrl', ($modal, $scope, msg, status) ->
+    $scope.spinnerDialog = msg
+    $scope.spinnerStatus = status
+
   .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, FacilityForm,
-                                        Map, flash, gettext, geolocation) ->
+                                        Map, flash, gettext, geolocation, modalSpinner) ->
     $scope.formTemplate = FacilityForm 'wpf001'
     # Default to today
     d = new Date()
@@ -116,7 +120,9 @@ angular.module('taarifaWaterpointsApp')
       facility_code: "wpf001"
       date_recorded: today
 
+    modalSpinner.open(" ", "Finding your location...")
     geolocation.getLocation().then (data) ->
+      modalSpinner.close()
       flash.success = gettext("Geolocation succeeded: got coordinates") + " #{data.coords.longitude.toPrecision(4)}, #{data.coords.latitude.toPrecision(4)}"
       $scope.form.location = coordinates: [data.coords.longitude, data.coords.latitude]
       map = Map("editMap", {})
