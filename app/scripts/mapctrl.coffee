@@ -5,6 +5,19 @@ angular.module('taarifaWaterpointsApp')
     $scope.hoverText = ""
     $scope.choroChoice = "percFun"
 
+    map = null
+    osmLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      attribution: '(c) OpenStreetMap'
+    )
+
+    satLayer = L.tileLayer('http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      attribution: '(c) Esri'
+    )
+
+    regionLayer = null
+    districtLayer = null
+    wardLayer = null
+
     # FIXME: "ward" and "region" should be defined elsewhere I think
     getFeaturedItem = (feature) ->
       res = {}
@@ -115,13 +128,6 @@ angular.module('taarifaWaterpointsApp')
       ##############
       ### LAYERS ###
       ##############
-      osmLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        attribution: '(c) OpenStreetMap'
-      )
-
-      satLayer = L.tileLayer('http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        attribution: '(c) Esri'
-      )
 
       categoryMap =
         "functional" : 0
@@ -239,4 +245,18 @@ angular.module('taarifaWaterpointsApp')
       # Initialise the map
       initMap([], new L.LatLng(-6.3153, 35.15625))
       modalSpinner.close()
+
+    $scope.$on "dashMapReset", (event) ->
+      modalSpinner.open()
+      if map?
+        if map.hasLayer osmLayer
+          map.removeLayer osmLayer
+          map.addLayer satLayer
+        map.setView(new L.LatLng(-6.3153, 35.15625), 5)
+        map.removeLayer districtLayer if map.hasLayer districtLayer
+        map.removeLayer wardLayer if map.hasLayer wardLayer
+        map.addLayer regionLayer unless map.hasLayer regionLayer
+        $scope.choroChoice = "percFun"
+      modalSpinner.close()
+
     )

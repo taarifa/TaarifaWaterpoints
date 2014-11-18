@@ -260,6 +260,14 @@ angular.module('taarifaWaterpointsApp')
     # access object to the population data
     # FIXME: better handled by a $resource perhaps?
     popData = null
+    
+    $scope.reset = () ->
+      $scope.statusChoice = "all"
+      $scope.params =
+        group: $scope.groups[0]
+      $scope.getStatus()
+      $scope.$broadcast("dashMapReset")
+      drawPlots()
 
     initView = () ->
       populationData.then((data) ->
