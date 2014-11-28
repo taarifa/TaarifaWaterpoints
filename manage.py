@@ -77,7 +77,7 @@ def upload_waterpoints(filename, skip=0, limit=None):
     # Use sys.stdout.write so waterpoints can be printed nicely and succinctly
     import sys
 
-    date_converter = lambda s: datetime.strptime(s, "%Y-%m-%dT%H:%M:%S")
+    date_converter = lambda s: datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ")
     bool_converter = lambda s: s == "T"
 
     status_map = {
