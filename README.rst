@@ -81,6 +81,11 @@ Windows can be used as the platform to run Taarifa - the main caveat here
 however is that as you install the dependencies, these are not added to the
 `$PATH` variable - this needs to be added manually.
 
+To add or change '$PATH' variables_.
+    (Note: do not put spaces between elements in the '$PATH'. 
+    Your addition to the '$PATH' should read ;c:\Python27 NOT ; C\Python27)
+
+
 Details for the following steps are the same as for MacOS/Linux (except for
 the actual package installation): 
 
@@ -88,7 +93,10 @@ the actual package installation):
 2.  Install pip_.
 3.  Install nodejs_ and npm_ (these need to be added to the $PATH variable!)
 4.  Install and run MongoDB_, which does not automagically come with a service,
-    so it needs to be started manually. Open a command prompt and run: ::
+    so it needs to be started manually. 
+    Create a folder on local: C (name it mongo_databases) inside the folder create,
+    another folder naming it (taarifa), 
+    Then open a command prompt and run: ::
 
     "c:\Program Files\MongoDB 2.6 Standard\bin\mongod.exe" --dbpath c:\mongo_databases\taarifa\
 
@@ -375,3 +383,4 @@ guidelines`_ for further details.
 .. _MongoDB installation instructions: http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
 .. _contributing guidelines: CONTRIBUTING.rst
 .. _virtualenvwrapper-win: https://pypi.python.org/pypi/virtualenvwrapper-win
+.. _variables: http://www.itechtics.com/customize-windows-environment-variables/
