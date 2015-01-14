@@ -1,3 +1,4 @@
+@import url('media.css')
 /* http://angular-ui.github.io/bootstrap/#/getting_started */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
@@ -302,13 +303,24 @@ div.region-info {
 .brand{
   width: 60px;
   height: 40px;
-  /*border-radius: 10%;*/
-background: url('../images/Tanzania.png') no-repeat left center;
-margin-left: 10px;
-padding-left: 80px;
+  background: url('../images/Tanzania.png') no-repeat left center;
+  margin-left: 10px;
+  padding-left: 80px;
+  font-size: 1.5em;
 }
 .btn{
   float: right;
   position: relative;
   margin-top: -20px;
+}
+.navbar-nav select{
+  position: relative;
+  top: .5em;
+}
+.navbar-nav{
+  position: relative;
+  top: 1em;
+}
+.navbar-header button{
+  top: 1em;
 }
