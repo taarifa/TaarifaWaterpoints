@@ -37,6 +37,7 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
+<<<<<<< HEAD
   <!-- Add your site or application content here -->
   <nav class="navbar navbar-default">
   <div class="container">
@@ -97,6 +98,53 @@
   <!-- \container -->
   </nav>
     
+=======
+    <!-- Add your site or application content here -->
+    <div class="container">
+
+      <div class="header" ng-controller="NavCtrl">
+        <ul class="nav nav-pills pull-right">
+          <!--li><a ng-href="#/waterpoints/new">
+            <span class="glyphicon glyphicon-plus"></span>
+            Create waterpoint
+          </a></li-->
+          <li ng-class="{active: location.path() == '/'}"><a ng-href="#" translate>Home</a></li>
+          <li ng-class="{active: location.path() == '/requests'}"><a ng-href="#/requests" translate>Triage</a></li>
+          <li ng-class="{active: location.path() == '/waterpoints/new'}">
+            <a ng-href="#/waterpoints/new"><span class="glyphicon glyphicon-plus"></span> {{"Add Waterpoint" | translate}}</a></li>
+          <li ng-class="{active: location.path() == '/dashboard'}"><a ng-href="#/dashboard" translate>Dashboard</a></li>
+          <li ng-controller="LocaleCtrl">
+            <select class="form-control" ng-model="languages.current"
+              ng-options="key as value for (key, value) in languages.available">
+            </select>
+          </li>
+        </ul>
+        <h3 class="text-muted brand" translate>Tanzania Waterpoints</h3>
+      </div>
+      <hr>
+
+      <div flash-alert="success" active-class="in alert" class="fade" duration="0">
+        <button type="button" class="close" ng-click="hide()">&times;</button>
+        <strong class="alert-heading">Success:</strong>
+        <span class="alert-message">{{flash.message}}</span>
+      </div>
+
+      <div flash-alert="error" active-class="in alert" class="fade" duration="0">
+        <button type="button" class="close" ng-click="hide()">&times;</button>
+        <strong class="alert-heading">Error:</strong>
+        <span class="alert-message">{{flash.message}}</span>
+      </div>
+
+      <div flash-alert="info" active-class="in alert" class="fade" duration="0">
+        <button type="button" class="close" ng-click="hide()">&times;</button>
+        <strong class="alert-heading">Info:</strong>
+        <span class="alert-message">{{flash.message}}</span>
+      </div>
+
+      <div class="content" ng-view></div>
+    </div>
+
+>>>>>>> 2f1c9c5944cd5bc168183e3f0c5fc83967de4323
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

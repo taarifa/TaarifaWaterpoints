@@ -108,7 +108,11 @@ Install virtualenv_ and virtualenvwrapper (you might need admin rights for this)
 
   pip install virtualenv virtualenvwrapper
   
+<<<<<<< HEAD
 For windows only, install virtualenvwrapper-win_ using pip: ::
+=======
+For windows only virtualenvwrapper-win_ using pip: ::
+>>>>>>> 2f1c9c5944cd5bc168183e3f0c5fc83967de4323
 
   pip install virtualenvwrapper-win
 
