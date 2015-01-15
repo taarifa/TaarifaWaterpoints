@@ -1,6 +1,4 @@
-@import url('media.css')
-/* http://angular-ui.github.io/bootstrap/#/getting_started */
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+@import url('media.css');
 
 .form-control {
   padding: 3px;
@@ -306,16 +304,12 @@ div.region-info {
   background: url('../images/Tanzania.png') no-repeat left center;
   margin-left: 10px;
   padding-left: 80px;
-<<<<<<< HEAD
   font-size: 1.5em;
-=======
->>>>>>> 2f1c9c5944cd5bc168183e3f0c5fc83967de4323
 }
 .btn{
   float: right;
   position: relative;
   margin-top: -20px;
-<<<<<<< HEAD
 }
 .navbar-nav select{
   position: relative;
@@ -327,6 +321,4 @@ div.region-info {
 }
 .navbar-header button{
   top: 1em;
-=======
->>>>>>> 2f1c9c5944cd5bc168183e3f0c5fc83967de4323
 }
