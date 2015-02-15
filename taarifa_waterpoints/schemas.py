@@ -11,14 +11,6 @@ waterpoint_schema = {
         # FIXME: not really unique...
         # 'unique': True
     },
-    'x_wgs84': {
-        'type': 'number',
-        'label': 'X_WGS84'
-    },
-    'y_wgs84': {
-        'type': 'number',
-        'label': 'Y_WGS84'
-    },
     'valid_from': {
         'type': 'datetime',
         'label': 'Valid From',
@@ -86,7 +78,7 @@ waterpoint_schema = {
         'type': 'integer',
         'label': 'District Code',
     },
-    'lga': {
+    'lga_name': {
         'type': 'string',
         'label': 'LGA',
     },
@@ -224,6 +216,26 @@ waterpoint_schema = {
     'division': {
         'type': 'string',
         'label': 'Division',
+    },
+    'gen_comment': {
+        'type': 'string',
+        'label': 'General Comments',
+    },
+    'village': {
+        'type': 'string',
+        'label': 'Village',
+    },
+    'village_pop': {
+        'type': 'string',
+        'label': 'Village Population',
+    },
+    'village_reg_num': {
+        'type': 'string',
+        'label': 'Village registration number',
+    },
+    'villphotoid': {
+        'type': 'string',
+        'label': 'Village photo id',
     },
 }
 

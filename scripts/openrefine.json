@@ -1,4 +1,4 @@
-i[
+[
   {
     "op": "core/text-transform",
     "description": "Text transform on cells in column GID using expression value.toNumber()",
@@ -98,32 +98,6 @@ i[
       "mode": "row-based"
     },
     "columnName": "GPS_HEIGHT",
-    "expression": "value.toNumber()",
-    "onError": "keep-original",
-    "repeat": false,
-    "repeatCount": 10
-  },
-  {
-    "op": "core/text-transform",
-    "description": "Text transform on cells in column X_ARC1960 using expression value.toNumber()",
-    "engineConfig": {
-      "facets": [],
-      "mode": "row-based"
-    },
-    "columnName": "X_ARC1960",
-    "expression": "value.toNumber()",
-    "onError": "keep-original",
-    "repeat": false,
-    "repeatCount": 10
-  },
-  {
-    "op": "core/text-transform",
-    "description": "Text transform on cells in column Y_ARC1960 using expression value.toNumber()",
-    "engineConfig": {
-      "facets": [],
-      "mode": "row-based"
-    },
-    "columnName": "Y_ARC1960",
     "expression": "value.toNumber()",
     "onError": "keep-original",
     "repeat": false,
@@ -235,18 +209,6 @@ i[
   },
   {
     "op": "core/column-rename",
-    "description": "Rename column X_ARC1960 to x_arc1960",
-    "oldColumnName": "X_ARC1960",
-    "newColumnName": "x_arc1960"
-  },
-  {
-    "op": "core/column-rename",
-    "description": "Rename column Y_ARC1960 to y_arc1960",
-    "oldColumnName": "Y_ARC1960",
-    "newColumnName": "y_arc1960"
-  },
-  {
-    "op": "core/column-rename",
     "description": "Rename column WPTNAME to wptname",
     "oldColumnName": "WPTNAME",
     "newColumnName": "wptname"
@@ -265,15 +227,39 @@ i[
   },
   {
     "op": "core/column-rename",
+    "description": "Rename column VILLAGE REGISTRATION NUMBER to village_reg_num",
+    "oldColumnName": "VILLAGE REGISTRATION NUMBER",
+    "newColumnName": "village_reg_num"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column VILLAGE to village",
+    "oldColumnName": "VILLAGE",
+    "newColumnName": "village"
+  },
+  {
+    "op": "core/column-rename",
     "description": "Rename column SUBVILLAGE to subvillage",
     "oldColumnName": "SUBVILLAGE",
     "newColumnName": "subvillage"
   },
   {
     "op": "core/column-rename",
-    "description": "Rename column REGION to region",
+    "description": "Rename column REGION to region_name",
     "oldColumnName": "REGION",
-    "newColumnName": "region"
+    "newColumnName": "regio_namen"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column LATITUDE to latitude",
+    "oldColumnName": "LATITUDE",
+    "newColumnName": "latitude"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column LONGITUDE to longitude",
+    "oldColumnName": "LONGITUDE",
+    "newColumnName": "longitude"
   },
   {
     "op": "core/column-rename",
@@ -283,9 +269,33 @@ i[
   },
   {
     "op": "core/column-rename",
-    "description": "Rename column WARD to ward",
+    "description": "Rename column LGA NAME to lga_name",
+    "oldColumnName": "LGA NAME",
+    "newColumnName": "lga_name"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column VILLAGE POPULATION to village_pop",
+    "oldColumnName": "VILLAGE POPULATION",
+    "newColumnName": "village_pop"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column GENERAL COMMENT to gen_comment",
+    "oldColumnName": "GENERAL COMMENT",
+    "newColumnName": "gen_comment"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column VILLPHOTOI to villphotoid",
+    "oldColumnName": "VILLPHOTOI",
+    "newColumnName": "villphotoid"
+  },
+  {
+    "op": "core/column-rename",
+    "description": "Rename column WARD to ward_name",
     "oldColumnName": "WARD",
-    "newColumnName": "ward"
+    "newColumnName": "ward_name"
   },
   {
     "op": "core/column-rename",
@@ -469,49 +479,7 @@ i[
   },
   {
     "op": "core/column-removal",
-    "description": "Remove column region",
-    "columnName": "region"
-  },
-  {
-    "op": "core/column-removal",
     "description": "Remove column lga",
     "columnName": "lga"
-  },
-  {
-    "op": "core/column-removal",
-    "description": "Remove column ward",
-    "columnName": "ward"
-  },
-  {
-    "op": "core/column-addition",
-    "description": "Create column longitude at index 11 based on column x_arc1960 using expression grel:value",
-    "engineConfig": {
-      "facets": [],
-      "mode": "row-based"
-    },
-    "newColumnName": "longitude",
-    "columnInsertIndex": 11,
-    "baseColumnName": "x_arc1960",
-    "expression": "grel:value",
-    "onError": "set-to-blank"
-  },
-  {
-    "op": "core/column-addition",
-    "description": "Create column latitude at index 13 based on column y_arc1960 using expression grel:value",
-    "engineConfig": {
-      "facets": [],
-      "mode": "row-based"
-    },
-    "newColumnName": "latitude",
-    "columnInsertIndex": 13,
-    "baseColumnName": "y_arc1960",
-    "expression": "grel:value",
-    "onError": "set-to-blank"
-  },
-  {
-    "op": "core/column-move",
-    "description": "Move column longitude to position 12",
-    "columnName": "longitude",
-    "index": 12
   }
 ]
