@@ -39,7 +39,7 @@ angular.module('taarifaWaterpointsApp')
       $scope.districts = districts
 
     $scope.resetParameters = ->
-      $scope.where = 
+      $scope.where =
         max_results: 100
         reports_only: 0
       $http.get('/api/waterpoints/values/region_name', cache: true).success (regions) ->
@@ -109,7 +109,7 @@ angular.module('taarifaWaterpointsApp')
     $scope.spinnerStatus = status
 
   .controller 'WaterpointCreateCtrl', ($scope, Waterpoint, FacilityForm,
-                                        Map, flash, gettext, geolocation, modalSpinner) ->
+                                        Map, flash, gettext, geolocation, modalSpinner, $http) ->
     $scope.formTemplate = FacilityForm 'wpf001'
     # Default to today
     d = new Date()
@@ -123,23 +123,38 @@ angular.module('taarifaWaterpointsApp')
     modalSpinner.open(" ", "Finding your location...")
     geolocation.getLocation().then (data) ->
       modalSpinner.close()
-      flash.success = gettext("Geolocation succeeded: got coordinates") + " #{data.coords.longitude.toPrecision(4)}, #{data.coords.latitude.toPrecision(4)}"
-      $scope.form.location = coordinates: [data.coords.longitude, data.coords.latitude]
-      map = Map("editMap", {})
-      map.clearMarkers()
-      map.addWaterpoints([$scope.form])
-      map.zoomToMarkers()
-    , (reason) ->
-      flash.error = gettext("Geolocation failed:") + " #{reason}"
-    $scope.save = () ->
-      Waterpoint.save $scope.form, (waterpoint) ->
-        if waterpoint._status == 'OK'
-          console.log "Successfully created waterpoint", waterpoint
-          flash.success = gettext('Waterpoint successfully created!')
-        if waterpoint._status == 'ERR'
-          console.log gettext("Failed to create waterpoint"), waterpoint
-          for field, message of waterpoint._issues
-            flash.error = "#{field}: #{message}"
+
+      # TODO: fayaz - check for language
+      long = data.coords.longitude
+      lat  = data.coords.latitude
+      $http.get('http://api.what3words.com/position', {
+        params: {
+          key: "R6EBR5KR",
+          position: "#{long}, #{lat}",
+          lang: "sw"
+        }},
+        cache: true).success (w3w) ->
+          console.log('w3w:' + w3w.words)
+
+          flash.success = gettext("Geolocation succeeded: got coordinates") + " #{data.coords.longitude.toPrecision(4)}, #{data.coords.latitude.toPrecision(4)}" + gettext(" | what3words:") + " #{w3w.words}"
+          $scope.form.location = coordinates: [data.coords.longitude, data.coords.latitude]
+          $scope.form.words = w3w.words
+
+          map = Map("editMap", {})
+          map.clearMarkers()
+          map.addWaterpoints([$scope.form])
+          map.zoomToMarkers()
+      , (reason) ->
+        flash.error = gettext("Geolocation failed:") + " #{reason}"
+      $scope.save = () ->
+        Waterpoint.save $scope.form, (waterpoint) ->
+          if waterpoint._status == 'OK'
+            console.log "Successfully created waterpoint", waterpoint
+            flash.success = gettext('Waterpoint successfully created!')
+          if waterpoint._status == 'ERR'
+            console.log gettext("Failed to create waterpoint"), waterpoint
+            for field, message of waterpoint._issues
+              flash.error = "#{field}: #{message}"
 
   .controller 'WaterpointEditCtrl', ($scope, $routeParams,
                                     Map, Waterpoint, FacilityForm) ->

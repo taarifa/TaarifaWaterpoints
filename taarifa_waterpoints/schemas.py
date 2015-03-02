@@ -237,6 +237,10 @@ waterpoint_schema = {
         'type': 'string',
         'label': 'Village photo id',
     },
+    'words': {
+        'type': 'string',
+        'label': 'words',
+    }
 }
 
 # Facility and resources go hand in hand. Following Open311 the facility
@@ -295,5 +299,5 @@ service_schema = {
     "description": "Location and functionality of a waterpoint",
     "keywords": ["location", "infrastructure", "water"],
     "group": "water",
-    "service_code": "wps001"
+    "service_code": "wpf001"
 }
