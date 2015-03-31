@@ -56,7 +56,7 @@ angular.module('taarifaWaterpointsApp')
       onClick = (e) ->
         it = getFeaturedItem(e.target.feature)
         if it.item
-          $scope.drillDown(it.item[it.type + "_name"].name, it.type + "_name", true)
+          $scope.drillDown(it.item[it.type + "_name"], it.type + "_name", true)
 
       ##############
       ### STYLES ###

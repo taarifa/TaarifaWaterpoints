@@ -166,13 +166,13 @@ angular.module('taarifaWaterpointsApp')
         else
           # Note: groupField can be region_name or ward_name but
           # in the params object they are just called region or ward
-          $scope.params[groupField.split("_")[0]] = fieldVal
+          $scope.params[groupField.split("_")[0]] = fieldVal.name
           $scope.getStatus()
       ,0)
 
     barDblClick = (d) ->
       groupField = $scope.params.group
-      $scope.drillDown(d[groupField].name)
+      $scope.drillDown(d[groupField])
 
     $scope.statusChoice = "all"
     $scope.statusColor = statusColor
