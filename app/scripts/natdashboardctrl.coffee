@@ -63,11 +63,6 @@ angular.module('taarifaWaterpointsApp')
     $scope.params =
       group: $scope.groups[0]
 
-    getRegion = () ->
-      $http.get('/api/waterpoints/values/region_name', cache: cacheHttp)
-        .success (data, status, headers, config) ->
-          $scope.regions = data.sort()
-
     # get the top 5 hardware problems
     getProblems = () ->
       modalSpinner.open()
