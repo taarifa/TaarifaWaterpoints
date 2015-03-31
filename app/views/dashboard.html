@@ -21,7 +21,7 @@
           <span class="tile-header" translate>Top Problems</span>
           <br />
           <ul ng-repeat="p in problems" class="">
-            <li><span class="tile-number">({{$index+1}}) - {{p.hardware_problem}}</span>
+            <li><span class="tile-number">({{$index+1}}) - {{p.hardware_problem.name}}</span>
             <span class="tile-info">({{p.count}})</span></li>
           </ul>
           </li>

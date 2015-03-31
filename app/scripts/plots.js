@@ -76,7 +76,7 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
   var y = d3.scale.linear()
     .rangeRound([height, 0]);
 
-  x.domain(_.pluck(data, groupField));
+  x.domain(data.map(function(x) { return x[groupField].name;}));
   y.domain([0, d3.max(data, function(d) {
     return d.count;
   })]);
@@ -124,7 +124,7 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
   }
 
   var tip = createTip(function(d) {
-      s = d[groupField];
+      s = d[groupField].name;
 
       d.waterpoints.map(function(x){return _.pick(x,["status","count"]);})
         .forEach(function(x){
@@ -147,11 +147,16 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
     return wp;
   }
 
+
+  //FIXME: without this, for some reason the selection below
+  //fails to update with new data (old data keeps hanging around)
+  svg.selectAll(".group").remove();
+
   //bind the data to a group
   var state = svg.selectAll(".group")
     .data(data, function(d) {
-        return d[groupField] + "_" + selectedStatus;
-        //return groupField + "_" + d[groupField] + "_" + d.count;
+        return d[groupField].name + "_" + selectedStatus;
+        //return groupField + "_" + d[groupField].name + "_" + d.count;
     });
 
   //bind to each rect within the group
@@ -169,7 +174,7 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
     .append("g")
     .attr("class", "group")
     .attr("transform", function(d) {
-      return "translate(" + x(d[groupField]) + ",0)";
+      return "translate(" + x(d[groupField].name) + ",0)";
     })
     .on('dblclick', function(d,i){
         tip.hide(d,i);
@@ -190,7 +195,7 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
 
   //update existing groups
   state.attr("transform", function(d) {
-      return "translate(" + x(d[groupField]) + ",0)";
+      return "translate(" + x(d[groupField].name) + ",0)";
     });
 
   //update existing rects
@@ -222,7 +227,7 @@ function plotStatusSummary(selector, data, groupField, dblClickHandler, translat
     .on('mouseover', null)
     .on('mouseout', null)
     .transition()
-    .duration(1000)
+    .duration(1100)
     .style("opacity", 0)
     .remove();
 
@@ -280,7 +285,7 @@ function leaderChart(selector, data, groupField, getter) {
     .rangeRound([0, width]);
 
   var y = d3.scale.ordinal()
-    .domain(_.pluck(data, groupField))
+    .domain(data.map(function(x){ return x[groupField].name;}))
     .rangeRoundBands([0,height], .1);
 
   var xAxis = d3.svg.axis()
@@ -323,20 +328,25 @@ function leaderChart(selector, data, groupField, getter) {
   }
 
   var tip = createTip(function(d) {
-      s = d[groupField] + ": " + getter(d).toPrecision(4) + " %";
+      s = d[groupField].name + ": " + getter(d).toPrecision(4) + " %";
       return s;
   });
 
   svg.call(tip);
 
+  //FIXME: without this, for some reason the selection below
+  //fails to update with new data (old data keeps hanging around)
+  svg.selectAll("rect").remove();
+  svg.selectAll(".hor-bar-label").remove();
+
   var rects = svg.selectAll("rect")
     .data(data, function(d) {
-      return d[groupField];
+      return d[groupField].name;
     });
 
   var labels = svg.selectAll(".hor-bar-label")
     .data(data, function(d) {
-      return d[groupField];
+      return d[groupField].name;
     });
 
   rects
@@ -344,7 +354,7 @@ function leaderChart(selector, data, groupField, getter) {
     .duration(1000)
     .attr("height", y.rangeBand())
     .attr("y", function(d) {
-      return y(d[groupField]);
+      return y(d[groupField].name);
     })
     .attr("x", function(d) {
       return x(0);
@@ -357,13 +367,13 @@ function leaderChart(selector, data, groupField, getter) {
     .transition()
     .duration(1000)
     .attr("y", function(d) {
-      return y(d[groupField]) + y.rangeBand(d)/2;
+      return y(d[groupField].name) + y.rangeBand(d)/2;
     })
     .attr("x", function(d) {
       return x(0) + 5;
     })
     .text(function(d){
-      return d[groupField];
+      return d[groupField].name;
     });
 
   rects.enter()
@@ -371,7 +381,7 @@ function leaderChart(selector, data, groupField, getter) {
     .attr("class","hor-bar")
     .attr("height", y.rangeBand())
     .attr("y", function(d) {
-      return y(d[groupField]);
+      return y(d[groupField].name);
     })
     .attr("x", x(0))
     .attr("width", 0)
@@ -387,11 +397,11 @@ function leaderChart(selector, data, groupField, getter) {
     .append("text")
     .attr("class","hor-bar-label")
     .text(function(d){
-      return d[groupField];
+      return d[groupField].name;
     })
     .style("opacity", 0)
     .attr("y", function(d) {
-      return y(d[groupField]) + y.rangeBand(d)/2;
+      return y(d[groupField].name) + y.rangeBand(d)/2;
     })
     .attr("dy", ".36em")
     .attr("x", function(d) {

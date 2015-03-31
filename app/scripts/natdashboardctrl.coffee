@@ -93,7 +93,7 @@ angular.module('taarifaWaterpointsApp')
             return b.count - a.count
           )
           $scope.problems = $scope.problems.filter((x) ->
-            x.hardware_problem != 'none').slice(0,5)
+            x.hardware_problem.name != 'none').slice(0,5)
           modalSpinner.close()
 
     lookupSelectedPop = () ->
@@ -118,7 +118,7 @@ angular.module('taarifaWaterpointsApp')
           data.forEach( (x) -> x.percent = x.count / total * 100)
 
           # index by status_group for convenience
-          statusMap = _.object(_.pluck(data,"status_group"), data)
+          statusMap = _.object(data.map((x) -> x.status_group.name), data)
           $scope.status = statusMap
 
           # ensure all three statusses are always represented
@@ -188,7 +188,7 @@ angular.module('taarifaWaterpointsApp')
 
     barDblClick = (d) ->
       groupField = $scope.params.group
-      $scope.drillDown(d[groupField])
+      $scope.drillDown(d[groupField].name)
 
     $scope.statusChoice = "all"
     $scope.statusColor = statusColor

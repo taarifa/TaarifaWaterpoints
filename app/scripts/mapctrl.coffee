@@ -56,7 +56,7 @@ angular.module('taarifaWaterpointsApp')
       onClick = (e) ->
         it = getFeaturedItem(e.target.feature)
         if it.item
-          $scope.drillDown(it.item[it.type + "_name"], it.type + "_name", true)
+          $scope.drillDown(it.item[it.type + "_name"].name, it.type + "_name", true)
 
       ##############
       ### STYLES ###
@@ -228,7 +228,7 @@ angular.module('taarifaWaterpointsApp')
     ]).then((data) ->
       # Add the regions and wards to the template scope
       addToScope = (stats, name) ->
-        tmp = _.pluck(stats, name + "_name").map((x) -> x.toLowerCase())
+        tmp = stats.map((x) -> x[name + "_name"].name.toLowerCase())
         $scope[name + "Map"] = _.object(tmp, stats)
 
       # data contains stats for region and ward

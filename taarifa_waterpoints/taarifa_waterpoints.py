@@ -124,13 +124,30 @@ def waterpoint_stats_by(field):
     attribute."""
     # FIXME: Direct call to the PyMongo driver, should be abstracted
     resources = app.data.driver.db['resources']
+
+    # When dealing with a geographic field name (assumed ending with _name)
+    # ensure the code is also added and vica versa
+    id1 = {field: "$" + field, "status": "$status_group"}
+    id2 = {"name": "$_id." + field, "code": ""}
+
+    parts = field.split("_")
+    if len(parts) == 2:
+        if parts[1] == "name":
+            field_code = parts[0] + "_code"
+            id1[field_code] = "$" + field_code
+            id2["code"] = "$_id." + field_code
+        elif parts[1] == "code":
+            field_name = parts[0] + "_name"
+            id1[field_name] = "$" + field_name
+            id2["name"] = "$_id." + field_name
+            id2["code"] = "$_id." + field
+
     return send_response('resources', (resources.aggregate([
         {"$match": dict(request.args.items())},
-        {"$group": {"_id": {field: "$" + field,
-                            "status": "$status_group"},
+        {"$group": {"_id": id1,
                     "statusCount": {"$sum": 1},
                     "populationCount": {"$sum": "$pop_served"}}},
-        {"$group": {"_id": "$_id." + field,
+        {"$group": {"_id": id2,
                     "waterpoints": {
                         "$push": {
                             "status": "$_id.status",

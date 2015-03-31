@@ -42,9 +42,9 @@ angular.module('taarifaWaterpointsApp')
 
               if geoField
                 pop = popData.lookup(
-                  if groupfield == "region_name" then x[groupfield] else null,
-                  if groupfield == "district_name" then x[groupfield] else null,
-                  if groupfield == "ward_name" then x[groupfield] else null
+                  if groupfield == "region_name" then x[groupfield].name else null,
+                  if groupfield == "district_name" then x[groupfield].name else null,
+                  if groupfield == "ward_name" then x[groupfield].name else null
                 )
                 if pop > 0
                   x.popReach = f.population / pop * 100
