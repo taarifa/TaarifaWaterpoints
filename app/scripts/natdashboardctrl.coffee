@@ -69,9 +69,9 @@ angular.module('taarifaWaterpointsApp')
       $http.get('/api/waterpoints/stats_by/hardware_problem',
                 cache: cacheHttp
                 params:
-                  region_name: $scope.params?.region
-                  district_name: $scope.params?.district
-                  ward_name: $scope.params?.ward)
+                  region_name: $scope.params?.region?.name
+                  district_name: $scope.params?.district?.name
+                  ward_name: $scope.params?.ward?.name)
         .success (data, status, headers, config) ->
           $scope.problems = data.sort((a,b) ->
             return b.count - a.count
@@ -82,9 +82,9 @@ angular.module('taarifaWaterpointsApp')
 
     lookupSelectedPop = () ->
       popData.lookup(
-        $scope.params.region
-        $scope.params.district
-        $scope.params.ward)
+        $scope.params.region?.name
+        $scope.params.district?.name
+        $scope.params.ward?.name)
 
     $scope.getStatus = () ->
       $scope.statusChoice = "all"
@@ -94,9 +94,9 @@ angular.module('taarifaWaterpointsApp')
       $http.get('/api/waterpoints/stats_by/status_group'
         cache: cacheHttp
         params:
-          region_name: $scope.params.region
-          district_name: $scope.params.district
-          ward_name: $scope.params.ward)
+          region_name: $scope.params.region?.name
+          district_name: $scope.params.district?.name
+          ward_name: $scope.params.ward?.name)
         .success (data, status, headers, config) ->
           total = d3.sum(data, (x) -> x.count)
           data.forEach( (x) -> x.percent = x.count / total * 100)
@@ -166,7 +166,7 @@ angular.module('taarifaWaterpointsApp')
         else
           # Note: groupField can be region_name or ward_name but
           # in the params object they are just called region or ward
-          $scope.params[groupField.split("_")[0]] = fieldVal.name
+          $scope.params[groupField.split("_")[0]] = fieldVal
           $scope.getStatus()
       ,0)
 
@@ -190,9 +190,6 @@ angular.module('taarifaWaterpointsApp')
       $scope.statusChoice = status
 
       translate = (x) -> gettextCatalog.getString(x)
-      region = $scope.params?.region
-      district = $scope.params?.district
-      ward = $scope.params?.ward
       groupfield = $scope.params?.group || "region_name"
 
       plotStatusSummary("#statusSummary", $scope.statusSumData, groupfield,
@@ -203,9 +200,9 @@ angular.module('taarifaWaterpointsApp')
 
       translate = (s) -> gettextCatalog.getString(s)
 
-      region = $scope.params?.region
-      district = $scope.params?.district
-      ward = $scope.params?.ward
+      region = $scope.params?.region?.name
+      district = $scope.params?.district?.name
+      ward = $scope.params?.ward?.name
       groupfield = $scope.params?.group || "region_name"
       status = $scope.statusChoice
 

@@ -198,7 +198,7 @@ angular.module('taarifaWaterpointsApp')
           for f in regions
             it = getFeaturedItem(f)
 
-            if it.name.toLowerCase() == val.toLowerCase()
+            if it.name.toLowerCase() == val.name.toLowerCase()
               # Note: only assumes two different nesting levels
               if f.geometry.coordinates[0][0].length == 2
                 numToUnpack = 1
