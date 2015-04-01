@@ -12,7 +12,7 @@ angular.module('taarifaWaterpointsApp')
       filters = []
 
       _.keys(filterFields).forEach((x) ->
-        if filterFields[x] then filters.push(x + "=" + filterFields[x]))
+        if filterFields[x] then filters.push(x + "=" + filterFields[x].name))
 
       filter = filters.join("&")
 
@@ -124,12 +124,12 @@ angular.module('taarifaWaterpointsApp')
       lookup = (r,d,w) ->
         try
           if w
-            wardGroups[w][0].Both_Sexes
+            wardGroups[w.name][0].Both_Sexes
           else if d
-            districtGroups[d].filter((d) ->
+            districtGroups[d.name].filter((d) ->
               d.Ward == "")[0].Both_Sexes
           else if r
-            regionGroups[r].filter((d) ->
+            regionGroups[r.name].filter((d) ->
               !d.District)[0].Both_Sexes
           else
             d3.sum(_.chain(regionGroups)

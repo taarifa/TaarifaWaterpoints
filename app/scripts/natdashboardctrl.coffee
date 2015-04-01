@@ -82,9 +82,9 @@ angular.module('taarifaWaterpointsApp')
 
     lookupSelectedPop = () ->
       popData.lookup(
-        $scope.params.region?.name
-        $scope.params.district?.name
-        $scope.params.ward?.name)
+        $scope.params.region
+        $scope.params.district
+        $scope.params.ward)
 
     $scope.getStatus = () ->
       $scope.statusChoice = "all"
@@ -200,9 +200,9 @@ angular.module('taarifaWaterpointsApp')
 
       translate = (s) -> gettextCatalog.getString(s)
 
-      region = $scope.params?.region?.name
-      district = $scope.params?.district?.name
-      ward = $scope.params?.ward?.name
+      region = $scope.params?.region
+      district = $scope.params?.district
+      ward = $scope.params?.ward
       groupfield = $scope.params?.group || "region_name"
       status = $scope.statusChoice
 
