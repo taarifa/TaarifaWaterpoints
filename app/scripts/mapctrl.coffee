@@ -5,16 +5,11 @@ angular.module('taarifaWaterpointsApp')
     $scope.hoverText = ""
     $scope.choroChoice = "percFun"
 
-    # FIXME: "ward" and "region" should be defined elsewhere I think
     getFeaturedItem = (feature) ->
       res = {}
       props = feature.properties
 
-      if props.hasOwnProperty "Ward_Name"
-        res.type = "ward"
-        res.name = props.Ward_Name
-        res.code = +props.Ward_Code
-      else if props.hasOwnProperty "District_N"
+      if props.hasOwnProperty "District_N"
         res.type = "district"
         res.name = props.District_N
         res.code = +props.District_C
@@ -143,12 +138,10 @@ angular.module('taarifaWaterpointsApp')
       $q.all([
         getTopoJsonLayer("data/tz_regions.topojson", "tz_regions")
         getTopoJsonLayer("data/tz_districts.topojson", "tz_districts")
-        getTopoJsonLayer("data/tz_wards.topojson", "tz_wards")
       ]).then((data) ->
 
         [regions, regionLayer]    = data[0]
         [districts, districtLayer]= data[1]
-        [wards, wardLayer]        = data[2]
 
         ################
         ### MAKE MAP ###
@@ -160,7 +153,6 @@ angular.module('taarifaWaterpointsApp')
         overlayControls =
           "Regions": regionLayer
           "Districts": districtLayer
-          "Wards": wardLayer
 
         map = L.map('nationalDashMap',
           center: mapCenter
@@ -177,7 +169,7 @@ angular.module('taarifaWaterpointsApp')
         $scope.$watch('choroChoice', (val) ->
           return unless val
 
-          layers = [regionLayer, districtLayer, wardLayer]
+          layers = [regionLayer, districtLayer]
 
           layers.forEach (l) ->
             l.setStyle(style)
@@ -187,7 +179,6 @@ angular.module('taarifaWaterpointsApp')
 
           regionLayer.setStyle(style)
           districtLayer.setStyle(style)
-          wardLayer.setStyle(style)
         )
 
         $scope.$watch('params.region', (val) ->
@@ -224,17 +215,15 @@ angular.module('taarifaWaterpointsApp')
       # FIXME: assumes unique names which is not the case
       waterpointStats.getStats(null, null, null, "region_name", true)
       waterpointStats.getStats(null, null, null, "district_name", true)
-      waterpointStats.getStats(null, null, null, "ward_name", true)
     ]).then((data) ->
-      # Add the regions and wards to the template scope
+      # Add the regions and district to the template scope
       addToScope = (stats, name) ->
         tmp = stats.map((x) -> x[name + "_name"].name.toLowerCase())
         $scope[name + "Map"] = _.object(tmp, stats)
 
-      # data contains stats for region and ward
+      # data contains stats for region and district
       addToScope(data[0], "region")
       addToScope(data[1], "district")
-      addToScope(data[2], "ward")
 
       # Initialise the map
       initMap([], new L.LatLng(-6.3153, 35.15625))
