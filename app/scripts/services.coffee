@@ -24,30 +24,45 @@ angular.module('taarifaWaterpointsApp')
           populationData.then( (popData) ->
             geoField = _.contains(['region_name','district_name','ward_name'], groupfield)
 
+            # FIXME: population field should be renamed to popServed
+            makeEmpty = (x) -> {status: x, population: 0, count: 0}
+            statusses = statusColor.domain()
+
             data.forEach((x) ->
-              f = _.find(x.waterpoints, isFunctional)
 
-              # ensure there is always a functional entry
-              if !f
-                f = {
-                  status: "functional",
-                  population: 0,
-                  count: 0
-                }
-                x.waterpoints.push(f)
-
-              x.percFun = f.count / x.count * 100
-
-              x.popReach = 0
-
+              # if grouping by an area, lookup the population
+              pop = 0;
               if geoField
                 pop = popData.lookup(
                   if groupfield == "region_name" then x[groupfield] else region,
                   if groupfield == "district_name" then x[groupfield] else district,
                   if groupfield == "ward_name" then x[groupfield] else ward
                 )
-                if pop > 0
-                  x.popReach = f.population / pop * 100
+                if pop < 0
+                  pop = 0
+
+              # create a map for convenience
+              wpMap = _.object(_.pluck(x.waterpoints, "status"), x.waterpoints)
+
+              # ensure all statusses are present
+              statusses.forEach((x) -> wpMap[x] = wpMap[x] || makeEmpty(x))
+
+              # calcualte the status % for each case
+              _.values(wpMap).forEach (w) ->
+                w.perc = w.count / x.count * 100
+                # calcualte the population covered for each case (naive)
+                w.popCovered = w.perc * pop / 100
+                # calcualte the % served for each case
+                if pop == 0
+                  w.percPopServed = 0
+                else
+                  w.percPopServed = w.population / pop * 100
+
+              # FIXME: keep for backwards compatability
+              x.percFun = wpMap["functional"].perc
+              # x.popReach = wpMap["functional"].perc # naive assumption makes percPopCovered == perc
+              # FIXME: these numbers mean nothing as pop served field in db means nothing
+              x.popReach = wpMap["functional"].percPopServed
             )
 
             # sort by % functional waterpoints
