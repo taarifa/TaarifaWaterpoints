@@ -106,24 +106,29 @@ angular.module('taarifaWaterpointsApp')
           $scope.status = statusMap
 
           # ensure all three statusses are always represented
-          empty = {count: 0, percent: 0}
+          empty = {count: 0, percent: 0, waterpoints: null}
           statusses = [gettext("functional"), gettext("not functional"), gettext("needs repair")]
           statusses.forEach((x) -> statusMap[x] = statusMap[x] || empty)
 
-          # the population covered
-          if statusMap.functional.waterpoints
-            funPop = statusMap.functional.waterpoints[0].population
-          else
-            # will happen for an invalid selection
-            funPop = 0
-
           pop = lookupSelectedPop()
-          percent = if pop > 0 then funPop/pop*100 else "unknown"
 
-          popCover = {count: funPop, percent: percent}
+          titles =
+            "functional": gettext("Functional Service")
+            "needs repair": gettext("Degraded Service")
+            "not functional": gettext("Missing Service")
 
-          $scope.tiles = _.pairs(_.pick(statusMap,'functional','needs repair'))
-          $scope.tiles.push([gettext('population cover'), popCover])
+          $scope.tiles = statusses.map (x) ->
+            if statusMap[x].count < 1
+              count = 0
+              perc = 0
+            else
+              count = statusMap[x].waterpoints[0].population
+              perc = count / pop * 100
+
+            title: titles[x]
+            percent: perc
+            count: count
+
           modalSpinner.close()
 
       getProblems()
