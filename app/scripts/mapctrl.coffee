@@ -10,11 +10,7 @@ angular.module('taarifaWaterpointsApp')
       res = {}
       props = feature.properties
 
-      if props.hasOwnProperty "Region_Nam"
-        res.type = "region"
-        res.name = props.Region_Nam
-        res.code = +props.Region_Cod
-      else if props.hasOwnProperty "Ward_Name"
+      if props.hasOwnProperty "Ward_Name"
         res.type = "ward"
         res.name = props.Ward_Name
         res.code = +props.Ward_Code
@@ -22,6 +18,10 @@ angular.module('taarifaWaterpointsApp')
         res.type = "district"
         res.name = props.District_N
         res.code = +props.District_C
+      else if props.hasOwnProperty "Region_Nam"
+        res.type = "region"
+        res.name = props.Region_Nam
+        res.code = +props.Region_Cod
       else
         throw new Error("Unknown geo layer")
 
