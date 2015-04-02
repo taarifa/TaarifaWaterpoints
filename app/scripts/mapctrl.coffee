@@ -55,7 +55,7 @@ angular.module('taarifaWaterpointsApp')
 
       onClick = (e) ->
         it = getFeaturedItem(e.target.feature)
-        if it.item
+        if it.item and it.type == "region"
           $scope.drillDown(it.item[it.type + "_name"], it.type + "_name", true)
 
       ##############
@@ -80,7 +80,7 @@ angular.module('taarifaWaterpointsApp')
       ###############
       ### HELPERS ###
       ###############
-      getTopoJsonLayer = (url, featureName, doClick) ->
+      getTopoJsonLayer = (url, featureName) ->
         $http.get(url, cache: true).then (response) ->
           features = topojson.feature(response.data, response.data.objects[featureName]).features
           geojson = L.geoJson(features, {
@@ -92,7 +92,7 @@ angular.module('taarifaWaterpointsApp')
                   geojson.resetStyle(e.target)
                   $scope.$apply (scope) ->
                     scope.hoverText = ""
-                click: onClick if doClick
+                click: onClick
           })
           [features, geojson]
 
@@ -141,9 +141,9 @@ angular.module('taarifaWaterpointsApp')
       ### OVERLAYS ###
       ################
       $q.all([
-        getTopoJsonLayer("data/tz_regions.topojson", "tz_regions", true)
-        getTopoJsonLayer("data/tz_districts.topojson", "tz_districts", false)
-        getTopoJsonLayer("data/tz_wards.topojson", "tz_wards", false)
+        getTopoJsonLayer("data/tz_regions.topojson", "tz_regions")
+        getTopoJsonLayer("data/tz_districts.topojson", "tz_districts")
+        getTopoJsonLayer("data/tz_wards.topojson", "tz_wards")
       ]).then((data) ->
 
         [regions, regionLayer]    = data[0]
