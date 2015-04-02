@@ -212,7 +212,7 @@ angular.module('taarifaWaterpointsApp')
 
     # Get the boundaries and layers
     $q.all([
-      # FIXME: assumes unique names which is not the case
+      # Assumes unique names (which is luckily the case)
       waterpointStats.getStats(null, null, null, "region_name", true)
       waterpointStats.getStats(null, null, null, "district_name", true)
     ]).then((data) ->

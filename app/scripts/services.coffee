@@ -42,9 +42,9 @@ angular.module('taarifaWaterpointsApp')
 
               if geoField
                 pop = popData.lookup(
-                  if groupfield == "region_name" then x[groupfield].name else null,
-                  if groupfield == "district_name" then x[groupfield].name else null,
-                  if groupfield == "ward_name" then x[groupfield].name else null
+                  if groupfield == "region_name" then x[groupfield] else region,
+                  if groupfield == "district_name" then x[groupfield] else district,
+                  if groupfield == "ward_name" then x[groupfield] else ward
                 )
                 if pop > 0
                   x.popReach = f.population / pop * 100
@@ -99,46 +99,40 @@ angular.module('taarifaWaterpointsApp')
           ctr.val = 0
     }
 
-  # FIXME: this is fundamentally flawed as lookups by name
-  # cause collision problems. Really need new data that includes
-  # codes.
+  # FIXME: this should be delegated to a database
   .factory 'populationData', ($http, $q) ->
     def = $q.defer()
-    url = '/data/population_novillages.json'
+    url = '/data/population_2012.json'
     result = {}
 
     $http.get(url).then((data) ->
-      #allGrouped = _.groupBy(data.data,"Region")
-      #_.keys(grouped).forEach((r) ->
-      #  grouped[r] = _.groupBy(grouped[r],"District")
-      #  _.keys(grouped[r]).forEach((d) ->
-      #    grouped[r][d] = _.groupBy(grouped[r][d],"Ward")))
+      # turn the flat list into a tree
+      poptree = _.groupBy(data.data,"Region_Nam")
+      _.keys(poptree).forEach((r) ->
+        poptree[r] = _.groupBy(poptree[r],"District_N")
+        _.keys(poptree[r]).forEach((d) ->
+          poptree[r][d] = _.groupBy(poptree[r][d],"Ward_Name")))
 
-      # create 3 indices on the data for convenience
+      # total national population for convenience
+      totalPop = d3.sum(data.data, (x) -> x.Pop_Total)
+
+      # create 2 extra indices on the data for convenience
       # we can do this since all names happen to be unique
-      # FIXME: eventually should be delegated to a database
-      regionGroups = _.groupBy(data.data, "Region")
-      districtGroups = _.groupBy(data.data, "District")
-      wardGroups = _.groupBy(data.data, "Ward")
+      regionGroups = _.groupBy(data.data, "Region_Nam")
+      districtGroups = _.groupBy(data.data, "District_N")
 
       lookup = (r,d,w) ->
         try
           if w
-            wardGroups[w.name][0].Both_Sexes
+            if not (r or d)
+              raise Exception("Region and district required for ward pop lookup")
+            poptree[r.name][d.name][w.name][0].Pop_Total
           else if d
-            districtGroups[d.name].filter((d) ->
-              d.Ward == "")[0].Both_Sexes
+            d3.sum(districtGroups[d.name], (x) -> x.Pop_Total)
           else if r
-            regionGroups[r.name].filter((d) ->
-              !d.District)[0].Both_Sexes
+            d3.sum(regionGroups[r.name], (x) -> x.Pop_Total)
           else
-            d3.sum(_.chain(regionGroups)
-              .values(regionGroups)
-              .flatten()
-              .filter((d) ->
-                !d.District)
-              .pluck("Both_Sexes")
-              .value())
+            totalPop
         catch e
           return -1
 
