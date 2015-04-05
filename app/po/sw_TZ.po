@@ -70,7 +70,7 @@ msgstr "Hali ya sasa"
 
 #: app/index.html
 msgid "Dashboard"
-msgstr ""
+msgstr "Dashibodi"
 
 #: app/views/dashboard.html
 msgid "Data Table"
@@ -78,7 +78,7 @@ msgstr "Jedwali la data"
 
 #: .tmp/scripts/natdashboardctrl.js
 msgid "Degraded Service"
-msgstr ""
+msgstr "Huduma Duni"
 
 #: app/views/main.html
 msgid "District"
@@ -113,9 +113,8 @@ msgid "Functional Population Served"
 msgstr "Wanaohudumiwa na Vinavyofanya kazi"
 
 #: .tmp/scripts/natdashboardctrl.js
-#, fuzzy
 msgid "Functional Service"
-msgstr "Vinavyofanya kazi"
+msgstr "Huduma inapatikana"
 
 #: .tmp/scripts/regdashboardctrl.js
 msgid "Functionality"
@@ -183,11 +182,11 @@ msgstr "Idadi"
 
 #: app/views/requests.html
 msgid "Metadata"
-msgstr ""
+msgstr "Metadata"
 
 #: .tmp/scripts/natdashboardctrl.js
 msgid "Missing Service"
-msgstr ""
+msgstr "Huduma Imekosekana"
 
 #: app/views/dashboard.html
 msgid "National"
@@ -375,7 +374,7 @@ msgstr "vituo vya maji"
 
 #: app/views/spinnerdlg.html
 msgid "{{ spinnerStatus }}"
-msgstr ""
+msgstr "{{ spinnerStatus }}"
 
 #~ msgid "Loading Data..."
 #~ msgstr "Inapakia data.."
