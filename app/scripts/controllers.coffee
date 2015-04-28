@@ -131,14 +131,17 @@ angular.module('taarifaWaterpointsApp')
         params: {
           key: "R6EBR5KR",
           position: "#{long}, #{lat}",
-          lang: "sw"
+          lang: "en"
         }},
         cache: true).success (w3w) ->
-          console.log('w3w:' + w3w.words)
+          w = w3w.words.toString().replace(/\,/g,'.')
+          console.log(long+','+lat)
+          console.log('w3w:' + w)
+          # w3w.words = /^\p{L}+\.\p{L}+\.\p{L}+$/u
 
-          flash.success = gettext("Geolocation succeeded: got coordinates") + " #{data.coords.longitude.toPrecision(4)}, #{data.coords.latitude.toPrecision(4)}" + gettext(" | what3words:") + " #{w3w.words}"
+          flash.success = gettext("Geolocation succeeded: got coordinates") + " #{data.coords.longitude.toPrecision(4)}, #{data.coords.latitude.toPrecision(4)}" + gettext(" | what3words:") + " #{w}"
           $scope.form.location = coordinates: [data.coords.longitude, data.coords.latitude]
-          $scope.form.words = w3w.words
+          $scope.form.words = w
 
           map = Map("editMap", {})
           map.clearMarkers()
