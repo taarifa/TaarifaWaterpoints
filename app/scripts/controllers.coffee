@@ -130,16 +130,16 @@ angular.module('taarifaWaterpointsApp')
       $http.get('http://api.what3words.com/position', {
         params: {
           key: "R6EBR5KR",
-          position: "#{long}, #{lat}",
+          position: "#{lat}, #{long}",
           lang: "en"
         }},
         cache: true).success (w3w) ->
           w = w3w.words.toString().replace(/\,/g,'.')
-          console.log(long+','+lat)
+          console.log(lat+','+long)
           console.log('w3w:' + w)
           # w3w.words = /^\p{L}+\.\p{L}+\.\p{L}+$/u
-
-          flash.success = gettext("Geolocation succeeded: got coordinates") + " #{data.coords.longitude.toPrecision(4)}, #{data.coords.latitude.toPrecision(4)}" + gettext(" | what3words:") + " #{w}"
+          flash.success = gettext("Geolocation succeeded: got coordinates") + " #{data.coords.latitude.toPrecision(4)}, #{data.coords.longitude.toPrecision(4)}" + gettext(" | what3words:") + " #{w}"
+          # leaflet [long, lat]
           $scope.form.location = coordinates: [data.coords.longitude, data.coords.latitude]
           $scope.form.words = w
 
