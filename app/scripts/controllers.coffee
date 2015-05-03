@@ -252,3 +252,21 @@ angular.module('taarifaWaterpointsApp')
         if status == 200 and data._status == 'ERR'
           for field, message of data._issues
             flash.error = "#{field}: #{message}"
+
+  # Associate what3words to Waterpoint coordinates (lat, long)
+  .controller 'WptCtrl', ($scope, $http) ->
+    $http.get('/api/waterpoints', cache: false).success (wpts) ->
+      $scope.wpts = wpts._items
+      for key, val of wpts._items
+        coords = val.location.coordinates
+        $http.get('http://api.what3words.com/position', {
+          params: {
+            key: "R6EBR5KR",
+            position: "#{coords}",
+            lang: "en"
+          }},
+          cache: true).success (w3w) ->
+            w = w3w.words.toString().replace(/\,/g,'.')
+            console.log(coords+' -> '+w)
+            $scope.coords = coords
+            $scope.w3w = w

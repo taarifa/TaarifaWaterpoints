@@ -38,6 +38,9 @@ app = angular
       .when '/dashboard',
         templateUrl: 'views/dashboard.html'
         controller: 'DashboardCtrl'
+      .when '/wpt',
+        templateUrl: 'views/wpt.html'
+        controller: 'WptCtrl'
       .otherwise
         redirectTo: '/'
     $httpProvider.defaults.headers.patch =
