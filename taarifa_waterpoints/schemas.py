@@ -270,7 +270,7 @@ service_schema = {
          "order": 1,
          "description": "Unique id of this waterpoint",
          "relation": {"resource": "waterpoints",
-                      "field": "wpt_code"}},
+                      "field": "wptcode"}},
         {"variable": True,
          "code": "status_group",
          "datatype": "singlevaluelist",
