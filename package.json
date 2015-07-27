@@ -1,6 +1,8 @@
 {
   "name": "TaarifaWaterpoints",
   "version": "0.0.0",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/taarifa/TaarifaWaterpoints",
   "dependencies": {
     "grunt": "~0.4.1",
     "grunt-angular-gettext": "~0.2.14",
