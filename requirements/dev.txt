@@ -1,4 +1,4 @@
 -r base.txt
 
 flake8==2.4.1
-ipython==2.2.0
+ipython==4.0.0
