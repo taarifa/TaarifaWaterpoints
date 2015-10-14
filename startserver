@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Change to script directory
+cd -P "$(dirname "${BASH_SOURCE[0]}")"
+
+# Load virtualenvwrapper (this only happens automatically for login shells)
+. `which virtualenvwrapper.sh`
+
+workon TaarifaAPI
+nohup python manage.py runserver -h 0.0.0.0 -r -d 2>&1 > apiserver.log
+nohup grunt serve 2>&1 > gruntserver.log
