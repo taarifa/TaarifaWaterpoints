@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 import mimetypes
 from eve.render import send_response
@@ -81,10 +82,14 @@ def waterpoint_requests():
 def waterpoint_values(field):
     "Return the unique values for a given field in the waterpoints collection."
     # FIXME: Direct call to the PyMongo driver, should be abstracted
-    resources = app.data.driver.db['resources']
-    if request.args:
-        resources = resources.find(dict(request.args.items()))
-    return send_response('resources', (sorted(resources.distinct(field)),))
+    rv = cache.get(('values', field))
+    if rv is None:
+        resources = app.data.driver.db['resources']
+        if request.args:
+            resources = resources.find(dict(request.args.items()))
+        rv = send_response('resources', (sorted(resources.distinct(field)), datetime.now()))
+        cache.set(('values', field), rv, timeout=24*60*60)
+    return rv
 
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/stats')
