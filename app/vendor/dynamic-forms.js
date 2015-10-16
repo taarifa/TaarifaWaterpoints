@@ -293,6 +293,12 @@ angular.module('dynform', [])
                 if (angular.isDefined(field.wrapper)) {
                   newElement = newElement.wrap(field.wrapper).parent();
                 }
+
+                // Allow adding arbitrary ng attributes
+                for (k in field) {
+                  if (k.startsWith('ng') && angular.isDefined(field[k]))
+                    newElement.attr(k, field[k]);
+                }
                 
                 // Add the element to the page
                 this.append(newElement);
