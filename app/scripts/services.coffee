@@ -465,4 +465,5 @@ angular.module('taarifaWaterpointsApp')
             type: "submit"
             label: "Save"
             class: "btn btn-primary"
+            "ng-disabled": "disableSubmit"
           return fields
