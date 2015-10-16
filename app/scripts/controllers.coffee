@@ -169,8 +169,11 @@ angular.module('taarifaWaterpointsApp')
     Waterpoint.get where: {wptcode: $routeParams.waterpoint_id}, (wp) ->
       map.clearMarkers()
       # FIXME: assumes wptcode is unique!
-      map.addWaterpoints([wp._items[0]])
-      map.zoomToMarkers()
+      if wp._items.length
+        map.addWaterpoints([wp._items[0]])
+        map.zoomToMarkers()
+      else
+        flash.error = "Could not find Waterpoint with code #{$routeParams.waterpoint_id}"
 
     $scope.formTemplate = RequestForm 'wps001', $location.search()
     # FIXME: Should not hardcode the service code here
