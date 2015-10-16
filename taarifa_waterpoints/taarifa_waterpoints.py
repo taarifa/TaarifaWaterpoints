@@ -66,6 +66,7 @@ app.on_pre_GET_waterpoints += pre_get_waterpoints
 # FIXME: this should eventually be replaced by an incremental load
 # which is better for responsiveness
 app.config['PAGINATION_LIMIT'] = 70000
+app.config['DOMAIN']['waterpoints']['transparent_schema_rules'] = True
 
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/requests')
