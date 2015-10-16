@@ -700,7 +700,7 @@ angular.module('taarifaWaterpointsApp')
           p.total -= v.amount_tsh
           p.pop_served_fun -= if isFunc(v) then v.pop_served else 0
           p.numFun -= if isFunc(v) then 1 else 0
-          p.avgCost = if p.count then p.total / p.count * 1 else 0
+          p.avgCost = if p.count then p.total / p.count else 0
           p.percFun = if p.count then p.numFun / p.count * 100 else 0
           p),
         (() ->
