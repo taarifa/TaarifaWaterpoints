@@ -41,6 +41,10 @@
     height: 100%;
 }
 
+.panel-title small {
+  color: #fff;
+}
+
 /* Stacked bar chart */
 
 .axis path,
