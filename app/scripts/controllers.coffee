@@ -173,6 +173,7 @@ angular.module('taarifaWaterpointsApp')
         map.addWaterpoints([wp._items[0]])
         map.zoomToMarkers()
       else
+        $scope.disableSubmit = true
         flash.error = "Could not find Waterpoint with code #{$routeParams.waterpoint_id}"
 
     $scope.formTemplate = RequestForm 'wps001', $location.search()
