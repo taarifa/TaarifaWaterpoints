@@ -70,6 +70,7 @@ app.config['DOMAIN']['waterpoints']['transparent_schema_rules'] = True
 
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/requests')
+@cache.memoize(timeout=24 * 60 * 60)
 def waterpoint_requests():
     "Return the unique values for a given field in the waterpoints collection."
     # FIXME: Direct call to the PyMongo driver, should be abstracted
@@ -91,6 +92,7 @@ def waterpoint_values(field):
 
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/stats')
+@cache.memoize(timeout=24 * 60 * 60)
 def waterpoint_stats():
     "Return number of waterpoints grouped by district and status."
     # FIXME: Direct call to the PyMongo driver, should be abstracted
@@ -102,6 +104,7 @@ def waterpoint_stats():
 
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/status')
+@cache.memoize(timeout=24 * 60 * 60)
 def waterpoint_status():
     "Return number of waterpoints grouped by status."
     # FIXME: Direct call to the PyMongo driver, should be abstracted
@@ -112,6 +115,7 @@ def waterpoint_status():
 
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/count_by/<field>')
+@cache.memoize(timeout=24 * 60 * 60)
 def waterpoint_count_by(field):
     "Return number of waterpoints grouped a given field."
     # FIXME: Direct call to the PyMongo driver, should be abstracted
@@ -122,6 +126,7 @@ def waterpoint_count_by(field):
 
 
 @app.route('/' + app.config['URL_PREFIX'] + '/waterpoints/stats_by/<field>')
+@cache.memoize(timeout=24 * 60 * 60)
 def waterpoint_stats_by(field):
     """Return number of waterpoints of a given status grouped by a certain
     attribute."""
