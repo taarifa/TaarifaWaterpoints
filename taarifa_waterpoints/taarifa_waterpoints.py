@@ -158,17 +158,17 @@ def waterpoint_stats_by(field):
 
 @app.route('/scripts/<path:filename>')
 def scripts(filename):
-    return send_from_directory(app.root_path + '/dist/scripts/', filename)
+    return send_from_directory(app.root_path + '/dist/scripts/', filename, cache_timeout=365*24*60*60)
 
 
 @app.route('/styles/<path:filename>')
 def styles(filename):
-    return send_from_directory(app.root_path + '/dist/styles/', filename)
+    return send_from_directory(app.root_path + '/dist/styles/', filename, cache_timeout=365*24*60*60)
 
 
 @app.route('/images/<path:filename>')
 def images(filename):
-    return send_from_directory(app.root_path + '/dist/images/', filename)
+    return send_from_directory(app.root_path + '/dist/images/', filename, cache_timeout=365*24*60*60)
 
 
 @app.route('/data/<path:filename>.topojson')
