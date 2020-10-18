@@ -47,6 +47,9 @@ app/bower_components
 # Vagrant
 .vagrant
 
+# Virtualenv
+.venv
+
 # Temporary, backup & MacOS dir
 *~
 *.lock
