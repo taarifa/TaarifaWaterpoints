@@ -3,7 +3,7 @@ import json
 import mimetypes
 from eve.render import send_response
 from flask import request, send_from_directory
-from flask.ext.cache import Cache
+from flask_caching import Cache
 
 from taarifa_api import api as app, main
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
