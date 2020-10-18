@@ -1,1 +1,1 @@
-from taarifa_waterpoints import app  # noqa
+from .taarifa_waterpoints import app  # noqa
