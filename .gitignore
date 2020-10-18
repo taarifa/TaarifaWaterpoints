@@ -50,6 +50,9 @@ app/bower_components
 # Virtualenv
 .venv
 
+# Heroku
+.env
+
 # Temporary, backup & MacOS dir
 *~
 *.lock
