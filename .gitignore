@@ -53,6 +53,9 @@ app/bower_components
 # Heroku
 .env
 
+# VSCode
+.vscode
+
 # Temporary, backup & MacOS dir
 *~
 *.lock
