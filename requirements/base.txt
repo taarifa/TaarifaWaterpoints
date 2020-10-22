@@ -1,5 +1,5 @@
 -e git+https://github.com/taarifa/TaarifaAPI#egg=TaarifaAPI-dev
 Flask-Caching==1.9.0
 Flask-Script==2.0.5
-gunicorn==19.3.0
-requests==2.8.1
+gunicorn==20.0.4
+requests==2.24.0
