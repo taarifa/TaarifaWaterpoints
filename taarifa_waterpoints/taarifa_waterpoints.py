@@ -133,7 +133,7 @@ def waterpoint_stats_by(field):
     attribute."""
     # FIXME: Direct call to the PyMongo driver, should be abstracted
     resources = app.data.driver.db['resources']
-    return send_response('resources', (resources.aggregate([
+    return send_response('resources', (list(resources.aggregate([
         {"$match": dict(request.args.items())},
         {"$group": {"_id": {field: "$" + field,
                             "status": "$status_group"},
@@ -153,7 +153,7 @@ def waterpoint_stats_by(field):
                       "waterpoints": 1,
                       "population": 1,
                       "count": 1}},
-        {"$sort": {field: 1}}])['result'],))
+        {"$sort": {field: 1}}])),))
 
 
 @app.route('/scripts/<path:filename>')
