@@ -2,7 +2,7 @@ from csv import DictReader
 from datetime import datetime
 from pprint import pprint
 
-from flask.ext.script import Manager
+from flask_script import Manager
 
 from taarifa_api import add_document, delete_documents, get_schema
 from taarifa_waterpoints import app
@@ -11,14 +11,14 @@ from taarifa_waterpoints.schemas import facility_schema, service_schema
 manager = Manager(app)
 
 
-def check(response, success=201, print_status=True):
-    data, _, _, status = response
-    if status == success:
+def check(response, print_status=True):
+    data, _, _, status = response[0:4]
+    if 200 <= status <= 299:
         if print_status:
-            print " Succeeded"
+            print(" Succeeded")
         return True
 
-    print "Failed with status", status
+    print("Failed with status", status)
     pprint(data)
     return False
 
@@ -32,11 +32,10 @@ def show_schema(resource):
 @manager.command
 def list_routes():
     """List all routes defined for the application."""
-    import urllib
+    from urllib.parse import unquote
     for rule in sorted(app.url_map.iter_rules(), key=lambda r: r.endpoint):
         methods = ','.join(rule.methods)
-        print urllib.unquote("{:40s} {:40s} {}".format(rule.endpoint, methods,
-                                                       rule))
+        print(unquote("{:40s} {:40s} {}".format(rule.endpoint, methods, rule)))
 
 
 @manager.command
@@ -54,19 +53,19 @@ def create_service():
 @manager.command
 def delete_facilities():
     """Delete all facilities."""
-    check(delete_documents('facilities'), 200)
+    check(delete_documents('facilities'))
 
 
 @manager.command
 def delete_services():
     """Delete all services."""
-    check(delete_documents('services'), 200)
+    check(delete_documents('services'))
 
 
 @manager.command
 def delete_requests():
     """Delete all requests."""
-    check(delete_documents('requests'), 200)
+    check(delete_documents('requests'))
 
 
 @manager.option("filename", help="CSV file to upload (required)")
@@ -118,10 +117,10 @@ def upload_waterpoints(filename, skip=0, limit=None):
     print_every = 1000
     print_flush("Adding waterpoints. Please be patient.")
 
-    with open(filename, 'rU') as f:
+    with open(filename, 'r') as f:
         reader = DictReader(f)
         for i in range(skip):
-            reader.next()
+            next(reader)
         for i, d in enumerate(reader):
             actual_index = i + skip + 2
             do_print = actual_index % print_every == 0
@@ -130,29 +129,29 @@ def upload_waterpoints(filename, skip=0, limit=None):
                 coords = [d.pop('longitude'), d.pop('latitude')]
                 d['location'] = {'type': 'Point', 'coordinates': coords}
                 d['facility_code'] = facility_code
-                if not check(add_document('waterpoints', d), 201, False):
+                if not check(add_document('waterpoints', d), False):
                     raise Exception()
                 if do_print:
                     print_flush(".")
 
             except Exception as e:
-                print "Error adding waterpoint", e
+                print("Error adding waterpoint", e)
                 pprint(d)
                 exit()
 
             if limit and i >= limit:
                 break
     # Create a 2dsphere index on the location field for geospatial queries
-    app.data.driver.db['resources'].ensure_index([('location', '2dsphere')])
-    print "Waterpoints uploaded!"
+    app.data.driver.db['resources'].create_index([('location', '2dsphere')])
+    print("Waterpoints uploaded!")
 
 
 @manager.command
 def ensure_indexes():
     """Make sure all important database indexes are created."""
-    print "Ensuring resources:location 2dsphere index is created ..."
-    app.data.driver.db['resources'].ensure_index([('location', '2dsphere')])
-    print "Done!"
+    print("Ensuring resources:location 2dsphere index is created ...")
+    app.data.driver.db['resources'].create_index([('location', '2dsphere')])
+    print("Done!")
 
 
 @manager.option("status", help="Status (functional or non functional)")
@@ -168,7 +167,7 @@ def create_request(wp, status):
 @manager.command
 def delete_waterpoints():
     """Delete all existing waterpoints."""
-    print delete_documents('waterpoints')
+    check(delete_documents('waterpoints'))
 
 if __name__ == "__main__":
     manager.run()
