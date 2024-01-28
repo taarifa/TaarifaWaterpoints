@@ -41,7 +41,7 @@
     <div class="container">
 
       <div class="header" ng-controller="NavCtrl">
-        <ul class="nav nav-pills pull-right">
+        <ul class="nav nav-pills pull-right" id="nav">
           <!--li><a ng-href="#/waterpoints/new">
             <span class="glyphicon glyphicon-plus"></span>
             Create waterpoint
@@ -57,7 +57,8 @@
             </select>
           </li>
         </ul>
-        <h3 class="text-muted brand" translate>Tanzania Waterpoints</h3>
+        <i class="icon-list" id="list"></i><h3 class="text-muted brand" translate>Tanzania Waterpoints</h3>
+        <h3 class="refine"style="display:none;"><i class="icon-filter" id="refine"></i></h3>
       </div>
       <hr>
 
@@ -92,6 +93,7 @@
        ga('create', 'UA-40266266-1', 'taarifa.org');
        ga('send', 'pageview');
     </script>
+ 
 
     <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.3.0/es5-shim.min.js"></script>
@@ -140,6 +142,26 @@
     <script src="scripts/natdashboardctrl.js"></script>
     <script src="scripts/regdashboardctrl.js"></script>
     <script src="scripts/translations.js"></script>
+    <!-- toggleclass to activate filter -->
+    <script type="text/javascript">
+    var mql = window.matchMedia("screen and (max-width: 480px)");
+
+    if(mql.matches){
+      $("#nav").removeClass("nav nav-pills pull-right");
+      // $("#nav").addClass("speech");
+
+      $(".icon-list").click(function(){
+        // alert("clicked");
+          $("#nav").toggleClass("active animation bounceInLeft");
+          $(".icon-list").toggleClass("active");
+      });
+        $("#refine").click(function(){
+          $(".relaypanel").toggleClass("active animation bounceInDown");
+          $(".icon-filter").toggleClass("active");
+
+    });
+  }
+    </script>
     <!-- endbuild -->
 </body>
 </html>
