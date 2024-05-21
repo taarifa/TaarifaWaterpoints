@@ -3,4 +3,4 @@ dnspython==2.6.1
 Flask-Caching==1.9.0
 Flask-Script==2.0.5
 gunicorn==22.0.0
-requests==2.31.0
+requests==2.32.0
