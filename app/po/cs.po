@@ -1,0 +1,376 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TaarifaWaterpoints\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: Taarifa <info@taarifa.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.3\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
+"Last-Translator: Jiří Podhorecký <j.podhorecky@volny.cz>\n"
+"Language: cs\n"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "% Functional"
+msgstr "% Funkční"
+
+#: app/views/triage.html
+msgid "Accept change"
+msgstr "Přijmout změnu"
+
+#: app/index.html
+msgid "Add Waterpoint"
+msgstr "Přidat vodní zdroj"
+
+#: app/views/triage.html
+msgid "Agency responsible"
+msgstr "Odpovědná organizace"
+
+#: app/views/triage.html
+msgid "Attribute"
+msgstr "Vlastnost"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Average Payment"
+msgstr "Průměrná platba"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Average Payment Per Ward"
+msgstr "Průměrná platba za oddělení"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Average payment"
+msgstr "Průměrná platba"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Breakdown Year"
+msgstr "Členění Roku"
+
+#: app/views/dashboard.html
+msgid "Charts"
+msgstr "Grafy"
+
+#: app/views/triage.html
+msgid "Comments"
+msgstr "Poznámky"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Construction Year"
+msgstr "Rok výstavby"
+
+#: app/views/dashboard.html
+msgid "Coverage"
+msgstr "Krytí"
+
+#: app/views/triage.html
+msgid "Current value"
+msgstr "Současná cena"
+
+#: app/index.html
+msgid "Dashboard"
+msgstr "Ovládací panel"
+
+#: app/views/dashboard.html
+msgid "Data Table"
+msgstr "Datová tabulka"
+
+#: app/views/main.html
+msgid "District"
+msgstr "Okres"
+
+#: app/views/triage.html
+msgid "Expected completion date"
+msgstr "Předpokládané datum dokončení"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Extraction Type"
+msgstr "Typ extrakce"
+
+#: .tmp/scripts/controllers.js
+msgid "Failed to create waterpoint"
+msgstr "Nepodařilo se vytvořit vodní zdroj"
+
+#: app/views/main.html
+msgid "Filter map view"
+msgstr "Filtrovat mapový pohled"
+
+#: app/views/requests.html
+msgid "Filter requests"
+msgstr "Filtrovat požadavky"
+
+#: app/views/dashboard.html .tmp/scripts/regdashboardctrl.js
+msgid "Functional"
+msgstr "Funkční"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Functional Population Served"
+msgstr "Funkční sloužící obyvatelstvu"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Functionality"
+msgstr "Funkčnost"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Functionality by District"
+msgstr "Funkčnost podle okresu"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Functionality by Extraction"
+msgstr "Funkčnost podle vyjmutí"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Functionality by Management"
+msgstr "Funkčnost podle správy"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Functionality by Ward"
+msgstr "Funkčnost podle oddělení"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Functionality vs Cost"
+msgstr "Funkčnost k Nákladům"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Funder"
+msgstr "Dárce"
+
+#: app/views/triage.html
+msgid "Further information or comments about the problem"
+msgstr "Další informace nebo komentáře k problému"
+
+#: .tmp/scripts/controllers.js
+msgid "Geolocation failed:"
+msgstr "Geolokace selhala:"
+
+#: .tmp/scripts/controllers.js
+msgid "Geolocation succeeded: got coordinates"
+msgstr "Geolokace uspěla: má souřadnice"
+
+#: app/views/dashboard.html
+msgid "Group By"
+msgstr "Seskupit podle"
+
+#: app/index.html
+msgid "Home"
+msgstr "Hlavní strana"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Installer"
+msgstr "Instalátor"
+
+#: app/views/spinnerdlg.html
+msgid "Loading Data..."
+msgstr "Načítání dat..."
+
+#: app/views/spinnerdlg.html
+msgid "Loading waterpoint data."
+msgstr "Načítání dat vodních zdrojů."
+
+#: app/views/edit.html
+msgid "Location"
+msgstr "Lokace"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Management"
+msgstr "Správa"
+
+#: app/views/main.html
+msgid "Max no."
+msgstr "Maximální č."
+
+#: app/views/requests.html
+msgid "Metadata"
+msgstr "Metadata"
+
+#: app/views/dashboard.html
+msgid "National"
+msgstr "Národní"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Needs repair"
+msgstr "Vyžaduje opravu"
+
+#: .tmp/scripts/controllers.js
+msgid "No request matching the criteria!"
+msgstr "Žádný požadavek odpovídající kritériím!"
+
+#: .tmp/scripts/controllers.js
+msgid "No waterpoints match your filter criteria!"
+msgstr "Žádné vodní zdroje neodpovídají kritériím filtru!"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Not functional"
+msgstr "Není funkční"
+
+#: app/scripts/plots.js
+msgid "Number of Waterpoints"
+msgstr "Počet vodních zdrojů"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Payment Method"
+msgstr "Způsob platby"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "Performance Table: % Functional"
+msgstr "Tabulka výkonnosti: % funkční"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "Performance Table: % Served"
+msgstr "Tabulka výkonnosti: % sloužící"
+
+#: app/views/triage.html
+msgid "Planned actions"
+msgstr "Plánované akce"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Population"
+msgstr "Obyvatelstvo"
+
+#: app/views/dashboard.html
+msgid "Print"
+msgstr "Tisk"
+
+#: app/views/dashboard.html
+msgid "Publish"
+msgstr "Publikovat"
+
+#: app/views/dashboard.html app/views/main.html
+msgid "Region"
+msgstr "Region"
+
+#: app/views/dashboard.html
+msgid "Regional"
+msgstr "Regionální"
+
+#: app/views/triage.html
+msgid "Report status"
+msgstr "Zpráva o stavu"
+
+#: app/views/triage.html
+msgid "Reported value"
+msgstr "Vykazovaná hodnota"
+
+#: app/views/requests.html
+msgid "Request status"
+msgstr "Stav požadavku"
+
+#: .tmp/scripts/controllers.js
+msgid "Request successfully created!"
+msgstr "Požadavek úspěšně vytvořen!"
+
+#: app/views/main.html
+msgid "Reset"
+msgstr "Reset"
+
+#: app/views/dashboard.html
+msgid "Reset all filters"
+msgstr "Resetovat všechny filtry"
+
+#: app/views/dashboard.html
+msgid "Selected"
+msgstr "Vybráno"
+
+#: app/views/main.html
+msgid "Status"
+msgstr "Stav"
+
+#: app/views/triage.html
+msgid "Steps that will be taken to fix the problem"
+msgstr "Kroky, které budou podniknuty k odstranění problému"
+
+#: app/index.html
+msgid "Tanzania Waterpoints"
+msgstr "Vodní zdroje"
+
+#: app/views/spinnerdlg.html
+msgid "This may take a while depending on your connection"
+msgstr "V závislosti na vašem připojení to může chvíli trvat"
+
+#: app/views/dashboard.html .tmp/scripts/regdashboardctrl.js
+msgid "Top Problems"
+msgstr "Hlavní problémy"
+
+#: app/index.html
+msgid "Triage"
+msgstr "Třídění"
+
+#: app/views/triage.html
+msgid "Update report"
+msgstr "Aktualizovat zprávu"
+
+#: app/views/requests.html
+msgid "User provided fields"
+msgstr "Pole zadaná uživatelem"
+
+#: app/views/requests.html
+msgid "WP id"
+msgstr "Id vodního zdroje"
+
+#: app/views/requests.html
+msgid "WP status"
+msgstr "Stav vodního zdroje"
+
+#: app/views/main.html
+msgid "WPs with reports"
+msgstr "Vodní zdroje s reporty"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Water Quality"
+msgstr "Kvalita vody"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Water Quantity"
+msgstr "Množství vody"
+
+#: app/views/requests.html app/views/triage.html
+msgid "Waterpoint"
+msgstr "Vodní zdroj"
+
+#: .tmp/scripts/regdashboardctrl.js
+msgid "Waterpoint Locations"
+msgstr "Umístění vodního zdroje"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "Waterpoint status (ordered by % Functional)"
+msgstr "Stav vodního zdroje (seřazeno podle % funkčnosti)"
+
+#: .tmp/scripts/controllers.js
+msgid "Waterpoint successfully created!"
+msgstr "Vodní zdroj úspěšně vytvořen!"
+
+#: .tmp/scripts/controllers.js
+msgid "Waterpoint successfully updated!"
+msgstr "Vodní zdroj úspěšně aktualizován!"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "functional"
+msgstr "funkční"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "needs repair"
+msgstr "vyžaduje opravu"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "not functional"
+msgstr "není funkční"
+
+#: app/views/dashboard.html
+msgid "out of"
+msgstr "mimo"
+
+#: .tmp/scripts/natdashboardctrl.js
+msgid "population cover"
+msgstr "pokrytí obyvatelstva"
+
+#: app/views/requests.html app/views/triage.html
+msgid "submitted on"
+msgstr "odesláno na"
+
+#: app/views/dashboard.html
+msgid "waterpoints"
+msgstr "vodní zdroje"
+
+msgid "Functionality by LGA"
+msgstr "Funkčnost podle LGA"
